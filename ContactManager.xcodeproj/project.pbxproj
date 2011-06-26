@@ -14,6 +14,8 @@
 		DE25CA6013A7234C00D71422 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE25CA5F13A7234C00D71422 /* MainWindowController.xib */; };
 		DE25CA6D13A8560E00D71422 /* ContactListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE25CA6B13A8560E00D71422 /* ContactListViewController.m */; };
 		DE25CA6E13A8560E00D71422 /* ContactListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE25CA6C13A8560E00D71422 /* ContactListViewController.xib */; };
+		DE27DD8F13B7B40A00EF7A92 /* ContactDataControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE27DD8E13B7B40A00EF7A92 /* ContactDataControllerTests.m */; };
+		DE27DD9513B7CB7900EF7A92 /* ContactDataControllerKVOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE27DD9213B7C5E800EF7A92 /* ContactDataControllerKVOTests.m */; };
 		DEB4C39213B058E800B84FA9 /* ContactDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB4C39013B058E800B84FA9 /* ContactDetailViewController.m */; };
 		DEB4C39313B058E800B84FA9 /* ContactDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DEB4C39113B058E800B84FA9 /* ContactDetailViewController.xib */; };
 		DED8178E13A452A900EC3234 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED8178D13A452A900EC3234 /* Cocoa.framework */; };
@@ -68,6 +70,10 @@
 		DE25CA6A13A8560E00D71422 /* ContactListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListViewController.h; sourceTree = "<group>"; };
 		DE25CA6B13A8560E00D71422 /* ContactListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListViewController.m; sourceTree = "<group>"; };
 		DE25CA6C13A8560E00D71422 /* ContactListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactListViewController.xib; sourceTree = "<group>"; };
+		DE27DD8D13B7B40A00EF7A92 /* ContactDataControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDataControllerTests.h; sourceTree = "<group>"; };
+		DE27DD8E13B7B40A00EF7A92 /* ContactDataControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDataControllerTests.m; sourceTree = "<group>"; };
+		DE27DD9113B7C5E800EF7A92 /* ContactDataControllerKVOTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDataControllerKVOTests.h; sourceTree = "<group>"; };
+		DE27DD9213B7C5E800EF7A92 /* ContactDataControllerKVOTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDataControllerKVOTests.m; sourceTree = "<group>"; };
 		DEB4C38F13B058E800B84FA9 /* ContactDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDetailViewController.h; sourceTree = "<group>"; };
 		DEB4C39013B058E800B84FA9 /* ContactDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailViewController.m; sourceTree = "<group>"; };
 		DEB4C39113B058E800B84FA9 /* ContactDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactDetailViewController.xib; sourceTree = "<group>"; };
@@ -161,6 +167,17 @@
 			name = Controllers;
 			sourceTree = "<group>";
 		};
+		DE27DD9413B7C68900EF7A92 /* Model Tests */ = {
+			isa = PBXGroup;
+			children = (
+				DE27DD8D13B7B40A00EF7A92 /* ContactDataControllerTests.h */,
+				DE27DD8E13B7B40A00EF7A92 /* ContactDataControllerTests.m */,
+				DE27DD9113B7C5E800EF7A92 /* ContactDataControllerKVOTests.h */,
+				DE27DD9213B7C5E800EF7A92 /* ContactDataControllerKVOTests.m */,
+			);
+			name = "Model Tests";
+			sourceTree = "<group>";
+		};
 		DED8177E13A452A900EC3234 = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +242,7 @@
 		DED817AE13A452AA00EC3234 /* ContactManagerTests */ = {
 			isa = PBXGroup;
 			children = (
+				DE27DD9413B7C68900EF7A92 /* Model Tests */,
 				DED817CE13A4667D00EC3234 /* Frameworks */,
 				DED817AF13A452AA00EC3234 /* Supporting Files */,
 			);
@@ -392,6 +410,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE27DD9513B7CB7900EF7A92 /* ContactDataControllerKVOTests.m in Sources */,
+				DE27DD8F13B7B40A00EF7A92 /* ContactDataControllerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
