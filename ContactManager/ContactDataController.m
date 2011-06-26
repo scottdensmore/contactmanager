@@ -57,11 +57,12 @@
 - (Contact *)newContact
 {
     [self willChangeValueForKey:@"contacts"];
-	Contact *post = (Contact *)[coreDataController.managedObjectModel newObjectInEntityWithContext:coreDataController.managedObjectContext 
+	Contact *contact = (Contact *)[coreDataController.managedObjectModel newObjectInEntityWithContext:coreDataController.managedObjectContext 
                                                                                               name:@"Contact" 
                                                                                             values:nil];
+    
 	[self didChangeValueForKey:@"contacts"];
-	return post;
+	return contact;
 }
 
 - (void)deleteContact:(Contact *)contact
