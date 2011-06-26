@@ -80,6 +80,6 @@
     [contactDataController deleteContact:contact];
     NSUInteger contactCount = [[contactDataController contacts] count];
     
-    STAssertEquals(0, contactCount, @"Did not delete contact");
+    STAssertEquals((NSUInteger)0, contactCount, @"Did not delete contact");
 }
 @end

@@ -43,6 +43,16 @@
     STAssertTrue(contactsChanged, @"Adding new contact should fire change for contacts");
 }
 
+- (void)testShouldFireChangeForContactsWhenDeletingContact
+{
+    Contact *contact = [contactDataController newContact];
+    contactsChanged = NO;
+    
+    [contactDataController deleteContact:contact];
+    
+    STAssertTrue(contactsChanged, @"Adding new contact should fire change for contacts");
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	contactsChanged = YES;
