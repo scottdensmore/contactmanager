@@ -54,10 +54,10 @@
 
 #pragma mark - Data Methods
 
-- (Contact *)newContact
+- (Contact *)createContact
 {
     [self willChangeValueForKey:@"contacts"];
-	Contact *contact = (Contact *)[coreDataController.managedObjectModel newObjectInEntityWithContext:coreDataController.managedObjectContext 
+	Contact *contact = (Contact *)[coreDataController.managedObjectModel insertNewObjectInEntityWithContext:coreDataController.managedObjectContext 
                                                                                               name:@"Contact" 
                                                                                             values:nil];
     

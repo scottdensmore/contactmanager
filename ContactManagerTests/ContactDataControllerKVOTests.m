@@ -38,14 +38,14 @@
 
 - (void)testShouldFireChangeForContactsWhenAddingNewContact
 {
-    [contactDataController newContact];
+    [contactDataController createContact];
     
     STAssertTrue(contactsChanged, @"Adding new contact should fire change for contacts");
 }
 
 - (void)testShouldFireChangeForContactsWhenDeletingContact
 {
-    Contact *contact = [contactDataController newContact];
+    Contact *contact = [contactDataController createContact];
     contactsChanged = NO;
     
     [contactDataController deleteContact:contact];

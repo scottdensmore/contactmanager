@@ -15,7 +15,6 @@
 @private
     CoreDataController *coreDataController;
     ContactDataController *contactDataController;
-    BOOL contactsChanged;
 }
 
 @end

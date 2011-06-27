@@ -44,20 +44,22 @@
 	return results;
 }
 
-- (NSManagedObject *)newObjectInEntityWithContext:(NSManagedObjectContext *)context name:(NSString *)name values:(NSDictionary *)values
+- (NSManagedObject *)insertNewObjectInEntityWithContext:(NSManagedObjectContext *)context name:(NSString *)name values:(NSDictionary *)values
 {
     if (!context || !name) {
 		return nil;
 	}
-	
+
+	/*
 	NSEntityDescription *entity = [[self entitiesByName] objectForKey:name];
 	
 	//If our entity doesn't exist return nil
 	if (!entity) {
 		return nil;
 	}
-	
-	NSManagedObject *object = [[NSManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+    */
+    
+    NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:name inManagedObjectContext:context];
 	
 	if (!object) {
 		return nil;

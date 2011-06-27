@@ -20,7 +20,7 @@
 
 - (id)initWithCoreDataController:(CoreDataController *)controller;
 
-- (Contact *)newContact;
+- (Contact *)createContact;
 - (void)deleteContact:(Contact *)contact;
 
 @end

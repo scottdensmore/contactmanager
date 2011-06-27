@@ -19,7 +19,6 @@
     
     coreDataController = [[CoreDataController alloc] initWithInitialType:NSInMemoryStoreType appSupportName:nil modelName:@"ContactManagerModel.momd" dataStoreName:nil];
     contactDataController = [[ContactDataController alloc] initWithCoreDataController:coreDataController];
-    contactsChanged = NO;
 }
 
 - (void)tearDown
@@ -35,14 +34,14 @@
 
 - (void)testShouldCreateNewNonNilContact
 {
-    Contact *contact = [contactDataController newContact];
+    Contact *contact = [contactDataController createContact];
     
     STAssertNotNil(contact, @"Contact should not be nil");
 }
 
 - (void)testShouldBeAbleRetrieveNewContact
 {
-    Contact *contact = [contactDataController newContact];
+    Contact *contact = [contactDataController createContact];
     contact.firstName = @"Scott";
     contact.lastName = @"Densmore";
     contact = nil;
@@ -57,7 +56,7 @@
 - (void)testShouldRetrieveContactsInLastNameOrder
 {
     for (int idx = 4; idx >= 0; idx--) {
-        Contact *contact = [contactDataController newContact];
+        Contact *contact = [contactDataController createContact];
         contact.firstName = [NSString stringWithFormat:@"%d First", idx];
         contact.lastName = [NSString stringWithFormat:@"%d Last", idx];
     }
@@ -73,7 +72,7 @@
 
 - (void)testShouldBeAbleToDeleteContactAfterInserting
 {
-    Contact *contact = [contactDataController newContact];
+    Contact *contact = [contactDataController createContact];
     contact.firstName = @"Scott";
     contact.lastName = @"Densmore";
 

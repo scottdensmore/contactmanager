@@ -17,8 +17,10 @@
 
 @synthesize listView;
 @synthesize detailView;
+@synthesize removeButton;
 @synthesize contactListViewController;
 @synthesize contactDetailViewController;
+@synthesize addButton;
 
 #pragma mark - Memory Management
 
@@ -44,8 +46,8 @@
 
 - (void)dealloc
 {
-    RELEASE(listView);
-    RELEASE(detailView);
+    [contactListViewController removeObserver:self forKeyPath:@"selectedContact"];
+    
     RELEASE(contactListViewController);
     RELEASE(contactDetailViewController);
     RELEASE(contactDataController);
@@ -72,17 +74,30 @@
     return NSStringFromClass([self class]);
 }
 
+#pragma mark - KVO methods
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	[contactDetailViewController setContact:[contactListViewController selectedContact]];
 }
 
 #pragma mark - Action methods
+
 - (IBAction)newContact:(id)sender
 {
-    Contact *newContact = [contactDataController newContact];
+    Contact *newContact = [contactDataController createContact];
 	[contactListViewController reloadData];
 	[contactListViewController selectContact:newContact];
 }
+
+- (IBAction)deleteContact:(id)sender
+{
+    Contact *contact = [contactListViewController selectedContact];
+    if (contact) {
+        [contactDataController deleteContact:contact];
+    }
+	[contactListViewController reloadData];
+}
+
 
 @end
