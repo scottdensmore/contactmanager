@@ -12,6 +12,6 @@
 
 - (NSArray *)objectsInEntityWithContext:(NSManagedObjectContext *)context name:(NSString *)name predicate:(NSPredicate *)predicate sortedWithDescriptors:(NSArray *)descriptors;
 
-- (NSManagedObject *)newObjectInEntityWithContext:(NSManagedObjectContext *)context name:(NSString *)name values:(NSDictionary *)values;
+- (NSManagedObject *)insertNewObjectInEntityWithContext:(NSManagedObjectContext *)context name:(NSString *)name values:(NSDictionary *)values;
 
 @end

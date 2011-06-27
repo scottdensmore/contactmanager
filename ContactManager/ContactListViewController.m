@@ -59,9 +59,17 @@
 
 - (void)selectContact:(Contact *)contact
 {
-    [self willChangeValueForKey:@"selectedContact"];
-    [contactsArrayController setSelectedObjects:[NSArray arrayWithObject:contact]];
-    [self didChangeValueForKey:@"selectedContact"];
+    BOOL valueChanged = NO;
+    if (contact) {
+        valueChanged = [contactsArrayController setSelectedObjects:[NSArray arrayWithObject:contact]];
+    } else {
+        valueChanged = [contactsArrayController setSelectedObjects:nil];
+    }
+    
+    if (valueChanged) {
+        [self willChangeValueForKey:@"selectedContact"];
+        [self didChangeValueForKey:@"selectedContact"];
+    }
 }
 
 - (void)reloadData 

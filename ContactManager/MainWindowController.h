@@ -15,20 +15,26 @@
 
 @interface MainWindowController : NSWindowController {
 @private
-    IBOutlet NSView *listView;
-	IBOutlet NSView *detailView;
+    NSView *listView;
+	NSView *detailView;
+    NSButton *removeButton;
+    NSButton *addButton;
     ContactListViewController *contactListViewController;
     ContactDetailViewController *contactDetailViewController;
     ContactDataController *contactDataController;
 }
 
-@property (nonatomic, retain) IBOutlet NSView *listView;
-@property (nonatomic, retain) IBOutlet NSView *detailView;
+@property (assign) IBOutlet NSView *listView;
+@property (assign) IBOutlet NSView *detailView;
+@property (assign) IBOutlet NSButton *removeButton;
+@property (assign) IBOutlet NSButton *addButton;
 @property (nonatomic, retain) ContactListViewController *contactListViewController;
 @property (nonatomic, retain) ContactDetailViewController *contactDetailViewController;
+
 
 - (id)initWithContactDataController:(ContactDataController *)controller;
 
 - (IBAction)newContact:(id)sender;
+- (IBAction)deleteContact:(id)sender;
 
 @end
