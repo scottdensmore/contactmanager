@@ -11,6 +11,8 @@
 		DE0285C113B18B760069A885 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0285C013B18B760069A885 /* Contact.m */; };
 		DE0285C413B18C000069A885 /* CoreDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0285C313B18C000069A885 /* CoreDataController.m */; };
 		DE0E381B13B8386A0017EA58 /* ContactListViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0E381A13B8386A0017EA58 /* ContactListViewControllerTests.m */; };
+		DE18F25213B98C6C00B4B76E /* ContactListViewControllerKVOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE18F25113B98C6C00B4B76E /* ContactListViewControllerKVOTests.m */; };
+		DE18F25613B99D2700B4B76E /* ContactDetailViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE18F25513B99D2700B4B76E /* ContactDetailViewControllerTests.m */; };
 		DE25CA5E13A722E500D71422 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE25CA5D13A722E500D71422 /* MainWindowController.m */; };
 		DE25CA6013A7234C00D71422 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE25CA5F13A7234C00D71422 /* MainWindowController.xib */; };
 		DE25CA6D13A8560E00D71422 /* ContactListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE25CA6B13A8560E00D71422 /* ContactListViewController.m */; };
@@ -69,6 +71,10 @@
 		DE0285C713B192E30069A885 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
 		DE0E381913B8386A0017EA58 /* ContactListViewControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListViewControllerTests.h; sourceTree = "<group>"; };
 		DE0E381A13B8386A0017EA58 /* ContactListViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListViewControllerTests.m; sourceTree = "<group>"; };
+		DE18F25013B98C6C00B4B76E /* ContactListViewControllerKVOTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListViewControllerKVOTests.h; sourceTree = "<group>"; };
+		DE18F25113B98C6C00B4B76E /* ContactListViewControllerKVOTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListViewControllerKVOTests.m; sourceTree = "<group>"; };
+		DE18F25413B99D2600B4B76E /* ContactDetailViewControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDetailViewControllerTests.h; sourceTree = "<group>"; };
+		DE18F25513B99D2700B4B76E /* ContactDetailViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailViewControllerTests.m; sourceTree = "<group>"; };
 		DE25CA5C13A722E500D71422 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = "<group>"; };
 		DE25CA5D13A722E500D71422 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = "<group>"; };
 		DE25CA5F13A7234C00D71422 /* MainWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindowController.xib; sourceTree = "<group>"; };
@@ -146,6 +152,10 @@
 			children = (
 				DE0E381913B8386A0017EA58 /* ContactListViewControllerTests.h */,
 				DE0E381A13B8386A0017EA58 /* ContactListViewControllerTests.m */,
+				DE18F25013B98C6C00B4B76E /* ContactListViewControllerKVOTests.h */,
+				DE18F25113B98C6C00B4B76E /* ContactListViewControllerKVOTests.m */,
+				DE18F25413B99D2600B4B76E /* ContactDetailViewControllerTests.h */,
+				DE18F25513B99D2700B4B76E /* ContactDetailViewControllerTests.m */,
 			);
 			name = "View Controller Tests";
 			sourceTree = "<group>";
@@ -454,6 +464,8 @@
 				DE78DB3713B7EB96002E0F97 /* BaseTestCase.m in Sources */,
 				DE78DB3D13B7EF7F002E0F97 /* MainWindowControllerTests.m in Sources */,
 				DE0E381B13B8386A0017EA58 /* ContactListViewControllerTests.m in Sources */,
+				DE18F25213B98C6C00B4B76E /* ContactListViewControllerKVOTests.m in Sources */,
+				DE18F25613B99D2700B4B76E /* ContactDetailViewControllerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

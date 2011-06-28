@@ -13,8 +13,18 @@
 @interface ContactDetailViewController : NSViewController {
 @private
     Contact *contact;
+    NSTextField *firstNameTextField;
+    NSTextField *lastNameTextField;
+    NSTextField *emailTextField;
+    NSTextField *phoneNumberTextField;
+    NSObjectController *contactObjectController;
 }
 
 @property (nonatomic, retain) Contact *contact;
+@property (assign) IBOutlet NSTextField *firstNameTextField;
+@property (assign) IBOutlet NSTextField *lastNameTextField;
+@property (assign) IBOutlet NSTextField *emailTextField;
+@property (assign) IBOutlet NSTextField *phoneNumberTextField;
+@property (assign) IBOutlet NSObjectController *contactObjectController;
 
 @end

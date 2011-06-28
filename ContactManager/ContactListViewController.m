@@ -26,7 +26,7 @@
 
 - (id)initWithContactDataController:(ContactDataController *)controller 
 {
-    NSAssert(controller != nil, @"The controller should not be nil. Make sure to use initWithContactDataController: initializer.");
+    NSParameterAssert(controller != nil);
     
     self = [super init];
     if (self) {

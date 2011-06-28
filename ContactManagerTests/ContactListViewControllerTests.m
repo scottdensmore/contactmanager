@@ -45,6 +45,7 @@
 {
     [mainWindowController release];
     mainWindowController = nil;
+    window = nil;
     contactListViewController = nil;
     
     [super tearDown];
