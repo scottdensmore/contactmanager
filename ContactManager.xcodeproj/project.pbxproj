@@ -10,6 +10,7 @@
 		DE0285BE13B17CB20069A885 /* ContactManagerModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE0285BC13B17CB20069A885 /* ContactManagerModel.xcdatamodeld */; };
 		DE0285C113B18B760069A885 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0285C013B18B760069A885 /* Contact.m */; };
 		DE0285C413B18C000069A885 /* CoreDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0285C313B18C000069A885 /* CoreDataController.m */; };
+		DE0E381B13B8386A0017EA58 /* ContactListViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0E381A13B8386A0017EA58 /* ContactListViewControllerTests.m */; };
 		DE25CA5E13A722E500D71422 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE25CA5D13A722E500D71422 /* MainWindowController.m */; };
 		DE25CA6013A7234C00D71422 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE25CA5F13A7234C00D71422 /* MainWindowController.xib */; };
 		DE25CA6D13A8560E00D71422 /* ContactListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE25CA6B13A8560E00D71422 /* ContactListViewController.m */; };
@@ -66,6 +67,8 @@
 		DE0285C313B18C000069A885 /* CoreDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataController.m; sourceTree = "<group>"; };
 		DE0285C513B190F00069A885 /* CoreDataControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataControllerDelegate.h; sourceTree = "<group>"; };
 		DE0285C713B192E30069A885 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
+		DE0E381913B8386A0017EA58 /* ContactListViewControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListViewControllerTests.h; sourceTree = "<group>"; };
+		DE0E381A13B8386A0017EA58 /* ContactListViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListViewControllerTests.m; sourceTree = "<group>"; };
 		DE25CA5C13A722E500D71422 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = "<group>"; };
 		DE25CA5D13A722E500D71422 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = "<group>"; };
 		DE25CA5F13A7234C00D71422 /* MainWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindowController.xib; sourceTree = "<group>"; };
@@ -138,6 +141,15 @@
 			name = Helpers;
 			sourceTree = "<group>";
 		};
+		DE0E381713B837FB0017EA58 /* View Controller Tests */ = {
+			isa = PBXGroup;
+			children = (
+				DE0E381913B8386A0017EA58 /* ContactListViewControllerTests.h */,
+				DE0E381A13B8386A0017EA58 /* ContactListViewControllerTests.m */,
+			);
+			name = "View Controller Tests";
+			sourceTree = "<group>";
+		};
 		DE25CA5A13A7222800D71422 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -188,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				DE78DB3A13B7EC3F002E0F97 /* Window Controller Tests */,
+				DE0E381713B837FB0017EA58 /* View Controller Tests */,
 			);
 			name = "Controller Tests";
 			sourceTree = "<group>";
@@ -440,6 +453,7 @@
 				DE27DD8F13B7B40A00EF7A92 /* ContactDataControllerTests.m in Sources */,
 				DE78DB3713B7EB96002E0F97 /* BaseTestCase.m in Sources */,
 				DE78DB3D13B7EF7F002E0F97 /* MainWindowControllerTests.m in Sources */,
+				DE0E381B13B8386A0017EA58 /* ContactListViewControllerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

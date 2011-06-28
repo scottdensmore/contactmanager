@@ -27,12 +27,15 @@
 
 - (void)tearDown
 {
+    [mainWindowController close];
     [mainWindowController release];
     mainWindowController = nil;
     
     window = nil;
     [super tearDown];
 }
+
+#pragma mark - MainWindowController tests
 
 - (void)testShouldHaveValidNibName
 {
@@ -43,6 +46,16 @@
 - (void)testShouldLoadWindow
 {
     STAssertNotNil(window, @"The window should be connected to the window controller.");
+}
+
+- (void)testShouldConnectListView
+{
+    STAssertNotNil(mainWindowController.listView, @"The list view should be connected to the window controller.");
+}
+
+- (void)testShouldConnectDetailView
+{
+    STAssertNotNil(mainWindowController.detailView, @"The detail view should be connected to the window controller.");
 }
 
 - (void)testShouldReceiveNewContactActionFromAddButton

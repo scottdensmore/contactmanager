@@ -18,5 +18,28 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>Contacts</key>
+	<array>
+		<dict>
+			<key>firstName</key>
+			<string>John</string>
+			<key>lastName</key>
+			<string>Smith</string>
+			<key>emailAddress</key>
+			<string>john.smit@microsoft.com</string>
+			<key>phoneNumber</key>
+			<string>425-706-5555</string>
+		</dict>
+		<dict>
+			<key>phoneNumber</key>
+			<string>425-785-2871</string>
+			<key>emailAddress</key>
+			<string>scottden@microsoft.com</string>
+			<key>firstName</key>
+			<string>Scott</string>
+			<key>lastName</key>
+			<string>Densmore</string>
+		</dict>
+	</array>
 </dict>
 </plist>

@@ -47,7 +47,6 @@
 								<int key="NSvFlags">256</int>
 								<string key="NSFrameSize">{303, 250}</string>
 								<reference key="NSSuperview" ref="501552528"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="453616191"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSTableHeaderView" key="NSHeaderView" id="364890471">
@@ -55,7 +54,6 @@
 									<int key="NSvFlags">256</int>
 									<string key="NSFrameSize">{303, 17}</string>
 									<reference key="NSSuperview" ref="453616191"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="649073901"/>
 									<reference key="NSTableView" ref="993423288"/>
 								</object>
@@ -64,7 +62,6 @@
 									<int key="NSvFlags">-2147483392</int>
 									<string key="NSFrame">{{289, 0}, {16, 17}}</string>
 									<reference key="NSSuperview" ref="292941276"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="501552528"/>
 								</object>
 								<array class="NSMutableArray" key="NSTableColumns">
@@ -179,7 +176,6 @@
 						</array>
 						<string key="NSFrame">{{1, 17}, {303, 250}}</string>
 						<reference key="NSSuperview" ref="292941276"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="993423288"/>
 						<reference key="NSDocView" ref="993423288"/>
 						<reference key="NSBGColor" ref="697561093"/>
@@ -190,7 +186,6 @@
 						<int key="NSvFlags">-2147483392</int>
 						<string key="NSFrame">{{289, 17}, {15, 235}}</string>
 						<reference key="NSSuperview" ref="292941276"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="283676532"/>
 						<reference key="NSTarget" ref="292941276"/>
 						<string key="NSAction">_doScroller:</string>
@@ -201,7 +196,6 @@
 						<int key="NSvFlags">-2147483392</int>
 						<string key="NSFrame">{{1, 252}, {288, 15}}</string>
 						<reference key="NSSuperview" ref="292941276"/>
-						<reference key="NSWindow"/>
 						<int key="NSsFlags">1</int>
 						<reference key="NSTarget" ref="292941276"/>
 						<string key="NSAction">_doScroller:</string>
@@ -215,7 +209,6 @@
 						</array>
 						<string key="NSFrame">{{1, 0}, {303, 17}}</string>
 						<reference key="NSSuperview" ref="292941276"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="364890471"/>
 						<reference key="NSDocView" ref="364890471"/>
 						<reference key="NSBGColor" ref="697561093"/>
@@ -225,7 +218,6 @@
 				</array>
 				<string key="NSFrameSize">{305, 268}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="501552528"/>
 				<int key="NSsFlags">562</int>
 				<reference key="NSVScroller" ref="208681635"/>
@@ -331,6 +323,14 @@
 						</object>
 					</object>
 					<int key="connectionID">21</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">tableView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="993423288"/>
+					</object>
+					<int key="connectionID">22</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -456,31 +456,9 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">21</int>
+			<int key="maxID">22</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">ContactListViewController</string>
-					<string key="superclassName">NSViewController</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">contactsArrayController</string>
-						<string key="NS.object.0">NSArrayController</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">contactsArrayController</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
-							<string key="name">contactsArrayController</string>
-							<string key="candidateClassName">NSArrayController</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ContactListViewController.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>

@@ -12,7 +12,10 @@
 
 @implementation ContactListViewController
 
+#pragma mark - Synthesized Accessors
+
 @synthesize contactsArrayController;
+@synthesize tableView;
 
 #pragma mark - Memory Management
 
