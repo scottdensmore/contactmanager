@@ -22,7 +22,7 @@
 
 - (id)initWithCoreDataController:(CoreDataController *)controller
 {
-    NSAssert(controller != nil, @"The controller should not be nil. Make sure to use initWithCoreDataController: initializer.");
+    NSParameterAssert(controller != nil);
     
     self = [super init];
     if (self) {

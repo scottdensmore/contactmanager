@@ -14,6 +14,11 @@
 #pragma mark - Accessors
 
 @synthesize contact;
+@synthesize firstNameTextField;
+@synthesize lastNameTextField;
+@synthesize emailTextField;
+@synthesize phoneNumberTextField;
+@synthesize contactObjectController;
 
 #pragma mark - Memory Management
 

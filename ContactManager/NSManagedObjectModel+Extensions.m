@@ -49,15 +49,6 @@
     if (!context || !name) {
 		return nil;
 	}
-
-	/*
-	NSEntityDescription *entity = [[self entitiesByName] objectForKey:name];
-	
-	//If our entity doesn't exist return nil
-	if (!entity) {
-		return nil;
-	}
-    */
     
     NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:name inManagedObjectContext:context];
 	

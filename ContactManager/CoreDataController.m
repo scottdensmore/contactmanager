@@ -22,7 +22,7 @@
 
 - (id)initWithInitialType:(NSString *)type appSupportName:(NSString *)theAppSupportName modelName:(NSString *)theModelName dataStoreName:(NSString *)theDataStoreName
 {
-    NSAssert(theModelName != nil, @"The model url should not be nil.");
+    NSParameterAssert(theModelName != nil);
     
     self = [super init];
 	if (self) {
@@ -32,8 +32,8 @@
 		}
         modelName = [theModelName retain];
         if (![initialType isEqualToString:NSInMemoryStoreType]) {
-            NSAssert(theAppSupportName != nil, @"The application support name should not be nil.");
-            NSAssert(theDataStoreName != nil, @"The data store name should not be nil.");
+            NSParameterAssert(theAppSupportName != nil);
+            NSParameterAssert(theDataStoreName != nil);
             appSupportName = [theAppSupportName retain];
             dataStoreName = [theDataStoreName retain];
         }
