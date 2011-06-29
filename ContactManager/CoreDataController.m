@@ -163,7 +163,7 @@
 				if (errorResult == YES) {
 					reply = NSTerminateCancel;
 				} else {
-					NSInteger alertReturn = NSRunAlertPanel(nil, @"Could not save changes while quitting. Quit anyway?" , @"Quit anyway", @"Cancel", nil);
+					NSInteger alertReturn = NSRunAlertPanel(nil, FCLocalizedString(@"QuitQuestion"), FCLocalizedString(@"Quit"), FCLocalizedString(@"Cancel"), nil);
 					if (alertReturn == NSAlertAlternateReturn) {
 						reply = NSTerminateCancel;	
 					}

@@ -19,6 +19,7 @@
 		DE25CA6E13A8560E00D71422 /* ContactListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE25CA6C13A8560E00D71422 /* ContactListViewController.xib */; };
 		DE27DD8F13B7B40A00EF7A92 /* ContactDataControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE27DD8E13B7B40A00EF7A92 /* ContactDataControllerTests.m */; };
 		DE27DD9513B7CB7900EF7A92 /* ContactDataControllerKVOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE27DD9213B7C5E800EF7A92 /* ContactDataControllerKVOTests.m */; };
+		DE2ABFBE13BAD23D005E99D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DE2ABFBD13BAD23D005E99D9 /* Localizable.strings */; };
 		DE78DB3713B7EB96002E0F97 /* BaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = DE78DB3613B7EB96002E0F97 /* BaseTestCase.m */; };
 		DE78DB3D13B7EF7F002E0F97 /* MainWindowControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE78DB3C13B7EF7F002E0F97 /* MainWindowControllerTests.m */; };
 		DEB4C39213B058E800B84FA9 /* ContactDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB4C39013B058E800B84FA9 /* ContactDetailViewController.m */; };
@@ -85,6 +86,7 @@
 		DE27DD8E13B7B40A00EF7A92 /* ContactDataControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDataControllerTests.m; sourceTree = "<group>"; };
 		DE27DD9113B7C5E800EF7A92 /* ContactDataControllerKVOTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDataControllerKVOTests.h; sourceTree = "<group>"; };
 		DE27DD9213B7C5E800EF7A92 /* ContactDataControllerKVOTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDataControllerKVOTests.m; sourceTree = "<group>"; };
+		DE2ABFBD13BAD23D005E99D9 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		DE78DB3513B7EB96002E0F97 /* BaseTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTestCase.h; sourceTree = "<group>"; };
 		DE78DB3613B7EB96002E0F97 /* BaseTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTestCase.m; sourceTree = "<group>"; };
 		DE78DB3B13B7EF7F002E0F97 /* MainWindowControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowControllerTests.h; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 				DED8179913A452AA00EC3234 /* ContactManager-Prefix.pch */,
 				DED8179A13A452AA00EC3234 /* main.m */,
 				DED8179C13A452AA00EC3234 /* Credits.rtf */,
+				DE2ABFBD13BAD23D005E99D9 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -408,6 +411,7 @@
 				DE25CA6013A7234C00D71422 /* MainWindowController.xib in Resources */,
 				DE25CA6E13A8560E00D71422 /* ContactListViewController.xib in Resources */,
 				DEB4C39313B058E800B84FA9 /* ContactDetailViewController.xib in Resources */,
+				DE2ABFBE13BAD23D005E99D9 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
