@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - CotactManager - /Developer/SDKs/MacOSX10.6.sdk/usr/include/signal.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+<h1>LCOV - Code Coverage Report</h1>
+<div id="header">
+    <table id='overview'>
+          <tr>
+            <td class="label">Current view:</td>
+            <td class="headerValue"><a href="../../../../../index.html">top level</a> - <a href="index.html">Developer/SDKs/MacOSX10.6.sdk/usr/include</a> - signal.h</td>
+            <td width="5%"></td>
+          </tr>
+          <tr>
+            <td class="label">Test:</td>
+            <td class="headerValue">CotactManager</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="label">Date:</td>
+            <td class="headerValue">2011-07-02</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="label">Legend:</td>
+            <td class="legend">            <span class="Cov">invoked</span>
+            <span class="NoCov">not invoked</span>
+</td>
+            <td></td>
+          </tr>
+    </table>
+    <table id="summary">
+	  <tr>
+	    <td></td>
+	    <th colspan="2">Coverage</th>
+	  </tr>
+	  <tr>
+	    <td class="label">Lines:</td>
+	    <td class="percent Lo">0.0 %</td>
+	    <td class="ratio Lo">0 / 2</td>
+	  </tr>
+	  <tr>
+	    <td class="label">Branches:</td>
+	    <td class="percent Lo">0.0 %</td>
+	    <td class="ratio Lo">0 / 2</td>
+	  </tr>
+    </table>
+  <div style="clear: both;"></div>
+</div> <!-- #header -->
+  <table id="source">
+    <tr>
+      <th>Line</th>
+      <th>Branches</th>
+      <th>Hits</th>
+      <th>Source code</th>
+    </tr>
+<tr><td class='line'>1</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/*</td></tr>
+<tr><td class='line'>2</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Copyright (c) 2000 Apple Computer, Inc. All rights reserved.</td></tr>
+<tr><td class='line'>3</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *</td></tr>
+<tr><td class='line'>4</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * @APPLE_LICENSE_HEADER_START@</td></tr>
+<tr><td class='line'>5</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * </td></tr>
+<tr><td class='line'>6</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * This file contains Original Code and/or Modifications of Original Code</td></tr>
+<tr><td class='line'>7</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * as defined in and that are subject to the Apple Public Source License</td></tr>
+<tr><td class='line'>8</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Version 2.0 (the 'License'). You may not use this file except in</td></tr>
+<tr><td class='line'>9</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * compliance with the License. Please obtain a copy of the License at</td></tr>
+<tr><td class='line'>10</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * http://www.opensource.apple.com/apsl/ and read it before using this</td></tr>
+<tr><td class='line'>11</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * file.</td></tr>
+<tr><td class='line'>12</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * </td></tr>
+<tr><td class='line'>13</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * The Original Code and all software distributed under the License are</td></tr>
+<tr><td class='line'>14</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER</td></tr>
+<tr><td class='line'>15</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,</td></tr>
+<tr><td class='line'>16</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY,</td></tr>
+<tr><td class='line'>17</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.</td></tr>
+<tr><td class='line'>18</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Please see the License for the specific language governing rights and</td></tr>
+<tr><td class='line'>19</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * limitations under the License.</td></tr>
+<tr><td class='line'>20</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * </td></tr>
+<tr><td class='line'>21</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * @APPLE_LICENSE_HEADER_END@</td></tr>
+<tr><td class='line'>22</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> */</td></tr>
+<tr><td class='line'>23</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/*-</td></tr>
+<tr><td class='line'>24</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Copyright (c) 1991, 1993</td></tr>
+<tr><td class='line'>25</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *  The Regents of the University of California.  All rights reserved.</td></tr>
+<tr><td class='line'>26</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *</td></tr>
+<tr><td class='line'>27</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Redistribution and use in source and binary forms, with or without</td></tr>
+<tr><td class='line'>28</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * modification, are permitted provided that the following conditions</td></tr>
+<tr><td class='line'>29</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * are met:</td></tr>
+<tr><td class='line'>30</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * 1. Redistributions of source code must retain the above copyright</td></tr>
+<tr><td class='line'>31</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *    notice, this list of conditions and the following disclaimer.</td></tr>
+<tr><td class='line'>32</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * 2. Redistributions in binary form must reproduce the above copyright</td></tr>
+<tr><td class='line'>33</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *    notice, this list of conditions and the following disclaimer in the</td></tr>
+<tr><td class='line'>34</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *    documentation and/or other materials provided with the distribution.</td></tr>
+<tr><td class='line'>35</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * 3. All advertising materials mentioning features or use of this software</td></tr>
+<tr><td class='line'>36</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *    must display the following acknowledgement:</td></tr>
+<tr><td class='line'>37</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *  This product includes software developed by the University of</td></tr>
+<tr><td class='line'>38</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *  California, Berkeley and its contributors.</td></tr>
+<tr><td class='line'>39</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * 4. Neither the name of the University nor the names of its contributors</td></tr>
+<tr><td class='line'>40</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *    may be used to endorse or promote products derived from this software</td></tr>
+<tr><td class='line'>41</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *    without specific prior written permission.</td></tr>
+<tr><td class='line'>42</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *</td></tr>
+<tr><td class='line'>43</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND</td></tr>
+<tr><td class='line'>44</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</td></tr>
+<tr><td class='line'>45</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</td></tr>
+<tr><td class='line'>46</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE</td></tr>
+<tr><td class='line'>47</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</td></tr>
+<tr><td class='line'>48</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</td></tr>
+<tr><td class='line'>49</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</td></tr>
+<tr><td class='line'>50</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</td></tr>
+<tr><td class='line'>51</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</td></tr>
+<tr><td class='line'>52</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</td></tr>
+<tr><td class='line'>53</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * SUCH DAMAGE.</td></tr>
+<tr><td class='line'>54</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *</td></tr>
+<tr><td class='line'>55</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *  @(#)signal.h    8.3 (Berkeley) 3/30/94</td></tr>
+<tr><td class='line'>56</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> */</td></tr>
+<tr><td class='line'>57</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>58</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef _USER_SIGNAL_H</td></tr>
+<tr><td class='line'>59</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _USER_SIGNAL_H</td></tr>
+<tr><td class='line'>60</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>61</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#include &lt;sys/cdefs.h&gt;</td></tr>
+<tr><td class='line'>62</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#include &lt;_types.h&gt;</td></tr>
+<tr><td class='line'>63</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#include &lt;sys/signal.h&gt;</td></tr>
+<tr><td class='line'>64</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>65</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef _PTHREAD_T</td></tr>
+<tr><td class='line'>66</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>typedef __darwin_pthread_t  pthread_t;</td></tr>
+<tr><td class='line'>67</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _PTHREAD_T</td></tr>
+<tr><td class='line'>68</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif</td></tr>
+<tr><td class='line'>69</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>70</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if !defined(_ANSI_SOURCE) &amp;&amp; (!defined(_POSIX_C_SOURCE) || defined(_DARWIN_C_SOURCE))</td></tr>
+<tr><td class='line'>71</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern __const char *__const sys_signame[NSIG];</td></tr>
+<tr><td class='line'>72</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern __const char *__const sys_siglist[NSIG];</td></tr>
+<tr><td class='line'>73</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif</td></tr>
+<tr><td class='line'>74</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>75</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>__BEGIN_DECLS</td></tr>
+<tr><td class='line'>76</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int raise(int);</td></tr>
+<tr><td class='line'>77</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>__END_DECLS</td></tr>
+<tr><td class='line'>78</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>79</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef _ANSI_SOURCE</td></tr>
+<tr><td class='line'>80</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>__BEGIN_DECLS</td></tr>
+<tr><td class='line'>81</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>void    (*bsd_signal(int, void (*)(int)))(int);</td></tr>
+<tr><td class='line'>82</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int kill(pid_t, int) __DARWIN_ALIAS(kill);</td></tr>
+<tr><td class='line'>83</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int killpg(pid_t, int) __DARWIN_ALIAS(killpg);</td></tr>
+<tr><td class='line'>84</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int pthread_kill(pthread_t, int);</td></tr>
+<tr><td class='line'>85</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int pthread_sigmask(int, const sigset_t *, sigset_t *) __DARWIN_ALIAS(pthread_sigmask);</td></tr>
+<tr><td class='line'>86</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigaction(int, const struct sigaction * __restrict,</td></tr>
+<tr><td class='line'>87</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        struct sigaction * __restrict);</td></tr>
+<tr><td class='line'>88</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigaddset(sigset_t *, int);</td></tr>
+<tr><td class='line'>89</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigaltstack(const stack_t * __restrict, stack_t * __restrict)  __DARWIN_ALIAS(sigaltstack);</td></tr>
+<tr><td class='line'>90</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigdelset(sigset_t *, int);</td></tr>
+<tr><td class='line'>91</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigemptyset(sigset_t *);</td></tr>
+<tr><td class='line'>92</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigfillset(sigset_t *);</td></tr>
+<tr><td class='line'>93</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sighold(int);</td></tr>
+<tr><td class='line'>94</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigignore(int);</td></tr>
+<tr><td class='line'>95</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int siginterrupt(int, int);</td></tr>
+<tr><td class='line'>96</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigismember(const sigset_t *, int);</td></tr>
+<tr><td class='line'>97</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigpause(int) __DARWIN_ALIAS_C(sigpause);</td></tr>
+<tr><td class='line'>98</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigpending(sigset_t *);</td></tr>
+<tr><td class='line'>99</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigprocmask(int, const sigset_t * __restrict, sigset_t * __restrict);</td></tr>
+<tr><td class='line'>100</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigrelse(int);</td></tr>
+<tr><td class='line'>101</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>void    (*sigset(int, void (*)(int)))(int); </td></tr>
+<tr><td class='line'>102</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigsuspend(const sigset_t *) __DARWIN_ALIAS_C(sigsuspend);</td></tr>
+<tr><td class='line'>103</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigwait(const sigset_t * __restrict, int * __restrict) __DARWIN_ALIAS_C(sigwait);</td></tr>
+<tr><td class='line'>104</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if !defined(_POSIX_C_SOURCE) || defined(_DARWIN_C_SOURCE)</td></tr>
+<tr><td class='line'>105</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>void    psignal(unsigned int, const char *);</td></tr>
+<tr><td class='line'>106</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigblock(int);</td></tr>
+<tr><td class='line'>107</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigsetmask(int);</td></tr>
+<tr><td class='line'>108</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>int sigvec(int, struct sigvec *, struct sigvec *);</td></tr>
+<tr><td class='line'>109</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif  /* (!_POSIX_C_SOURCE || _DARWIN_C_SOURCE) */</td></tr>
+<tr><td class='line'>110</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>__END_DECLS</td></tr>
+<tr><td class='line'>111</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>112</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* List definitions after function declarations, or Reiser cpp gets upset. */</td></tr>
+<tr><td class='line'>113</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if defined(__i386__) || defined(__x86_64__)</td></tr>
+<tr><td class='line'>114</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* The left shift operator on intel is modulo 32 */</td></tr>
+<tr><td class='line'>115</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>static __inline int</td></tr>
+<tr><td class='line'>116</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>__sigbits(int __signo)</td></tr>
+<tr><td class='line'>117</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>{</td></tr>
+<tr><td class='line'>118</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>    return __signo &gt; __DARWIN_NSIG ? 0 : (1 &lt;&lt; (__signo - 1));</td></tr>
+<tr><td class='line'>119</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
+<tr><td class='line'>120</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#else /* !__i386__ &amp;&amp; !__x86_64__ */</td></tr>
+<tr><td class='line'>121</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __sigbits(signo)    (1 &lt;&lt; ((signo) - 1))</td></tr>
+<tr><td class='line'>122</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __i386__ || __x86_64__ */</td></tr>
+<tr><td class='line'>123</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>124</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define sigaddset(set, signo)   (*(set) |= __sigbits(signo), 0)</td></tr>
+<tr><td class='line'>125</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define sigdelset(set, signo)   (*(set) &amp;= ~__sigbits(signo), 0)</td></tr>
+<tr><td class='line'>126</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define sigismember(set, signo) ((*(set) &amp; __sigbits(signo)) != 0)</td></tr>
+<tr><td class='line'>127</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define sigemptyset(set)    (*(set) = 0, 0)</td></tr>
+<tr><td class='line'>128</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define sigfillset(set)     (*(set) = ~(sigset_t)0, 0)</td></tr>
+<tr><td class='line'>129</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif  /* !_ANSI_SOURCE */</td></tr>
+<tr><td class='line'>130</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>131</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif  /* !_USER_SIGNAL_H */</td></tr>
+  </table>
+
+  <div id="footer">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.8</a></div>
+
+</body>
+</html>
