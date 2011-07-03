@@ -1,0 +1,306 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - CotactManager - /Developer/SDKs/MacOSX10.6.sdk/usr/include/sys/_structs.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../gcov.css">
+</head>
+
+<body>
+
+<h1>LCOV - Code Coverage Report</h1>
+<div id="header">
+    <table id='overview'>
+          <tr>
+            <td class="label">Current view:</td>
+            <td class="headerValue"><a href="../../../../../../index.html">top level</a> - <a href="index.html">Developer/SDKs/MacOSX10.6.sdk/usr/include/sys</a> - _structs.h</td>
+            <td width="5%"></td>
+          </tr>
+          <tr>
+            <td class="label">Test:</td>
+            <td class="headerValue">CotactManager</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="label">Date:</td>
+            <td class="headerValue">2011-07-02</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="label">Legend:</td>
+            <td class="legend">            <span class="Cov">invoked</span>
+            <span class="NoCov">not invoked</span>
+</td>
+            <td></td>
+          </tr>
+    </table>
+    <table id="summary">
+	  <tr>
+	    <td></td>
+	    <th colspan="2">Coverage</th>
+	  </tr>
+	  <tr>
+	    <td class="label">Lines:</td>
+	    <td class="percent Lo">0.0 %</td>
+	    <td class="ratio Lo">0 / 2</td>
+	  </tr>
+	  <tr>
+	    <td class="label">Branches:</td>
+	    <td class="percent Hi">-</td>
+	    <td class="ratio Hi">0 / 0</td>
+	  </tr>
+    </table>
+  <div style="clear: both;"></div>
+</div> <!-- #header -->
+  <table id="source">
+    <tr>
+      <th>Line</th>
+      <th>Branches</th>
+      <th>Hits</th>
+      <th>Source code</th>
+    </tr>
+<tr><td class='line'>1</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/*</td></tr>
+<tr><td class='line'>2</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Copyright (c) 2004-2006 Apple Computer, Inc. All rights reserved.</td></tr>
+<tr><td class='line'>3</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *</td></tr>
+<tr><td class='line'>4</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * @APPLE_OSREFERENCE_LICENSE_HEADER_START@</td></tr>
+<tr><td class='line'>5</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * </td></tr>
+<tr><td class='line'>6</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * This file contains Original Code and/or Modifications of Original Code</td></tr>
+<tr><td class='line'>7</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * as defined in and that are subject to the Apple Public Source License</td></tr>
+<tr><td class='line'>8</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Version 2.0 (the 'License'). You may not use this file except in</td></tr>
+<tr><td class='line'>9</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * compliance with the License. The rights granted to you under the License</td></tr>
+<tr><td class='line'>10</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * may not be used to create, or enable the creation or redistribution of,</td></tr>
+<tr><td class='line'>11</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * unlawful or unlicensed copies of an Apple operating system, or to</td></tr>
+<tr><td class='line'>12</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * circumvent, violate, or enable the circumvention or violation of, any</td></tr>
+<tr><td class='line'>13</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * terms of an Apple operating system software license agreement.</td></tr>
+<tr><td class='line'>14</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * </td></tr>
+<tr><td class='line'>15</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Please obtain a copy of the License at</td></tr>
+<tr><td class='line'>16</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * http://www.opensource.apple.com/apsl/ and read it before using this file.</td></tr>
+<tr><td class='line'>17</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * </td></tr>
+<tr><td class='line'>18</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * The Original Code and all software distributed under the License are</td></tr>
+<tr><td class='line'>19</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER</td></tr>
+<tr><td class='line'>20</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,</td></tr>
+<tr><td class='line'>21</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY,</td></tr>
+<tr><td class='line'>22</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.</td></tr>
+<tr><td class='line'>23</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Please see the License for the specific language governing rights and</td></tr>
+<tr><td class='line'>24</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * limitations under the License.</td></tr>
+<tr><td class='line'>25</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * </td></tr>
+<tr><td class='line'>26</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * @APPLE_OSREFERENCE_LICENSE_HEADER_END@</td></tr>
+<tr><td class='line'>27</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> */</td></tr>
+<tr><td class='line'>28</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>29</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#include &lt;sys/cdefs.h&gt;</td></tr>
+<tr><td class='line'>30</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#include &lt;sys/_types.h&gt;</td></tr>
+<tr><td class='line'>31</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>32</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __need_ucontext_t</td></tr>
+<tr><td class='line'>33</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef __need_struct_ucontext</td></tr>
+<tr><td class='line'>34</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __need_struct_ucontext</td></tr>
+<tr><td class='line'>35</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_struct_ucontext */</td></tr>
+<tr><td class='line'>36</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_ucontext_t */</td></tr>
+<tr><td class='line'>37</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>38</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __need_ucontext64_t</td></tr>
+<tr><td class='line'>39</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef __need_struct_ucontext64</td></tr>
+<tr><td class='line'>40</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __need_struct_ucontext64</td></tr>
+<tr><td class='line'>41</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_struct_ucontext64 */</td></tr>
+<tr><td class='line'>42</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_ucontext64_t */</td></tr>
+<tr><td class='line'>43</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>44</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __need_struct_ucontext</td></tr>
+<tr><td class='line'>45</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef __need_struct_mcontext</td></tr>
+<tr><td class='line'>46</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __need_struct_mcontext</td></tr>
+<tr><td class='line'>47</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_struct_mcontext */</td></tr>
+<tr><td class='line'>48</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_struct_ucontext */</td></tr>
+<tr><td class='line'>49</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>50</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __need_struct_ucontext64</td></tr>
+<tr><td class='line'>51</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef __need_struct_mcontext64</td></tr>
+<tr><td class='line'>52</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __need_struct_mcontext64</td></tr>
+<tr><td class='line'>53</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_struct_mcontext64 */</td></tr>
+<tr><td class='line'>54</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_struct_ucontext64 */</td></tr>
+<tr><td class='line'>55</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>56</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if defined(__need_struct_mcontext) || defined(__need_struct_mcontext64)</td></tr>
+<tr><td class='line'>57</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#include &lt;machine/_structs.h&gt;</td></tr>
+<tr><td class='line'>58</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_struct_mcontext || __need_struct_mcontext64 */</td></tr>
+<tr><td class='line'>59</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>60</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if defined(__need_stack_t) || defined(__need_struct_ucontext) || defined(__need_struct_ucontext64)</td></tr>
+<tr><td class='line'>61</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef __need_struct_sigaltstack</td></tr>
+<tr><td class='line'>62</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __need_struct_sigaltstack</td></tr>
+<tr><td class='line'>63</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_struct_sigaltstack */</td></tr>
+<tr><td class='line'>64</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_stack_t || __need_struct_ucontext || __need_struct_ucontext64 */</td></tr>
+<tr><td class='line'>65</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>66</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __need_struct_sigaltstack</td></tr>
+<tr><td class='line'>67</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#undef __need_struct_sigaltstack</td></tr>
+<tr><td class='line'>68</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* Structure used in sigaltstack call. */</td></tr>
+<tr><td class='line'>69</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef _STRUCT_SIGALTSTACK</td></tr>
+<tr><td class='line'>70</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if __DARWIN_UNIX03</td></tr>
+<tr><td class='line'>71</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _STRUCT_SIGALTSTACK struct __darwin_sigaltstack</td></tr>
+<tr><td class='line'>72</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#else /* !__DARWIN_UNIX03 */</td></tr>
+<tr><td class='line'>73</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _STRUCT_SIGALTSTACK struct sigaltstack</td></tr>
+<tr><td class='line'>74</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __DARWIN_UNIX03 */</td></tr>
+<tr><td class='line'>75</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>_STRUCT_SIGALTSTACK</td></tr>
+<tr><td class='line'>76</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>77</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    void        *ss_sp;     /* signal stack base */</td></tr>
+<tr><td class='line'>78</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    __darwin_size_t ss_size;    /* signal stack length */</td></tr>
+<tr><td class='line'>79</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    int     ss_flags;   /* SA_DISABLE and/or SA_ONSTACK */</td></tr>
+<tr><td class='line'>80</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>};</td></tr>
+<tr><td class='line'>81</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* _STRUCT_SIGALTSTACK */</td></tr>
+<tr><td class='line'>82</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_struct_sigaltstack */</td></tr>
+<tr><td class='line'>83</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>84</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __need_struct_timespec</td></tr>
+<tr><td class='line'>85</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#undef __need_struct_timespec</td></tr>
+<tr><td class='line'>86</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef _STRUCT_TIMESPEC</td></tr>
+<tr><td class='line'>87</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _STRUCT_TIMESPEC    struct timespec</td></tr>
+<tr><td class='line'>88</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>_STRUCT_TIMESPEC</td></tr>
+<tr><td class='line'>89</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>90</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    __darwin_time_t tv_sec;</td></tr>
+<tr><td class='line'>91</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    long        tv_nsec;</td></tr>
+<tr><td class='line'>92</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>};</td></tr>
+<tr><td class='line'>93</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* _STRUCT_TIMESPEC */</td></tr>
+<tr><td class='line'>94</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_struct_timespec */</td></tr>
+<tr><td class='line'>95</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>96</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __need_struct_timeval</td></tr>
+<tr><td class='line'>97</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#undef __need_struct_timeval</td></tr>
+<tr><td class='line'>98</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef _STRUCT_TIMEVAL</td></tr>
+<tr><td class='line'>99</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _STRUCT_TIMEVAL     struct timeval</td></tr>
+<tr><td class='line'>100</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>_STRUCT_TIMEVAL</td></tr>
+<tr><td class='line'>101</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>102</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    __darwin_time_t     tv_sec;     /* seconds */</td></tr>
+<tr><td class='line'>103</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    __darwin_suseconds_t    tv_usec;    /* and microseconds */</td></tr>
+<tr><td class='line'>104</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>};</td></tr>
+<tr><td class='line'>105</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* _STRUCT_TIMEVAL */</td></tr>
+<tr><td class='line'>106</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_struct_timeval */</td></tr>
+<tr><td class='line'>107</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>108</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __need_struct_timeval32</td></tr>
+<tr><td class='line'>109</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#undef __need_struct_timeval32</td></tr>
+<tr><td class='line'>110</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef _STRUCT_TIMEVAL32</td></tr>
+<tr><td class='line'>111</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _STRUCT_TIMEVAL32   struct timeval32</td></tr>
+<tr><td class='line'>112</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>_STRUCT_TIMEVAL32</td></tr>
+<tr><td class='line'>113</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>114</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    __int32_t       tv_sec;     /* seconds */</td></tr>
+<tr><td class='line'>115</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    __int32_t       tv_usec;    /* and microseconds */</td></tr>
+<tr><td class='line'>116</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>};</td></tr>
+<tr><td class='line'>117</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* _STRUCT_TIMEVAL32 */</td></tr>
+<tr><td class='line'>118</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_struct_timeval32 */</td></tr>
+<tr><td class='line'>119</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>120</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __need_struct_ucontext</td></tr>
+<tr><td class='line'>121</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#undef __need_struct_ucontext</td></tr>
+<tr><td class='line'>122</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef _STRUCT_UCONTEXT</td></tr>
+<tr><td class='line'>123</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if __DARWIN_UNIX03</td></tr>
+<tr><td class='line'>124</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _STRUCT_UCONTEXT    struct __darwin_ucontext</td></tr>
+<tr><td class='line'>125</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#else /* !__DARWIN_UNIX03 */</td></tr>
+<tr><td class='line'>126</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _STRUCT_UCONTEXT    struct ucontext</td></tr>
+<tr><td class='line'>127</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __DARWIN_UNIX03 */</td></tr>
+<tr><td class='line'>128</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>_STRUCT_UCONTEXT</td></tr>
+<tr><td class='line'>129</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>130</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    int         uc_onstack;</td></tr>
+<tr><td class='line'>131</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    __darwin_sigset_t   uc_sigmask; /* signal mask used by this context */</td></tr>
+<tr><td class='line'>132</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    _STRUCT_SIGALTSTACK     uc_stack;   /* stack used by this context */</td></tr>
+<tr><td class='line'>133</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    _STRUCT_UCONTEXT    *uc_link;   /* pointer to resuming context */</td></tr>
+<tr><td class='line'>134</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    __darwin_size_t     uc_mcsize;  /* size of the machine context passed in */</td></tr>
+<tr><td class='line'>135</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    _STRUCT_MCONTEXT    *uc_mcontext;   /* pointer to machine specific context */</td></tr>
+<tr><td class='line'>136</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef _XOPEN_SOURCE</td></tr>
+<tr><td class='line'>137</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    _STRUCT_MCONTEXT    __mcontext_data;</td></tr>
+<tr><td class='line'>138</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* _XOPEN_SOURCE */</td></tr>
+<tr><td class='line'>139</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>};</td></tr>
+<tr><td class='line'>140</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* _STRUCT_UCONTEXT */</td></tr>
+<tr><td class='line'>141</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_struct_ucontext */</td></tr>
+<tr><td class='line'>142</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>143</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __need_struct_ucontext64</td></tr>
+<tr><td class='line'>144</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#undef __need_struct_ucontext64</td></tr>
+<tr><td class='line'>145</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef _STRUCT_UCONTEXT64</td></tr>
+<tr><td class='line'>146</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if __DARWIN_UNIX03</td></tr>
+<tr><td class='line'>147</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _STRUCT_UCONTEXT64  struct __darwin_ucontext64</td></tr>
+<tr><td class='line'>148</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#else /* !__DARWIN_UNIX03 */</td></tr>
+<tr><td class='line'>149</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _STRUCT_UCONTEXT64  struct ucontext64</td></tr>
+<tr><td class='line'>150</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __DARWIN_UNIX03 */</td></tr>
+<tr><td class='line'>151</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>_STRUCT_UCONTEXT64</td></tr>
+<tr><td class='line'>152</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>153</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    int         uc_onstack;</td></tr>
+<tr><td class='line'>154</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    __darwin_sigset_t   uc_sigmask; /* signal mask used by this context */</td></tr>
+<tr><td class='line'>155</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    _STRUCT_SIGALTSTACK     uc_stack;   /* stack used by this context */</td></tr>
+<tr><td class='line'>156</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    _STRUCT_UCONTEXT64  *uc_link;   /* pointer to resuming context */</td></tr>
+<tr><td class='line'>157</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    __darwin_size_t     uc_mcsize;  /* size of the machine context passed in */</td></tr>
+<tr><td class='line'>158</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    _STRUCT_MCONTEXT64  *uc_mcontext64; /* pointer to machine specific context */</td></tr>
+<tr><td class='line'>159</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>};</td></tr>
+<tr><td class='line'>160</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* _STRUCT_UCONTEXT64 */</td></tr>
+<tr><td class='line'>161</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_struct_ucontext64 */</td></tr>
+<tr><td class='line'>162</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>163</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>164</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __need_fd_set</td></tr>
+<tr><td class='line'>165</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#undef __need_fd_set</td></tr>
+<tr><td class='line'>166</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef _FD_SET</td></tr>
+<tr><td class='line'>167</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _FD_SET</td></tr>
+<tr><td class='line'>168</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/*</td></tr>
+<tr><td class='line'>169</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Select uses bit masks of file descriptors in longs.  These macros</td></tr>
+<tr><td class='line'>170</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * manipulate such bit fields (the filesystem macros use chars).  The</td></tr>
+<tr><td class='line'>171</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * extra protection here is to permit application redefinition above</td></tr>
+<tr><td class='line'>172</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * the default size.</td></tr>
+<tr><td class='line'>173</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> */</td></tr>
+<tr><td class='line'>174</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef FD_SETSIZE</td></tr>
+<tr><td class='line'>175</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __DARWIN_FD_SETSIZE FD_SETSIZE</td></tr>
+<tr><td class='line'>176</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#else /* !FD_SETSIZE */</td></tr>
+<tr><td class='line'>177</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __DARWIN_FD_SETSIZE 1024</td></tr>
+<tr><td class='line'>178</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* FD_SETSIZE */</td></tr>
+<tr><td class='line'>179</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __DARWIN_NBBY       8               /* bits in a byte */</td></tr>
+<tr><td class='line'>180</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __DARWIN_NFDBITS    (sizeof(__int32_t) * __DARWIN_NBBY) /* bits per mask */</td></tr>
+<tr><td class='line'>181</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __DARWIN_howmany(x, y)  ((((x) % (y)) == 0) ? ((x) / (y)) : (((x) / (y)) + 1)) /* # y's == x bits? */</td></tr>
+<tr><td class='line'>182</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>183</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>__BEGIN_DECLS</td></tr>
+<tr><td class='line'>184</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>typedef struct fd_set {</td></tr>
+<tr><td class='line'>185</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    __int32_t   fds_bits[__DARWIN_howmany(__DARWIN_FD_SETSIZE, __DARWIN_NFDBITS)];</td></tr>
+<tr><td class='line'>186</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>} fd_set;</td></tr>
+<tr><td class='line'>187</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>__END_DECLS</td></tr>
+<tr><td class='line'>188</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>189</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* This inline avoids argument side-effect issues with FD_ISSET() */</td></tr>
+<tr><td class='line'>190</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>static __inline int</td></tr>
+<tr><td class='line'>191</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>__darwin_fd_isset(int _n, const struct fd_set *_p)</td></tr>
+<tr><td class='line'>192</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>{</td></tr>
+<tr><td class='line'>193</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    return (_p-&gt;fds_bits[_n/__DARWIN_NFDBITS] &amp; (1&lt;&lt;(_n % __DARWIN_NFDBITS)));</td></tr>
+<tr><td class='line'>194</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
+<tr><td class='line'>195</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>196</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __DARWIN_FD_SET(n, p)   do { int __fd = (n); ((p)-&gt;fds_bits[__fd/__DARWIN_NFDBITS] |= (1&lt;&lt;(__fd % __DARWIN_NFDBITS))); } while(0)</td></tr>
+<tr><td class='line'>197</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __DARWIN_FD_CLR(n, p)   do { int __fd = (n); ((p)-&gt;fds_bits[__fd/__DARWIN_NFDBITS] &amp;= ~(1&lt;&lt;(__fd % __DARWIN_NFDBITS))); } while(0)</td></tr>
+<tr><td class='line'>198</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __DARWIN_FD_ISSET(n, p) __darwin_fd_isset((n), (p))</td></tr>
+<tr><td class='line'>199</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>200</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if __GNUC__ &gt; 3 || __GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt;= 3</td></tr>
+<tr><td class='line'>201</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/*</td></tr>
+<tr><td class='line'>202</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Use the built-in bzero function instead of the library version so that</td></tr>
+<tr><td class='line'>203</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * we do not pollute the namespace or introduce prototype warnings.</td></tr>
+<tr><td class='line'>204</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> */</td></tr>
+<tr><td class='line'>205</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __DARWIN_FD_ZERO(p) __builtin_bzero(p, sizeof(*(p)))</td></tr>
+<tr><td class='line'>206</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#else</td></tr>
+<tr><td class='line'>207</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __DARWIN_FD_ZERO(p) bzero(p, sizeof(*(p)))</td></tr>
+<tr><td class='line'>208</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif</td></tr>
+<tr><td class='line'>209</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>210</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __DARWIN_FD_COPY(f, t)  bcopy(f, t, sizeof(*(f)))</td></tr>
+<tr><td class='line'>211</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* _FD_SET */</td></tr>
+<tr><td class='line'>212</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_fd_set */</td></tr>
+<tr><td class='line'>213</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>214</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __need_stack_t</td></tr>
+<tr><td class='line'>215</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#undef __need_stack_t</td></tr>
+<tr><td class='line'>216</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef _STACK_T</td></tr>
+<tr><td class='line'>217</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _STACK_T</td></tr>
+<tr><td class='line'>218</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>typedef _STRUCT_SIGALTSTACK stack_t; /* [???] signal stack */</td></tr>
+<tr><td class='line'>219</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* _STACK_T */</td></tr>
+<tr><td class='line'>220</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_stack_t */</td></tr>
+<tr><td class='line'>221</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>222</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __need_ucontext_t</td></tr>
+<tr><td class='line'>223</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#undef __need_ucontext_t</td></tr>
+<tr><td class='line'>224</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* user context */</td></tr>
+<tr><td class='line'>225</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef _UCONTEXT_T</td></tr>
+<tr><td class='line'>226</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _UCONTEXT_T</td></tr>
+<tr><td class='line'>227</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>typedef _STRUCT_UCONTEXT    ucontext_t; /* [???] user context */</td></tr>
+<tr><td class='line'>228</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* _UCONTEXT_T */</td></tr>
+<tr><td class='line'>229</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_ucontext_t */</td></tr>
+<tr><td class='line'>230</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>231</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __need_ucontext64_t</td></tr>
+<tr><td class='line'>232</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#undef __need_ucontext64_t</td></tr>
+<tr><td class='line'>233</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef _UCONTEXT64_T</td></tr>
+<tr><td class='line'>234</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _UCONTEXT64_T</td></tr>
+<tr><td class='line'>235</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>typedef _STRUCT_UCONTEXT64  ucontext64_t;   /* [???] user context */</td></tr>
+<tr><td class='line'>236</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* _UCONTEXT64_T */</td></tr>
+<tr><td class='line'>237</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __need_ucontext64_t */</td></tr>
+  </table>
+
+  <div id="footer">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.8</a></div>
+
+</body>
+</html>
