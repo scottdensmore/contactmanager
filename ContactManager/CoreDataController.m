@@ -17,24 +17,26 @@
 
 - (id)init 
 {
-    return [self initWithInitialType:NSInMemoryStoreType appSupportName:nil modelName:nil dataStoreName:nil];
+    return [self initWithInitialType:NSInMemoryStoreType modelName:nil applicationSupportName:nil dataStoreName:nil];
 }
 
-- (id)initWithInitialType:(NSString *)type appSupportName:(NSString *)theAppSupportName modelName:(NSString *)theModelName dataStoreName:(NSString *)theDataStoreName
+- (id)initWithModelName:(NSString *)theModelName applicationSupportName:(NSString *)theApplicationSupportName dataStoreName:(NSString *)theDataStoreName
+{
+    return [self initWithInitialType:NSXMLStoreType modelName:theModelName applicationSupportName:theApplicationSupportName  dataStoreName:theDataStoreName];
+}
+
+- (id)initWithInitialType:(NSString *)type modelName:(NSString *)theModelName applicationSupportName:(NSString *)theApplicationSupportName dataStoreName:(NSString *)theDataStoreName;
 {
     NSParameterAssert(theModelName != nil);
     
     self = [super init];
 	if (self) {
-		initialType = type;
-		if (!type) {
-			initialType = NSXMLStoreType;
-		}
+		initialType = [type retain];
         modelName = [theModelName retain];
         if (![initialType isEqualToString:NSInMemoryStoreType]) {
-            NSParameterAssert(theAppSupportName != nil);
+            NSParameterAssert(theApplicationSupportName != nil);
             NSParameterAssert(theDataStoreName != nil);
-            appSupportName = [theAppSupportName retain];
+            appSupportName = [theApplicationSupportName retain];
             dataStoreName = [theDataStoreName retain];
         }
 	}
@@ -57,12 +59,6 @@
 
 #pragma mark - Accesssors
 
-/**
- Returns the support folder for the application, used to store the Core Data
- store file.  This code uses a folder named "Minim" for
- the content, either in the NSApplicationSupportDirectory location or (if the
- former cannot be found), the system's temporary directory.
- */
 - (NSString *)applicationSupportFolder 
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
@@ -70,10 +66,6 @@
 	return [basePath stringByAppendingPathComponent:appSupportName];
 }
 
-/**
- Creates, retains, and returns the managed object model for the application 
- by merging all of the models found in the application bundle.
- */
 - (NSManagedObjectModel *)managedObjectModel 
 {
     if (managedObjectModel != nil) {
@@ -85,13 +77,6 @@
     return managedObjectModel;
 }
 
-
-/**
- Returns the persistent store coordinator for the application.  This 
- implementation will create and return a coordinator, having added the 
- store for the application to it.  (The folder for the store is created, 
- if necessary.)
- */
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator 
 {
     if (persistentStoreCoordinator != nil) {
@@ -133,10 +118,6 @@
     return persistentStoreCoordinator;
 }
 
-/**
- Returns the managed object context for the application (which is already
- bound to the persistent store coordinator for the application.) 
- */
 - (NSManagedObjectContext *)managedObjectContext
 {
     if (!managedObjectContext) {
@@ -150,28 +131,16 @@
     return managedObjectContext;
 }
 
-- (NSApplicationTerminateReply)save
+- (BOOL)save:(NSError **)error
 {
-	NSError *error = nil;
-	NSInteger reply = NSTerminateNow;
+    BOOL reply = YES;
 	NSManagedObjectContext *moc = [self managedObjectContext];
 	if (moc != nil) {
 		if ([moc commitEditing]) {
-			if ([moc hasChanges] && ![moc save:&error]) {
-				BOOL errorResult = [[NSApplication sharedApplication] presentError:error];
-				
-				if (errorResult == YES) {
-					reply = NSTerminateCancel;
-				} else {
-					NSInteger alertReturn = NSRunAlertPanel(nil, FCLocalizedString(@"QuitQuestion"), FCLocalizedString(@"Quit"), FCLocalizedString(@"Cancel"), nil);
-					if (alertReturn == NSAlertAlternateReturn) {
-						reply = NSTerminateCancel;	
-					}
-				}
-			}
-		} else {
-			reply = NSTerminateCancel;
-		}
+			if ([moc hasChanges]) {
+                return [moc save:error];
+            }
+        }
 	}
 	return reply;
 }

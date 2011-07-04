@@ -4,8 +4,8 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - CotactManager - ContactManager/ContactManagerAppDelegate.m</title>
-  <link rel="stylesheet" type="text/css" href="../gcov.css">
+  <title>LCOV - CotactManager - /Users/scottdensmore/Dev/ContactManager/ContactManager/ContactManagerAppDelegate.m</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
 </head>
 
 <body>
@@ -15,7 +15,7 @@
     <table id='overview'>
           <tr>
             <td class="label">Current view:</td>
-            <td class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">ContactManager</a> - ContactManagerAppDelegate.m</td>
+            <td class="headerValue"><a href="../../../../../index.html">top level</a> - <a href="index.html">Users/scottdensmore/Dev/ContactManager/ContactManager</a> - ContactManagerAppDelegate.m</td>
             <td width="5%"></td>
           </tr>
           <tr>
@@ -25,7 +25,7 @@
           </tr>
           <tr>
             <td class="label">Date:</td>
-            <td class="headerValue">2011-07-02</td>
+            <td class="headerValue">2011-07-04</td>
             <td></td>
           </tr>
           <tr>
@@ -43,13 +43,13 @@
 	  </tr>
 	  <tr>
 	    <td class="label">Lines:</td>
-	    <td class="percent Lo">23.3 %</td>
-	    <td class="ratio Lo">7 / 30</td>
+	    <td class="percent Lo">17.5 %</td>
+	    <td class="ratio Lo">7 / 40</td>
 	  </tr>
 	  <tr>
 	    <td class="label">Branches:</td>
-	    <td class="percent Lo">25.0 %</td>
-	    <td class="ratio Lo">1 / 4</td>
+	    <td class="percent Lo">10.0 %</td>
+	    <td class="ratio Lo">1 / 10</td>
 	  </tr>
     </table>
   <div style="clear: both;"></div>
@@ -85,14 +85,14 @@
 <tr><td class='line'>22</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#pragma mark - Memory Management</td></tr>
 <tr><td class='line'>23</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
 <tr><td class='line'>24</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (id)init </td></tr>
-<tr><td class='line'>25</td><td class='branch'>                </td><td class='count Cov'>1</td><td class='code Cov'>{</td></tr>
-<tr><td class='line'>26</td><td class='branch'>                </td><td class='count Cov'>1</td><td class='code Cov'>    self = [super init];</td></tr>
-<tr><td class='line'>27</td><td class='branch'>        <span><ins title="Branch 0 was taken 1 time">+</ins><del title="Branch 1 was never taken">-</del></span></td><td class='count Cov'>1</td><td class='code Cov'>    if (self) {</td></tr>
-<tr><td class='line'>28</td><td class='branch'>                </td><td class='count Cov'>1</td><td class='code Cov'>        coreDataController = [[CoreDataController alloc] initWithInitialType:NSSQLiteStoreType appSupportName:@&quot;ContactManager&quot; modelName:@&quot;ContactManagerModel.momd&quot; dataStoreName:@&quot;ContactManager.sql&quot;];</td></tr>
-<tr><td class='line'>29</td><td class='branch'>                </td><td class='count Cov'>1</td><td class='code Cov'>        contactDataController = [[ContactDataController alloc] initWithCoreDataController:coreDataController];</td></tr>
-<tr><td class='line'>30</td><td class='branch'>                </td><td class='count Cov'>1</td><td class='code Cov'>        mainWindowController = [[MainWindowController alloc] initWithContactDataController:contactDataController];</td></tr>
+<tr><td class='line'>25</td><td class='branch'>                </td><td class='count Cov'>6</td><td class='code Cov'>{</td></tr>
+<tr><td class='line'>26</td><td class='branch'>                </td><td class='count Cov'>6</td><td class='code Cov'>    self = [super init];</td></tr>
+<tr><td class='line'>27</td><td class='branch'>        <span><ins title="Branch 0 was taken 6 times">+</ins><del title="Branch 1 was never taken">-</del></span></td><td class='count Cov'>6</td><td class='code Cov'>    if (self) {</td></tr>
+<tr><td class='line'>28</td><td class='branch'>                </td><td class='count Cov'>6</td><td class='code Cov'>        coreDataController = [[CoreDataController alloc] initWithInitialType:NSSQLiteStoreType modelName:@&quot;ContactManagerModel.momd&quot; applicationSupportName:@&quot;ContactManager&quot; dataStoreName:@&quot;ContactManager.sql&quot;];</td></tr>
+<tr><td class='line'>29</td><td class='branch'>                </td><td class='count Cov'>6</td><td class='code Cov'>        contactDataController = [[ContactDataController alloc] initWithCoreDataController:coreDataController];</td></tr>
+<tr><td class='line'>30</td><td class='branch'>                </td><td class='count Cov'>6</td><td class='code Cov'>        mainWindowController = [[MainWindowController alloc] initWithContactDataController:contactDataController];</td></tr>
 <tr><td class='line'>31</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    }</td></tr>
-<tr><td class='line'>32</td><td class='branch'>                </td><td class='count Cov'>1</td><td class='code Cov'>    return self;</td></tr>
+<tr><td class='line'>32</td><td class='branch'>                </td><td class='count Cov'>6</td><td class='code Cov'>    return self;</td></tr>
 <tr><td class='line'>33</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
 <tr><td class='line'>34</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
 <tr><td class='line'>35</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (void)dealloc </td></tr>
@@ -118,30 +118,46 @@
 <tr><td class='line'>55</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
 <tr><td class='line'>56</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender</td></tr>
 <tr><td class='line'>57</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>{</td></tr>
-<tr><td class='line'>58</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    return [coreDataController save];</td></tr>
-<tr><td class='line'>59</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
-<tr><td class='line'>60</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
-<tr><td class='line'>61</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag </td></tr>
-<tr><td class='line'>62</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
-<tr><td class='line'>63</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>    if (flag) return YES;</td></tr>
-<tr><td class='line'>64</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    </td></tr>
-<tr><td class='line'>65</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    [self showMainWindow];</td></tr>
-<tr><td class='line'>66</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    return NO;  </td></tr>
-<tr><td class='line'>67</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>}</td></tr>
-<tr><td class='line'>68</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
-<tr><td class='line'>69</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (void)applicationWillTerminate:(NSNotification *)theNotification</td></tr>
-<tr><td class='line'>70</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
-<tr><td class='line'>71</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    [mainWindowController close];</td></tr>
-<tr><td class='line'>72</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>}</td></tr>
-<tr><td class='line'>73</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'></td></tr>
-<tr><td class='line'>74</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#pragma mark - Private methods</td></tr>
-<tr><td class='line'>75</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
-<tr><td class='line'>76</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (void)showMainWindow</td></tr>
-<tr><td class='line'>77</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{  </td></tr>
-<tr><td class='line'>78</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    [[mainWindowController window] makeKeyAndOrderFront:self];</td></tr>
-<tr><td class='line'>79</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>}</td></tr>
-<tr><td class='line'>80</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'></td></tr>
-<tr><td class='line'>81</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>@end</td></tr>
+<tr><td class='line'>58</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    NSError *error = nil;</td></tr>
+<tr><td class='line'>59</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    NSUInteger reply = NSTerminateNow;</td></tr>
+<tr><td class='line'>60</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    BOOL saved = [coreDataController save:&amp;error];</td></tr>
+<tr><td class='line'>61</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>62</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>    if (NO == saved) {</td></tr>
+<tr><td class='line'>63</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>        BOOL errorResult = [[NSApplication sharedApplication] presentError:error];</td></tr>
+<tr><td class='line'>64</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        </td></tr>
+<tr><td class='line'>65</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>        if (errorResult == YES) {</td></tr>
+<tr><td class='line'>66</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>            reply = NSTerminateCancel;</td></tr>
+<tr><td class='line'>67</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        } else {</td></tr>
+<tr><td class='line'>68</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>            NSInteger alertReturn = NSRunAlertPanel(nil, FCLocalizedString(@&quot;QuitQuestion&quot;), FCLocalizedString(@&quot;Quit&quot;), FCLocalizedString(@&quot;Cancel&quot;), nil);</td></tr>
+<tr><td class='line'>69</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>            if (alertReturn == NSAlertAlternateReturn) {</td></tr>
+<tr><td class='line'>70</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>                reply = NSTerminateCancel;  </td></tr>
+<tr><td class='line'>71</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>            }</td></tr>
+<tr><td class='line'>72</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        }</td></tr>
+<tr><td class='line'>73</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    }</td></tr>
+<tr><td class='line'>74</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    return reply;</td></tr>
+<tr><td class='line'>75</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
+<tr><td class='line'>76</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>77</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag </td></tr>
+<tr><td class='line'>78</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>79</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>    if (flag) return YES;</td></tr>
+<tr><td class='line'>80</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    </td></tr>
+<tr><td class='line'>81</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    [self showMainWindow];</td></tr>
+<tr><td class='line'>82</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    return NO;  </td></tr>
+<tr><td class='line'>83</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>}</td></tr>
+<tr><td class='line'>84</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>85</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (void)applicationWillTerminate:(NSNotification *)theNotification</td></tr>
+<tr><td class='line'>86</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>87</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    [mainWindowController close];</td></tr>
+<tr><td class='line'>88</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>}</td></tr>
+<tr><td class='line'>89</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'></td></tr>
+<tr><td class='line'>90</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#pragma mark - Private methods</td></tr>
+<tr><td class='line'>91</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>92</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (void)showMainWindow</td></tr>
+<tr><td class='line'>93</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{  </td></tr>
+<tr><td class='line'>94</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    [[mainWindowController window] makeKeyAndOrderFront:self];</td></tr>
+<tr><td class='line'>95</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>}</td></tr>
+<tr><td class='line'>96</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'></td></tr>
+<tr><td class='line'>97</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>@end</td></tr>
   </table>
 
   <div id="footer">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.8</a></div>

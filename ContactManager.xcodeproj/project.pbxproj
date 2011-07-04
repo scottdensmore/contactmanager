@@ -11,6 +11,7 @@
 		DE0285C113B18B760069A885 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0285C013B18B760069A885 /* Contact.m */; };
 		DE0285C413B18C000069A885 /* CoreDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0285C313B18C000069A885 /* CoreDataController.m */; };
 		DE0E381B13B8386A0017EA58 /* ContactListViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0E381A13B8386A0017EA58 /* ContactListViewControllerTests.m */; };
+		DE0FE87513C12C9B001D4B2E /* CoreDataControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0FE87413C12C9B001D4B2E /* CoreDataControllerTests.m */; };
 		DE18F25213B98C6C00B4B76E /* ContactListViewControllerKVOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE18F25113B98C6C00B4B76E /* ContactListViewControllerKVOTests.m */; };
 		DE18F25613B99D2700B4B76E /* ContactDetailViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE18F25513B99D2700B4B76E /* ContactDetailViewControllerTests.m */; };
 		DE25CA5E13A722E500D71422 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE25CA5D13A722E500D71422 /* MainWindowController.m */; };
@@ -22,6 +23,7 @@
 		DE2ABFBE13BAD23D005E99D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DE2ABFBD13BAD23D005E99D9 /* Localizable.strings */; };
 		DE78DB3713B7EB96002E0F97 /* BaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = DE78DB3613B7EB96002E0F97 /* BaseTestCase.m */; };
 		DE78DB3D13B7EF7F002E0F97 /* MainWindowControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE78DB3C13B7EF7F002E0F97 /* MainWindowControllerTests.m */; };
+		DE7F6F1213C19D9000E0C5EF /* ContactManagerAppDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7F6F1113C19D9000E0C5EF /* ContactManagerAppDelegateTests.m */; };
 		DEB4C39213B058E800B84FA9 /* ContactDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB4C39013B058E800B84FA9 /* ContactDetailViewController.m */; };
 		DEB4C39313B058E800B84FA9 /* ContactDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DEB4C39113B058E800B84FA9 /* ContactDetailViewController.xib */; };
 		DED8178E13A452A900EC3234 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED8178D13A452A900EC3234 /* Cocoa.framework */; };
@@ -72,6 +74,8 @@
 		DE0285C713B192E30069A885 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
 		DE0E381913B8386A0017EA58 /* ContactListViewControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListViewControllerTests.h; sourceTree = "<group>"; };
 		DE0E381A13B8386A0017EA58 /* ContactListViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListViewControllerTests.m; sourceTree = "<group>"; };
+		DE0FE87313C12C9B001D4B2E /* CoreDataControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataControllerTests.h; sourceTree = "<group>"; };
+		DE0FE87413C12C9B001D4B2E /* CoreDataControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataControllerTests.m; sourceTree = "<group>"; };
 		DE18F25013B98C6C00B4B76E /* ContactListViewControllerKVOTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListViewControllerKVOTests.h; sourceTree = "<group>"; };
 		DE18F25113B98C6C00B4B76E /* ContactListViewControllerKVOTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListViewControllerKVOTests.m; sourceTree = "<group>"; };
 		DE18F25413B99D2600B4B76E /* ContactDetailViewControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDetailViewControllerTests.h; sourceTree = "<group>"; };
@@ -91,6 +95,8 @@
 		DE78DB3613B7EB96002E0F97 /* BaseTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTestCase.m; sourceTree = "<group>"; };
 		DE78DB3B13B7EF7F002E0F97 /* MainWindowControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowControllerTests.h; sourceTree = "<group>"; };
 		DE78DB3C13B7EF7F002E0F97 /* MainWindowControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowControllerTests.m; sourceTree = "<group>"; };
+		DE7F6F1013C19D9000E0C5EF /* ContactManagerAppDelegateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactManagerAppDelegateTests.h; sourceTree = "<group>"; };
+		DE7F6F1113C19D9000E0C5EF /* ContactManagerAppDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactManagerAppDelegateTests.m; sourceTree = "<group>"; };
 		DEB4C38F13B058E800B84FA9 /* ContactDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDetailViewController.h; sourceTree = "<group>"; };
 		DEB4C39013B058E800B84FA9 /* ContactDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailViewController.m; sourceTree = "<group>"; };
 		DEB4C39113B058E800B84FA9 /* ContactDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactDetailViewController.xib; sourceTree = "<group>"; };
@@ -204,6 +210,8 @@
 				DE27DD8E13B7B40A00EF7A92 /* ContactDataControllerTests.m */,
 				DE27DD9113B7C5E800EF7A92 /* ContactDataControllerKVOTests.h */,
 				DE27DD9213B7C5E800EF7A92 /* ContactDataControllerKVOTests.m */,
+				DE0FE87313C12C9B001D4B2E /* CoreDataControllerTests.h */,
+				DE0FE87413C12C9B001D4B2E /* CoreDataControllerTests.m */,
 			);
 			name = "Model Tests";
 			sourceTree = "<group>";
@@ -211,6 +219,8 @@
 		DE78DB3913B7EC29002E0F97 /* Controller Tests */ = {
 			isa = PBXGroup;
 			children = (
+				DE7F6F1013C19D9000E0C5EF /* ContactManagerAppDelegateTests.h */,
+				DE7F6F1113C19D9000E0C5EF /* ContactManagerAppDelegateTests.m */,
 				DE78DB3A13B7EC3F002E0F97 /* Window Controller Tests */,
 				DE0E381713B837FB0017EA58 /* View Controller Tests */,
 			);
@@ -363,6 +373,7 @@
 				DED817A713A452AA00EC3234 /* Resources */,
 				DED817CF13A46BD200EC3234 /* Copy Files */,
 				DED817A813A452AA00EC3234 /* ShellScript */,
+				DE7F6F0613C137A400E0C5EF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -426,6 +437,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		DE7F6F0613C137A400E0C5EF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run gcov on the framework getting tested, generate HTML report\nif [ \"${CONFIGURATION}\" = 'Coverage' ]; then\n    FRAMEWORK_NAME=ContactManager\n    FRAMEWORK_TARGET=ContactManager\n    FRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${CURRENT_ARCH}\n\n    #rm -rf coverage \n    mkdir -p coverage\n    cd coverage\n    ../tools/lcov/geninfo \"${FRAMEWORK_OBJ_DIR}\" --gcov-tool /usr/bin/gcov\n    ../tools/lcov/genhtml \"${FRAMEWORK_OBJ_DIR}\"/*.info \\\n        --title CotactManager --num-spaces 4 --css-file ../tools/lcov/styles.css --prefix \"{PROJECT_DIR}\" --legend --no-function\n                                             \nfi";
+		};
 		DED817A813A452AA00EC3234 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -470,6 +494,8 @@
 				DE0E381B13B8386A0017EA58 /* ContactListViewControllerTests.m in Sources */,
 				DE18F25213B98C6C00B4B76E /* ContactListViewControllerKVOTests.m in Sources */,
 				DE18F25613B99D2700B4B76E /* ContactDetailViewControllerTests.m in Sources */,
+				DE0FE87513C12C9B001D4B2E /* CoreDataControllerTests.m in Sources */,
+				DE7F6F1213C19D9000E0C5EF /* ContactManagerAppDelegateTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -579,6 +605,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				TEST_AFTER_BUILD = YES;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
