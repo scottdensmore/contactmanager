@@ -4,8 +4,8 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - CotactManager - ContactManager/MainWindowController.m</title>
-  <link rel="stylesheet" type="text/css" href="../gcov.css">
+  <title>LCOV - CotactManager - /Users/scottdensmore/Dev/ContactManager/ContactManager/MainWindowController.m</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
 </head>
 
 <body>
@@ -15,7 +15,7 @@
     <table id='overview'>
           <tr>
             <td class="label">Current view:</td>
-            <td class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">ContactManager</a> - MainWindowController.m</td>
+            <td class="headerValue"><a href="../../../../../index.html">top level</a> - <a href="index.html">Users/scottdensmore/Dev/ContactManager/ContactManager</a> - MainWindowController.m</td>
             <td width="5%"></td>
           </tr>
           <tr>
@@ -25,7 +25,7 @@
           </tr>
           <tr>
             <td class="label">Date:</td>
-            <td class="headerValue">2011-07-02</td>
+            <td class="headerValue">2011-07-04</td>
             <td></td>
           </tr>
           <tr>
@@ -78,12 +78,12 @@
 <tr><td class='line'>15</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
 <tr><td class='line'>16</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#pragma mark - Accessors</td></tr>
 <tr><td class='line'>17</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
-<tr><td class='line'>18</td><td class='branch'>                </td><td class='count Cov'>20</td><td class='code Cov'>@synthesize listView;</td></tr>
-<tr><td class='line'>19</td><td class='branch'>                </td><td class='count Cov'>20</td><td class='code Cov'>@synthesize detailView;</td></tr>
-<tr><td class='line'>20</td><td class='branch'>                </td><td class='count Cov'>20</td><td class='code Cov'>@synthesize removeButton;</td></tr>
-<tr><td class='line'>21</td><td class='branch'>                </td><td class='count Cov'>8</td><td class='code Cov'>@synthesize contactListViewController;</td></tr>
-<tr><td class='line'>22</td><td class='branch'>                </td><td class='count Cov'>6</td><td class='code Cov'>@synthesize contactDetailViewController;</td></tr>
-<tr><td class='line'>23</td><td class='branch'>                </td><td class='count Cov'>20</td><td class='code Cov'>@synthesize addButton;</td></tr>
+<tr><td class='line'>18</td><td class='branch'>                </td><td class='count Cov'>681</td><td class='code Cov'>@synthesize listView;</td></tr>
+<tr><td class='line'>19</td><td class='branch'>                </td><td class='count Cov'>681</td><td class='code Cov'>@synthesize detailView;</td></tr>
+<tr><td class='line'>20</td><td class='branch'>                </td><td class='count Cov'>681</td><td class='code Cov'>@synthesize removeButton;</td></tr>
+<tr><td class='line'>21</td><td class='branch'>                </td><td class='count Cov'>272</td><td class='code Cov'>@synthesize contactListViewController;</td></tr>
+<tr><td class='line'>22</td><td class='branch'>                </td><td class='count Cov'>204</td><td class='code Cov'>@synthesize contactDetailViewController;</td></tr>
+<tr><td class='line'>23</td><td class='branch'>                </td><td class='count Cov'>681</td><td class='code Cov'>@synthesize addButton;</td></tr>
 <tr><td class='line'>24</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
 <tr><td class='line'>25</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#pragma mark - Memory Management</td></tr>
 <tr><td class='line'>26</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
@@ -93,57 +93,57 @@
 <tr><td class='line'>30</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
 <tr><td class='line'>31</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
 <tr><td class='line'>32</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (id)initWithContactDataController:(ContactDataController *)controller</td></tr>
-<tr><td class='line'>33</td><td class='branch'>                </td><td class='count Cov'>20</td><td class='code Cov'>{</td></tr>
-<tr><td class='line'>34</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><ins title="Branch 1 was taken 20 times">+</ins></span></td><td class='count Cov'>20</td><td class='code Cov'>    NSParameterAssert(controller != nil);</td></tr>
+<tr><td class='line'>33</td><td class='branch'>                </td><td class='count Cov'>681</td><td class='code Cov'>{</td></tr>
+<tr><td class='line'>34</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><ins title="Branch 1 was taken 681 times">+</ins></span></td><td class='count Cov'>681</td><td class='code Cov'>    NSParameterAssert(controller != nil);</td></tr>
 <tr><td class='line'>35</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
-<tr><td class='line'>36</td><td class='branch'>                </td><td class='count Cov'>20</td><td class='code Cov'>    self = [super initWithWindowNibName:@&quot;MainWindowController&quot;];</td></tr>
-<tr><td class='line'>37</td><td class='branch'>        <span><ins title="Branch 0 was taken 20 times">+</ins><del title="Branch 1 was never taken">-</del></span></td><td class='count Cov'>20</td><td class='code Cov'>    if (self) {</td></tr>
-<tr><td class='line'>38</td><td class='branch'>                </td><td class='count Cov'>20</td><td class='code Cov'>        contactDataController = [controller retain];</td></tr>
-<tr><td class='line'>39</td><td class='branch'>                </td><td class='count Cov'>20</td><td class='code Cov'>        contactListViewController = [[ContactListViewController alloc] initWithContactDataController:contactDataController];</td></tr>
-<tr><td class='line'>40</td><td class='branch'>                </td><td class='count Cov'>20</td><td class='code Cov'>        contactDetailViewController = [[ContactDetailViewController alloc] init];</td></tr>
-<tr><td class='line'>41</td><td class='branch'>                </td><td class='count Cov'>20</td><td class='code Cov'>        [contactListViewController addObserver:self forKeyPath:@&quot;selectedContact&quot; options:NSKeyValueObservingOptionNew context:NULL];</td></tr>
+<tr><td class='line'>36</td><td class='branch'>                </td><td class='count Cov'>681</td><td class='code Cov'>    self = [super initWithWindowNibName:@&quot;MainWindowController&quot;];</td></tr>
+<tr><td class='line'>37</td><td class='branch'>        <span><ins title="Branch 0 was taken 681 times">+</ins><del title="Branch 1 was never taken">-</del></span></td><td class='count Cov'>681</td><td class='code Cov'>    if (self) {</td></tr>
+<tr><td class='line'>38</td><td class='branch'>                </td><td class='count Cov'>681</td><td class='code Cov'>        contactDataController = [controller retain];</td></tr>
+<tr><td class='line'>39</td><td class='branch'>                </td><td class='count Cov'>681</td><td class='code Cov'>        contactListViewController = [[ContactListViewController alloc] initWithContactDataController:contactDataController];</td></tr>
+<tr><td class='line'>40</td><td class='branch'>                </td><td class='count Cov'>681</td><td class='code Cov'>        contactDetailViewController = [[ContactDetailViewController alloc] init];</td></tr>
+<tr><td class='line'>41</td><td class='branch'>                </td><td class='count Cov'>681</td><td class='code Cov'>        [contactListViewController addObserver:self forKeyPath:@&quot;selectedContact&quot; options:NSKeyValueObservingOptionNew context:NULL];</td></tr>
 <tr><td class='line'>42</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    }</td></tr>
-<tr><td class='line'>43</td><td class='branch'>                </td><td class='count Cov'>20</td><td class='code Cov'>    return self;</td></tr>
+<tr><td class='line'>43</td><td class='branch'>                </td><td class='count Cov'>681</td><td class='code Cov'>    return self;</td></tr>
 <tr><td class='line'>44</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
 <tr><td class='line'>45</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
 <tr><td class='line'>46</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
 <tr><td class='line'>47</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (void)dealloc</td></tr>
-<tr><td class='line'>48</td><td class='branch'>                </td><td class='count Cov'>19</td><td class='code Cov'>{</td></tr>
-<tr><td class='line'>49</td><td class='branch'>                </td><td class='count Cov'>19</td><td class='code Cov'>    [contactListViewController removeObserver:self forKeyPath:@&quot;selectedContact&quot;];</td></tr>
+<tr><td class='line'>48</td><td class='branch'>                </td><td class='count Cov'>646</td><td class='code Cov'>{</td></tr>
+<tr><td class='line'>49</td><td class='branch'>                </td><td class='count Cov'>646</td><td class='code Cov'>    [contactListViewController removeObserver:self forKeyPath:@&quot;selectedContact&quot;];</td></tr>
 <tr><td class='line'>50</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
-<tr><td class='line'>51</td><td class='branch'>                </td><td class='count Cov'>19</td><td class='code Cov'>    RELEASE(contactListViewController);</td></tr>
-<tr><td class='line'>52</td><td class='branch'>                </td><td class='count Cov'>19</td><td class='code Cov'>    RELEASE(contactDetailViewController);</td></tr>
-<tr><td class='line'>53</td><td class='branch'>                </td><td class='count Cov'>19</td><td class='code Cov'>    RELEASE(contactDataController);</td></tr>
+<tr><td class='line'>51</td><td class='branch'>                </td><td class='count Cov'>646</td><td class='code Cov'>    RELEASE(contactListViewController);</td></tr>
+<tr><td class='line'>52</td><td class='branch'>                </td><td class='count Cov'>646</td><td class='code Cov'>    RELEASE(contactDetailViewController);</td></tr>
+<tr><td class='line'>53</td><td class='branch'>                </td><td class='count Cov'>646</td><td class='code Cov'>    RELEASE(contactDataController);</td></tr>
 <tr><td class='line'>54</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
-<tr><td class='line'>55</td><td class='branch'>                </td><td class='count Cov'>19</td><td class='code Cov'>    [super dealloc];</td></tr>
-<tr><td class='line'>56</td><td class='branch'>                </td><td class='count Cov'>19</td><td class='code Cov'>}</td></tr>
+<tr><td class='line'>55</td><td class='branch'>                </td><td class='count Cov'>646</td><td class='code Cov'>    [super dealloc];</td></tr>
+<tr><td class='line'>56</td><td class='branch'>                </td><td class='count Cov'>646</td><td class='code Cov'>}</td></tr>
 <tr><td class='line'>57</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
 <tr><td class='line'>58</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#pragma mark - Windows methods</td></tr>
 <tr><td class='line'>59</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
 <tr><td class='line'>60</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (void)windowDidLoad</td></tr>
-<tr><td class='line'>61</td><td class='branch'>                </td><td class='count Cov'>19</td><td class='code Cov'>{</td></tr>
-<tr><td class='line'>62</td><td class='branch'>                </td><td class='count Cov'>19</td><td class='code Cov'>    [super windowDidLoad];</td></tr>
+<tr><td class='line'>61</td><td class='branch'>                </td><td class='count Cov'>647</td><td class='code Cov'>{</td></tr>
+<tr><td class='line'>62</td><td class='branch'>                </td><td class='count Cov'>647</td><td class='code Cov'>    [super windowDidLoad];</td></tr>
 <tr><td class='line'>63</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
-<tr><td class='line'>64</td><td class='branch'>                </td><td class='count Cov'>19</td><td class='code Cov'>    [[contactListViewController view] setFrame:[listView bounds]];</td></tr>
-<tr><td class='line'>65</td><td class='branch'>                </td><td class='count Cov'>19</td><td class='code Cov'>    [listView addSubview:[contactListViewController view]];</td></tr>
+<tr><td class='line'>64</td><td class='branch'>                </td><td class='count Cov'>647</td><td class='code Cov'>    [[contactListViewController view] setFrame:[listView bounds]];</td></tr>
+<tr><td class='line'>65</td><td class='branch'>                </td><td class='count Cov'>647</td><td class='code Cov'>    [listView addSubview:[contactListViewController view]];</td></tr>
 <tr><td class='line'>66</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
-<tr><td class='line'>67</td><td class='branch'>                </td><td class='count Cov'>19</td><td class='code Cov'>    [[contactDetailViewController view] setFrame:[detailView bounds]];</td></tr>
-<tr><td class='line'>68</td><td class='branch'>                </td><td class='count Cov'>19</td><td class='code Cov'>    [detailView addSubview:[contactDetailViewController view]];</td></tr>
-<tr><td class='line'>69</td><td class='branch'>                </td><td class='count Cov'>19</td><td class='code Cov'>    [contactDetailViewController setContact:[contactListViewController selectedContact]];</td></tr>
-<tr><td class='line'>70</td><td class='branch'>                </td><td class='count Cov'>19</td><td class='code Cov'>}</td></tr>
+<tr><td class='line'>67</td><td class='branch'>                </td><td class='count Cov'>647</td><td class='code Cov'>    [[contactDetailViewController view] setFrame:[detailView bounds]];</td></tr>
+<tr><td class='line'>68</td><td class='branch'>                </td><td class='count Cov'>647</td><td class='code Cov'>    [detailView addSubview:[contactDetailViewController view]];</td></tr>
+<tr><td class='line'>69</td><td class='branch'>                </td><td class='count Cov'>647</td><td class='code Cov'>    [contactDetailViewController setContact:[contactListViewController selectedContact]];</td></tr>
+<tr><td class='line'>70</td><td class='branch'>                </td><td class='count Cov'>647</td><td class='code Cov'>}</td></tr>
 <tr><td class='line'>71</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
 <tr><td class='line'>72</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (NSString *)windowNibName </td></tr>
-<tr><td class='line'>73</td><td class='branch'>                </td><td class='count Cov'>58</td><td class='code Cov'>{</td></tr>
-<tr><td class='line'>74</td><td class='branch'>                </td><td class='count Cov'>58</td><td class='code Cov'>    return NSStringFromClass([self class]);</td></tr>
+<tr><td class='line'>73</td><td class='branch'>                </td><td class='count Cov'>1975</td><td class='code Cov'>{</td></tr>
+<tr><td class='line'>74</td><td class='branch'>                </td><td class='count Cov'>1975</td><td class='code Cov'>    return NSStringFromClass([self class]);</td></tr>
 <tr><td class='line'>75</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
 <tr><td class='line'>76</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
 <tr><td class='line'>77</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#pragma mark - KVO methods</td></tr>
 <tr><td class='line'>78</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
 <tr><td class='line'>79</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context</td></tr>
 <tr><td class='line'>80</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
-<tr><td class='line'>81</td><td class='branch'>                </td><td class='count Cov'>2</td><td class='code Cov'>    [contactDetailViewController setContact:[contactListViewController selectedContact]];</td></tr>
-<tr><td class='line'>82</td><td class='branch'>                </td><td class='count Cov'>2</td><td class='code Cov'>}</td></tr>
-<tr><td class='line'>83</td><td class='branch'>                </td><td class='count Cov'>2</td><td class='code Cov'></td></tr>
+<tr><td class='line'>81</td><td class='branch'>                </td><td class='count Cov'>68</td><td class='code Cov'>    [contactDetailViewController setContact:[contactListViewController selectedContact]];</td></tr>
+<tr><td class='line'>82</td><td class='branch'>                </td><td class='count Cov'>68</td><td class='code Cov'>}</td></tr>
+<tr><td class='line'>83</td><td class='branch'>                </td><td class='count Cov'>68</td><td class='code Cov'></td></tr>
 <tr><td class='line'>84</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#pragma mark - Action methods</td></tr>
 <tr><td class='line'>85</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
 <tr><td class='line'>86</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (IBAction)newContact:(id)sender</td></tr>

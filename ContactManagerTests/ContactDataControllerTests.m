@@ -17,7 +17,7 @@
 {
     [super setUp];
     
-    coreDataController = [[CoreDataController alloc] initWithInitialType:NSInMemoryStoreType appSupportName:nil modelName:@"ContactManagerModel.momd" dataStoreName:nil];
+    coreDataController = [[CoreDataController alloc] initWithInitialType:NSInMemoryStoreType modelName:@"ContactManagerModel.momd" applicationSupportName:nil dataStoreName:nil];
     contactDataController = [[ContactDataController alloc] initWithCoreDataController:coreDataController];
 }
 

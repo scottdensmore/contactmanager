@@ -30,9 +30,10 @@
 - (NSManagedObjectModel *)managedObjectModel;
 - (NSManagedObjectContext *)managedObjectContext;
 
-- (id)initWithInitialType:(NSString *)type appSupportName:(NSString *)theAppSupportName modelName:(NSString *)theModelName dataStoreName:(NSString *)theDataStoreName;
+- (id)initWithModelName:(NSString *)theModelName applicationSupportName:(NSString *)theApplicationSupportName dataStoreName:(NSString *)theDataStoreName;
+- (id)initWithInitialType:(NSString *)type modelName:(NSString *)theModelName applicationSupportName:(NSString *)theApplicationSupportName dataStoreName:(NSString *)theDataStoreName;
 
-- (NSApplicationTerminateReply)save;
+- (BOOL)save:(NSError **)error;
 
 
 @end

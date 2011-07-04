@@ -25,7 +25,7 @@
 {
     self = [super init];
     if (self) {
-        coreDataController = [[CoreDataController alloc] initWithInitialType:NSSQLiteStoreType appSupportName:@"ContactManager" modelName:@"ContactManagerModel.momd" dataStoreName:@"ContactManager.sql"];
+        coreDataController = [[CoreDataController alloc] initWithInitialType:NSSQLiteStoreType modelName:@"ContactManagerModel.momd" applicationSupportName:@"ContactManager" dataStoreName:@"ContactManager.sql"];
         contactDataController = [[ContactDataController alloc] initWithCoreDataController:coreDataController];
         mainWindowController = [[MainWindowController alloc] initWithContactDataController:contactDataController];
     }
@@ -55,7 +55,23 @@
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-	return [coreDataController save];
+    NSError *error = nil;
+	NSUInteger reply = NSTerminateNow;
+    BOOL saved = [coreDataController save:&error];
+
+    if (NO == saved) {
+        BOOL errorResult = [[NSApplication sharedApplication] presentError:error];
+        
+        if (errorResult == YES) {
+            reply = NSTerminateCancel;
+        } else {
+            NSInteger alertReturn = NSRunAlertPanel(nil, FCLocalizedString(@"QuitQuestion"), FCLocalizedString(@"Quit"), FCLocalizedString(@"Cancel"), nil);
+            if (alertReturn == NSAlertAlternateReturn) {
+                reply = NSTerminateCancel;	
+            }
+        }
+    }
+    return reply;
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag 

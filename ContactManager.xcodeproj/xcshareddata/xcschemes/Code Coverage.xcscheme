@@ -26,15 +26,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Coverage">
-      <PostActions>
-         <ExecutionAction
-            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent
-               title = "Run Script"
-               scriptText = "# Run gcov on the framework getting tested, generate HTML report&#10;if [ &quot;${CONFIGURATION}&quot; = &apos;Coverage&apos; ]; then&#10;    FRAMEWORK_NAME=ContactManager&#10;    FRAMEWORK_TARGET=ContactManager&#10;    FRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${CURRENT_ARCH}&#10;&#10;    #rm -rf coverage &#10;    mkdir -p coverage&#10;    cd coverage&#10;    ../tools/lcov/geninfo &quot;${FRAMEWORK_OBJ_DIR}&quot; --gcov-tool /usr/bin/gcov&#10;    ../tools/lcov/genhtml &quot;${FRAMEWORK_OBJ_DIR}&quot;/*.info \&#10;        --title CotactManager --num-spaces 4 --css-file ../tools/lcov/styles.css --prefix &quot;{PROJECT_DIR}&quot; --legend --no-function&#10;&#10;fi">
-            </ActionContent>
-         </ExecutionAction>
-      </PostActions>
       <Testables>
          <TestableReference
             skipped = "NO">
