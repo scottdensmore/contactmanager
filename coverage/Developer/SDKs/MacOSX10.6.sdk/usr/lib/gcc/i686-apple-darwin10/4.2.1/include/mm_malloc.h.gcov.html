@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - CotactManager - /Developer/SDKs/MacOSX10.6.sdk/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/mm_malloc.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../../../gcov.css">
+</head>
+
+<body>
+
+<h1>LCOV - Code Coverage Report</h1>
+<div id="header">
+    <table id='overview'>
+          <tr>
+            <td class="label">Current view:</td>
+            <td class="headerValue"><a href="../../../../../../../../../index.html">top level</a> - <a href="index.html">Developer/SDKs/MacOSX10.6.sdk/usr/lib/gcc/i686-apple-darwin10/4.2.1/include</a> - mm_malloc.h</td>
+            <td width="5%"></td>
+          </tr>
+          <tr>
+            <td class="label">Test:</td>
+            <td class="headerValue">CotactManager</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="label">Date:</td>
+            <td class="headerValue">2011-07-04</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="label">Legend:</td>
+            <td class="legend">            <span class="Cov">invoked</span>
+            <span class="NoCov">not invoked</span>
+</td>
+            <td></td>
+          </tr>
+    </table>
+    <table id="summary">
+	  <tr>
+	    <td></td>
+	    <th colspan="2">Coverage</th>
+	  </tr>
+	  <tr>
+	    <td class="label">Lines:</td>
+	    <td class="percent Lo">0.0 %</td>
+	    <td class="ratio Lo">0 / 18</td>
+	  </tr>
+	  <tr>
+	    <td class="label">Branches:</td>
+	    <td class="percent Lo">0.0 %</td>
+	    <td class="ratio Lo">0 / 10</td>
+	  </tr>
+    </table>
+  <div style="clear: both;"></div>
+</div> <!-- #header -->
+  <table id="source">
+    <tr>
+      <th>Line</th>
+      <th>Branches</th>
+      <th>Hits</th>
+      <th>Source code</th>
+    </tr>
+<tr><td class='line'>1</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* Copyright (C) 2004 Free Software Foundation, Inc.</td></tr>
+<tr><td class='line'>2</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>3</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   This file is part of GCC.</td></tr>
+<tr><td class='line'>4</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>5</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   GCC is free software; you can redistribute it and/or modify</td></tr>
+<tr><td class='line'>6</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   it under the terms of the GNU General Public License as published by</td></tr>
+<tr><td class='line'>7</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   the Free Software Foundation; either version 2, or (at your option)</td></tr>
+<tr><td class='line'>8</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   any later version.</td></tr>
+<tr><td class='line'>9</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>10</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   GCC is distributed in the hope that it will be useful,</td></tr>
+<tr><td class='line'>11</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   but WITHOUT ANY WARRANTY; without even the implied warranty of</td></tr>
+<tr><td class='line'>12</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</td></tr>
+<tr><td class='line'>13</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   GNU General Public License for more details.</td></tr>
+<tr><td class='line'>14</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>15</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   You should have received a copy of the GNU General Public License</td></tr>
+<tr><td class='line'>16</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   along with GCC; see the file COPYING.  If not, write to</td></tr>
+<tr><td class='line'>17</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   the Free Software Foundation, 51 Franklin Street, Fifth Floor,</td></tr>
+<tr><td class='line'>18</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   Boston, MA 02110-1301, USA.  */</td></tr>
+<tr><td class='line'>19</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>20</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* As a special exception, if you include this header file into source</td></tr>
+<tr><td class='line'>21</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   files compiled by GCC, this header file does not by itself cause</td></tr>
+<tr><td class='line'>22</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   the resulting executable to be covered by the GNU General Public</td></tr>
+<tr><td class='line'>23</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   License.  This exception does not however invalidate any other</td></tr>
+<tr><td class='line'>24</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   reasons why the executable file might be covered by the GNU General</td></tr>
+<tr><td class='line'>25</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>   Public License.  */</td></tr>
+<tr><td class='line'>26</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>27</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef _MM_MALLOC_H_INCLUDED</td></tr>
+<tr><td class='line'>28</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _MM_MALLOC_H_INCLUDED</td></tr>
+<tr><td class='line'>29</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>30</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#include &lt;stdlib.h&gt;</td></tr>
+<tr><td class='line'>31</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#include &lt;errno.h&gt;</td></tr>
+<tr><td class='line'>32</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>33</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>static __inline__ void* </td></tr>
+<tr><td class='line'>34</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>_mm_malloc (size_t size, size_t align)</td></tr>
+<tr><td class='line'>35</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>{</td></tr>
+<tr><td class='line'>36</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>  void * malloc_ptr;</td></tr>
+<tr><td class='line'>37</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>  void * aligned_ptr;</td></tr>
+<tr><td class='line'>38</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>39</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>  /* Error if align is not a power of two.  */</td></tr>
+<tr><td class='line'>40</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>  if (align &amp; (align - 1))</td></tr>
+<tr><td class='line'>41</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    {</td></tr>
+<tr><td class='line'>42</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>      errno = EINVAL;</td></tr>
+<tr><td class='line'>43</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>      return ((void*) 0);</td></tr>
+<tr><td class='line'>44</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    }</td></tr>
+<tr><td class='line'>45</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>46</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>  if (size == 0)</td></tr>
+<tr><td class='line'>47</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    return ((void *) 0);</td></tr>
+<tr><td class='line'>48</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>49</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> /* Assume malloc'd pointer is aligned at least to sizeof (void*).</td></tr>
+<tr><td class='line'>50</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    If necessary, add another sizeof (void*) to store the value</td></tr>
+<tr><td class='line'>51</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    returned by malloc. Effectively this enforces a minimum alignment</td></tr>
+<tr><td class='line'>52</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    of sizeof double. */     </td></tr>
+<tr><td class='line'>53</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>    if (align &lt; 2 * sizeof (void *))</td></tr>
+<tr><td class='line'>54</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>      align = 2 * sizeof (void *);</td></tr>
+<tr><td class='line'>55</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>56</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>  malloc_ptr = malloc (size + align);</td></tr>
+<tr><td class='line'>57</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>  if (!malloc_ptr)</td></tr>
+<tr><td class='line'>58</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    return ((void *) 0);</td></tr>
+<tr><td class='line'>59</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>60</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>  /* Align  We have at least sizeof (void *) space below malloc'd ptr. */</td></tr>
+<tr><td class='line'>61</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>  aligned_ptr = (void *) (((size_t) malloc_ptr + align)</td></tr>
+<tr><td class='line'>62</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>              &amp; ~((size_t) (align) - 1));</td></tr>
+<tr><td class='line'>63</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>64</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>  /* Store the original pointer just before p.  */  </td></tr>
+<tr><td class='line'>65</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>  ((void **) aligned_ptr) [-1] = malloc_ptr;</td></tr>
+<tr><td class='line'>66</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>67</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>  return aligned_ptr;</td></tr>
+<tr><td class='line'>68</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
+<tr><td class='line'>69</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>70</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>static __inline__ void</td></tr>
+<tr><td class='line'>71</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>_mm_free (void * aligned_ptr)</td></tr>
+<tr><td class='line'>72</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>{</td></tr>
+<tr><td class='line'>73</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>  if (aligned_ptr)</td></tr>
+<tr><td class='line'>74</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    free (((void **) aligned_ptr) [-1]);</td></tr>
+<tr><td class='line'>75</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>}</td></tr>
+<tr><td class='line'>76</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>77</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* _MM_MALLOC_H_INCLUDED */</td></tr>
+  </table>
+
+  <div id="footer">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.8</a></div>
+
+</body>
+</html>
