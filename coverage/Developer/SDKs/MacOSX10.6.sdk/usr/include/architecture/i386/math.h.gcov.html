@@ -1,0 +1,711 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - CotactManager - /Developer/SDKs/MacOSX10.6.sdk/usr/include/architecture/i386/math.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+<h1>LCOV - Code Coverage Report</h1>
+<div id="header">
+    <table id='overview'>
+          <tr>
+            <td class="label">Current view:</td>
+            <td class="headerValue"><a href="../../../../../../../index.html">top level</a> - <a href="index.html">Developer/SDKs/MacOSX10.6.sdk/usr/include/architecture/i386</a> - math.h</td>
+            <td width="5%"></td>
+          </tr>
+          <tr>
+            <td class="label">Test:</td>
+            <td class="headerValue">CotactManager</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="label">Date:</td>
+            <td class="headerValue">2011-07-04</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="label">Legend:</td>
+            <td class="legend">            <span class="Cov">invoked</span>
+            <span class="NoCov">not invoked</span>
+</td>
+            <td></td>
+          </tr>
+    </table>
+    <table id="summary">
+	  <tr>
+	    <td></td>
+	    <th colspan="2">Coverage</th>
+	  </tr>
+	  <tr>
+	    <td class="label">Lines:</td>
+	    <td class="percent Lo">0.0 %</td>
+	    <td class="ratio Lo">0 / 15</td>
+	  </tr>
+	  <tr>
+	    <td class="label">Branches:</td>
+	    <td class="percent Lo">0.0 %</td>
+	    <td class="ratio Lo">0 / 30</td>
+	  </tr>
+    </table>
+  <div style="clear: both;"></div>
+</div> <!-- #header -->
+  <table id="source">
+    <tr>
+      <th>Line</th>
+      <th>Branches</th>
+      <th>Hits</th>
+      <th>Source code</th>
+    </tr>
+<tr><td class='line'>1</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/*</td></tr>
+<tr><td class='line'>2</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Copyright (c) 2002 Apple Computer, Inc. All rights reserved.</td></tr>
+<tr><td class='line'>3</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *</td></tr>
+<tr><td class='line'>4</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * @APPLE_LICENSE_HEADER_START@</td></tr>
+<tr><td class='line'>5</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * </td></tr>
+<tr><td class='line'>6</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * The contents of this file constitute Original Code as defined in and</td></tr>
+<tr><td class='line'>7</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * are subject to the Apple Public Source License Version 1.1 (the</td></tr>
+<tr><td class='line'>8</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * &quot;License&quot;).  You may not use this file except in compliance with the</td></tr>
+<tr><td class='line'>9</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * License.  Please obtain a copy of the License at</td></tr>
+<tr><td class='line'>10</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * http://www.apple.com/publicsource and read it before using this file.</td></tr>
+<tr><td class='line'>11</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * </td></tr>
+<tr><td class='line'>12</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * This Original Code and all software distributed under the License are</td></tr>
+<tr><td class='line'>13</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * distributed on an &quot;AS IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, EITHER</td></tr>
+<tr><td class='line'>14</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,</td></tr>
+<tr><td class='line'>15</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY,</td></tr>
+<tr><td class='line'>16</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT.  Please see the</td></tr>
+<tr><td class='line'>17</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * License for the specific language governing rights and limitations</td></tr>
+<tr><td class='line'>18</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * under the License.</td></tr>
+<tr><td class='line'>19</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * </td></tr>
+<tr><td class='line'>20</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * @APPLE_LICENSE_HEADER_END@</td></tr>
+<tr><td class='line'>21</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> */</td></tr>
+<tr><td class='line'>22</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> </td></tr>
+<tr><td class='line'>23</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/*******************************************************************************</td></tr>
+<tr><td class='line'>24</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*                                                                              *</td></tr>
+<tr><td class='line'>25</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*     File:  math.h                                                        *</td></tr>
+<tr><td class='line'>26</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*                                                                              *</td></tr>
+<tr><td class='line'>27</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*     Contains: typedefs, prototypes, and macros germane to C99 floating point.*</td></tr>
+<tr><td class='line'>28</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*                                                                              *</td></tr>
+<tr><td class='line'>29</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*******************************************************************************/</td></tr>
+<tr><td class='line'>30</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef __MATH__</td></tr>
+<tr><td class='line'>31</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __MATH__</td></tr>
+<tr><td class='line'>32</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>33</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#include &quot;sys/cdefs.h&quot; /* For definition of __DARWIN_UNIX03 et al */</td></tr>
+<tr><td class='line'>34</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>35</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __cplusplus</td></tr>
+<tr><td class='line'>36</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern &quot;C&quot; {</td></tr>
+<tr><td class='line'>37</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif</td></tr>
+<tr><td class='line'>38</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>39</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/******************************************************************************</td></tr>
+<tr><td class='line'>40</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*       Floating point data types                                             *</td></tr>
+<tr><td class='line'>41</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>******************************************************************************/</td></tr>
+<tr><td class='line'>42</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>43</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/*  Define float_t and double_t per C standard, ISO/IEC 9899:1999 7.12 2,</td></tr>
+<tr><td class='line'>44</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    taking advantage of GCC's __FLT_EVAL_METHOD__ (which a compiler may</td></tr>
+<tr><td class='line'>45</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    define anytime and GCC does) that shadows FLT_EVAL_METHOD (which a compiler</td></tr>
+<tr><td class='line'>46</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    must and may define only in float.h).</td></tr>
+<tr><td class='line'>47</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*/</td></tr>
+<tr><td class='line'>48</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if __FLT_EVAL_METHOD__ == 0</td></tr>
+<tr><td class='line'>49</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    typedef float float_t;</td></tr>
+<tr><td class='line'>50</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    typedef double double_t;</td></tr>
+<tr><td class='line'>51</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#elif __FLT_EVAL_METHOD__ == 1</td></tr>
+<tr><td class='line'>52</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    typedef double float_t;</td></tr>
+<tr><td class='line'>53</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    typedef double double_t;</td></tr>
+<tr><td class='line'>54</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#elif __FLT_EVAL_METHOD__ == 2 || __FLT_EVAL_METHOD__ == -1</td></tr>
+<tr><td class='line'>55</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    typedef long double float_t;</td></tr>
+<tr><td class='line'>56</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    typedef long double double_t;</td></tr>
+<tr><td class='line'>57</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#else /* __FLT_EVAL_METHOD__ */</td></tr>
+<tr><td class='line'>58</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #error &quot;Unsupported value of __FLT_EVAL_METHOD__.&quot;</td></tr>
+<tr><td class='line'>59</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __FLT_EVAL_METHOD__ */</td></tr>
+<tr><td class='line'>60</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>61</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>62</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if defined(__GNUC__)</td></tr>
+<tr><td class='line'>63</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define HUGE_VAL    __builtin_huge_val()</td></tr>
+<tr><td class='line'>64</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define HUGE_VALF   __builtin_huge_valf()</td></tr>
+<tr><td class='line'>65</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define HUGE_VALL   __builtin_huge_vall()</td></tr>
+<tr><td class='line'>66</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define NAN         __builtin_nanf(&quot;0x7fc00000&quot;) /* Constant expression, can be used as initializer. */</td></tr>
+<tr><td class='line'>67</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define __MATH_H_ALWAYS_INLINE__        __attribute__ ((always_inline))</td></tr>
+<tr><td class='line'>68</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#else</td></tr>
+<tr><td class='line'>69</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define HUGE_VAL    1e500</td></tr>
+<tr><td class='line'>70</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define HUGE_VALF   1e50f</td></tr>
+<tr><td class='line'>71</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define HUGE_VALL   1e5000L</td></tr>
+<tr><td class='line'>72</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define NAN     __nan( )</td></tr>
+<tr><td class='line'>73</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define __MATH_H_ALWAYS_INLINE__</td></tr>
+<tr><td class='line'>74</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif</td></tr>
+<tr><td class='line'>75</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>76</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define INFINITY    HUGE_VALF</td></tr>
+<tr><td class='line'>77</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>78</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>79</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/******************************************************************************</td></tr>
+<tr><td class='line'>80</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*      Taxonomy of floating point data types                                  *</td></tr>
+<tr><td class='line'>81</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>******************************************************************************/</td></tr>
+<tr><td class='line'>82</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>83</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define FP_NAN          1</td></tr>
+<tr><td class='line'>84</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define FP_INFINITE     2</td></tr>
+<tr><td class='line'>85</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define FP_ZERO         3</td></tr>
+<tr><td class='line'>86</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define FP_NORMAL       4</td></tr>
+<tr><td class='line'>87</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define FP_SUBNORMAL    5</td></tr>
+<tr><td class='line'>88</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define FP_SUPERNORMAL  6 /* meaningful only on PowerPC */</td></tr>
+<tr><td class='line'>89</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>90</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* fma() *function call* is more costly than equivalent (in-line) multiply and add operations    */</td></tr>
+<tr><td class='line'>91</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* For single and double precision, the cost isn't too bad, because we can fall back on higher   */</td></tr>
+<tr><td class='line'>92</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* precision hardware, with the necessary range to handle infinite precision products. However,  */</td></tr>
+<tr><td class='line'>93</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* expect the long double fma to be at least an order of magnitude slower than a simple multiply */</td></tr>
+<tr><td class='line'>94</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* and an add.                                                                                   */</td></tr>
+<tr><td class='line'>95</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#undef FP_FAST_FMA</td></tr>
+<tr><td class='line'>96</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#undef FP_FAST_FMAF</td></tr>
+<tr><td class='line'>97</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#undef FP_FAST_FMAL</td></tr>
+<tr><td class='line'>98</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>99</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* The values returned by `ilogb' for 0 and NaN respectively. */</td></tr>
+<tr><td class='line'>100</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define FP_ILOGB0   (-2147483647 - 1)</td></tr>
+<tr><td class='line'>101</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define FP_ILOGBNAN (-2147483647 - 1)</td></tr>
+<tr><td class='line'>102</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>103</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* Bitmasks for the math_errhandling macro.  */</td></tr>
+<tr><td class='line'>104</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define MATH_ERRNO  1   /* errno set by math functions.  */</td></tr>
+<tr><td class='line'>105</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define MATH_ERREXCEPT  2   /* Exceptions raised by math functions.  */</td></tr>
+<tr><td class='line'>106</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>107</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define math_errhandling (__math_errhandling())</td></tr>
+<tr><td class='line'>108</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern unsigned int __math_errhandling ( void );</td></tr>
+<tr><td class='line'>109</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>110</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/********************************************************************************</td></tr>
+<tr><td class='line'>111</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*                                                                               *</td></tr>
+<tr><td class='line'>112</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*                              Inquiry macros                                   *</td></tr>
+<tr><td class='line'>113</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*                                                                               *</td></tr>
+<tr><td class='line'>114</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*   fpclassify      Returns one of the FP_Å values.                             *</td></tr>
+<tr><td class='line'>115</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*   isnormal        Non-zero if and only if the argument x is normalized.       *</td></tr>
+<tr><td class='line'>116</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*   isfinite        Non-zero if and only if the argument x is finite.           *</td></tr>
+<tr><td class='line'>117</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*   isnan           Non-zero if and only if the argument x is a NaN.            *</td></tr>
+<tr><td class='line'>118</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*   signbit         Non-zero if and only if the sign of the argument x is       *</td></tr>
+<tr><td class='line'>119</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*                   negative.  This includes, NaNs, infinities and zeros.       *</td></tr>
+<tr><td class='line'>120</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*                                                                               *</td></tr>
+<tr><td class='line'>121</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>********************************************************************************/</td></tr>
+<tr><td class='line'>122</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>123</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define fpclassify(x)   \</td></tr>
+<tr><td class='line'>124</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    (   sizeof (x) == sizeof(float )    ?   __fpclassifyf((float)(x))   \</td></tr>
+<tr><td class='line'>125</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    :   sizeof (x) == sizeof(double)    ?   __fpclassifyd((double)(x))  \</td></tr>
+<tr><td class='line'>126</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>                                        :   __fpclassify ((long double)(x)))</td></tr>
+<tr><td class='line'>127</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>128</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern int __fpclassifyf(float      );</td></tr>
+<tr><td class='line'>129</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern int __fpclassifyd(double     );</td></tr>
+<tr><td class='line'>130</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern int __fpclassify (long double);</td></tr>
+<tr><td class='line'>131</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>132</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if defined( __GNUC__ ) &amp;&amp; 0 == __FINITE_MATH_ONLY__ </td></tr>
+<tr><td class='line'>133</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    /*  Yes, that's right. You only get the fast iswhatever() macros if you do NOT turn on -ffast-math.  */</td></tr>
+<tr><td class='line'>134</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    /*  These inline functions require the compiler to be compiling to standard in order to work.        */</td></tr>
+<tr><td class='line'>135</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    /*  -ffast-math, among other things, implies that NaNs don't happen. The compiler can in that case   */</td></tr>
+<tr><td class='line'>136</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    /*  optimize x != x to be false always, wheras it would be true for NaNs. That breaks __inline_isnan() */</td></tr>
+<tr><td class='line'>137</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    /*  below.                                                                                           */</td></tr>
+<tr><td class='line'>138</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define isnormal(x) \</td></tr>
+<tr><td class='line'>139</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        (   sizeof (x) == sizeof(float )    ?   __inline_isnormalf((float)(x))  \</td></tr>
+<tr><td class='line'>140</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        :   sizeof (x) == sizeof(double)    ?   __inline_isnormald((double)(x)) \</td></tr>
+<tr><td class='line'>141</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>                                            :   __inline_isnormal ((long double)(x)))</td></tr>
+<tr><td class='line'>142</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>143</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define isfinite(x) \</td></tr>
+<tr><td class='line'>144</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        (   sizeof (x) == sizeof(float )    ?   __inline_isfinitef((float)(x))  \</td></tr>
+<tr><td class='line'>145</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        :   sizeof (x) == sizeof(double)    ?   __inline_isfinited((double)(x)) \</td></tr>
+<tr><td class='line'>146</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>                                            :   __inline_isfinite ((long double)(x)))</td></tr>
+<tr><td class='line'>147</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>148</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define isinf(x)    \</td></tr>
+<tr><td class='line'>149</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        (   sizeof (x) == sizeof(float )    ?   __inline_isinff((float)(x)) \</td></tr>
+<tr><td class='line'>150</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        :   sizeof (x) == sizeof(double)    ?   __inline_isinfd((double)(x))    \</td></tr>
+<tr><td class='line'>151</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>                                            :   __inline_isinf ((long double)(x)))</td></tr>
+<tr><td class='line'>152</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>153</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define isnan(x)    \</td></tr>
+<tr><td class='line'>154</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        (   sizeof (x) == sizeof(float )    ?   __inline_isnanf((float)(x)) \</td></tr>
+<tr><td class='line'>155</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        :   sizeof (x) == sizeof(double)    ?   __inline_isnand((double)(x))    \</td></tr>
+<tr><td class='line'>156</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>                                            :   __inline_isnan ((long double)(x)))</td></tr>
+<tr><td class='line'>157</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>158</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define signbit(x)  \</td></tr>
+<tr><td class='line'>159</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        (   sizeof (x) == sizeof(float )    ?   __inline_signbitf((float)(x))   \</td></tr>
+<tr><td class='line'>160</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        :   sizeof (x) == sizeof(double)    ?   __inline_signbitd((double)(x))  \</td></tr>
+<tr><td class='line'>161</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>                                            :   __inline_signbit((long double)(x)))</td></tr>
+<tr><td class='line'>162</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>163</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    static __inline__  int __inline_isfinitef   (float      ) __MATH_H_ALWAYS_INLINE__;</td></tr>
+<tr><td class='line'>164</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    static __inline__  int __inline_isfinited   (double     ) __MATH_H_ALWAYS_INLINE__;</td></tr>
+<tr><td class='line'>165</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    static __inline__  int __inline_isfinite    (long double) __MATH_H_ALWAYS_INLINE__;</td></tr>
+<tr><td class='line'>166</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    static __inline__  int __inline_isinff      (float      ) __MATH_H_ALWAYS_INLINE__;</td></tr>
+<tr><td class='line'>167</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    static __inline__  int __inline_isinfd      (double     ) __MATH_H_ALWAYS_INLINE__;</td></tr>
+<tr><td class='line'>168</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    static __inline__  int __inline_isinf       (long double) __MATH_H_ALWAYS_INLINE__;</td></tr>
+<tr><td class='line'>169</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    static __inline__  int __inline_isnanf      (float      ) __MATH_H_ALWAYS_INLINE__;</td></tr>
+<tr><td class='line'>170</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    static __inline__  int __inline_isnand      (double     ) __MATH_H_ALWAYS_INLINE__;</td></tr>
+<tr><td class='line'>171</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    static __inline__  int __inline_isnan       (long double) __MATH_H_ALWAYS_INLINE__;</td></tr>
+<tr><td class='line'>172</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    static __inline__  int __inline_isnormalf    (float      ) __MATH_H_ALWAYS_INLINE__;</td></tr>
+<tr><td class='line'>173</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    static __inline__  int __inline_isnormald    (double     ) __MATH_H_ALWAYS_INLINE__;</td></tr>
+<tr><td class='line'>174</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    static __inline__  int __inline_isnormal     (long double) __MATH_H_ALWAYS_INLINE__;</td></tr>
+<tr><td class='line'>175</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    static __inline__  int __inline_signbitf     (float      ) __MATH_H_ALWAYS_INLINE__;</td></tr>
+<tr><td class='line'>176</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    static __inline__  int __inline_signbitd     (double     ) __MATH_H_ALWAYS_INLINE__;</td></tr>
+<tr><td class='line'>177</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    static __inline__  int __inline_signbit      (long double) __MATH_H_ALWAYS_INLINE__;</td></tr>
+<tr><td class='line'>178</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
+<tr><td class='line'>179</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    static __inline__  int __inline_isinff( float __x ) { return __builtin_fabsf(__x) == __builtin_inff(); }</td></tr>
+<tr><td class='line'>180</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    static __inline__  int __inline_isinfd( double __x ) { return __builtin_fabs(__x) == __builtin_inf(); }</td></tr>
+<tr><td class='line'>181</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    static __inline__  int __inline_isinf( long double __x ) { return __builtin_fabsl(__x) == __builtin_infl(); }</td></tr>
+<tr><td class='line'>182</td><td class='branch'><span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span><span><del title="Branch 2 was never taken">-</del><del title="Branch 3 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>    static __inline__  int __inline_isfinitef( float __x ) { return __x == __x &amp;&amp; __builtin_fabsf(__x) != __builtin_inff(); }</td></tr>
+<tr><td class='line'>183</td><td class='branch'><span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span><span><del title="Branch 2 was never taken">-</del><del title="Branch 3 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>    static __inline__  int __inline_isfinited( double __x ) { return __x == __x &amp;&amp; __builtin_fabs(__x) != __builtin_inf(); }</td></tr>
+<tr><td class='line'>184</td><td class='branch'><span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span><span><del title="Branch 2 was never taken">-</del><del title="Branch 3 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>    static __inline__  int __inline_isfinite( long double __x ) { return __x == __x &amp;&amp; __builtin_fabsl(__x) != __builtin_infl(); }</td></tr>
+<tr><td class='line'>185</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    static __inline__  int __inline_isnanf( float __x ) { return __x != __x; }</td></tr>
+<tr><td class='line'>186</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    static __inline__  int __inline_isnand( double __x ) { return __x != __x; }</td></tr>
+<tr><td class='line'>187</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    static __inline__  int __inline_isnan( long double __x ) { return __x != __x; }</td></tr>
+<tr><td class='line'>188</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    static __inline__  int __inline_signbitf( float __x ) { union{ float __f; unsigned int __u; }__u; __u.__f = __x; return (int)(__u.__u &gt;&gt; 31); }</td></tr>
+<tr><td class='line'>189</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    static __inline__  int __inline_signbitd( double __x ) { union{ double __f; unsigned int __u[2]; }__u; __u.__f = __x; return (int)(__u.__u[1] &gt;&gt; 31); }</td></tr>
+<tr><td class='line'>190</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    static __inline__  int __inline_signbit( long double __x ){ union{ long double __ld; struct{ unsigned int __m[2]; short __sexp; }__p; }__u; __u.__ld = __x; return (int) (((unsigned short) __u.__p.__sexp) &gt;&gt; 15); } </td></tr>
+<tr><td class='line'>191</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span><span><del title="Branch 2 was never taken">-</del><del title="Branch 3 was never taken">-</del></span><span><del title="Branch 4 was never taken">-</del><del title="Branch 5 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>    static __inline__  int __inline_isnormalf( float __x ) { float fabsf = __builtin_fabsf(__x); if( __x != __x ) return 0; return fabsf &lt; __builtin_inff() &amp;&amp; fabsf &gt;= __FLT_MIN__; }  </td></tr>
+<tr><td class='line'>192</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span><span><del title="Branch 2 was never taken">-</del><del title="Branch 3 was never taken">-</del></span><span><del title="Branch 4 was never taken">-</del><del title="Branch 5 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>    static __inline__  int __inline_isnormald( double __x ) { double fabsf = __builtin_fabs(__x); if( __x != __x ) return 0; return fabsf &lt; __builtin_inf() &amp;&amp; fabsf &gt;= __DBL_MIN__; }  </td></tr>
+<tr><td class='line'>193</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><del title="Branch 1 was never taken">-</del></span><span><del title="Branch 2 was never taken">-</del><del title="Branch 3 was never taken">-</del></span><span><del title="Branch 4 was never taken">-</del><del title="Branch 5 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>    static __inline__  int __inline_isnormal( long double __x ) { long double fabsf = __builtin_fabsl(__x); if( __x != __x ) return 0; return fabsf &lt; __builtin_infl() &amp;&amp; fabsf &gt;= __LDBL_MIN__; }  </td></tr>
+<tr><td class='line'>194</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
+<tr><td class='line'>195</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#else</td></tr>
+<tr><td class='line'>196</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>197</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define isnormal(x) \</td></tr>
+<tr><td class='line'>198</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        (   sizeof (x) == sizeof(float )    ?   __isnormalf((float)(x)) \</td></tr>
+<tr><td class='line'>199</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        :   sizeof (x) == sizeof(double)    ?   __isnormald((double)(x))    \</td></tr>
+<tr><td class='line'>200</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>                                            :   __isnormal ((long double)(x)))</td></tr>
+<tr><td class='line'>201</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>202</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define isfinite(x) \</td></tr>
+<tr><td class='line'>203</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        (   sizeof (x) == sizeof(float )    ?   __isfinitef((float)(x)) \</td></tr>
+<tr><td class='line'>204</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        :   sizeof (x) == sizeof(double)    ?   __isfinited((double)(x))    \</td></tr>
+<tr><td class='line'>205</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>                                            :   __isfinite ((long double)(x)))</td></tr>
+<tr><td class='line'>206</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>207</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define isinf(x)    \</td></tr>
+<tr><td class='line'>208</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        (   sizeof (x) == sizeof(float )    ?   __isinff((float)(x))    \</td></tr>
+<tr><td class='line'>209</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        :   sizeof (x) == sizeof(double)    ?   __isinfd((double)(x))   \</td></tr>
+<tr><td class='line'>210</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>                                            :   __isinf ((long double)(x)))</td></tr>
+<tr><td class='line'>211</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>212</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define isnan(x)    \</td></tr>
+<tr><td class='line'>213</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        (   sizeof (x) == sizeof(float )    ?   __isnanf((float)(x))    \</td></tr>
+<tr><td class='line'>214</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        :   sizeof (x) == sizeof(double)    ?   __isnand((double)(x))   \</td></tr>
+<tr><td class='line'>215</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>                                            :   __isnan ((long double)(x)))</td></tr>
+<tr><td class='line'>216</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>217</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #define signbit(x)  \</td></tr>
+<tr><td class='line'>218</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        (   sizeof (x) == sizeof(float )    ?   __signbitf((float)(x))  \</td></tr>
+<tr><td class='line'>219</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        :   sizeof (x) == sizeof(double)    ?   __signbitd((double)(x)) \</td></tr>
+<tr><td class='line'>220</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>                                            :   __signbitl((long double)(x)))</td></tr>
+<tr><td class='line'>221</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>222</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>223</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern int __isnormalf  (float      );</td></tr>
+<tr><td class='line'>224</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern int __isnormald  (double     );</td></tr>
+<tr><td class='line'>225</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern int __isnormal   (long double);</td></tr>
+<tr><td class='line'>226</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>227</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern int __isfinitef  (float      );</td></tr>
+<tr><td class='line'>228</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern int __isfinited  (double     );</td></tr>
+<tr><td class='line'>229</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern int __isfinite   (long double);</td></tr>
+<tr><td class='line'>230</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>231</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern int __isinff     (float      );</td></tr>
+<tr><td class='line'>232</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern int __isinfd     (double     );</td></tr>
+<tr><td class='line'>233</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern int __isinf      (long double);</td></tr>
+<tr><td class='line'>234</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>235</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern int __isnanf     (float      );</td></tr>
+<tr><td class='line'>236</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern int __isnand     (double     );</td></tr>
+<tr><td class='line'>237</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern int __isnan      (long double);</td></tr>
+<tr><td class='line'>238</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>239</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern int __signbitf   (float      );</td></tr>
+<tr><td class='line'>240</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern int __signbitd   (double     );</td></tr>
+<tr><td class='line'>241</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern int __signbitl   (long double);</td></tr>
+<tr><td class='line'>242</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>243</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif</td></tr>
+<tr><td class='line'>244</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>245</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>246</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>247</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/********************************************************************************</td></tr>
+<tr><td class='line'>248</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*                                                                               *</td></tr>
+<tr><td class='line'>249</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*                              Math Functions                                   *</td></tr>
+<tr><td class='line'>250</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>*                                                                               *</td></tr>
+<tr><td class='line'>251</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>********************************************************************************/</td></tr>
+<tr><td class='line'>252</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>253</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  acos( double );</td></tr>
+<tr><td class='line'>254</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  acosf( float );</td></tr>
+<tr><td class='line'>255</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>256</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  asin( double );</td></tr>
+<tr><td class='line'>257</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  asinf( float );</td></tr>
+<tr><td class='line'>258</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>259</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  atan( double );</td></tr>
+<tr><td class='line'>260</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  atanf( float );</td></tr>
+<tr><td class='line'>261</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>262</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  atan2( double, double );</td></tr>
+<tr><td class='line'>263</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  atan2f( float, float );</td></tr>
+<tr><td class='line'>264</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>265</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  cos( double );</td></tr>
+<tr><td class='line'>266</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  cosf( float );</td></tr>
+<tr><td class='line'>267</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>268</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  sin( double );</td></tr>
+<tr><td class='line'>269</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  sinf( float );</td></tr>
+<tr><td class='line'>270</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>271</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  tan( double );</td></tr>
+<tr><td class='line'>272</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  tanf( float );</td></tr>
+<tr><td class='line'>273</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>274</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  acosh( double );</td></tr>
+<tr><td class='line'>275</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  acoshf( float );</td></tr>
+<tr><td class='line'>276</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>277</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  asinh( double );</td></tr>
+<tr><td class='line'>278</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  asinhf( float );</td></tr>
+<tr><td class='line'>279</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>280</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  atanh( double );</td></tr>
+<tr><td class='line'>281</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  atanhf( float );</td></tr>
+<tr><td class='line'>282</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>283</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  cosh( double );</td></tr>
+<tr><td class='line'>284</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  coshf( float );</td></tr>
+<tr><td class='line'>285</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>286</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  sinh( double );</td></tr>
+<tr><td class='line'>287</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  sinhf( float );</td></tr>
+<tr><td class='line'>288</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>289</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  tanh( double );</td></tr>
+<tr><td class='line'>290</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  tanhf( float );</td></tr>
+<tr><td class='line'>291</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>292</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double exp ( double );</td></tr>
+<tr><td class='line'>293</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float expf ( float );</td></tr>
+<tr><td class='line'>294</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>295</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double exp2 ( double ); </td></tr>
+<tr><td class='line'>296</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float exp2f ( float );</td></tr>
+<tr><td class='line'>297</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>298</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double expm1 ( double ); </td></tr>
+<tr><td class='line'>299</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float expm1f ( float );</td></tr>
+<tr><td class='line'>300</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>301</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double log ( double );</td></tr>
+<tr><td class='line'>302</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float logf ( float );</td></tr>
+<tr><td class='line'>303</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>304</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double log10 ( double );</td></tr>
+<tr><td class='line'>305</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float log10f ( float );</td></tr>
+<tr><td class='line'>306</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>307</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double log2 ( double );</td></tr>
+<tr><td class='line'>308</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float log2f ( float );</td></tr>
+<tr><td class='line'>309</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>310</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double log1p ( double );</td></tr>
+<tr><td class='line'>311</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float log1pf ( float );</td></tr>
+<tr><td class='line'>312</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>313</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double logb ( double );</td></tr>
+<tr><td class='line'>314</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float logbf ( float );</td></tr>
+<tr><td class='line'>315</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>316</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double modf ( double, double * );</td></tr>
+<tr><td class='line'>317</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float modff ( float, float * );</td></tr>
+<tr><td class='line'>318</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>319</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double ldexp ( double, int );</td></tr>
+<tr><td class='line'>320</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float ldexpf ( float, int );</td></tr>
+<tr><td class='line'>321</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>322</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double frexp ( double, int * );</td></tr>
+<tr><td class='line'>323</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float frexpf ( float, int * );</td></tr>
+<tr><td class='line'>324</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>325</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern int ilogb ( double );</td></tr>
+<tr><td class='line'>326</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern int ilogbf ( float );</td></tr>
+<tr><td class='line'>327</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>328</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double scalbn ( double, int );</td></tr>
+<tr><td class='line'>329</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float scalbnf ( float, int );</td></tr>
+<tr><td class='line'>330</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>331</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double scalbln ( double, long int );</td></tr>
+<tr><td class='line'>332</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float scalblnf ( float, long int );</td></tr>
+<tr><td class='line'>333</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>334</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  fabs( double );</td></tr>
+<tr><td class='line'>335</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  fabsf( float );</td></tr>
+<tr><td class='line'>336</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>337</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  cbrt( double );</td></tr>
+<tr><td class='line'>338</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  cbrtf( float );</td></tr>
+<tr><td class='line'>339</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>340</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double hypot ( double, double );</td></tr>
+<tr><td class='line'>341</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float hypotf ( float, float );</td></tr>
+<tr><td class='line'>342</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>343</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double pow ( double, double );</td></tr>
+<tr><td class='line'>344</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float powf ( float, float );</td></tr>
+<tr><td class='line'>345</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>346</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  sqrt( double );</td></tr>
+<tr><td class='line'>347</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  sqrtf( float );</td></tr>
+<tr><td class='line'>348</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>349</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  erf( double );</td></tr>
+<tr><td class='line'>350</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  erff( float );</td></tr>
+<tr><td class='line'>351</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>352</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  erfc( double );</td></tr>
+<tr><td class='line'>353</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  erfcf( float );</td></tr>
+<tr><td class='line'>354</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>355</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/*  lgamma and lgammaf are not thread-safe.  The thread-safe variants</td></tr>
+<tr><td class='line'>356</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *  lgamma_r and lgammaf_r are available on OS X 10.6 and later.</td></tr>
+<tr><td class='line'>357</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *</td></tr>
+<tr><td class='line'>358</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *  To use the thread-safe variants, you must define the _REENTRANT symbol.</td></tr>
+<tr><td class='line'>359</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> */</td></tr>
+<tr><td class='line'>360</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  lgamma( double );</td></tr>
+<tr><td class='line'>361</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  lgammaf( float );</td></tr>
+<tr><td class='line'>362</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>363</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double  tgamma( double );</td></tr>
+<tr><td class='line'>364</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float  tgammaf( float );</td></tr>
+<tr><td class='line'>365</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>366</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double ceil ( double );</td></tr>
+<tr><td class='line'>367</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float ceilf ( float );</td></tr>
+<tr><td class='line'>368</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>369</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double floor ( double );</td></tr>
+<tr><td class='line'>370</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float floorf ( float );</td></tr>
+<tr><td class='line'>371</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>372</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double nearbyint ( double );</td></tr>
+<tr><td class='line'>373</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float nearbyintf ( float );</td></tr>
+<tr><td class='line'>374</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>375</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double rint ( double );</td></tr>
+<tr><td class='line'>376</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float rintf ( float );</td></tr>
+<tr><td class='line'>377</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>378</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long int lrint ( double );</td></tr>
+<tr><td class='line'>379</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long int lrintf ( float );</td></tr>
+<tr><td class='line'>380</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>381</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double round ( double );</td></tr>
+<tr><td class='line'>382</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float roundf ( float );</td></tr>
+<tr><td class='line'>383</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>384</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long int lround ( double );</td></tr>
+<tr><td class='line'>385</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long int lroundf ( float );</td></tr>
+<tr><td class='line'>386</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>387</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if ( defined (__STDC_VERSION__) &amp;&amp; __STDC_VERSION__ &gt;= 199901L ) || ! defined( __STRICT_ANSI__ )  || ! defined( __GNUC__ )</td></tr>
+<tr><td class='line'>388</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>389</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    /* long long is not part of C90. Make sure you are passing -std=c99 or -std=gnu99 or better if you need this. */</td></tr>
+<tr><td class='line'>390</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern long long int llrint ( double );</td></tr>
+<tr><td class='line'>391</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern long long int llrintf ( float );</td></tr>
+<tr><td class='line'>392</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>393</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern long long int llround ( double );</td></tr>
+<tr><td class='line'>394</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern long long int llroundf ( float );</td></tr>
+<tr><td class='line'>395</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>396</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* #if ( defined (__STDC_VERSION__) &amp;&amp; __STDC_VERSION__ &gt;= 199901L ) || ! defined( __STRICT_ANSI__ )  || ! defined( __GNUC__ ) */</td></tr>
+<tr><td class='line'>397</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>398</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double trunc ( double );</td></tr>
+<tr><td class='line'>399</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float truncf ( float );</td></tr>
+<tr><td class='line'>400</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>401</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double fmod ( double, double );</td></tr>
+<tr><td class='line'>402</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float fmodf ( float, float );</td></tr>
+<tr><td class='line'>403</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>404</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double remainder ( double, double );</td></tr>
+<tr><td class='line'>405</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float remainderf ( float, float );</td></tr>
+<tr><td class='line'>406</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>407</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double remquo ( double, double, int * );</td></tr>
+<tr><td class='line'>408</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float remquof ( float, float, int * );</td></tr>
+<tr><td class='line'>409</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>410</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double copysign ( double, double );</td></tr>
+<tr><td class='line'>411</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float copysignf ( float, float );</td></tr>
+<tr><td class='line'>412</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>413</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double nan( const char * );</td></tr>
+<tr><td class='line'>414</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float nanf( const char * );</td></tr>
+<tr><td class='line'>415</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>416</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double nextafter ( double, double );</td></tr>
+<tr><td class='line'>417</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float nextafterf ( float, float );</td></tr>
+<tr><td class='line'>418</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>419</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double fdim ( double, double );</td></tr>
+<tr><td class='line'>420</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float fdimf ( float, float );</td></tr>
+<tr><td class='line'>421</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>422</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double fmax ( double, double );</td></tr>
+<tr><td class='line'>423</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float fmaxf ( float, float );</td></tr>
+<tr><td class='line'>424</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>425</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double fmin ( double, double );</td></tr>
+<tr><td class='line'>426</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float fminf ( float, float );</td></tr>
+<tr><td class='line'>427</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>428</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double fma ( double, double, double );</td></tr>
+<tr><td class='line'>429</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float fmaf ( float, float, float );</td></tr>
+<tr><td class='line'>430</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>431</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double acosl(long double);</td></tr>
+<tr><td class='line'>432</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double asinl(long double);</td></tr>
+<tr><td class='line'>433</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double atanl(long double);</td></tr>
+<tr><td class='line'>434</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double atan2l(long double, long double);</td></tr>
+<tr><td class='line'>435</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double cosl(long double);</td></tr>
+<tr><td class='line'>436</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double sinl(long double);</td></tr>
+<tr><td class='line'>437</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double tanl(long double);</td></tr>
+<tr><td class='line'>438</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double acoshl(long double);</td></tr>
+<tr><td class='line'>439</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double asinhl(long double);</td></tr>
+<tr><td class='line'>440</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double atanhl(long double);</td></tr>
+<tr><td class='line'>441</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double coshl(long double);</td></tr>
+<tr><td class='line'>442</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double sinhl(long double);</td></tr>
+<tr><td class='line'>443</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double tanhl(long double);</td></tr>
+<tr><td class='line'>444</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double expl(long double);</td></tr>
+<tr><td class='line'>445</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double exp2l(long double);</td></tr>
+<tr><td class='line'>446</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double expm1l(long double);</td></tr>
+<tr><td class='line'>447</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double logl(long double);</td></tr>
+<tr><td class='line'>448</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double log10l(long double);</td></tr>
+<tr><td class='line'>449</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double log2l(long double);</td></tr>
+<tr><td class='line'>450</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double log1pl(long double);</td></tr>
+<tr><td class='line'>451</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double logbl(long double);</td></tr>
+<tr><td class='line'>452</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double modfl(long double, long double *);</td></tr>
+<tr><td class='line'>453</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double ldexpl(long double, int);</td></tr>
+<tr><td class='line'>454</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double frexpl(long double, int *);</td></tr>
+<tr><td class='line'>455</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern int ilogbl(long double);</td></tr>
+<tr><td class='line'>456</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double scalbnl(long double, int);</td></tr>
+<tr><td class='line'>457</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double scalblnl(long double, long int);</td></tr>
+<tr><td class='line'>458</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double fabsl(long double);</td></tr>
+<tr><td class='line'>459</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double cbrtl(long double);</td></tr>
+<tr><td class='line'>460</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double hypotl(long double, long double);</td></tr>
+<tr><td class='line'>461</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double powl(long double, long double);</td></tr>
+<tr><td class='line'>462</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double sqrtl(long double);</td></tr>
+<tr><td class='line'>463</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double erfl(long double);</td></tr>
+<tr><td class='line'>464</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double erfcl(long double);</td></tr>
+<tr><td class='line'>465</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
+<tr><td class='line'>466</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/*  lgammal is not thread-safe.</td></tr>
+<tr><td class='line'>467</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *  The thread-safe variant lgammal_r is available on OS X 10.6 and later.</td></tr>
+<tr><td class='line'>468</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *</td></tr>
+<tr><td class='line'>469</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *  To use the thread-safe variant, you must define the _REENTRANT symbol.</td></tr>
+<tr><td class='line'>470</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> */</td></tr>
+<tr><td class='line'>471</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double lgammal(long double);</td></tr>
+<tr><td class='line'>472</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
+<tr><td class='line'>473</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double tgammal(long double);</td></tr>
+<tr><td class='line'>474</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double ceill(long double);</td></tr>
+<tr><td class='line'>475</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double floorl(long double);</td></tr>
+<tr><td class='line'>476</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double nearbyintl(long double);</td></tr>
+<tr><td class='line'>477</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double rintl(long double);</td></tr>
+<tr><td class='line'>478</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long int lrintl(long double);</td></tr>
+<tr><td class='line'>479</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double roundl(long double);</td></tr>
+<tr><td class='line'>480</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long int lroundl(long double);</td></tr>
+<tr><td class='line'>481</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>482</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if ( defined (__STDC_VERSION__) &amp;&amp; __STDC_VERSION__ &gt;= 199901L ) || ! defined( __STRICT_ANSI__ )  || ! defined( __GNUC__ )</td></tr>
+<tr><td class='line'>483</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    /* long long is not part of C90. Make sure you are passing -std=c99 or -std=gnu99 or better if you need this. */</td></tr>
+<tr><td class='line'>484</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern long long int llrintl(long double);</td></tr>
+<tr><td class='line'>485</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern long long int llroundl(long double);</td></tr>
+<tr><td class='line'>486</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* #if ( defined (__STDC_VERSION__) &amp;&amp; __STDC_VERSION__ &gt;= 199901L ) || ! defined( __STRICT_ANSI__ )  || ! defined( __GNUC__ ) */</td></tr>
+<tr><td class='line'>487</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>488</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double truncl(long double);</td></tr>
+<tr><td class='line'>489</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double fmodl(long double, long double);</td></tr>
+<tr><td class='line'>490</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double remainderl(long double, long double);</td></tr>
+<tr><td class='line'>491</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double remquol(long double, long double, int *);</td></tr>
+<tr><td class='line'>492</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double copysignl(long double, long double);</td></tr>
+<tr><td class='line'>493</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double nanl(const char *);</td></tr>
+<tr><td class='line'>494</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double nextafterl(long double, long double);</td></tr>
+<tr><td class='line'>495</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double nexttoward(double, long double);</td></tr>
+<tr><td class='line'>496</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float nexttowardf(float, long double);</td></tr>
+<tr><td class='line'>497</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double nexttowardl(long double, long double);</td></tr>
+<tr><td class='line'>498</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double fdiml(long double, long double);</td></tr>
+<tr><td class='line'>499</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double fmaxl(long double, long double);</td></tr>
+<tr><td class='line'>500</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double fminl(long double, long double);</td></tr>
+<tr><td class='line'>501</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double fmal(long double, long double, long double);</td></tr>
+<tr><td class='line'>502</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>503</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define isgreater(x, y) __builtin_isgreater ((x),(y))</td></tr>
+<tr><td class='line'>504</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define isgreaterequal(x, y) __builtin_isgreaterequal ((x),(y))</td></tr>
+<tr><td class='line'>505</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define isless(x, y) __builtin_isless ((x),(y))</td></tr>
+<tr><td class='line'>506</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define islessequal(x, y) __builtin_islessequal ((x),(y))</td></tr>
+<tr><td class='line'>507</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define islessgreater(x, y) __builtin_islessgreater ((x),(y))</td></tr>
+<tr><td class='line'>508</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define isunordered(x, y) __builtin_isunordered ((x),(y))</td></tr>
+<tr><td class='line'>509</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>510</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double       __inf( void );</td></tr>
+<tr><td class='line'>511</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float        __inff( void );</td></tr>
+<tr><td class='line'>512</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long double  __infl( void );</td></tr>
+<tr><td class='line'>513</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern float        __nan( void ); /* 10.3 (and later) must retain in ABI for backward compatability */</td></tr>
+<tr><td class='line'>514</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>515</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if !defined(_ANSI_SOURCE)</td></tr>
+<tr><td class='line'>516</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double j0 ( double );</td></tr>
+<tr><td class='line'>517</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>518</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double j1 ( double );</td></tr>
+<tr><td class='line'>519</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>520</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double jn ( int, double );</td></tr>
+<tr><td class='line'>521</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>522</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double y0 ( double );</td></tr>
+<tr><td class='line'>523</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>524</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double y1 ( double );</td></tr>
+<tr><td class='line'>525</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>526</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double yn ( int, double );</td></tr>
+<tr><td class='line'>527</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>528</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double scalb ( double, double ); </td></tr>
+<tr><td class='line'>529</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>530</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>531</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define M_E         2.71828182845904523536028747135266250   /* e */</td></tr>
+<tr><td class='line'>532</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define M_LOG2E     1.44269504088896340735992468100189214   /* log 2e */</td></tr>
+<tr><td class='line'>533</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define M_LOG10E    0.434294481903251827651128918916605082  /* log 10e */</td></tr>
+<tr><td class='line'>534</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define M_LN2       0.693147180559945309417232121458176568  /* log e2 */</td></tr>
+<tr><td class='line'>535</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define M_LN10      2.30258509299404568401799145468436421   /* log e10 */</td></tr>
+<tr><td class='line'>536</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define M_PI        3.14159265358979323846264338327950288   /* pi */</td></tr>
+<tr><td class='line'>537</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define M_PI_2      1.57079632679489661923132169163975144   /* pi/2 */</td></tr>
+<tr><td class='line'>538</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define M_PI_4      0.785398163397448309615660845819875721  /* pi/4 */</td></tr>
+<tr><td class='line'>539</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define M_1_PI      0.318309886183790671537767526745028724  /* 1/pi */</td></tr>
+<tr><td class='line'>540</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define M_2_PI      0.636619772367581343075535053490057448  /* 2/pi */</td></tr>
+<tr><td class='line'>541</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define M_2_SQRTPI  1.12837916709551257389615890312154517   /* 2/sqrt(pi) */</td></tr>
+<tr><td class='line'>542</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define M_SQRT2     1.41421356237309504880168872420969808   /* sqrt(2) */</td></tr>
+<tr><td class='line'>543</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define M_SQRT1_2   0.707106781186547524400844362104849039  /* 1/sqrt(2) */</td></tr>
+<tr><td class='line'>544</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>545</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define MAXFLOAT    ((float)3.40282346638528860e+38)</td></tr>
+<tr><td class='line'>546</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern int signgam;     /* required for unix 2003 */</td></tr>
+<tr><td class='line'>547</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>548</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>549</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* !defined(_ANSI_SOURCE) */</td></tr>
+<tr><td class='line'>550</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>551</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if !defined(__NOEXTENSIONS__) &amp;&amp; (!defined(_POSIX_C_SOURCE) || defined(_DARWIN_C_SOURCE))</td></tr>
+<tr><td class='line'>552</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define __WANT_EXTENSIONS__</td></tr>
+<tr><td class='line'>553</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif</td></tr>
+<tr><td class='line'>554</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>555</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __WANT_EXTENSIONS__</td></tr>
+<tr><td class='line'>556</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>557</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define FP_SNAN     FP_NAN</td></tr>
+<tr><td class='line'>558</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define FP_QNAN     FP_NAN</td></tr>
+<tr><td class='line'>559</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>560</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long int rinttol ( double );     /* Legacy API: please use C99 lrint() instead. */</td></tr>
+<tr><td class='line'>561</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>562</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern long int roundtol ( double );    /* Legacy API: please use C99 lround() instead. */</td></tr>
+<tr><td class='line'>563</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>564</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/*</td></tr>
+<tr><td class='line'>565</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * XOPEN/SVID</td></tr>
+<tr><td class='line'>566</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> */</td></tr>
+<tr><td class='line'>567</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if !defined(_ANSI_SOURCE) &amp;&amp; (!defined(_POSIX_C_SOURCE) || defined(_DARWIN_C_SOURCE))</td></tr>
+<tr><td class='line'>568</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if (!defined(_XOPEN_SOURCE) || defined(_DARWIN_C_SOURCE))</td></tr>
+<tr><td class='line'>569</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if !defined(__cplusplus)</td></tr>
+<tr><td class='line'>570</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* used by matherr below */</td></tr>
+<tr><td class='line'>571</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>struct exception {</td></tr>
+<tr><td class='line'>572</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    int type;</td></tr>
+<tr><td class='line'>573</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    char *name;</td></tr>
+<tr><td class='line'>574</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    double arg1;</td></tr>
+<tr><td class='line'>575</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    double arg2;</td></tr>
+<tr><td class='line'>576</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    double retval;</td></tr>
+<tr><td class='line'>577</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>};</td></tr>
+<tr><td class='line'>578</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif</td></tr>
+<tr><td class='line'>579</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>580</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define HUGE        MAXFLOAT</td></tr>
+<tr><td class='line'>581</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>582</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* </td></tr>
+<tr><td class='line'>583</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * set X_TLOSS = pi*2**52, which is possibly defined in &lt;values.h&gt;</td></tr>
+<tr><td class='line'>584</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * (one may replace the following line by &quot;#include &lt;values.h&gt;&quot;)</td></tr>
+<tr><td class='line'>585</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> */</td></tr>
+<tr><td class='line'>586</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>587</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define X_TLOSS     1.41484755040568800000e+16 </td></tr>
+<tr><td class='line'>588</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>589</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define DOMAIN      1</td></tr>
+<tr><td class='line'>590</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define SING        2</td></tr>
+<tr><td class='line'>591</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define OVERFLOW    3</td></tr>
+<tr><td class='line'>592</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define UNDERFLOW   4</td></tr>
+<tr><td class='line'>593</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define TLOSS       5</td></tr>
+<tr><td class='line'>594</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define PLOSS       6</td></tr>
+<tr><td class='line'>595</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>596</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* (!_XOPEN_SOURCE || _DARWIN_C_SOURCE) */</td></tr>
+<tr><td class='line'>597</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* !_ANSI_SOURCE &amp;&amp; (!_POSIX_C_SOURCE || _DARWIN_C_SOURCE) */</td></tr>
+<tr><td class='line'>598</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>599</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if !defined( __STRICT_ANSI__) &amp;&amp; !defined(_ANSI_SOURCE) &amp;&amp; (!defined(_POSIX_C_SOURCE) || defined(_DARWIN_C_SOURCE))</td></tr>
+<tr><td class='line'>600</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern int finite ( double );           /* Legacy API: please use C99 isfinite() instead. */</td></tr>
+<tr><td class='line'>601</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>602</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double gamma ( double );         /* Legacy API: please use C99 tgamma() instead. */</td></tr>
+<tr><td class='line'>603</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>604</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if (!defined(_XOPEN_SOURCE) || defined(_DARWIN_C_SOURCE))</td></tr>
+<tr><td class='line'>605</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>606</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if !defined(__cplusplus)</td></tr>
+<tr><td class='line'>607</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern int matherr ( struct exception * );</td></tr>
+<tr><td class='line'>608</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif</td></tr>
+<tr><td class='line'>609</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>610</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/*</td></tr>
+<tr><td class='line'>611</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * IEEE Test Vector</td></tr>
+<tr><td class='line'>612</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> */</td></tr>
+<tr><td class='line'>613</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double significand ( double );</td></tr>
+<tr><td class='line'>614</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>615</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/*</td></tr>
+<tr><td class='line'>616</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * BSD math library entry points</td></tr>
+<tr><td class='line'>617</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> */</td></tr>
+<tr><td class='line'>618</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>extern double drem ( double, double );  /* Legacy API: please use C99 remainder() instead. */</td></tr>
+<tr><td class='line'>619</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
+<tr><td class='line'>620</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/*</td></tr>
+<tr><td class='line'>621</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Reentrant version of lgamma; passes signgam back by reference</td></tr>
+<tr><td class='line'>622</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * as the second argument; user must allocate space for signgam.</td></tr>
+<tr><td class='line'>623</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> */</td></tr>
+<tr><td class='line'>624</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
+<tr><td class='line'>625</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef _REENTRANT</td></tr>
+<tr><td class='line'>626</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    #include &lt;AvailabilityMacros.h&gt;</td></tr>
+<tr><td class='line'>627</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    // Available on OS X 10.6 and later.</td></tr>
+<tr><td class='line'>628</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern float  lgammaf_r ( float, int * ) AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER;</td></tr>
+<tr><td class='line'>629</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern double lgamma_r ( double, int * ) AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER;</td></tr>
+<tr><td class='line'>630</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    extern long double lgammal_r ( long double, int * ) AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER;</td></tr>
+<tr><td class='line'>631</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* _REENTRANT */</td></tr>
+<tr><td class='line'>632</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
+<tr><td class='line'>633</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* (!_XOPEN_SOURCE || _DARWIN_C_SOURCE) */</td></tr>
+<tr><td class='line'>634</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* !_ANSI_SOURCE &amp;&amp; (!_POSIX_C_SOURCE || _DARWIN_C_SOURCE) */</td></tr>
+<tr><td class='line'>635</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>636</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __WANT_EXTENSIONS__ */</td></tr>
+<tr><td class='line'>637</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>638</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifdef __cplusplus</td></tr>
+<tr><td class='line'>639</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
+<tr><td class='line'>640</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif</td></tr>
+<tr><td class='line'>641</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>642</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* __MATH__ */</td></tr>
+  </table>
+
+  <div id="footer">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.8</a></div>
+
+</body>
+</html>

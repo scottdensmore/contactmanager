@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - CotactManager - /Users/scottdensmore/Dev/ContactManager/ContactManager/CoreDataController.m</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+<h1>LCOV - Code Coverage Report</h1>
+<div id="header">
+    <table id='overview'>
+          <tr>
+            <td class="label">Current view:</td>
+            <td class="headerValue"><a href="../../../../../index.html">top level</a> - <a href="index.html">Users/scottdensmore/Dev/ContactManager/ContactManager</a> - CoreDataController.m</td>
+            <td width="5%"></td>
+          </tr>
+          <tr>
+            <td class="label">Test:</td>
+            <td class="headerValue">CotactManager</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="label">Date:</td>
+            <td class="headerValue">2011-07-04</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="label">Legend:</td>
+            <td class="legend">            <span class="Cov">invoked</span>
+            <span class="NoCov">not invoked</span>
+</td>
+            <td></td>
+          </tr>
+    </table>
+    <table id="summary">
+	  <tr>
+	    <td></td>
+	    <th colspan="2">Coverage</th>
+	  </tr>
+	  <tr>
+	    <td class="label">Lines:</td>
+	    <td class="percent Med">80.0 %</td>
+	    <td class="ratio Med">60 / 75</td>
+	  </tr>
+	  <tr>
+	    <td class="label">Branches:</td>
+	    <td class="percent Lo">58.3 %</td>
+	    <td class="ratio Lo">21 / 36</td>
+	  </tr>
+    </table>
+  <div style="clear: both;"></div>
+</div> <!-- #header -->
+  <table id="source">
+    <tr>
+      <th>Line</th>
+      <th>Branches</th>
+      <th>Hits</th>
+      <th>Source code</th>
+    </tr>
+<tr><td class='line'>1</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>//</td></tr>
+<tr><td class='line'>2</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>//  CoreDataController.m</td></tr>
+<tr><td class='line'>3</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>//  ContactManager</td></tr>
+<tr><td class='line'>4</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>//</td></tr>
+<tr><td class='line'>5</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>//  Created by Scott Densmore on 6/21/11.</td></tr>
+<tr><td class='line'>6</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>//  Copyright 2011 Scott Densmore. All rights reserved.</td></tr>
+<tr><td class='line'>7</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>//</td></tr>
+<tr><td class='line'>8</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>9</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#import &quot;CoreDataController.h&quot;</td></tr>
+<tr><td class='line'>10</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#import &quot;CoreDataControllerDelegate.h&quot;</td></tr>
+<tr><td class='line'>11</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>12</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>@implementation CoreDataController</td></tr>
+<tr><td class='line'>13</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>14</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>@synthesize delegate;</td></tr>
+<tr><td class='line'>15</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>16</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#pragma mark - Memory Management</td></tr>
+<tr><td class='line'>17</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>18</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (id)init </td></tr>
+<tr><td class='line'>19</td><td class='branch'>                </td><td class='count Cov'>6</td><td class='code Cov'>{</td></tr>
+<tr><td class='line'>20</td><td class='branch'>                </td><td class='count Cov'>6</td><td class='code Cov'>    return [self initWithInitialType:NSInMemoryStoreType modelName:nil applicationSupportName:nil dataStoreName:nil];</td></tr>
+<tr><td class='line'>21</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
+<tr><td class='line'>22</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>23</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (id)initWithModelName:(NSString *)theModelName applicationSupportName:(NSString *)theApplicationSupportName dataStoreName:(NSString *)theDataStoreName</td></tr>
+<tr><td class='line'>24</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>25</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    return [self initWithInitialType:NSXMLStoreType modelName:theModelName applicationSupportName:theApplicationSupportName  dataStoreName:theDataStoreName];</td></tr>
+<tr><td class='line'>26</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>}</td></tr>
+<tr><td class='line'>27</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>28</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (id)initWithInitialType:(NSString *)type modelName:(NSString *)theModelName applicationSupportName:(NSString *)theApplicationSupportName dataStoreName:(NSString *)theDataStoreName;</td></tr>
+<tr><td class='line'>29</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>30</td><td class='branch'>        <span><ins title="Branch 0 was taken 12 times">+</ins><ins title="Branch 1 was taken 66 times">+</ins></span></td><td class='count Cov'>78</td><td class='code Cov'>    NSParameterAssert(theModelName != nil);</td></tr>
+<tr><td class='line'>31</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
+<tr><td class='line'>32</td><td class='branch'>                </td><td class='count Cov'>78</td><td class='code Cov'>    self = [super init];</td></tr>
+<tr><td class='line'>33</td><td class='branch'>        <span><ins title="Branch 0 was taken 66 times">+</ins><del title="Branch 1 was never taken">-</del></span></td><td class='count '>           </td><td class='code '>    if (self) {</td></tr>
+<tr><td class='line'>34</td><td class='branch'>                </td><td class='count Cov'>66</td><td class='code Cov'>        initialType = [type retain];</td></tr>
+<tr><td class='line'>35</td><td class='branch'>                </td><td class='count Cov'>66</td><td class='code Cov'>        modelName = [theModelName retain];</td></tr>
+<tr><td class='line'>36</td><td class='branch'>        <span><ins title="Branch 1 was taken 30 times">+</ins><ins title="Branch 2 was taken 36 times">+</ins></span></td><td class='count Cov'>66</td><td class='code Cov'>        if (![initialType isEqualToString:NSInMemoryStoreType]) {</td></tr>
+<tr><td class='line'>37</td><td class='branch'>        <span><ins title="Branch 0 was taken 6 times">+</ins><ins title="Branch 1 was taken 24 times">+</ins></span></td><td class='count Cov'>66</td><td class='code Cov'>            NSParameterAssert(theApplicationSupportName != nil);</td></tr>
+<tr><td class='line'>38</td><td class='branch'>        <span><ins title="Branch 0 was taken 6 times">+</ins><ins title="Branch 1 was taken 18 times">+</ins></span></td><td class='count Cov'>66</td><td class='code Cov'>            NSParameterAssert(theDataStoreName != nil);</td></tr>
+<tr><td class='line'>39</td><td class='branch'>                </td><td class='count Cov'>30</td><td class='code Cov'>            appSupportName = [theApplicationSupportName retain];</td></tr>
+<tr><td class='line'>40</td><td class='branch'>                </td><td class='count Cov'>24</td><td class='code Cov'>            dataStoreName = [theDataStoreName retain];</td></tr>
+<tr><td class='line'>41</td><td class='branch'>                </td><td class='count Cov'>18</td><td class='code Cov'>        }</td></tr>
+<tr><td class='line'>42</td><td class='branch'>                </td><td class='count Cov'>18</td><td class='code Cov'>    }</td></tr>
+<tr><td class='line'>43</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    return self;</td></tr>
+<tr><td class='line'>44</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
+<tr><td class='line'>45</td><td class='branch'>                </td><td class='count Cov'>54</td><td class='code Cov'></td></tr>
+<tr><td class='line'>46</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (void)dealloc </td></tr>
+<tr><td class='line'>47</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>48</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    RELEASE(persistentStoreCoordinator);</td></tr>
+<tr><td class='line'>49</td><td class='branch'>                </td><td class='count Cov'>48</td><td class='code Cov'>    RELEASE(managedObjectModel);</td></tr>
+<tr><td class='line'>50</td><td class='branch'>                </td><td class='count Cov'>48</td><td class='code Cov'>    RELEASE(managedObjectContext);</td></tr>
+<tr><td class='line'>51</td><td class='branch'>                </td><td class='count Cov'>48</td><td class='code Cov'>    RELEASE(initialType);</td></tr>
+<tr><td class='line'>52</td><td class='branch'>                </td><td class='count Cov'>48</td><td class='code Cov'>    RELEASE(appSupportName);</td></tr>
+<tr><td class='line'>53</td><td class='branch'>                </td><td class='count Cov'>48</td><td class='code Cov'>    RELEASE(modelName);</td></tr>
+<tr><td class='line'>54</td><td class='branch'>                </td><td class='count Cov'>48</td><td class='code Cov'>    RELEASE(dataStoreName);</td></tr>
+<tr><td class='line'>55</td><td class='branch'>                </td><td class='count Cov'>48</td><td class='code Cov'>    delegate = nil;</td></tr>
+<tr><td class='line'>56</td><td class='branch'>                </td><td class='count Cov'>48</td><td class='code Cov'>    </td></tr>
+<tr><td class='line'>57</td><td class='branch'>                </td><td class='count Cov'>48</td><td class='code Cov'>    [super dealloc];</td></tr>
+<tr><td class='line'>58</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
+<tr><td class='line'>59</td><td class='branch'>                </td><td class='count Cov'>48</td><td class='code Cov'></td></tr>
+<tr><td class='line'>60</td><td class='branch'>                </td><td class='count Cov'>48</td><td class='code Cov'>#pragma mark - Accesssors</td></tr>
+<tr><td class='line'>61</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>62</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (NSString *)applicationSupportFolder </td></tr>
+<tr><td class='line'>63</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>64</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);</td></tr>
+<tr><td class='line'>65</td><td class='branch'>        <span><ins title="Branch 1 was taken 47 times">+</ins><del title="Branch 2 was never taken">-</del></span></td><td class='count Cov'>47</td><td class='code Cov'>    NSString *basePath = ([paths count] &gt; 0) ? [paths objectAtIndex:0] : NSTemporaryDirectory();</td></tr>
+<tr><td class='line'>66</td><td class='branch'>                </td><td class='count Cov'>47</td><td class='code Cov'>    return [basePath stringByAppendingPathComponent:appSupportName];</td></tr>
+<tr><td class='line'>67</td><td class='branch'>                </td><td class='count Cov'>47</td><td class='code Cov'>}</td></tr>
+<tr><td class='line'>68</td><td class='branch'>                </td><td class='count Cov'>47</td><td class='code Cov'></td></tr>
+<tr><td class='line'>69</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (NSManagedObjectModel *)managedObjectModel </td></tr>
+<tr><td class='line'>70</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>71</td><td class='branch'>        <span><ins title="Branch 0 was taken 96 times">+</ins><ins title="Branch 1 was taken 41 times">+</ins></span></td><td class='count '>           </td><td class='code '>    if (managedObjectModel != nil) {</td></tr>
+<tr><td class='line'>72</td><td class='branch'>                </td><td class='count Cov'>137</td><td class='code Cov'>        return managedObjectModel;</td></tr>
+<tr><td class='line'>73</td><td class='branch'>                </td><td class='count Cov'>137</td><td class='code Cov'>    }</td></tr>
+<tr><td class='line'>74</td><td class='branch'>                </td><td class='count Cov'>96</td><td class='code Cov'>    </td></tr>
+<tr><td class='line'>75</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    NSURL *modelUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@&quot;%@/%@&quot;, [[NSBundle mainBundle] resourcePath], modelName]];</td></tr>
+<tr><td class='line'>76</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelUrl];    </td></tr>
+<tr><td class='line'>77</td><td class='branch'>                </td><td class='count Cov'>41</td><td class='code Cov'>    return managedObjectModel;</td></tr>
+<tr><td class='line'>78</td><td class='branch'>                </td><td class='count Cov'>41</td><td class='code Cov'>}</td></tr>
+<tr><td class='line'>79</td><td class='branch'>                </td><td class='count Cov'>137</td><td class='code Cov'></td></tr>
+<tr><td class='line'>80</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (NSPersistentStoreCoordinator *)persistentStoreCoordinator </td></tr>
+<tr><td class='line'>81</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>82</td><td class='branch'>        <span><del title="Branch 0 was never taken">-</del><ins title="Branch 1 was taken 41 times">+</ins></span></td><td class='count '>           </td><td class='code '>    if (persistentStoreCoordinator != nil) {</td></tr>
+<tr><td class='line'>83</td><td class='branch'>                </td><td class='count Cov'>41</td><td class='code Cov'>        return persistentStoreCoordinator;</td></tr>
+<tr><td class='line'>84</td><td class='branch'>                </td><td class='count Cov'>41</td><td class='code Cov'>    }</td></tr>
+<tr><td class='line'>85</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    </td></tr>
+<tr><td class='line'>86</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    NSFileManager *fileManager;</td></tr>
+<tr><td class='line'>87</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    NSString *applicationSupportFolder = nil;</td></tr>
+<tr><td class='line'>88</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    NSURL *url;</td></tr>
+<tr><td class='line'>89</td><td class='branch'>                </td><td class='count Cov'>41</td><td class='code Cov'>    NSError *error;</td></tr>
+<tr><td class='line'>90</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
+<tr><td class='line'>91</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    fileManager = [NSFileManager defaultManager];</td></tr>
+<tr><td class='line'>92</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    applicationSupportFolder = [self applicationSupportFolder];</td></tr>
+<tr><td class='line'>93</td><td class='branch'>                </td><td class='count Cov'>41</td><td class='code Cov'>    </td></tr>
+<tr><td class='line'>94</td><td class='branch'>        <span><del title="Branch 1 was never taken">-</del><ins title="Branch 2 was taken 41 times">+</ins></span></td><td class='count Cov'>41</td><td class='code Cov'>    if (![fileManager fileExistsAtPath:applicationSupportFolder isDirectory:NULL] ) {</td></tr>
+<tr><td class='line'>95</td><td class='branch'>        <span><del title="Branch 1 was never taken">-</del><del title="Branch 2 was never taken">-</del></span></td><td class='count '>           </td><td class='code '>        if (![fileManager createDirectoryAtPath:applicationSupportFolder withIntermediateDirectories:NO attributes:nil error:&amp;error]) {</td></tr>
+<tr><td class='line'>96</td><td class='branch'>                </td><td class='count Cov'>41</td><td class='code Cov'>            NSAssert(NO, ([NSString stringWithFormat:@&quot;Failed to create App Support directory %@ : %@&quot;, applicationSupportFolder, error]));</td></tr>
+<tr><td class='line'>97</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>            LOG(@&quot;Error creating application support directory at %@ : %@&quot;,applicationSupportFolder,error);</td></tr>
+<tr><td class='line'>98</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>            return nil;</td></tr>
+<tr><td class='line'>99</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>        }</td></tr>
+<tr><td class='line'>100</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    }</td></tr>
+<tr><td class='line'>101</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        </td></tr>
+<tr><td class='line'>102</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    url = [NSURL fileURLWithPath: [applicationSupportFolder stringByAppendingPathComponent: dataStoreName]];</td></tr>
+<tr><td class='line'>103</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];</td></tr>
+<tr><td class='line'>104</td><td class='branch'>                </td><td class='count Cov'>41</td><td class='code Cov'>    NSDictionary *options = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:NSMigratePersistentStoresAutomaticallyOption];</td></tr>
+<tr><td class='line'>105</td><td class='branch'>        <span><del title="Branch 1 was never taken">-</del><ins title="Branch 2 was taken 41 times">+</ins></span></td><td class='count Cov'>41</td><td class='code Cov'>    if (![persistentStoreCoordinator addPersistentStoreWithType:initialType configuration:nil URL:url options:options error:&amp;error]){</td></tr>
+<tr><td class='line'>106</td><td class='branch'>        <span><del title="Branch 1 was never taken">-</del><del title="Branch 2 was never taken">-</del></span></td><td class='count Cov'>41</td><td class='code Cov'>        if ([error code] == 134100) {</td></tr>
+<tr><td class='line'>107</td><td class='branch'>                </td><td class='count Cov'>41</td><td class='code Cov'>            //If we failed with an incorrect data model error then pass the version identifiers of the store to the delegate to decide what to do next</td></tr>
+<tr><td class='line'>108</td><td class='branch'>        <span><del title="Branch 2 was never taken">-</del><del title="Branch 3 was never taken">-</del></span></td><td class='count NoCov'>0</td><td class='code NoCov'>            if ([[self delegate] respondsToSelector:@selector(coreDataController:encounteredIncorrectModelWithVersionIdentifiers:)]) {</td></tr>
+<tr><td class='line'>109</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>                persistentStoreCoordinator = nil;</td></tr>
+<tr><td class='line'>110</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>                NSDictionary *metadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:initialType URL:url error:&amp;error];</td></tr>
+<tr><td class='line'>111</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>                [[self delegate] coreDataController:self encounteredIncorrectModelWithVersionIdentifiers:[metadata objectForKey:NSStoreModelVersionIdentifiersKey]];</td></tr>
+<tr><td class='line'>112</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>            }</td></tr>
+<tr><td class='line'>113</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>        } else {</td></tr>
+<tr><td class='line'>114</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>            [[NSApplication sharedApplication] presentError:error];</td></tr>
+<tr><td class='line'>115</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>        }</td></tr>
+<tr><td class='line'>116</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    }    </td></tr>
+<tr><td class='line'>117</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
+<tr><td class='line'>118</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    return persistentStoreCoordinator;</td></tr>
+<tr><td class='line'>119</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
+<tr><td class='line'>120</td><td class='branch'>                </td><td class='count Cov'>41</td><td class='code Cov'></td></tr>
+<tr><td class='line'>121</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (NSManagedObjectContext *)managedObjectContext</td></tr>
+<tr><td class='line'>122</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>123</td><td class='branch'>        <span><ins title="Branch 0 was taken 41 times">+</ins><ins title="Branch 1 was taken 72 times">+</ins></span></td><td class='count '>           </td><td class='code '>    if (!managedObjectContext) {</td></tr>
+<tr><td class='line'>124</td><td class='branch'>                </td><td class='count Cov'>113</td><td class='code Cov'>        NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];</td></tr>
+<tr><td class='line'>125</td><td class='branch'>        <span><ins title="Branch 0 was taken 41 times">+</ins><del title="Branch 1 was never taken">-</del></span></td><td class='count Cov'>113</td><td class='code Cov'>        if (coordinator != nil) {</td></tr>
+<tr><td class='line'>126</td><td class='branch'>                </td><td class='count Cov'>41</td><td class='code Cov'>            managedObjectContext = [[NSManagedObjectContext alloc] init];</td></tr>
+<tr><td class='line'>127</td><td class='branch'>                </td><td class='count Cov'>41</td><td class='code Cov'>            [managedObjectContext setPersistentStoreCoordinator: coordinator];</td></tr>
+<tr><td class='line'>128</td><td class='branch'>                </td><td class='count Cov'>41</td><td class='code Cov'>        }</td></tr>
+<tr><td class='line'>129</td><td class='branch'>                </td><td class='count Cov'>41</td><td class='code Cov'>    }</td></tr>
+<tr><td class='line'>130</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    </td></tr>
+<tr><td class='line'>131</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    return managedObjectContext;</td></tr>
+<tr><td class='line'>132</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
+<tr><td class='line'>133</td><td class='branch'>                </td><td class='count Cov'>113</td><td class='code Cov'></td></tr>
+<tr><td class='line'>134</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>- (BOOL)save:(NSError **)error</td></tr>
+<tr><td class='line'>135</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>{</td></tr>
+<tr><td class='line'>136</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    BOOL reply = YES;</td></tr>
+<tr><td class='line'>137</td><td class='branch'>                </td><td class='count Cov'>5</td><td class='code Cov'>    NSManagedObjectContext *moc = [self managedObjectContext];</td></tr>
+<tr><td class='line'>138</td><td class='branch'>        <span><ins title="Branch 0 was taken 5 times">+</ins><del title="Branch 1 was never taken">-</del></span></td><td class='count Cov'>5</td><td class='code Cov'>    if (moc != nil) {</td></tr>
+<tr><td class='line'>139</td><td class='branch'>        <span><ins title="Branch 1 was taken 5 times">+</ins><del title="Branch 2 was never taken">-</del></span></td><td class='count Cov'>5</td><td class='code Cov'>        if ([moc commitEditing]) {</td></tr>
+<tr><td class='line'>140</td><td class='branch'>        <span><del title="Branch 1 was never taken">-</del><ins title="Branch 2 was taken 5 times">+</ins></span></td><td class='count Cov'>5</td><td class='code Cov'>            if ([moc hasChanges]) {</td></tr>
+<tr><td class='line'>141</td><td class='branch'>                </td><td class='count Cov'>5</td><td class='code Cov'>                return [moc save:error];</td></tr>
+<tr><td class='line'>142</td><td class='branch'>                </td><td class='count Cov'>5</td><td class='code Cov'>            }</td></tr>
+<tr><td class='line'>143</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>        }</td></tr>
+<tr><td class='line'>144</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    }</td></tr>
+<tr><td class='line'>145</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    return reply;</td></tr>
+<tr><td class='line'>146</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
+<tr><td class='line'>147</td><td class='branch'>                </td><td class='count Cov'>5</td><td class='code Cov'></td></tr>
+<tr><td class='line'>148</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>@end</td></tr>
+  </table>
+
+  <div id="footer">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.8</a></div>
+
+</body>
+</html>

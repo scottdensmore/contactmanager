@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - CotactManager - /Developer/SDKs/MacOSX10.6.sdk/usr/include/libkern/i386/OSByteOrder.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+<h1>LCOV - Code Coverage Report</h1>
+<div id="header">
+    <table id='overview'>
+          <tr>
+            <td class="label">Current view:</td>
+            <td class="headerValue"><a href="../../../../../../../index.html">top level</a> - <a href="index.html">Developer/SDKs/MacOSX10.6.sdk/usr/include/libkern/i386</a> - OSByteOrder.h</td>
+            <td width="5%"></td>
+          </tr>
+          <tr>
+            <td class="label">Test:</td>
+            <td class="headerValue">CotactManager</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="label">Date:</td>
+            <td class="headerValue">2011-07-04</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="label">Legend:</td>
+            <td class="legend">            <span class="Cov">invoked</span>
+            <span class="NoCov">not invoked</span>
+</td>
+            <td></td>
+          </tr>
+    </table>
+    <table id="summary">
+	  <tr>
+	    <td></td>
+	    <th colspan="2">Coverage</th>
+	  </tr>
+	  <tr>
+	    <td class="label">Lines:</td>
+	    <td class="percent Lo">0.0 %</td>
+	    <td class="ratio Lo">0 / 18</td>
+	  </tr>
+	  <tr>
+	    <td class="label">Branches:</td>
+	    <td class="percent Hi">-</td>
+	    <td class="ratio Hi">0 / 0</td>
+	  </tr>
+    </table>
+  <div style="clear: both;"></div>
+</div> <!-- #header -->
+  <table id="source">
+    <tr>
+      <th>Line</th>
+      <th>Branches</th>
+      <th>Hits</th>
+      <th>Source code</th>
+    </tr>
+<tr><td class='line'>1</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/*</td></tr>
+<tr><td class='line'>2</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Copyright (c) 1999-2006 Apple Computer, Inc. All rights reserved.</td></tr>
+<tr><td class='line'>3</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> *</td></tr>
+<tr><td class='line'>4</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * @APPLE_OSREFERENCE_LICENSE_HEADER_START@</td></tr>
+<tr><td class='line'>5</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * </td></tr>
+<tr><td class='line'>6</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * This file contains Original Code and/or Modifications of Original Code</td></tr>
+<tr><td class='line'>7</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * as defined in and that are subject to the Apple Public Source License</td></tr>
+<tr><td class='line'>8</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Version 2.0 (the 'License'). You may not use this file except in</td></tr>
+<tr><td class='line'>9</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * compliance with the License. The rights granted to you under the License</td></tr>
+<tr><td class='line'>10</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * may not be used to create, or enable the creation or redistribution of,</td></tr>
+<tr><td class='line'>11</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * unlawful or unlicensed copies of an Apple operating system, or to</td></tr>
+<tr><td class='line'>12</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * circumvent, violate, or enable the circumvention or violation of, any</td></tr>
+<tr><td class='line'>13</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * terms of an Apple operating system software license agreement.</td></tr>
+<tr><td class='line'>14</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * </td></tr>
+<tr><td class='line'>15</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Please obtain a copy of the License at</td></tr>
+<tr><td class='line'>16</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * http://www.opensource.apple.com/apsl/ and read it before using this file.</td></tr>
+<tr><td class='line'>17</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * </td></tr>
+<tr><td class='line'>18</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * The Original Code and all software distributed under the License are</td></tr>
+<tr><td class='line'>19</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER</td></tr>
+<tr><td class='line'>20</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,</td></tr>
+<tr><td class='line'>21</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY,</td></tr>
+<tr><td class='line'>22</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.</td></tr>
+<tr><td class='line'>23</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * Please see the License for the specific language governing rights and</td></tr>
+<tr><td class='line'>24</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * limitations under the License.</td></tr>
+<tr><td class='line'>25</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * </td></tr>
+<tr><td class='line'>26</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> * @APPLE_OSREFERENCE_LICENSE_HEADER_END@</td></tr>
+<tr><td class='line'>27</td><td class='branch'>                </td><td class='count '>           </td><td class='code '> */</td></tr>
+<tr><td class='line'>28</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>29</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#ifndef _OS_OSBYTEORDERI386_H</td></tr>
+<tr><td class='line'>30</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define _OS_OSBYTEORDERI386_H</td></tr>
+<tr><td class='line'>31</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>32</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#include &lt;stdint.h&gt;</td></tr>
+<tr><td class='line'>33</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#include &lt;libkern/i386/_OSByteOrder.h&gt;</td></tr>
+<tr><td class='line'>34</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>35</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#if !defined(OS_INLINE)</td></tr>
+<tr><td class='line'>36</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#define OS_INLINE   __DARWIN_OS_INLINE</td></tr>
+<tr><td class='line'>37</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif</td></tr>
+<tr><td class='line'>38</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>39</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* Functions for byte reversed loads. */</td></tr>
+<tr><td class='line'>40</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>41</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>OS_INLINE</td></tr>
+<tr><td class='line'>42</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>uint16_t</td></tr>
+<tr><td class='line'>43</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>OSReadSwapInt16(</td></tr>
+<tr><td class='line'>44</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    const volatile void   * base,</td></tr>
+<tr><td class='line'>45</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    uintptr_t       byteOffset</td></tr>
+<tr><td class='line'>46</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>)</td></tr>
+<tr><td class='line'>47</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>{</td></tr>
+<tr><td class='line'>48</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    uint16_t result;</td></tr>
+<tr><td class='line'>49</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>50</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    result = *(volatile uint16_t *)((uintptr_t)base + byteOffset);</td></tr>
+<tr><td class='line'>51</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    return _OSSwapInt16(result);</td></tr>
+<tr><td class='line'>52</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
+<tr><td class='line'>53</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>54</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>OS_INLINE</td></tr>
+<tr><td class='line'>55</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>uint32_t</td></tr>
+<tr><td class='line'>56</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>OSReadSwapInt32(</td></tr>
+<tr><td class='line'>57</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    const volatile void   * base,</td></tr>
+<tr><td class='line'>58</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    uintptr_t       byteOffset</td></tr>
+<tr><td class='line'>59</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>)</td></tr>
+<tr><td class='line'>60</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>{</td></tr>
+<tr><td class='line'>61</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    uint32_t result;</td></tr>
+<tr><td class='line'>62</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>63</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    result = *(volatile uint32_t *)((uintptr_t)base + byteOffset);</td></tr>
+<tr><td class='line'>64</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    return _OSSwapInt32(result);</td></tr>
+<tr><td class='line'>65</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
+<tr><td class='line'>66</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>67</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>OS_INLINE</td></tr>
+<tr><td class='line'>68</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>uint64_t</td></tr>
+<tr><td class='line'>69</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>OSReadSwapInt64(</td></tr>
+<tr><td class='line'>70</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    const volatile void   * base,</td></tr>
+<tr><td class='line'>71</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    uintptr_t       byteOffset</td></tr>
+<tr><td class='line'>72</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>)</td></tr>
+<tr><td class='line'>73</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>{</td></tr>
+<tr><td class='line'>74</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    uint64_t result;</td></tr>
+<tr><td class='line'>75</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>76</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    result = *(volatile uint64_t *)((uintptr_t)base + byteOffset);</td></tr>
+<tr><td class='line'>77</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    return _OSSwapInt64(result);</td></tr>
+<tr><td class='line'>78</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>}</td></tr>
+<tr><td class='line'>79</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>80</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>/* Functions for byte reversed stores. */</td></tr>
+<tr><td class='line'>81</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>82</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>OS_INLINE</td></tr>
+<tr><td class='line'>83</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>void</td></tr>
+<tr><td class='line'>84</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>OSWriteSwapInt16(</td></tr>
+<tr><td class='line'>85</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    volatile void   * base,</td></tr>
+<tr><td class='line'>86</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    uintptr_t       byteOffset,</td></tr>
+<tr><td class='line'>87</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    uint16_t        data</td></tr>
+<tr><td class='line'>88</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>)</td></tr>
+<tr><td class='line'>89</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>{</td></tr>
+<tr><td class='line'>90</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    *(volatile uint16_t *)((uintptr_t)base + byteOffset) = _OSSwapInt16(data);</td></tr>
+<tr><td class='line'>91</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>}</td></tr>
+<tr><td class='line'>92</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>93</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>OS_INLINE</td></tr>
+<tr><td class='line'>94</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>void</td></tr>
+<tr><td class='line'>95</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>OSWriteSwapInt32(</td></tr>
+<tr><td class='line'>96</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    volatile void   * base,</td></tr>
+<tr><td class='line'>97</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    uintptr_t       byteOffset,</td></tr>
+<tr><td class='line'>98</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    uint32_t        data</td></tr>
+<tr><td class='line'>99</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>)</td></tr>
+<tr><td class='line'>100</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>{</td></tr>
+<tr><td class='line'>101</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    *(volatile uint32_t *)((uintptr_t)base + byteOffset) = _OSSwapInt32(data);</td></tr>
+<tr><td class='line'>102</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>}</td></tr>
+<tr><td class='line'>103</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>104</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>OS_INLINE</td></tr>
+<tr><td class='line'>105</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>void</td></tr>
+<tr><td class='line'>106</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>OSWriteSwapInt64(</td></tr>
+<tr><td class='line'>107</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    volatile void    * base,</td></tr>
+<tr><td class='line'>108</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    uintptr_t        byteOffset,</td></tr>
+<tr><td class='line'>109</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>    uint64_t         data</td></tr>
+<tr><td class='line'>110</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>)</td></tr>
+<tr><td class='line'>111</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>{</td></tr>
+<tr><td class='line'>112</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>    *(volatile uint64_t *)((uintptr_t)base + byteOffset) = _OSSwapInt64(data);</td></tr>
+<tr><td class='line'>113</td><td class='branch'>                </td><td class='count NoCov'>0</td><td class='code NoCov'>}</td></tr>
+<tr><td class='line'>114</td><td class='branch'>                </td><td class='count '>           </td><td class='code '></td></tr>
+<tr><td class='line'>115</td><td class='branch'>                </td><td class='count '>           </td><td class='code '>#endif /* ! _OS_OSBYTEORDERI386_H */</td></tr>
+  </table>
+
+  <div id="footer">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.8</a></div>
+
+</body>
+</html>
