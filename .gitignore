@@ -9,10 +9,10 @@
 *.xcworkspace
 xcuserdata
 
-#Ignore textmate build errors
+# Ignore textmate build errors
 *.tm_build_errors
 
-#Ignore temp nibs and swap files
+# Ignore temp nibs and swap files
 *.swp
 *~.nib
 
@@ -22,7 +22,6 @@ build
 # Probably don't want to check in xcuserdata
 xcuserdata/
 *.xcworkspace/
-
 
 # Other
 Documentation
