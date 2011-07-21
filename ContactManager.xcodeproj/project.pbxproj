@@ -373,7 +373,7 @@
 				DED817A713A452AA00EC3234 /* Resources */,
 				DED817CF13A46BD200EC3234 /* Copy Files */,
 				DED817A813A452AA00EC3234 /* ShellScript */,
-				DE7F6F0613C137A400E0C5EF /* ShellScript */,
+				DE7F6F0613C137A400E0C5EF /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -437,13 +437,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		DE7F6F0613C137A400E0C5EF /* ShellScript */ = {
+		DE7F6F0613C137A400E0C5EF /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
