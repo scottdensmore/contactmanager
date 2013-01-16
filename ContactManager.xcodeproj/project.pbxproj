@@ -21,9 +21,11 @@
 		DE27DD8F13B7B40A00EF7A92 /* ContactDataControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE27DD8E13B7B40A00EF7A92 /* ContactDataControllerTests.m */; };
 		DE27DD9513B7CB7900EF7A92 /* ContactDataControllerKVOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE27DD9213B7C5E800EF7A92 /* ContactDataControllerKVOTests.m */; };
 		DE2ABFBE13BAD23D005E99D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DE2ABFBD13BAD23D005E99D9 /* Localizable.strings */; };
+		DE43870C16911FB900D01103 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE43870B16911FB900D01103 /* OCMock.framework */; };
 		DE78DB3713B7EB96002E0F97 /* BaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = DE78DB3613B7EB96002E0F97 /* BaseTestCase.m */; };
 		DE78DB3D13B7EF7F002E0F97 /* MainWindowControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE78DB3C13B7EF7F002E0F97 /* MainWindowControllerTests.m */; };
 		DE7F6F1213C19D9000E0C5EF /* ContactManagerAppDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7F6F1113C19D9000E0C5EF /* ContactManagerAppDelegateTests.m */; };
+		DEB2512A1691F8810007F916 /* OCMock.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE43870B16911FB900D01103 /* OCMock.framework */; };
 		DEB4C39213B058E800B84FA9 /* ContactDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB4C39013B058E800B84FA9 /* ContactDetailViewController.m */; };
 		DEB4C39313B058E800B84FA9 /* ContactDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DEB4C39113B058E800B84FA9 /* ContactDetailViewController.xib */; };
 		DED8178E13A452A900EC3234 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED8178D13A452A900EC3234 /* Cocoa.framework */; };
@@ -34,8 +36,6 @@
 		DED817A413A452AA00EC3234 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DED817A213A452AA00EC3234 /* MainMenu.xib */; };
 		DED817AB13A452AA00EC3234 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED8178D13A452A900EC3234 /* Cocoa.framework */; };
 		DED817B313A452AA00EC3234 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DED817B113A452AA00EC3234 /* InfoPlist.strings */; };
-		DED817CD13A4666B00EC3234 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED817CC13A4666B00EC3234 /* OCMock.framework */; };
-		DED817D813A46C8500EC3234 /* OCMock.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = DED817CC13A4666B00EC3234 /* OCMock.framework */; };
 		DEF0BEF713B1A32600E76C47 /* ContactDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0BEF613B1A32600E76C47 /* ContactDataController.m */; };
 		DEF0BF1613B1A58C00E76C47 /* NSManagedObjectModel+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0BF1513B1A58C00E76C47 /* NSManagedObjectModel+Extensions.m */; };
 /* End PBXBuildFile section */
@@ -51,15 +51,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		DED817CF13A46BD200EC3234 /* Copy Files */ = {
+		DEB251291691F8770007F916 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "$(BUILT_PRODUCTS_DIR)";
-			dstSubfolderSpec = 0;
+			dstPath = "";
+			dstSubfolderSpec = 10;
 			files = (
-				DED817D813A46C8500EC3234 /* OCMock.framework in Copy Files */,
+				DEB2512A1691F8810007F916 /* OCMock.framework in CopyFiles */,
 			);
-			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -91,6 +90,7 @@
 		DE27DD9113B7C5E800EF7A92 /* ContactDataControllerKVOTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDataControllerKVOTests.h; sourceTree = "<group>"; };
 		DE27DD9213B7C5E800EF7A92 /* ContactDataControllerKVOTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDataControllerKVOTests.m; sourceTree = "<group>"; };
 		DE2ABFBD13BAD23D005E99D9 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		DE43870B16911FB900D01103 /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OCMock.framework; sourceTree = "<group>"; };
 		DE78DB3513B7EB96002E0F97 /* BaseTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTestCase.h; sourceTree = "<group>"; };
 		DE78DB3613B7EB96002E0F97 /* BaseTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTestCase.m; sourceTree = "<group>"; };
 		DE78DB3B13B7EF7F002E0F97 /* MainWindowControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowControllerTests.h; sourceTree = "<group>"; };
@@ -117,7 +117,6 @@
 		DED817B013A452AA00EC3234 /* ContactManagerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ContactManagerTests-Info.plist"; sourceTree = "<group>"; };
 		DED817B213A452AA00EC3234 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		DED817B413A452AA00EC3234 /* ContactManagerTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ContactManagerTests-Prefix.pch"; sourceTree = "<group>"; };
-		DED817CC13A4666B00EC3234 /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCMock.framework; path = ../Library/OCMock.framework; sourceTree = "<group>"; };
 		DEF0BEF513B1A32600E76C47 /* ContactDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDataController.h; sourceTree = "<group>"; };
 		DEF0BEF613B1A32600E76C47 /* ContactDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDataController.m; sourceTree = "<group>"; };
 		DEF0BF1413B1A58C00E76C47 /* NSManagedObjectModel+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectModel+Extensions.h"; sourceTree = "<group>"; };
@@ -137,8 +136,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DED817CD13A4666B00EC3234 /* OCMock.framework in Frameworks */,
 				DED817AB13A452AA00EC3234 /* Cocoa.framework in Frameworks */,
+				DE43870C16911FB900D01103 /* OCMock.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,7 +323,7 @@
 		DED817CE13A4667D00EC3234 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DED817CC13A4666B00EC3234 /* OCMock.framework */,
+				DE43870B16911FB900D01103 /* OCMock.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -354,6 +353,7 @@
 				DED8178513A452A900EC3234 /* Sources */,
 				DED8178613A452A900EC3234 /* Frameworks */,
 				DED8178713A452A900EC3234 /* Resources */,
+				DEB2512B1691FAE60007F916 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -371,9 +371,8 @@
 				DED817A513A452AA00EC3234 /* Sources */,
 				DED817A613A452AA00EC3234 /* Frameworks */,
 				DED817A713A452AA00EC3234 /* Resources */,
-				DED817CF13A46BD200EC3234 /* Copy Files */,
+				DEB251291691F8770007F916 /* CopyFiles */,
 				DED817A813A452AA00EC3234 /* ShellScript */,
-				DE7F6F0613C137A400E0C5EF /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -391,6 +390,7 @@
 		DED8178013A452A900EC3234 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Scott Densmore";
 			};
 			buildConfigurationList = DED8178313A452A900EC3234 /* Build configuration list for PBXProject "ContactManager" */;
@@ -437,19 +437,18 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		DE7F6F0613C137A400E0C5EF /* Run Script */ = {
+		DEB2512B1691FAE60007F916 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run gcov on the framework getting tested, generate HTML report\nif [ \"${CONFIGURATION}\" = 'Coverage' ]; then\n    FRAMEWORK_NAME=ContactManager\n    FRAMEWORK_TARGET=ContactManager\n    FRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${CURRENT_ARCH}\n\n    #rm -rf coverage \n    mkdir -p coverage\n    cd coverage\n    ../tools/lcov/geninfo \"${FRAMEWORK_OBJ_DIR}\" --gcov-tool /usr/bin/gcov\n    ../tools/lcov/genhtml \"${FRAMEWORK_OBJ_DIR}\"/*.info \\\n        --title CotactManager --num-spaces 4 --css-file ../tools/lcov/styles.css --prefix \"{PROJECT_DIR}\" --legend --no-function\n                                             \nfi";
+			shellScript = XcodeCoverage/exportenv.sh;
 		};
 		DED817A813A452AA00EC3234 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -546,77 +545,13 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		DE8CA0D113BAE1F1005D07E5 /* Coverage */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
-			};
-			name = Coverage;
-		};
-		DE8CA0D213BAE1F1005D07E5 /* Coverage */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
-				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "ContactManager/ContactManager-Prefix.pch";
-				GCC_VERSION = 4.2;
-				INFOPLIST_FILE = "ContactManager/ContactManager-Info.plist";
-				OTHER_LDFLAGS = "-lgcov";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				RUN_CLANG_STATIC_ANALYZER = YES;
-				WRAPPER_EXTENSION = app;
-			};
-			name = Coverage;
-		};
-		DE8CA0D313BAE1F1005D07E5 /* Coverage */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ContactManager.app/Contents/MacOS/ContactManager";
-				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-					"\"$(SRCROOT)/Library\"",
-				);
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ContactManagerTests/ContactManagerTests-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INFOPLIST_FILE = "ContactManagerTests/ContactManagerTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					SenTestingKit,
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				RUN_CLANG_STATIC_ANALYZER = YES;
-				TEST_AFTER_BUILD = YES;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Coverage;
-		};
 		DED817B913A452AA00EC3234 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_GENERATE_TEST_COVERAGE_FILES = NO;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -633,7 +568,7 @@
 		DED817BA13A452AA00EC3234 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -648,15 +583,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_TEST_COVERAGE_FILES = NO;
-				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ContactManager/ContactManager-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "ContactManager/ContactManager-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -668,6 +606,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -675,8 +614,9 @@
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ContactManager/ContactManager-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "ContactManager/ContactManager-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -689,17 +629,21 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ContactManager.app/Contents/MacOS/ContactManager";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-					"\"$(SRCROOT)/Library\"",
+					"\"$(SRCROOT)/ContactManagerTests\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ContactManagerTests/ContactManagerTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "ContactManagerTests/ContactManagerTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = (
 					"-framework",
 					SenTestingKit,
@@ -716,17 +660,20 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ContactManager.app/Contents/MacOS/ContactManager";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-					"\"$(SRCROOT)/Library\"",
+					"\"$(SRCROOT)/ContactManagerTests\"",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ContactManagerTests/ContactManagerTests-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "ContactManagerTests/ContactManagerTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = (
 					"-framework",
 					SenTestingKit,
@@ -745,7 +692,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DED817B913A452AA00EC3234 /* Debug */,
-				DE8CA0D113BAE1F1005D07E5 /* Coverage */,
 				DED817BA13A452AA00EC3234 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -755,7 +701,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DED817BC13A452AA00EC3234 /* Debug */,
-				DE8CA0D213BAE1F1005D07E5 /* Coverage */,
 				DED817BD13A452AA00EC3234 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -765,7 +710,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DED817BF13A452AA00EC3234 /* Debug */,
-				DE8CA0D313BAE1F1005D07E5 /* Coverage */,
 				DED817C013A452AA00EC3234 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;

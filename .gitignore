@@ -1,11 +1,16 @@
 # Ignore the Mac OS X .DS_Store files
 .DS_Store
 
-# Ignore user-specific settings
+# User-specific settings
+!default.mode1v3
 *.mode1v3
+!default.mode2v3
 *.mode2v3
+!default.pbxuser
 *.pbxuser
+!default.perspectivev3
 *.perspectivev3
+!default.xcworkspace
 *.xcworkspace
 xcuserdata
 
@@ -27,3 +32,4 @@ xcuserdata/
 Documentation
 DerivedData
 ocunit.xml
+lcov-*
