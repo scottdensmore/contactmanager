@@ -13,6 +13,10 @@
 
 @interface ContactManagerAppDelegate()
 
+@property (strong) MainWindowController *mainWindowController;
+@property (strong) CoreDataController *coreDataController;
+@property (strong) ContactDataController *contactDataController;
+
 - (void)showMainWindow;
 
 @end
@@ -25,21 +29,13 @@
 {
     self = [super init];
     if (self) {
-        coreDataController = [[CoreDataController alloc] initWithInitialType:NSSQLiteStoreType modelName:@"ContactManagerModel.momd" applicationSupportName:@"ContactManager" dataStoreName:@"ContactManager.sql"];
-        contactDataController = [[ContactDataController alloc] initWithCoreDataController:coreDataController];
-        mainWindowController = [[MainWindowController alloc] initWithContactDataController:contactDataController];
+        _coreDataController = [[CoreDataController alloc] initWithInitialType:NSSQLiteStoreType modelName:@"ContactManagerModel.momd" applicationSupportName:@"ContactManager" dataStoreName:@"ContactManager.sql"];
+        _contactDataController = [[ContactDataController alloc] initWithCoreDataController:_coreDataController];
+        _mainWindowController = [[MainWindowController alloc] initWithContactDataController:_contactDataController];
     }
     return self;
 }
 
-- (void)dealloc 
-{
-    RELEASE(mainWindowController);
-    RELEASE(coreDataController);
-    RELEASE(contactDataController);
-    
-    [super dealloc];
-}
 
 #pragma mark - NSApplicationDelegate methods
 
@@ -50,19 +46,19 @@
 
 - (NSUndoManager *)windowWillReturnUndoManager:(NSWindow *)window
 {
-    return [[coreDataController managedObjectContext] undoManager];
+    return [[_coreDataController managedObjectContext] undoManager];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
     NSError *error = nil;
 	NSUInteger reply = NSTerminateNow;
-    BOOL saved = [coreDataController save:&error];
+    BOOL saved = [_coreDataController save:&error];
 
-    if (NO == saved) {
+    if (!saved) {
         BOOL errorResult = [[NSApplication sharedApplication] presentError:error];
         
-        if (errorResult == YES) {
+        if (errorResult) {
             reply = NSTerminateCancel;
         } else {
             NSInteger alertReturn = NSRunAlertPanel(nil, FCLocalizedString(@"QuitQuestion"), FCLocalizedString(@"Quit"), FCLocalizedString(@"Cancel"), nil);
@@ -84,14 +80,14 @@
 
 - (void)applicationWillTerminate:(NSNotification *)theNotification
 {
-    [mainWindowController close];
+    [_mainWindowController close];
 }
 
 #pragma mark - Private methods
 
 - (void)showMainWindow
 {  
-    [[mainWindowController window] makeKeyAndOrderFront:self];
+    [[_mainWindowController window] makeKeyAndOrderFront:self];
 }
 
 @end

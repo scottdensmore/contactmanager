@@ -9,6 +9,18 @@
 #import "CoreDataController.h"
 #import "CoreDataControllerDelegate.h"
 
+@interface CoreDataController()
+
+@property (nonatomic, readwrite, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, readwrite, strong) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, readwrite, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) NSString *initialType;
+@property (nonatomic, strong) NSString *appSupportName;
+@property (nonatomic, strong) NSString *modelName;
+@property (nonatomic, strong) NSString *dataStoreName;
+
+@end
+
 @implementation CoreDataController
 
 @synthesize delegate;
@@ -31,13 +43,13 @@
     
     self = [super init];
 	if (self) {
-		initialType = [type retain];
-        modelName = [theModelName retain];
-        if (![initialType isEqualToString:NSInMemoryStoreType]) {
+		_initialType = type;
+        _modelName = theModelName;
+        if (![_initialType isEqualToString:NSInMemoryStoreType]) {
             NSParameterAssert(theApplicationSupportName != nil);
             NSParameterAssert(theDataStoreName != nil);
-            appSupportName = [theApplicationSupportName retain];
-            dataStoreName = [theDataStoreName retain];
+            _appSupportName = theApplicationSupportName;
+            _dataStoreName = theDataStoreName;
         }
 	}
 	return self;
@@ -45,16 +57,8 @@
 
 - (void)dealloc 
 {
-    RELEASE(persistentStoreCoordinator);
-    RELEASE(managedObjectModel);
-    RELEASE(managedObjectContext);
-    RELEASE(initialType);
-    RELEASE(appSupportName);
-    RELEASE(modelName);
-    RELEASE(dataStoreName);
     delegate = nil;
     
-    [super dealloc];
 }
 
 #pragma mark - Accesssors
@@ -62,25 +66,25 @@
 - (NSString *)applicationSupportFolder 
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : NSTemporaryDirectory();
-	return [basePath stringByAppendingPathComponent:appSupportName];
+    NSString *basePath = ([paths count] > 0) ? paths[0] : NSTemporaryDirectory();
+	return [basePath stringByAppendingPathComponent:_appSupportName];
 }
 
 - (NSManagedObjectModel *)managedObjectModel 
 {
-    if (managedObjectModel != nil) {
-        return managedObjectModel;
+    if (_managedObjectModel != nil) {
+        return _managedObjectModel;
     }
 	
-	NSURL *modelUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], modelName]];
-    managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelUrl];    
-    return managedObjectModel;
+	NSURL *modelUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], _modelName]];
+    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelUrl];
+    return _managedObjectModel;
 }
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator 
 {
-    if (persistentStoreCoordinator != nil) {
-        return persistentStoreCoordinator;
+    if (_persistentStoreCoordinator != nil) {
+        return _persistentStoreCoordinator;
     }
 	
     NSFileManager *fileManager;
@@ -99,36 +103,36 @@
 		}
     }
         
-    url = [NSURL fileURLWithPath: [applicationSupportFolder stringByAppendingPathComponent: dataStoreName]];
-    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
-	NSDictionary *options = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:NSMigratePersistentStoresAutomaticallyOption];
-    if (![persistentStoreCoordinator addPersistentStoreWithType:initialType configuration:nil URL:url options:options error:&error]){
+    url = [NSURL fileURLWithPath: [applicationSupportFolder stringByAppendingPathComponent: _dataStoreName]];
+    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
+	NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES};
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:_initialType configuration:nil URL:url options:options error:&error]){
 		if ([error code] == 134100) {
 			//If we failed with an incorrect data model error then pass the version identifiers of the store to the delegate to decide what to do next
 			if ([[self delegate] respondsToSelector:@selector(coreDataController:encounteredIncorrectModelWithVersionIdentifiers:)]) {
-				persistentStoreCoordinator = nil;
-				NSDictionary *metadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:initialType URL:url error:&error];
-				[[self delegate] coreDataController:self encounteredIncorrectModelWithVersionIdentifiers:[metadata objectForKey:NSStoreModelVersionIdentifiersKey]];
+				_persistentStoreCoordinator = nil;
+				NSDictionary *metadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:_initialType URL:url error:&error];
+				[[self delegate] coreDataController:self encounteredIncorrectModelWithVersionIdentifiers:metadata[NSStoreModelVersionIdentifiersKey]];
 			}
 		} else {
 			[[NSApplication sharedApplication] presentError:error];
 		}
     }    
 	
-    return persistentStoreCoordinator;
+    return _persistentStoreCoordinator;
 }
 
 - (NSManagedObjectContext *)managedObjectContext
 {
-    if (!managedObjectContext) {
+    if (!_managedObjectContext) {
 		NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
 		if (coordinator != nil) {
-			managedObjectContext = [[NSManagedObjectContext alloc] init];
-			[managedObjectContext setPersistentStoreCoordinator: coordinator];
+			_managedObjectContext = [[NSManagedObjectContext alloc] init];
+			[_managedObjectContext setPersistentStoreCoordinator: coordinator];
 		}
 	}
     
-    return managedObjectContext;
+    return _managedObjectContext;
 }
 
 - (BOOL)save:(NSError **)error

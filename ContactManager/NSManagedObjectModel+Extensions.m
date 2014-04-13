@@ -17,7 +17,7 @@
 		return nil;
 	}
 	
-	NSEntityDescription *entity = [[self entitiesByName] objectForKey:name];
+	NSEntityDescription *entity = [self entitiesByName][name];
 	
 	//If our entity doesn't exist return nil
 	if (!entity) {
@@ -33,7 +33,6 @@
 	
 	NSError *error = nil;
 	NSArray *results = [context executeFetchRequest:request error:&error];
-	[request release];
 	
 	//If there was an error then return nothing
 	if (error) {
@@ -57,7 +56,7 @@
 	}
 	
 	for (NSString *key in [values allKeys]) {
-		[object setValue:[values objectForKey:key] forKey:key];
+		[object setValue:values[key] forKey:key];
 	}
 	return object;
 

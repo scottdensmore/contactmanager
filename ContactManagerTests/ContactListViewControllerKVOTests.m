@@ -6,11 +6,23 @@
 //  Copyright 2011 Scott Densmore. All rights reserved.
 //
 
-#import "ContactListViewControllerKVOTests.h"
+#import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
+
 #import "ContactDataController.h"
 #import "ContactListViewController.h"
 #import "MainWindowController.h"
+
+@interface ContactListViewControllerKVOTests : XCTestCase 
+
+@property (nonatomic, strong) MainWindowController *mainWindowController;
+@property (nonatomic, assign) NSWindow *window;
+@property (nonatomic, assign) ContactListViewController *contactListViewController;
+@property (nonatomic, strong) NSString *observedKeyPath;
+@property (nonatomic, strong) id observedObject;
+@property (nonatomic, strong) NSDictionary *observedChange;
+
+@end
 
 @implementation ContactListViewControllerKVOTests
 
@@ -21,55 +33,52 @@
     id contactDataController = [OCMockObject mockForClass:ContactDataController.class];
     [[[contactDataController stub] andReturn:nil] contacts];
     
-    mainWindowController = [[MainWindowController alloc] initWithContactDataController:contactDataController];
-    window = mainWindowController.window;
-    contactListViewController = mainWindowController.contactListViewController;
+    _mainWindowController = [[MainWindowController alloc] initWithContactDataController:contactDataController];
+    _window = _mainWindowController.window;
+    _contactListViewController = _mainWindowController.contactListViewController;
     
-    [contactListViewController addObserver:self forKeyPath:@"selectedContact" options:NSKeyValueObservingOptionNew context:NULL];
-    [contactListViewController addObserver:self forKeyPath:@"contacts" options:NSKeyValueObservingOptionNew context:NULL];
+    [_contactListViewController addObserver:self forKeyPath:@"selectedContact" options:NSKeyValueObservingOptionNew context:NULL];
+    [_contactListViewController addObserver:self forKeyPath:@"contacts" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 - (void)tearDown
 {
-    [contactListViewController removeObserver:self forKeyPath:@"selectedContact"];
-    [contactListViewController removeObserver:self forKeyPath:@"contacts"];
+    [_contactListViewController removeObserver:self forKeyPath:@"selectedContact"];
+    [_contactListViewController removeObserver:self forKeyPath:@"contacts"];
 
-    [mainWindowController release];
-    mainWindowController = nil;
-    contactListViewController = nil;
+    _mainWindowController = nil;
+    _contactListViewController = nil;
     
-    [observedKeyPath release];
-    observedKeyPath = nil;
-    [observedChange release];
-    observedChange = nil;
-    observedObject = nil;
+    _observedKeyPath = nil;
+    _observedChange = nil;
+    _observedObject = nil;
     
     [super tearDown];
 }
 
 - (void)testShouldNotifySelectedContactWhenSelectingContact
 {
-    [contactListViewController selectContact:nil];
+    [_contactListViewController selectContact:nil];
     
-    STAssertEquals(contactListViewController, observedObject, @"The observed object should be the contact list view controller.");
-    STAssertEqualObjects(@"selectedContact", observedKeyPath, @"The observed key path should be 'selectedContact'.");
-    STAssertEqualObjects([NSNull null], [observedChange valueForKey:NSKeyValueChangeNewKey], @"The observed value should be NSNull.");
+    XCTAssertEqual(_contactListViewController, _observedObject, @"The observed object should be the contact list view controller.");
+    XCTAssertEqualObjects(@"selectedContact", _observedKeyPath, @"The observed key path should be 'selectedContact'.");
+    XCTAssertEqualObjects([NSNull null], [_observedChange valueForKey:NSKeyValueChangeNewKey], @"The observed value should be NSNull.");
 }
 
 - (void)testShouldNotifyContactsWhenReloadData
 {
-    [contactListViewController reloadData];
+    [_contactListViewController reloadData];
     
-    STAssertEquals(contactListViewController, observedObject, @"The observed object should be the contact list view controller.");
-    STAssertEqualObjects(@"contacts", observedKeyPath, @"The observed key path should be 'selectedContact'.");
-    STAssertEqualObjects([NSNull null], [observedChange valueForKey:NSKeyValueChangeNewKey], @"The observed value should be NSNull.");
+    XCTAssertEqual(_contactListViewController, _observedObject, @"The observed object should be the contact list view controller.");
+    XCTAssertEqualObjects(@"contacts", _observedKeyPath, @"The observed key path should be 'selectedContact'.");
+    XCTAssertEqualObjects([NSNull null], [_observedChange valueForKey:NSKeyValueChangeNewKey], @"The observed value should be NSNull.");
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    observedKeyPath = [keyPath retain];
-    observedObject = object;
-    observedChange = [[NSDictionary dictionaryWithDictionary:change] retain];
+    _observedKeyPath = keyPath;
+    _observedObject = object;
+    _observedChange = [NSDictionary dictionaryWithDictionary:change];
 }
 
 @end

@@ -10,12 +10,13 @@
 #import "ContactDataController.h"
 #import "Contact.h"
 
+@interface ContactListViewController()
+
+@property (strong) ContactDataController *contactController;
+
+@end
+
 @implementation ContactListViewController
-
-#pragma mark - Synthesized Accessors
-
-@synthesize contactsArrayController;
-@synthesize tableView;
 
 #pragma mark - Memory Management
 
@@ -30,43 +31,36 @@
     
     self = [super init];
     if (self) {
-        contactController = [controller retain];
+        _contactController = controller;
     }
     return self;
 }
 
-- (void)dealloc
-{
-    RELEASE(contactsArrayController);
-    RELEASE(contactController);
-    
-    [super dealloc];
-}
 
 #pragma mark - Accessors
 
 - (NSArray *)contacts
 {
-    return [contactController contacts];
+    return [_contactController contacts];
 }
 
 #pragma mark - Methods
 
 - (Contact *)selectedContact
 {
-	if ([[contactsArrayController selectedObjects] count]) {
-		return [[contactsArrayController selectedObjects] objectAtIndex:0];
+	if ([[_contactsArrayController selectedObjects] count]) {
+		return [_contactsArrayController selectedObjects][0];
 	}
 	return nil;
 }
 
 - (void)selectContact:(Contact *)contact
 {
-    BOOL valueChanged = NO;
+    BOOL valueChanged;
     if (contact) {
-        valueChanged = [contactsArrayController setSelectedObjects:[NSArray arrayWithObject:contact]];
+        valueChanged = [_contactsArrayController setSelectedObjects:@[contact]];
     } else {
-        valueChanged = [contactsArrayController setSelectedObjects:nil];
+        valueChanged = [_contactsArrayController setSelectedObjects:nil];
     }
     
     if (valueChanged) {

@@ -11,24 +11,14 @@
 
 @protocol CoreDataControllerDelegate;
 
-@interface CoreDataController : NSObject {
-@private
-    NSPersistentStoreCoordinator *persistentStoreCoordinator;
-    NSManagedObjectModel *managedObjectModel;
-    NSManagedObjectContext *managedObjectContext;
-	NSString *initialType;
-	NSString *appSupportName;
-	NSString *modelName;
-	NSString *dataStoreName;
-    id<CoreDataControllerDelegate> delegate;
-}
+@interface CoreDataController : NSObject
 
 @property (assign) id<CoreDataControllerDelegate> delegate;
 
-- (NSString *)applicationSupportFolder;
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator;
-- (NSManagedObjectModel *)managedObjectModel;
-- (NSManagedObjectContext *)managedObjectContext;
+@property (nonatomic, readonly, strong) NSString *applicationSupportFolder;
+@property (nonatomic, readonly, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, readonly, strong) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, readonly, strong) NSManagedObjectContext *managedObjectContext;
 
 - (id)initWithModelName:(NSString *)theModelName applicationSupportName:(NSString *)theApplicationSupportName dataStoreName:(NSString *)theDataStoreName;
 - (id)initWithInitialType:(NSString *)type modelName:(NSString *)theModelName applicationSupportName:(NSString *)theApplicationSupportName dataStoreName:(NSString *)theDataStoreName;

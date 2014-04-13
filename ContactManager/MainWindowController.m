@@ -11,16 +11,14 @@
 #import "ContactListViewController.h"
 #import "ContactDetailViewController.h"
 
+@interface MainWindowController()
+
+@property (nonatomic, strong) ContactDataController *contactDataController;
+
+@end
+
 @implementation MainWindowController
 
-#pragma mark - Accessors
-
-@synthesize listView;
-@synthesize detailView;
-@synthesize removeButton;
-@synthesize contactListViewController;
-@synthesize contactDetailViewController;
-@synthesize addButton;
 
 #pragma mark - Memory Management
 
@@ -35,10 +33,10 @@
     
     self = [super initWithWindowNibName:@"MainWindowController"];
     if (self) {
-        contactDataController = [controller retain];
-        contactListViewController = [[ContactListViewController alloc] initWithContactDataController:contactDataController];
-        contactDetailViewController = [[ContactDetailViewController alloc] init];
-        [contactListViewController addObserver:self forKeyPath:@"selectedContact" options:NSKeyValueObservingOptionNew context:NULL];
+        _contactDataController = controller;
+        _contactListViewController = [[ContactListViewController alloc] initWithContactDataController:_contactDataController];
+        _contactDetailViewController = [[ContactDetailViewController alloc] init];
+        [_contactListViewController addObserver:self forKeyPath:@"selectedContact" options:NSKeyValueObservingOptionNew context:NULL];
     }
     return self;
 }
@@ -46,13 +44,7 @@
 
 - (void)dealloc
 {
-    [contactListViewController removeObserver:self forKeyPath:@"selectedContact"];
-    
-    RELEASE(contactListViewController);
-    RELEASE(contactDetailViewController);
-    RELEASE(contactDataController);
-    
-    [super dealloc];
+    [_contactListViewController removeObserver:self forKeyPath:@"selectedContact"];
 }
 
 #pragma mark - Windows methods
@@ -61,12 +53,12 @@
 {
     [super windowDidLoad];
     
-    [[contactListViewController view] setFrame:[listView bounds]];
-    [listView addSubview:[contactListViewController view]];
+    [[_contactListViewController view] setFrame:[_listView bounds]];
+    [_listView addSubview:[_contactListViewController view]];
     
-    [[contactDetailViewController view] setFrame:[detailView bounds]];
-    [detailView addSubview:[contactDetailViewController view]];
-    [contactDetailViewController setContact:[contactListViewController selectedContact]];
+    [[_contactDetailViewController view] setFrame:[_detailView bounds]];
+    [_detailView addSubview:[_contactDetailViewController view]];
+    [_contactDetailViewController setContact:[_contactListViewController selectedContact]];
 }
 
 - (NSString *)windowNibName 
@@ -78,25 +70,25 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	[contactDetailViewController setContact:[contactListViewController selectedContact]];
+	[_contactDetailViewController setContact:[_contactListViewController selectedContact]];
 }
 
 #pragma mark - Action methods
 
 - (IBAction)newContact:(id)sender
 {
-    Contact *newContact = [contactDataController createContact];
-	[contactListViewController reloadData];
-	[contactListViewController selectContact:newContact];
+    Contact *newContact = [_contactDataController createContact];
+	[_contactListViewController reloadData];
+	[_contactListViewController selectContact:newContact];
 }
 
 - (IBAction)deleteContact:(id)sender
 {
-    Contact *contact = [contactListViewController selectedContact];
+    Contact *contact = [_contactListViewController selectedContact];
     if (contact) {
-        [contactDataController deleteContact:contact];
+        [_contactDataController deleteContact:contact];
     }
-	[contactListViewController reloadData];
+	[_contactListViewController reloadData];
 }
 
 

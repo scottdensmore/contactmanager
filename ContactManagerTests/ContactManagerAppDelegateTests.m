@@ -6,8 +6,14 @@
 //  Copyright 2011 Scott Densmore. All rights reserved.
 //
 
-#import "ContactManagerAppDelegateTests.h"
+#import <XCTest/XCTest.h>
 #import "ContactManagerAppDelegate.h"
+
+@interface ContactManagerAppDelegateTests : XCTestCase
+
+@property (nonatomic, strong) ContactManagerAppDelegate *appDelegate;
+
+@end
 
 @implementation ContactManagerAppDelegateTests
 
@@ -15,12 +21,12 @@
 {
     [super setUp];
     
-    appDelegate = [[ContactManagerAppDelegate alloc] init];
+    _appDelegate = [[ContactManagerAppDelegate alloc] init];
 }
 
 - (void)tearDown
 {
-    [appDelegate release];
+    _appDelegate = nil;
     
     [super tearDown];
 }

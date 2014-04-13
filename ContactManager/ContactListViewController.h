@@ -11,16 +11,11 @@
 @class ContactDataController;
 @class Contact;
 
-@interface ContactListViewController : NSViewController <NSTableViewDelegate> {
-@private
-    NSTableView *tableView;
-    NSArrayController *contactsArrayController;
-    ContactDataController *contactController;
-}
+@interface ContactListViewController : NSViewController <NSTableViewDelegate>
 
-@property (assign) IBOutlet NSArrayController *contactsArrayController;
-@property (assign) IBOutlet NSTableView *tableView;
-@property (nonatomic, readonly) NSArray *contacts;
+@property (nonatomic, assign) IBOutlet NSArrayController *contactsArrayController;
+@property (nonatomic, assign) IBOutlet NSTableView *tableView;
+@property (nonatomic, readonly, assign) NSArray *contacts;
 
 - (id)initWithContactDataController:(ContactDataController *)controller;
 

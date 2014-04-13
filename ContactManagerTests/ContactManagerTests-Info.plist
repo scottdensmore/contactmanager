@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>scottdensmore.me.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.scottdensmore.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -21,24 +21,24 @@
 	<key>Contacts</key>
 	<array>
 		<dict>
+			<key>emailAddress</key>
+			<string>john.smit@microsoft.com</string>
 			<key>firstName</key>
 			<string>John</string>
 			<key>lastName</key>
 			<string>Smith</string>
-			<key>emailAddress</key>
-			<string>john.smit@microsoft.com</string>
 			<key>phoneNumber</key>
 			<string>425-706-5555</string>
 		</dict>
 		<dict>
-			<key>phoneNumber</key>
-			<string>425-785-2871</string>
 			<key>emailAddress</key>
 			<string>scottden@microsoft.com</string>
 			<key>firstName</key>
 			<string>Scott</string>
 			<key>lastName</key>
 			<string>Densmore</string>
+			<key>phoneNumber</key>
+			<string>425-785-2871</string>
 		</dict>
 	</array>
 </dict>

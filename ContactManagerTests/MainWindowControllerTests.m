@@ -6,12 +6,20 @@
 //  Copyright 2011 Scott Densmore. All rights reserved.
 //
 
-#import "MainWindowControllerTests.h"
-#import "ContactDataController.h"
 #import <OCMock/OCMock.h>
+
+#import "BaseTestCase.h"
+#import "ContactDataController.h"
 #import "ContactListViewController.h"
 #import "ContactDetailViewController.h"
 #import "MainWindowController.h"
+
+@interface MainWindowControllerTests : BaseTestCase
+
+@property (nonatomic, strong) MainWindowController *mainWindowController;
+@property (nonatomic, assign) NSWindow *window;
+
+@end
 
 @implementation MainWindowControllerTests
 
@@ -21,17 +29,16 @@
     id contactDataController = [OCMockObject mockForClass:ContactDataController.class];
     [[[contactDataController stub] andReturn:nil] contacts];
     
-    mainWindowController = [[MainWindowController alloc] initWithContactDataController:contactDataController];
-    window = mainWindowController.window;
+    _mainWindowController = [[MainWindowController alloc] initWithContactDataController:contactDataController];
+    _window = _mainWindowController.window;
 }
 
 - (void)tearDown
 {
-    [mainWindowController close];
-    [mainWindowController release];
-    mainWindowController = nil;
+    [_mainWindowController close];
+    _mainWindowController = nil;
     
-    window = nil;
+    _window = nil;
     [super tearDown];
 }
 
@@ -39,38 +46,38 @@
 
 - (void)testShouldHaveValidNibName
 {
-    STAssertEqualObjects(mainWindowController.windowNibName, @"MainWindowController",
+    XCTAssertEqualObjects(_mainWindowController.windowNibName, @"MainWindowController",
                          @"The nib for this window should be MainWindowController.xib");
 }
 
 - (void)testShouldLoadWindow
 {
-    STAssertNotNil(window, @"The window should be connected to the window controller.");
+    XCTAssertNotNil(_window, @"The window should be connected to the window controller.");
 }
 
 - (void)testShouldConnectListView
 {
-    STAssertNotNil(mainWindowController.listView, @"The list view should be connected to the window controller.");
+    XCTAssertNotNil(_mainWindowController.listView, @"The list view should be connected to the window controller.");
 }
 
 - (void)testShouldConnectDetailView
 {
-    STAssertNotNil(mainWindowController.detailView, @"The detail view should be connected to the window controller.");
+    XCTAssertNotNil(_mainWindowController.detailView, @"The detail view should be connected to the window controller.");
 }
 
 - (void)testShouldReceiveNewContactActionFromAddButton
 {
-    STAssertTrue([self checkControl:mainWindowController.addButton
+    XCTAssertTrue([self checkControl:_mainWindowController.addButton
                         sendsAction:@selector(newContact:)
-                           toTarget:mainWindowController],
+                           toTarget:_mainWindowController],
                  @"The Add button's action should send -newcontact: to the controller.");
 }
 
 - (void)testShouldReceiveDeleteContactActionFromRemoveButton
 {
-    STAssertTrue([self checkControl:mainWindowController.removeButton
+    XCTAssertTrue([self checkControl:_mainWindowController.removeButton
                         sendsAction:@selector(deleteContact:)
-                           toTarget:mainWindowController],
+                           toTarget:_mainWindowController],
                  @"The Remvoe button's action should send -deletecontact: to the controller.");
 }
 
@@ -78,9 +85,9 @@
 {
     id contactDetailViewController = [OCMockObject mockForClass:ContactDetailViewController.class];
     [[contactDetailViewController expect] setContact:nil];
-    mainWindowController.contactDetailViewController = contactDetailViewController;
+    _mainWindowController.contactDetailViewController = contactDetailViewController;
     
-    [mainWindowController.contactListViewController selectContact:nil];
+    [_mainWindowController.contactListViewController selectContact:nil];
     
     [contactDetailViewController verify];
 }

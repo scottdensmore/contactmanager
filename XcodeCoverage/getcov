@@ -1,11 +1,12 @@
 #!/bin/sh
 #
-#   Copyright 2012 Jonathan M. Reid. See LICENSE.txt
+#   Copyright 2014 Jonathan M. Reid. See LICENSE.txt
 #   Created by: Jon Reid, http://qualitycoding.org/
 #   Source: https://github.com/jonreid/XcodeCoverage
 #
 
-source envcov.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source ${DIR}/envcov.sh
 
 remove_old_report()
 {
@@ -25,13 +26,13 @@ enter_lcov_dir()
 
 gather_coverage()
 {
-    "${LCOV_PATH}/lcov" -b "${SRCROOT}" -d "${OBJ_DIR}" --capture -o ${LCOV_INFO}
+    LCOV --capture --derive-func-data -b "${SRCROOT}" -d "${OBJ_DIR}" -o ${LCOV_INFO}
 }
 
 exclude_data()
 {
-    "${LCOV_PATH}/lcov" -d "${OBJ_DIR}" --remove ${LCOV_INFO} "/Applications/Xcode.app/*" -o ${LCOV_INFO}
-    "${LCOV_PATH}/lcov" -d "${OBJ_DIR}" --remove ${LCOV_INFO} "main.m" -o ${LCOV_INFO}
+    LCOV --remove ${LCOV_INFO} "Applications/Xcode.app/*" -d "${OBJ_DIR}" -o ${LCOV_INFO}
+    LCOV --remove ${LCOV_INFO} "main.m" -d "${OBJ_DIR}" -o ${LCOV_INFO}
     # Remove other patterns here...
 }
 

@@ -38,8 +38,8 @@
 - (BOOL)checkObject:(id)source hasBinding:(NSString *)binding toObject:(id)destination through:(NSString *)keyPath
 {
     NSDictionary *bindingInfo = [source infoForBinding:binding];
-    id observedObject = [bindingInfo objectForKey:NSObservedObjectKey];
-    NSString *observedKeyPath = [bindingInfo objectForKey:NSObservedKeyPathKey];
+    id observedObject = bindingInfo[NSObservedObjectKey];
+    NSString *observedKeyPath = bindingInfo[NSObservedKeyPathKey];
     
     return (bindingInfo != nil) && (observedObject == destination) && [keyPath isEqualToString:observedKeyPath];
 }

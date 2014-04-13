@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0450"
+   LastUpgradeVersion = "0510"
    version = "1.8">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DED817A913A452AA00EC3234"
-               BuildableName = "ContactManagerTests.octest"
+               BuildableName = "ContactManagerTests.xctest"
                BlueprintName = "ContactManagerTests"
                ReferencedContainer = "container:ContactManager.xcodeproj">
             </BuildableReference>

@@ -11,24 +11,6 @@
 
 @implementation ContactDetailViewController
 
-#pragma mark - Accessors
-
-@synthesize contact;
-@synthesize firstNameTextField;
-@synthesize lastNameTextField;
-@synthesize emailTextField;
-@synthesize phoneNumberTextField;
-@synthesize contactObjectController;
-
-#pragma mark - Memory Management
-
-- (void)dealloc
-{
-    RELEASE(contact);
-    
-    [super dealloc];
-}
-
 #pragma mark - View methods
 
 - (NSString *)nibName

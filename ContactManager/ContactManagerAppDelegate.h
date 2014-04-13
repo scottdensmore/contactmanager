@@ -8,15 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class MainWindowController;
-@class CoreDataController;
-@class ContactDataController;
-
-@interface ContactManagerAppDelegate : NSObject <NSApplicationDelegate> {
-@private
-    MainWindowController *mainWindowController;
-    CoreDataController *coreDataController;
-    ContactDataController *contactDataController;
-}
+@interface ContactManagerAppDelegate : NSObject <NSApplicationDelegate>
 
 @end

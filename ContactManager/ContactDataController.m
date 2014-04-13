@@ -11,6 +11,13 @@
 #import "NSManagedObjectModel+Extensions.h"
 #import "Contact.h"
 
+@interface ContactDataController()
+
+@property (nonatomic, strong) CoreDataController *coreDataController;
+@property (nonatomic, readwrite, strong) NSArray *contacts;
+
+@end
+
 @implementation ContactDataController
 
 #pragma mark - Memory Managements
@@ -27,29 +34,23 @@
     self = [super init];
     if (self) {
         if (controller) {
-            coreDataController = [controller retain];
+            _coreDataController = controller;
         }
     }
     
     return self;
 }
 
-- (void)dealloc
-{
-    RELEASE(coreDataController);
-    
-    [super dealloc];
-}
 
 
 #pragma mark - Accessors
 
 - (NSArray *)contacts
 {
-    return [coreDataController.managedObjectModel objectsInEntityWithContext:coreDataController.managedObjectContext  
+    return [_coreDataController.managedObjectModel objectsInEntityWithContext:_coreDataController.managedObjectContext
                                                                         name:@"Contact" 
                                                                    predicate:nil 
-                                                       sortedWithDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"lastName" ascending:YES]]];
+                                                       sortedWithDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"lastName" ascending:YES]]];
 }
 
 #pragma mark - Data Methods
@@ -57,7 +58,7 @@
 - (Contact *)createContact
 {
     [self willChangeValueForKey:@"contacts"];
-	Contact *contact = (Contact *)[coreDataController.managedObjectModel insertNewObjectInEntityWithContext:coreDataController.managedObjectContext 
+	Contact *contact = (Contact *)[_coreDataController.managedObjectModel insertNewObjectInEntityWithContext:_coreDataController.managedObjectContext
                                                                                               name:@"Contact" 
                                                                                             values:nil];
     
@@ -68,7 +69,7 @@
 - (void)deleteContact:(Contact *)contact
 {
     [self willChangeValueForKey:@"contacts"];
-	[coreDataController.managedObjectContext deleteObject:contact];
+	[_coreDataController.managedObjectContext deleteObject:contact];
 	[self didChangeValueForKey:@"contacts"];
 }
 

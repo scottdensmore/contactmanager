@@ -10,21 +10,14 @@
 
 @class Contact;
 
-@interface ContactDetailViewController : NSViewController {
-@private
-    Contact *contact;
-    NSTextField *firstNameTextField;
-    NSTextField *lastNameTextField;
-    NSTextField *emailTextField;
-    NSTextField *phoneNumberTextField;
-    NSObjectController *contactObjectController;
-}
+@interface ContactDetailViewController : NSViewController 
 
-@property (nonatomic, retain) Contact *contact;
-@property (assign) IBOutlet NSTextField *firstNameTextField;
-@property (assign) IBOutlet NSTextField *lastNameTextField;
-@property (assign) IBOutlet NSTextField *emailTextField;
-@property (assign) IBOutlet NSTextField *phoneNumberTextField;
-@property (assign) IBOutlet NSObjectController *contactObjectController;
+@property (nonatomic, assign) IBOutlet NSTextField *firstNameTextField;
+@property (nonatomic, assign) IBOutlet NSTextField *lastNameTextField;
+@property (nonatomic, assign) IBOutlet NSTextField *emailTextField;
+@property (nonatomic, assign) IBOutlet NSTextField *phoneNumberTextField;
+@property (nonatomic, assign) IBOutlet NSObjectController *contactObjectController;
+
+@property (nonatomic, strong) Contact *contact;
 
 @end

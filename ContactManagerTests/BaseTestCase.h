@@ -6,13 +6,10 @@
 //  Copyright 2011 Scott Densmore. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 
-@interface BaseTestCase : SenTestCase {
-@private
-    
-}
+@interface BaseTestCase : XCTestCase
 
 - (BOOL)checkControl:(NSControl *)control sendsAction:(SEL)action toTarget:(id)target;
 - (BOOL)checkOutlet:(id)outlet connectsTo:(id)destination;

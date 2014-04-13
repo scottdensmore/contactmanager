@@ -11,12 +11,9 @@
 @class Contact;
 @class CoreDataController;
 
-@interface ContactDataController : NSObject {
-@private
-    CoreDataController *coreDataController;
-}
+@interface ContactDataController : NSObject
 
-- (NSArray *)contacts;
+@property (nonatomic, readonly, strong) NSArray *contacts;
 
 - (id)initWithCoreDataController:(CoreDataController *)controller;
 
