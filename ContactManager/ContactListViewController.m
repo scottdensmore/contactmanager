@@ -60,7 +60,7 @@
     if (contact) {
         valueChanged = [_contactsArrayController setSelectedObjects:@[contact]];
     } else {
-        valueChanged = [_contactsArrayController setSelectedObjects:nil];
+        valueChanged = [_contactsArrayController setSelectedObjects:@[]];
     }
     
     if (valueChanged) {
