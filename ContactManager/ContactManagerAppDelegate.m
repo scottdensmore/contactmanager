@@ -61,8 +61,13 @@
         if (errorResult) {
             reply = NSTerminateCancel;
         } else {
-            NSInteger alertReturn = NSRunAlertPanel(nil, FCLocalizedString(@"QuitQuestion"), FCLocalizedString(@"Quit"), FCLocalizedString(@"Cancel"), nil);
-            if (alertReturn == NSAlertAlternateReturn) {
+            NSAlert *alert = [[NSAlert alloc] init];
+            [alert addButtonWithTitle:FCLocalizedString(@"Quit")];
+            [alert addButtonWithTitle:FCLocalizedString(@"Cancel")];
+            alert.messageText = @"";
+            alert.informativeText =  FCLocalizedString(@"QuitQuestion");
+            NSModalResponse alertReturn = [alert runModal];
+            if (alertReturn == NSAlertFirstButtonReturn) {
                 reply = NSTerminateCancel;	
             }
         }

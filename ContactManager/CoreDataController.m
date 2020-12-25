@@ -111,7 +111,7 @@
 			//If we failed with an incorrect data model error then pass the version identifiers of the store to the delegate to decide what to do next
 			if ([[self delegate] respondsToSelector:@selector(coreDataController:encounteredIncorrectModelWithVersionIdentifiers:)]) {
 				_persistentStoreCoordinator = nil;
-				NSDictionary *metadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:_initialType URL:url error:&error];
+                NSDictionary *metadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:_initialType URL:url options:options error:&error];
 				[[self delegate] coreDataController:self encounteredIncorrectModelWithVersionIdentifiers:metadata[NSStoreModelVersionIdentifiersKey]];
 			}
 		} else {
@@ -127,7 +127,7 @@
     if (!_managedObjectContext) {
 		NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
 		if (coordinator != nil) {
-			_managedObjectContext = [[NSManagedObjectContext alloc] init];
+			_managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
 			[_managedObjectContext setPersistentStoreCoordinator: coordinator];
 		}
 	}
