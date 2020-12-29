@@ -196,3 +196,5 @@ DerivedData/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,appcode,xcode,visualstudiocode,carthage,cocoapods
+
+DeveloperSettings.xcconfig

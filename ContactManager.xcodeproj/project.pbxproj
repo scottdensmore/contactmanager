@@ -39,6 +39,7 @@
 		DED817B313A452AA00EC3234 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DED817B113A452AA00EC3234 /* InfoPlist.strings */; };
 		DEF0BEF713B1A32600E76C47 /* ContactDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0BEF613B1A32600E76C47 /* ContactDataController.m */; };
 		DEF0BF1613B1A58C00E76C47 /* NSManagedObjectModel+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF0BF1513B1A58C00E76C47 /* NSManagedObjectModel+Extensions.m */; };
+		DEFCA6D2259AAB9C00DB0749 /* SharedSettings.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DEFCA6D1259AAB9C00DB0749 /* SharedSettings.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +117,7 @@
 		DEF0BEF613B1A32600E76C47 /* ContactDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDataController.m; sourceTree = "<group>"; };
 		DEF0BF1413B1A58C00E76C47 /* NSManagedObjectModel+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectModel+Extensions.h"; sourceTree = "<group>"; };
 		DEF0BF1513B1A58C00E76C47 /* NSManagedObjectModel+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectModel+Extensions.m"; sourceTree = "<group>"; };
+		DEFCA6D1259AAB9C00DB0749 /* SharedSettings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = SharedSettings.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -264,6 +266,7 @@
 		DED8179313A452AA00EC3234 /* ContactManager */ = {
 			isa = PBXGroup;
 			children = (
+				DEFCA6D0259AAB8000DB0749 /* Config */,
 				DE25CA6113A7B37500D71422 /* Controllers */,
 				DE0285C613B192BE0069A885 /* Helpers */,
 				DEAB729518FA2A6600E3570B /* Images.xcassets */,
@@ -330,6 +333,14 @@
 				DE0285C513B190F00069A885 /* CoreDataControllerDelegate.h */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		DEFCA6D0259AAB8000DB0749 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				DEFCA6D1259AAB9C00DB0749 /* SharedSettings.xcconfig */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -408,6 +419,7 @@
 				DEAB729618FA2A6600E3570B /* Images.xcassets in Resources */,
 				DED8179E13A452AA00EC3234 /* Credits.rtf in Resources */,
 				DED817A413A452AA00EC3234 /* MainMenu.xib in Resources */,
+				DEFCA6D2259AAB9C00DB0749 /* SharedSettings.xcconfig in Resources */,
 				DE25CA6013A7234C00D71422 /* MainWindowController.xib in Resources */,
 				DE25CA6E13A8560E00D71422 /* ContactListViewController.xib in Resources */,
 				DEB4C39313B058E800B84FA9 /* ContactDetailViewController.xib in Resources */,
@@ -590,11 +602,11 @@
 		};
 		DED817BC13A452AA00EC3234 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DEFCA6D1259AAB9C00DB0749 /* SharedSettings.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -609,8 +621,9 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.scottdensmore.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(ORGANIZATION_IDENTIFIER).${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				WRAPPER_EXTENSION = app;
 			};
@@ -618,11 +631,11 @@
 		};
 		DED817BD13A452AA00EC3234 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DEFCA6D1259AAB9C00DB0749 /* SharedSettings.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -636,8 +649,9 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.scottdensmore.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(ORGANIZATION_IDENTIFIER).${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				WRAPPER_EXTENSION = app;
 			};
@@ -645,6 +659,7 @@
 		};
 		DED817BF13A452AA00EC3234 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DEFCA6D1259AAB9C00DB0749 /* SharedSettings.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ContactManager.app/Contents/MacOS/ContactManager";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -668,7 +683,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.scottdensmore.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(ORGANIZATION_IDENTIFIER).${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -677,6 +692,7 @@
 		};
 		DED817C013A452AA00EC3234 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DEFCA6D1259AAB9C00DB0749 /* SharedSettings.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ContactManager.app/Contents/MacOS/ContactManager";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -699,7 +715,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.scottdensmore.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(ORGANIZATION_IDENTIFIER).${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				TEST_HOST = "$(BUNDLE_LOADER)";
