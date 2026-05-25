@@ -22,7 +22,9 @@
 
 - (instancetype)init 
 {
-    return [self initWithContactDataController:(ContactDataController * _Nonnull)nil];
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:@"init is not a valid initializer for this class. Use initWithContactDataController: instead."
+                                 userInfo:nil];
 }
 
 - (instancetype)initWithContactDataController:(ContactDataController *)controller 

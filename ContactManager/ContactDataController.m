@@ -24,7 +24,9 @@
 
 - (instancetype)init 
 {
-    return [self initWithCoreDataController:(CoreDataController * _Nonnull)nil];
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:@"init is not a valid initializer for this class. Use initWithCoreDataController: instead."
+                                 userInfo:nil];
 }
 
 - (instancetype)initWithCoreDataController:(CoreDataController *)controller

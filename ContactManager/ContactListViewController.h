@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) IBOutlet NSTableView *tableView;
 @property (nonatomic, readonly, copy) NSArray<Contact *> *contacts;
 
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
 - (instancetype)initWithContactDataController:(ContactDataController *)controller;
 
 - (nullable Contact *)selectedContact;
