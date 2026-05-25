@@ -26,12 +26,12 @@
 		return nil;
 	}
 	
-	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:name];
+	NSFetchRequest<__kindof NSManagedObject *> *request = [NSFetchRequest fetchRequestWithEntityName:name];
 	request.predicate = predicate;
 	request.sortDescriptors = descriptors;
 	
 	NSError *error = nil;
-	NSArray *results = [context executeFetchRequest:request error:&error];
+	NSArray<__kindof NSManagedObject *> *results = [context executeFetchRequest:request error:&error];
 	if (error) {
 		LOG(@"error:%@", error);
 		return nil;
