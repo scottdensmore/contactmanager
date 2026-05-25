@@ -6,13 +6,28 @@
 //  Copyright 2011 Scott Densmore. All rights reserved.
 //
 
-#import <OCMock/OCMock.h>
-
 #import "BaseTestCase.h"
+#import "CoreDataController.h"
 #import "ContactDataController.h"
 #import "ContactListViewController.h"
 #import "ContactDetailViewController.h"
 #import "MainWindowController.h"
+
+@interface TestContactDetailViewController : ContactDetailViewController
+
+@property (nonatomic, assign) BOOL setContactCalled;
+
+@end
+
+@implementation TestContactDetailViewController
+
+- (void)setContact:(nullable Contact *)contact
+{
+    [super setContact:contact];
+    _setContactCalled = YES;
+}
+
+@end
 
 @interface MainWindowControllerTests : BaseTestCase
 
@@ -26,8 +41,9 @@
 - (void)setUp
 {
     [super setUp];
-    id contactDataController = [OCMockObject mockForClass:ContactDataController.class];
-    [[[contactDataController stub] andReturn:nil] contacts];
+    
+    CoreDataController *coreDataController = [[CoreDataController alloc] initWithInitialType:NSInMemoryStoreType modelName:@"ContactManagerModel.momd" applicationSupportName:nil dataStoreName:nil];
+    ContactDataController *contactDataController = [[ContactDataController alloc] initWithCoreDataController:coreDataController];
     
     _mainWindowController = [[MainWindowController alloc] initWithContactDataController:contactDataController];
     _window = _mainWindowController.window;
@@ -83,13 +99,12 @@
 
 - (void)testShouldObserveContactListViewControllerSelectedContact 
 {
-    id contactDetailViewController = [OCMockObject mockForClass:ContactDetailViewController.class];
-    [[contactDetailViewController expect] setContact:nil];
+    TestContactDetailViewController *contactDetailViewController = [[TestContactDetailViewController alloc] init];
     _mainWindowController.contactDetailViewController = contactDetailViewController;
     
     [_mainWindowController.contactListViewController selectContact:nil];
     
-    [contactDetailViewController verify];
+    XCTAssertTrue(contactDetailViewController.setContactCalled, @"setContact: should have been called on the detail view controller");
 }
 
 @end
