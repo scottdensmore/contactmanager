@@ -7,8 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
-
+#import "CoreDataController.h"
 #import "ContactDataController.h"
 #import "ContactListViewController.h"
 #import "MainWindowController.h"
@@ -30,8 +29,8 @@
 {
     [super setUp];
     
-    id contactDataController = [OCMockObject mockForClass:ContactDataController.class];
-    [[[contactDataController stub] andReturn:nil] contacts];
+    CoreDataController *coreDataController = [[CoreDataController alloc] initWithInitialType:NSInMemoryStoreType modelName:@"ContactManagerModel.momd" applicationSupportName:nil dataStoreName:nil];
+    ContactDataController *contactDataController = [[ContactDataController alloc] initWithCoreDataController:coreDataController];
     
     _mainWindowController = [[MainWindowController alloc] initWithContactDataController:contactDataController];
     _window = _mainWindowController.window;
@@ -70,8 +69,8 @@
     [_contactListViewController reloadData];
     
     XCTAssertEqual(_contactListViewController, _observedObject, @"The observed object should be the contact list view controller.");
-    XCTAssertEqualObjects(@"contacts", _observedKeyPath, @"The observed key path should be 'selectedContact'.");
-    XCTAssertEqualObjects([NSNull null], [_observedChange valueForKey:NSKeyValueChangeNewKey], @"The observed value should be NSNull.");
+    XCTAssertEqualObjects(@"contacts", _observedKeyPath, @"The observed key path should be 'contacts'.");
+    XCTAssertEqualObjects(_contactListViewController.contacts, [_observedChange valueForKey:NSKeyValueChangeNewKey], @"The observed value should be the contacts array.");
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context

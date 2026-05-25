@@ -7,8 +7,7 @@
 //
 
 #import "BaseTestCase.h"
-#import <OCMock/OCMock.h>
-
+#import "CoreDataController.h"
 #import "ContactDataController.h"
 #import "ContactListViewController.h"
 #import "MainWindowController.h"
@@ -26,24 +25,9 @@
 - (void)setUp
 {
     [super setUp];
-    /*
-    CoreDataController *coreDataController = [[[CoreDataController alloc] initWithInitialType:NSInMemoryStoreType appSupportName:nil modelName:@"ContactManagerModel.momd" dataStoreName:nil] autorelease];
-    ContactDataController *contactDataController = [[[ContactDataController alloc] initWithCoreDataController:coreDataController] autorelease];
-
-    //NSMutableArray *contactsToReturn = [NSMutableArray array];
-    NSArray *contacts = [[[NSBundle bundleForClass:ContactListViewControllerTests.class] infoDictionary] valueForKey:@"Contacts"];
-	for (NSDictionary *contactDict in contacts) { 
-        Contact *contact = [contactDataController createContact];
-		[contact setFirstName:[contactDict valueForKey:@"firstName"]];
-        [contact setLastName:[contactDict valueForKey:@"lastName"]];
-        [contact setPhoneNumber:[contactDict valueForKey:@"phoneNumber"]];
-		[contact setEmailAddress:[contactDict valueForKey:@"emailAddress"]];
-        //[contactsToReturn addObject:contact];
-	}
-    */
     
-    id contactDataController = [OCMockObject mockForClass:ContactDataController.class];
-    [[[contactDataController stub] andReturn:nil] contacts];
+    CoreDataController *coreDataController = [[CoreDataController alloc] initWithInitialType:NSInMemoryStoreType modelName:@"ContactManagerModel.momd" applicationSupportName:nil dataStoreName:nil];
+    ContactDataController *contactDataController = [[ContactDataController alloc] initWithCoreDataController:coreDataController];
     
     _mainWindowController = [[MainWindowController alloc] initWithContactDataController:contactDataController];
     _window = _mainWindowController.window;

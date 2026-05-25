@@ -1,1 +1,2 @@
-carthage update --platform macOS
+#!/bin/bash
+# No dependencies to update

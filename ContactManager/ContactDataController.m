@@ -14,7 +14,7 @@
 @interface ContactDataController()
 
 @property (nonatomic, strong) CoreDataController *coreDataController;
-@property (nonatomic, readwrite, strong) NSArray *contacts;
+@property (nonatomic, readwrite, copy) NSArray<Contact *> *contacts;
 
 @end
 
@@ -22,12 +22,12 @@
 
 #pragma mark - Memory Managements
 
-- (id)init 
+- (instancetype)init 
 {
-    return [self initWithCoreDataController:nil];
+    return [self initWithCoreDataController:(CoreDataController * _Nonnull)nil];
 }
 
-- (id)initWithCoreDataController:(CoreDataController *)controller
+- (instancetype)initWithCoreDataController:(CoreDataController *)controller
 {
     NSParameterAssert(controller != nil);
     
@@ -40,6 +40,7 @@
     
     return self;
 }
+
 
 
 

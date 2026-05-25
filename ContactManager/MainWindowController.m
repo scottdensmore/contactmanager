@@ -22,12 +22,12 @@
 
 #pragma mark - Memory Management
 
-- (id)init
+- (instancetype)init
 {
-    return [self initWithContactDataController:nil];
+    return [self initWithContactDataController:(ContactDataController * _Nonnull)nil];
 }
 
-- (id)initWithContactDataController:(ContactDataController *)controller
+- (instancetype)initWithContactDataController:(ContactDataController *)controller
 {
     NSParameterAssert(controller != nil);
     
@@ -40,6 +40,7 @@
     }
     return self;
 }
+
 
 
 - (void)dealloc

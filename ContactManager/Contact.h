@@ -9,12 +9,16 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
 @interface Contact : NSManagedObject
 
-@property (nonatomic, strong) NSString *firstName;
-@property (nonatomic, strong) NSString *lastName;
-@property (nonatomic, strong) NSString *emailAddress;
-@property (nonatomic, strong) NSString *phoneNumber;
+@property (nonatomic, strong, nullable) NSString *firstName;
+@property (nonatomic, strong, nullable) NSString *lastName;
+@property (nonatomic, strong, nullable) NSString *emailAddress;
+@property (nonatomic, strong, nullable) NSString *phoneNumber;
 
 @end
+
+NS_ASSUME_NONNULL_END
+

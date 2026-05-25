@@ -22,22 +22,19 @@
 @end
 
 @implementation CoreDataController
-
-@synthesize delegate;
-
 #pragma mark - Memory Management
 
-- (id)init 
+- (instancetype)init 
 {
     return [self initWithInitialType:NSInMemoryStoreType modelName:nil applicationSupportName:nil dataStoreName:nil];
 }
 
-- (id)initWithModelName:(NSString *)theModelName applicationSupportName:(NSString *)theApplicationSupportName dataStoreName:(NSString *)theDataStoreName
+- (instancetype)initWithModelName:(NSString *)theModelName applicationSupportName:(nullable NSString *)theApplicationSupportName dataStoreName:(nullable NSString *)theDataStoreName
 {
     return [self initWithInitialType:NSXMLStoreType modelName:theModelName applicationSupportName:theApplicationSupportName  dataStoreName:theDataStoreName];
 }
 
-- (id)initWithInitialType:(NSString *)type modelName:(NSString *)theModelName applicationSupportName:(NSString *)theApplicationSupportName dataStoreName:(NSString *)theDataStoreName;
+- (instancetype)initWithInitialType:(NSString *)type modelName:(NSString *)theModelName applicationSupportName:(nullable NSString *)theApplicationSupportName dataStoreName:(nullable NSString *)theDataStoreName
 {
     NSParameterAssert(theModelName != nil);
     
@@ -55,11 +52,6 @@
 	return self;
 }
 
-- (void)dealloc 
-{
-    delegate = nil;
-    
-}
 
 #pragma mark - Accesssors
 

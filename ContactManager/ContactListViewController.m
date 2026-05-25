@@ -12,7 +12,7 @@
 
 @interface ContactListViewController()
 
-@property (strong) ContactDataController *contactController;
+@property (nonatomic, strong) ContactDataController *contactController;
 
 @end
 
@@ -20,12 +20,12 @@
 
 #pragma mark - Memory Management
 
-- (id)init 
+- (instancetype)init 
 {
-    return [self initWithContactDataController:nil];
+    return [self initWithContactDataController:(ContactDataController * _Nonnull)nil];
 }
 
-- (id)initWithContactDataController:(ContactDataController *)controller 
+- (instancetype)initWithContactDataController:(ContactDataController *)controller 
 {
     NSParameterAssert(controller != nil);
     
@@ -35,6 +35,7 @@
     }
     return self;
 }
+
 
 
 #pragma mark - Accessors

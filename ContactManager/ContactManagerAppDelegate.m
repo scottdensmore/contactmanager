@@ -11,17 +11,20 @@
 #import "CoreDataController.h"
 #import "ContactDataController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface ContactManagerAppDelegate()
 
-@property (strong) MainWindowController *mainWindowController;
-@property (strong) CoreDataController *coreDataController;
-@property (strong) ContactDataController *contactDataController;
+@property (nonatomic, strong) MainWindowController *mainWindowController;
+@property (nonatomic, strong) CoreDataController *coreDataController;
+@property (nonatomic, strong) ContactDataController *contactDataController;
 
 - (void)showMainWindow;
 
 @end
 
 @implementation ContactManagerAppDelegate
+
 
 #pragma mark - Memory Management
 
@@ -96,3 +99,6 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END
+

@@ -8,16 +8,21 @@
 
 #import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class Contact;
 
 @interface ContactDetailViewController : NSViewController 
 
-@property (nonatomic, assign) IBOutlet NSTextField *firstNameTextField;
-@property (nonatomic, assign) IBOutlet NSTextField *lastNameTextField;
-@property (nonatomic, assign) IBOutlet NSTextField *emailTextField;
-@property (nonatomic, assign) IBOutlet NSTextField *phoneNumberTextField;
-@property (nonatomic, assign) IBOutlet NSObjectController *contactObjectController;
+@property (nonatomic, weak, nullable) IBOutlet NSTextField *firstNameTextField;
+@property (nonatomic, weak, nullable) IBOutlet NSTextField *lastNameTextField;
+@property (nonatomic, weak, nullable) IBOutlet NSTextField *emailTextField;
+@property (nonatomic, weak, nullable) IBOutlet NSTextField *phoneNumberTextField;
+@property (nonatomic, weak, nullable) IBOutlet NSObjectController *contactObjectController;
 
-@property (nonatomic, strong) Contact *contact;
+@property (nonatomic, strong, nullable) Contact *contact;
 
 @end
+
+NS_ASSUME_NONNULL_END
+

@@ -8,16 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class Contact;
 @class CoreDataController;
 
 @interface ContactDataController : NSObject
 
-@property (nonatomic, readonly, strong) NSArray *contacts;
+@property (nonatomic, readonly, copy) NSArray<Contact *> *contacts;
 
-- (id)initWithCoreDataController:(CoreDataController *)controller;
+- (instancetype)initWithCoreDataController:(CoreDataController *)controller;
 
 - (Contact *)createContact;
 - (void)deleteContact:(Contact *)contact;
 
 @end
+
+NS_ASSUME_NONNULL_END
+

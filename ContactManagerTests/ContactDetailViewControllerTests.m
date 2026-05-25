@@ -7,9 +7,8 @@
 //
 
 #import <XCTest/XCTest.h>
-#import <OCMock/OCMock.h>
-
 #import "BaseTestCase.h"
+#import "CoreDataController.h"
 #import "ContactDataController.h"
 #import "ContactDetailViewController.h"
 #import "MainWindowController.h"
@@ -29,8 +28,8 @@
 {
     [super setUp];
     
-    id contactDataController = [OCMockObject mockForClass:ContactDataController.class];
-    [[[contactDataController stub] andReturn:nil] contacts];
+    CoreDataController *coreDataController = [[CoreDataController alloc] initWithInitialType:NSInMemoryStoreType modelName:@"ContactManagerModel.momd" applicationSupportName:nil dataStoreName:nil];
+    ContactDataController *contactDataController = [[ContactDataController alloc] initWithCoreDataController:coreDataController];
     
     _mainWindowController = [[MainWindowController alloc] initWithContactDataController:contactDataController];
     _window = _mainWindowController.window;
