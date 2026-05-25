@@ -1,17 +1,18 @@
-//
-//  NSManagedObjectModel+Extensions.h
-//  ContactManager
-//
-//  Created by Scott Densmore on 6/21/11.
-//  Copyright 2011 Scott Densmore. All rights reserved.
-//
-
 #import <CoreData/CoreData.h>
 
-@interface NSManagedObjectModel(Extensions)
+NS_ASSUME_NONNULL_BEGIN
 
-- (NSArray *)objectsInEntityWithContext:(NSManagedObjectContext *)context name:(NSString *)name predicate:(NSPredicate *)predicate sortedWithDescriptors:(NSArray *)descriptors;
+@interface NSManagedObjectModel (Extensions)
 
-- (NSManagedObject *)insertNewObjectInEntityWithContext:(NSManagedObjectContext *)context name:(NSString *)name values:(NSDictionary *)values;
+- (nullable NSArray<__kindof NSManagedObject *> *)objectsInEntityWithContext:(NSManagedObjectContext *)context
+                                                                      name:(NSString *)name
+                                                                 predicate:(nullable NSPredicate *)predicate
+                                                     sortedWithDescriptors:(nullable NSArray<NSSortDescriptor *> *)descriptors;
+
+- (nullable __kindof NSManagedObject *)insertNewObjectInEntityWithContext:(NSManagedObjectContext *)context
+                                                                    name:(NSString *)name
+                                                                  values:(nullable NSDictionary<NSString *, id> *)values;
 
 @end
+
+NS_ASSUME_NONNULL_END

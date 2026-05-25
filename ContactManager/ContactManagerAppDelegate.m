@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Memory Management
 
-- (id)init 
+- (instancetype)init 
 {
     self = [super init];
     if (self) {
