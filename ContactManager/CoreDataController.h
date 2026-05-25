@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) id<CoreDataControllerDelegate> delegate;
 
 @property (nonatomic, readonly, strong) NSString *applicationSupportFolder;
+@property (nonatomic, readonly, strong) NSPersistentContainer *persistentContainer;
 @property (nonatomic, readonly, strong, nullable) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, readonly, strong, nullable) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, readonly, strong, nullable) NSManagedObjectContext *managedObjectContext;
