@@ -18,7 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) id<CoreDataControllerDelegate> delegate;
 
 @property (nonatomic, readonly, strong) NSString *applicationSupportFolder;
-@property (nonatomic, readonly, strong) NSPersistentContainer *persistentContainer;
+
+/**
+ The persistent container managing the Core Data stack.
+ Returns nil if the container or its persistent stores fail to load.
+ The stores are guaranteed to be loaded synchronously before this returns.
+ */
+@property (nonatomic, readonly, strong, nullable) NSPersistentContainer *persistentContainer;
 @property (nonatomic, readonly, strong, nullable) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, readonly, strong, nullable) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, readonly, strong, nullable) NSManagedObjectContext *managedObjectContext;

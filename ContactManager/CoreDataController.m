@@ -11,10 +11,8 @@
 
 @interface CoreDataController()
 
-@property (nonatomic, readwrite, strong) NSPersistentContainer *persistentContainer;
-@property (nonatomic, readwrite, strong, nullable) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, readwrite, strong, nullable) NSPersistentContainer *persistentContainer;
 @property (nonatomic, readwrite, strong, nullable) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, readwrite, strong, nullable) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong, nullable) NSString *initialType;
 @property (nonatomic, strong, nullable) NSString *appSupportName;
 @property (nonatomic, strong, nullable) NSString *modelName;
@@ -94,6 +92,8 @@
             if (![fileManager createDirectoryAtPath:applicationSupportFolder withIntermediateDirectories:NO attributes:nil error:&error]) {
                 NSAssert(NO, ([NSString stringWithFormat:@"Failed to create App Support directory %@ : %@", applicationSupportFolder, error]));
                 LOG(@"Error creating application support directory at %@ : %@", applicationSupportFolder, error);
+                _persistentContainer = nil;
+                return nil;
             }
         }
         
@@ -107,19 +107,35 @@
     
     _persistentContainer.persistentStoreDescriptions = @[storeDescription];
     
+    dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+    __block NSError *loadError = nil;
+    
     [_persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *description, NSError *error) {
         if (error) {
-            if ([error code] == 134100) {
-                if ([[self delegate] respondsToSelector:@selector(coreDataController:encounteredIncorrectModelWithVersionIdentifiers:)]) {
-                    NSError *metadataError = nil;
-                    NSDictionary *metadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:self.initialType URL:description.URL options:nil error:&metadataError];
-                    [[self delegate] coreDataController:self encounteredIncorrectModelWithVersionIdentifiers:metadata[NSStoreModelVersionIdentifiersKey]];
-                }
-            } else {
-                [[NSApplication sharedApplication] presentError:error];
-            }
+            loadError = error;
         }
+        dispatch_semaphore_signal(sem);
     }];
+    
+    dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+    
+    if (loadError) {
+        if ([loadError code] == 134100) {
+            if ([[self delegate] respondsToSelector:@selector(coreDataController:encounteredIncorrectModelWithVersionIdentifiers:)]) {
+                NSError *metadataError = nil;
+                NSDictionary *metadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:self.initialType URL:storeDescription.URL options:nil error:&metadataError];
+                if (metadata) {
+                    [[self delegate] coreDataController:self encounteredIncorrectModelWithVersionIdentifiers:metadata[NSStoreModelVersionIdentifiersKey]];
+                } else {
+                    LOG(@"Error retrieving metadata for version identifiers: %@", metadataError);
+                }
+            }
+        } else {
+            [[NSApplication sharedApplication] presentError:loadError];
+        }
+        _persistentContainer = nil;
+        return nil;
+    }
     
     return _persistentContainer;
 }
