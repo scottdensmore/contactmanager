@@ -1,58 +1,59 @@
 # Contact Manager
 
-A sample application that shows an agile approach to building a Mac Application.
+**ContactManager** is a native, modern macOS desktop application demonstrating best practices in desktop architecture, persistence, and unit testing.
 
-## Resources
+The project is **100% self-contained and standalone**, featuring zero third-party dependencies. It has been fully modernized to target macOS 13.0+ and compiles under modern Xcode toolchains with zero warnings.
 
-* [Code Coverage](http://qualitycoding.org/xcode-code-coverage/#comment-1807)
-* Loading OCMock (frameworks)
-  * [How to load OCMock in you test bundle](http://www.mulle-kybernetik.com/forum/viewtopic.php?f=4&t=271&sid=baddd9135cb7e12facc56cdc66e3ba9f)
-  * [Using @rpath Why and How](http://www.dribin.org/dave/blog/archives/2009/11/15/rpath/)
-  * [Linking and Install Names](http://www.mikeash.com/pyblog/friday-qa-2009-11-06-linking-and-install-names.html)
-* [Generating Code Coverage Files with LLVM](http://meandmark.com/blog/2012/08/xcode-4-generating-code-coverage-files-with-llvm/)
-* [Retrieving Coverage Information – LLVM, CoverStory and Teamcity](http://jorudolph.wordpress.com/2011/08/10/retrieving-coverage-information-llvm-coverstory-and-teamcity/)
-* [How to setup quality metrics on your Jenkins job?](http://blog.octo.com/en/jenkins-quality-dashboard-ios-development/)
-* [Code coverage output seems to be broken in Xcode 4.4 (you will need a developer account)](https://devforums.apple.com/message/717814)
+---
 
-### To Build
+## Key Modernization Features
 
-You can locally override the Xcode settings for code signing
-by creating a `DeveloperSettings.xcconfig` file locally in the project directory.
-This allows for a pristine project with code signing set up with the appropriate
-developer ID and certificates, and for a developer to be able to have local settings
-without needing to check in anything into source control.
+1. **Modern Persistence Stack**:
+   - Replaced legacy manual Core Data lifecycle management with Apple's standard **`NSPersistentContainer`** framework.
+   - Core Data stores are fully loaded synchronously on initialization for deterministic runtime behavior.
+   - Built-in automatic migration support and clean directory setup inside standard Application Support paths.
 
-Create a plain text file in it: `DeveloperSettings.xcconfig` and
-give it the contents:
+2. **Objective-C Modernization**:
+   - **Full Nullability Coverage**: Entire codebase annotated with `NS_ASSUME_NONNULL` and proper pointer specifiers (`nonnull`, `nullable`) for complete type safety and seamless Swift interoperability.
+   - **Type-Safe Generics**: Standardized all collections (e.g. `NSArray<Contact *> *` and `NSFetchRequest<__kindof NSManagedObject *> *`) to enable compile-time type checking.
+   - **Memory Safety**: Converted delegates and interface outlets to modern `weak` pointers to eliminate risk of retain cycles.
+   - **Unavailable Initializers**: Standardized designated initializers and marked legacy default `init`/`new` initializers as `NS_UNAVAILABLE` to guarantee correct instance construction.
 
-```text
-DEVELOPMENT_TEAM = <Your Team ID>
-CODE_SIGN_IDENTITY = Mac Developer
-CODE_SIGN_STYLE = Automatic
-ORGANIZATION_IDENTIFIER = <Your Domain Name Reversed>
-```
+3. **Zero-Dependency Testing**:
+   - Swapped out the legacy third-party `OCMock` framework in favor of lightweight native testing constructs.
+   - Integration tests are backed by a real, blazing-fast, in-memory Core Data stack (`NSInMemoryStoreType`), executing type-safe code without polluting local developer filesystems.
+   - Subclassed view controllers directly inside the test target to spy on KVO bindings.
 
-Set `DEVELOPMENT_TEAM` to your Apple supplied development team. You can use Keychain
-Access to find you Development Team ID:
+---
 
-* Open Keychain Access on your development machine.
-* On the left-hand side, make sure "My Certificates" is selected.
-* Find the certificate that reads `Apple Development: <Your Name>`
-* Right click on the certificate and select "Get Info".
+## Tech Stack & Architecture
 
-Your **Development Team ID** is the value next to **Organizational Unit**.
+- **Platform**: macOS 13.0+ (AppKit)
+- **Language**: Objective-C (Automatic Reference Counting, LLVM Modules enabled)
+- **Database**: Core Data (`NSPersistentContainer`)
+- **UI Binding**: Cocoa Bindings & Key-Value Observing (KVO)
+- **Unit Testing**: XCTest
 
-Set `ORGANIZATION_IDENTIFIER` to a reversed domain name that you control or have made up.
+---
 
-You should be able to open the `ContactManager.xccodeproj` in Xcode and build without code signing errors and without modifying
-the ghNotifier Xcode project.
+## Getting Started
 
+### Prerequisites
+
+No dependency managers (such as Carthage, CocoaPods, or Swift Package Manager) are required.
+
+To prepare the local homebrew build environment (if any tools are missing):
 ```shell
 ./scripts/bootstrap.sh
 ```
 
-### To Update
+### Building & Running
 
+Open `ContactManager.xcodeproj` in Xcode and select the **ContactManager** scheme. Press `Cmd + R` to build and run.
+
+### Running the Test Suite
+
+To run all 31 unit tests directly from the command line:
 ```shell
-./scripts/update.sh
+xcodebuild -project ContactManager.xcodeproj -scheme ContactManager -configuration Debug test
 ```
