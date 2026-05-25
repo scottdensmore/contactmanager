@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) ContactListViewController *contactListViewController;
 @property (nonatomic, strong) ContactDetailViewController *contactDetailViewController;
 
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
 - (instancetype)initWithContactDataController:(ContactDataController *)controller;
 
 - (IBAction)newContact:(id)sender;
