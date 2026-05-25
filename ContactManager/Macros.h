@@ -29,17 +29,6 @@
 #define FTLOGCALL /* */
 #endif
 
-/*
- RELEASE -- releases a variable and sets it to nil.
- */
-//#define RELEASE(_obj) if(_obj) { [_obj release]; } _obj = nil
-
-#if DEBUG
-#define RELEASE(_obj) [_obj release]
-#else
-#define RELEASE(_obj) [_obj release], _obj = nil
-#endif
-
 
 #define NSNullIfNil(_obj) _obj == nil ? (id)[NSNull null] : _obj
 
