@@ -3,4 +3,5 @@
 
 brew bundle --file=./Brewfile
 
-carthage bootstrap --platform macOS
+XCODE_XCCONFIG_FILE="$(pwd)/carthage.xcconfig" carthage bootstrap --platform macOS
+

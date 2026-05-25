@@ -9,8 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "CoreDataController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol CoreDataControllerDelegate <NSObject>
 
-- (void)coreDataController:(CoreDataController *)controller encounteredIncorrectModelWithVersionIdentifiers:(NSSet *)identifiers;
+- (void)coreDataController:(CoreDataController *)controller encounteredIncorrectModelWithVersionIdentifiers:(nullable NSSet *)identifiers;
 
 @end
+
+NS_ASSUME_NONNULL_END
+

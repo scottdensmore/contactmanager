@@ -8,23 +8,28 @@
 
 #import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class ContactDataController;
 @class ContactListViewController;
 @class ContactDetailViewController;
 
 @interface MainWindowController : NSWindowController
 
-@property (nonatomic, assign) IBOutlet NSView *listView;
-@property (nonatomic, assign) IBOutlet NSView *detailView;
-@property (nonatomic, assign) IBOutlet NSButton *removeButton;
-@property (nonatomic, assign) IBOutlet NSButton *addButton;
+@property (nonatomic, weak, nullable) IBOutlet NSView *listView;
+@property (nonatomic, weak, nullable) IBOutlet NSView *detailView;
+@property (nonatomic, weak, nullable) IBOutlet NSButton *removeButton;
+@property (nonatomic, weak, nullable) IBOutlet NSButton *addButton;
 
 @property (nonatomic, strong) ContactListViewController *contactListViewController;
 @property (nonatomic, strong) ContactDetailViewController *contactDetailViewController;
 
-- (id)initWithContactDataController:(ContactDataController *)controller;
+- (instancetype)initWithContactDataController:(ContactDataController *)controller;
 
 - (IBAction)newContact:(id)sender;
 - (IBAction)deleteContact:(id)sender;
 
 @end
+
+NS_ASSUME_NONNULL_END
+

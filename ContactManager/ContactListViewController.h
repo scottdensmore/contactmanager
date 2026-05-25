@@ -8,19 +8,24 @@
 
 #import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class ContactDataController;
 @class Contact;
 
 @interface ContactListViewController : NSViewController <NSTableViewDelegate>
 
-@property (nonatomic, assign) IBOutlet NSArrayController *contactsArrayController;
-@property (nonatomic, assign) IBOutlet NSTableView *tableView;
-@property (nonatomic, readonly, assign) NSArray *contacts;
+@property (nonatomic, weak, nullable) IBOutlet NSArrayController *contactsArrayController;
+@property (nonatomic, weak, nullable) IBOutlet NSTableView *tableView;
+@property (nonatomic, readonly, copy) NSArray<Contact *> *contacts;
 
-- (id)initWithContactDataController:(ContactDataController *)controller;
+- (instancetype)initWithContactDataController:(ContactDataController *)controller;
 
-- (Contact *)selectedContact;
-- (void)selectContact:(Contact *)contact;
+- (nullable Contact *)selectedContact;
+- (void)selectContact:(nullable Contact *)contact;
 - (void)reloadData;
 
 @end
+
+NS_ASSUME_NONNULL_END
+

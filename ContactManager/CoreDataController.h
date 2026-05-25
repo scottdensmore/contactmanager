@@ -7,23 +7,27 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
 @protocol CoreDataControllerDelegate;
 
 @interface CoreDataController : NSObject
 
-@property (assign) id<CoreDataControllerDelegate> delegate;
+@property (nonatomic, weak, nullable) id<CoreDataControllerDelegate> delegate;
 
 @property (nonatomic, readonly, strong) NSString *applicationSupportFolder;
-@property (nonatomic, readonly, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, readonly, strong) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, readonly, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, readonly, strong, nullable) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, readonly, strong, nullable) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, readonly, strong, nullable) NSManagedObjectContext *managedObjectContext;
 
-- (id)initWithModelName:(NSString *)theModelName applicationSupportName:(NSString *)theApplicationSupportName dataStoreName:(NSString *)theDataStoreName;
-- (id)initWithInitialType:(NSString *)type modelName:(NSString *)theModelName applicationSupportName:(NSString *)theApplicationSupportName dataStoreName:(NSString *)theDataStoreName;
+- (instancetype)initWithModelName:(nullable NSString *)theModelName applicationSupportName:(nullable NSString *)theApplicationSupportName dataStoreName:(nullable NSString *)theDataStoreName;
+- (instancetype)initWithInitialType:(NSString *)type modelName:(nullable NSString *)theModelName applicationSupportName:(nullable NSString *)theApplicationSupportName dataStoreName:(nullable NSString *)theDataStoreName;
 
-- (BOOL)save:(NSError **)error;
-
+- (BOOL)save:(NSError * _Nullable * _Nullable)error;
 
 @end
+
+NS_ASSUME_NONNULL_END
+
