@@ -11,13 +11,12 @@
 
 @interface CoreDataController()
 
-@property (nonatomic, readwrite, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, readwrite, strong) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, readwrite, strong) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, strong) NSString *initialType;
-@property (nonatomic, strong) NSString *appSupportName;
-@property (nonatomic, strong) NSString *modelName;
-@property (nonatomic, strong) NSString *dataStoreName;
+@property (nonatomic, readwrite, strong, nullable) NSPersistentContainer *persistentContainer;
+@property (nonatomic, readwrite, strong, nullable) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong, nullable) NSString *initialType;
+@property (nonatomic, strong, nullable) NSString *appSupportName;
+@property (nonatomic, strong, nullable) NSString *modelName;
+@property (nonatomic, strong, nullable) NSString *dataStoreName;
 
 @end
 
@@ -68,63 +67,87 @@
         return _managedObjectModel;
     }
 	
-	NSURL *modelUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], _modelName]];
+	NSURL *modelUrl = [[NSBundle mainBundle] URLForResource:[_modelName stringByDeletingPathExtension] withExtension:[_modelName pathExtension]];
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelUrl];
     return _managedObjectModel;
 }
 
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator 
+- (NSPersistentContainer *)persistentContainer
 {
-    if (_persistentStoreCoordinator != nil) {
-        return _persistentStoreCoordinator;
+    if (_persistentContainer != nil) {
+        return _persistentContainer;
     }
-	
-    NSFileManager *fileManager;
-    NSString *applicationSupportFolder = nil;
-    NSURL *url;
-    NSError *error;
     
-    fileManager = [NSFileManager defaultManager];
-    applicationSupportFolder = [self applicationSupportFolder];
+    NSString *containerName = [_modelName stringByDeletingPathExtension];
+    _persistentContainer = [[NSPersistentContainer alloc] initWithName:containerName managedObjectModel:[self managedObjectModel]];
     
-    if (![fileManager fileExistsAtPath:applicationSupportFolder isDirectory:NULL] ) {
-		if (![fileManager createDirectoryAtPath:applicationSupportFolder withIntermediateDirectories:NO attributes:nil error:&error]) {
-            NSAssert(NO, ([NSString stringWithFormat:@"Failed to create App Support directory %@ : %@", applicationSupportFolder, error]));
-            LOG(@"Error creating application support directory at %@ : %@",applicationSupportFolder,error);
-            return nil;
-		}
-    }
+    NSPersistentStoreDescription *storeDescription;
+    if ([_initialType isEqualToString:NSInMemoryStoreType]) {
+        storeDescription = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:[NSURL fileURLWithPath:@"/dev/null"]];
+    } else {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSString *applicationSupportFolder = [self applicationSupportFolder];
+        NSError *error = nil;
+        if (![fileManager fileExistsAtPath:applicationSupportFolder isDirectory:NULL]) {
+            if (![fileManager createDirectoryAtPath:applicationSupportFolder withIntermediateDirectories:NO attributes:nil error:&error]) {
+                NSAssert(NO, ([NSString stringWithFormat:@"Failed to create App Support directory %@ : %@", applicationSupportFolder, error]));
+                LOG(@"Error creating application support directory at %@ : %@", applicationSupportFolder, error);
+                _persistentContainer = nil;
+                return nil;
+            }
+        }
         
-    url = [NSURL fileURLWithPath: [applicationSupportFolder stringByAppendingPathComponent: _dataStoreName]];
-    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
-	NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES};
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:_initialType configuration:nil URL:url options:options error:&error]){
-		if ([error code] == 134100) {
-			//If we failed with an incorrect data model error then pass the version identifiers of the store to the delegate to decide what to do next
-			if ([[self delegate] respondsToSelector:@selector(coreDataController:encounteredIncorrectModelWithVersionIdentifiers:)]) {
-				_persistentStoreCoordinator = nil;
-                NSDictionary *metadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:_initialType URL:url options:options error:&error];
-				[[self delegate] coreDataController:self encounteredIncorrectModelWithVersionIdentifiers:metadata[NSStoreModelVersionIdentifiersKey]];
-			}
-		} else {
-			[[NSApplication sharedApplication] presentError:error];
-		}
-    }    
-	
-    return _persistentStoreCoordinator;
+        NSURL *url = [NSURL fileURLWithPath:[applicationSupportFolder stringByAppendingPathComponent:_dataStoreName]];
+        storeDescription = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:url];
+    }
+    
+    storeDescription.type = _initialType;
+    storeDescription.shouldMigrateStoreAutomatically = YES;
+    storeDescription.shouldInferMappingModelAutomatically = YES;
+    
+    _persistentContainer.persistentStoreDescriptions = @[storeDescription];
+    
+    dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+    __block NSError *loadError = nil;
+    
+    [_persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *description, NSError *error) {
+        if (error) {
+            loadError = error;
+        }
+        dispatch_semaphore_signal(sem);
+    }];
+    
+    dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+    
+    if (loadError) {
+        if ([loadError code] == 134100) {
+            if ([[self delegate] respondsToSelector:@selector(coreDataController:encounteredIncorrectModelWithVersionIdentifiers:)]) {
+                NSError *metadataError = nil;
+                NSDictionary *metadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:self.initialType URL:storeDescription.URL options:nil error:&metadataError];
+                if (metadata) {
+                    [[self delegate] coreDataController:self encounteredIncorrectModelWithVersionIdentifiers:metadata[NSStoreModelVersionIdentifiersKey]];
+                } else {
+                    LOG(@"Error retrieving metadata for version identifiers: %@", metadataError);
+                }
+            }
+        } else {
+            [[NSApplication sharedApplication] presentError:loadError];
+        }
+        _persistentContainer = nil;
+        return nil;
+    }
+    
+    return _persistentContainer;
+}
+
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
+{
+    return self.persistentContainer.persistentStoreCoordinator;
 }
 
 - (NSManagedObjectContext *)managedObjectContext
 {
-    if (!_managedObjectContext) {
-		NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-		if (coordinator != nil) {
-			_managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-			[_managedObjectContext setPersistentStoreCoordinator: coordinator];
-		}
-	}
-    
-    return _managedObjectContext;
+    return self.persistentContainer.viewContext;
 }
 
 - (BOOL)save:(NSError **)error
