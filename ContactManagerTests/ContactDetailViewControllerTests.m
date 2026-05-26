@@ -95,4 +95,31 @@
     
 }
 
+- (void)testShouldHideFieldsWhenContactIsNil
+{
+    [_contactDetailViewController view];
+    _contactDetailViewController.contact = nil;
+    
+    XCTAssertTrue(_contactDetailViewController.firstNameTextField.isHidden, @"First name text field should be hidden.");
+    XCTAssertTrue(_contactDetailViewController.lastNameTextField.isHidden, @"Last name text field should be hidden.");
+    XCTAssertTrue(_contactDetailViewController.emailTextField.isHidden, @"Email text field should be hidden.");
+    XCTAssertTrue(_contactDetailViewController.phoneNumberTextField.isHidden, @"Phone number text field should be hidden.");
+}
+
+- (void)testShouldShowFieldsWhenContactIsSet
+{
+    [_contactDetailViewController view];
+    
+    CoreDataController *coreDataController = [[CoreDataController alloc] initWithInitialType:NSInMemoryStoreType modelName:@"ContactManagerModel.momd" applicationSupportName:nil dataStoreName:nil];
+    ContactDataController *contactDataController = [[ContactDataController alloc] initWithCoreDataController:coreDataController];
+    Contact *contact = [contactDataController createContact];
+    
+    _contactDetailViewController.contact = contact;
+    
+    XCTAssertFalse(_contactDetailViewController.firstNameTextField.isHidden, @"First name text field should be visible.");
+    XCTAssertFalse(_contactDetailViewController.lastNameTextField.isHidden, @"Last name text field should be visible.");
+    XCTAssertFalse(_contactDetailViewController.emailTextField.isHidden, @"Email text field should be visible.");
+    XCTAssertFalse(_contactDetailViewController.phoneNumberTextField.isHidden, @"Phone number text field should be visible.");
+}
+
 @end
