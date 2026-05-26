@@ -1,0 +1,49 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "07a93413c1b5",
+  "session_id": "a22e27bd-7ce5-4bdb-b1b8-083a9eedbb19",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-26T05:22:13.142582Z",
+  "branch": "feature/groups-and-vcard",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/Models/ContactGroup.swift",
+    "ContactManager/Models/Contact.swift",
+    "ContactManager/App/ContactManagerApp.swift",
+    "ContactManager/Support/VCard.swift",
+    "ContactManager/Views/SidebarView.swift",
+    "ContactManager/Support/VCardDocument.swift",
+    "ContactManager/Views/ContentView.swift",
+    "ContactManager/Views/ContactDetailView.swift",
+    "ContactManagerTests/ContactModelTests.swift",
+    "ContactManagerTests/VCardTests.swift",
+    "README.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "947d83fbf7d9",
+  "checkpoint_transcript_start": 893,
+  "transcript_lines_at_start": 893,
+  "token_usage": {
+    "input_tokens": 570,
+    "cache_creation_tokens": 32256,
+    "cache_read_tokens": 9370087,
+    "output_tokens": 28412,
+    "api_call_count": 27
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-26T05:22:13.109436Z",
+    "agent_lines": 664,
+    "agent_removed": 18,
+    "human_added": 16,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 680,
+    "total_lines_changed": 698,
+    "agent_percentage": 97.70773638968481,
+    "metric_version": 2
+  }
+}

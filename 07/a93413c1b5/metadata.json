@@ -1,0 +1,35 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "07a93413c1b5",
+  "strategy": "manual-commit",
+  "branch": "feature/groups-and-vcard",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/App/ContactManagerApp.swift",
+    "ContactManager/Models/Contact.swift",
+    "ContactManager/Models/ContactGroup.swift",
+    "ContactManager/Support/VCard.swift",
+    "ContactManager/Support/VCardDocument.swift",
+    "ContactManager/Views/ContactDetailView.swift",
+    "ContactManager/Views/ContentView.swift",
+    "ContactManager/Views/SidebarView.swift",
+    "ContactManagerTests/ContactModelTests.swift",
+    "ContactManagerTests/VCardTests.swift",
+    "README.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/07/a93413c1b5/0/metadata.json",
+      "transcript": "/07/a93413c1b5/0/full.jsonl",
+      "content_hash": "/07/a93413c1b5/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 570,
+    "cache_creation_tokens": 32256,
+    "cache_read_tokens": 9370087,
+    "output_tokens": 28412,
+    "api_call_count": 27
+  }
+}
