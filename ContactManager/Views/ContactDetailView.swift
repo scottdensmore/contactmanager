@@ -13,6 +13,7 @@ import UniformTypeIdentifiers
 struct ContactDetailView: View {
     @Environment(\.modelContext) private var context
     @Bindable var contact: Contact
+    @Query(sort: \ContactGroup.name) private var allGroups: [ContactGroup]
     @State private var isImportingPhoto = false
     @State private var photoError: String?
 
@@ -45,6 +46,17 @@ struct ContactDetailView: View {
                 Toggle("Has Birthday", isOn: birthdayEnabled)
                 if contact.birthday != nil {
                     DatePicker("Date", selection: birthdayValue, displayedComponents: .date)
+                }
+            }
+
+            Section("Groups") {
+                if allGroups.isEmpty {
+                    Text("No groups yet. Create one in the sidebar.")
+                        .foregroundStyle(.secondary)
+                } else {
+                    ForEach(allGroups) { group in
+                        Toggle(group.displayName, isOn: membership(in: group))
+                    }
                 }
             }
 
@@ -195,6 +207,24 @@ struct ContactDetailView: View {
             context.delete(fields[index])
         }
         try? context.save()
+    }
+
+    // MARK: - Group membership
+
+    private func membership(in group: ContactGroup) -> Binding<Bool> {
+        Binding(
+            get: { contact.groups.contains { $0.persistentModelID == group.persistentModelID } },
+            set: { isMember in
+                if isMember {
+                    if !contact.groups.contains(where: { $0.persistentModelID == group.persistentModelID }) {
+                        contact.groups.append(group)
+                    }
+                } else {
+                    contact.groups.removeAll { $0.persistentModelID == group.persistentModelID }
+                }
+                try? context.save()
+            }
+        )
     }
 
     // MARK: - Birthday bindings

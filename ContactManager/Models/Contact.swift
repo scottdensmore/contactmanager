@@ -38,6 +38,9 @@ final class Contact {
     @Relationship(deleteRule: .cascade, inverse: \ContactField.contact)
     var fields: [ContactField]
 
+    // Groups this contact belongs to (many-to-many; inverse on ContactGroup).
+    var groups: [ContactGroup] = []
+
     init(
         firstName: String = "",
         lastName: String = "",

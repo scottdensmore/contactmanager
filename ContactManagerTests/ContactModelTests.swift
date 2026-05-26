@@ -21,7 +21,7 @@ struct ContactModelTests {
 
     init() throws {
         container = try ModelContainer(
-            for: Contact.self, ContactField.self,
+            for: Contact.self, ContactField.self, ContactGroup.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
     }
@@ -46,6 +46,34 @@ struct ContactModelTests {
         try context.save()
 
         #expect(try context.fetchCount(FetchDescriptor<Contact>()) == 0)
+    }
+
+    @Test func contactGroupMembershipIsTracked() throws {
+        let group = ContactGroup(name: "Work")
+        let contact = Contact(firstName: "Ada", lastName: "Lovelace")
+        contact.groups = [group]
+        context.insert(group)
+        context.insert(contact)
+        try context.save()
+
+        #expect(group.contacts.count == 1)
+        #expect(contact.groups.first?.name == "Work")
+    }
+
+    @Test func deletingGroupKeepsContactsButClearsMembership() throws {
+        let group = ContactGroup(name: "Work")
+        let contact = Contact(firstName: "Ada", lastName: "Lovelace")
+        contact.groups = [group]
+        context.insert(group)
+        context.insert(contact)
+        try context.save()
+
+        context.delete(group)
+        try context.save()
+
+        #expect(try context.fetchCount(FetchDescriptor<Contact>()) == 1)
+        #expect(try context.fetchCount(FetchDescriptor<ContactGroup>()) == 0)
+        #expect(contact.groups.isEmpty)
     }
 
     @Test func deletingContactCascadesToItsFields() throws {
