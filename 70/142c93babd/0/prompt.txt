@@ -1,0 +1,1 @@
+I want to keep working on this app and make it more modern. Eventually getting it to look like a native macOS Tahoe app. We should add features to make it a better contant manager app.

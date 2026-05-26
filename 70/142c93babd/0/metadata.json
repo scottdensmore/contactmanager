@@ -1,0 +1,61 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "70142c93babd",
+  "session_id": "a22e27bd-7ce5-4bdb-b1b8-083a9eedbb19",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-26T03:02:18.367679Z",
+  "branch": "feature/swiftui-swiftdata-foundation",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/Models/Contact.swift",
+    "ContactManager/Models/ContactQuery.swift",
+    "ContactManager/Models/SampleData.swift",
+    "ContactManager/App/ContactManagerApp.swift",
+    "ContactManager/Views/ContentView.swift",
+    "ContactManager/Views/SidebarView.swift",
+    "ContactManager/Views/ContactListView.swift",
+    "ContactManager/Views/AvatarView.swift",
+    "ContactManager/Views/ContactDetailView.swift",
+    "ContactManagerTests/ContactModelTests.swift",
+    "README.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "ecace739998c",
+  "token_usage": {
+    "input_tokens": 2558,
+    "cache_creation_tokens": 143492,
+    "cache_read_tokens": 4469216,
+    "output_tokens": 76495,
+    "api_call_count": 44
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-26T03:02:18.354138Z",
+    "agent_lines": 599,
+    "agent_removed": 32,
+    "human_added": 104,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 703,
+    "total_lines_changed": 8086,
+    "agent_percentage": 7.803611179816968,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 248,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/agents/entire-search.md": 25,
+        ".claude/settings.json": 84,
+        ".codex/agents/entire-search.toml": 23,
+        ".codex/config.toml": 3,
+        ".codex/hooks.json": 52,
+        ".github/hooks/entire.json": 61
+      }
+    }
+  ]
+}
