@@ -30,6 +30,9 @@ final class Contact {
     var notes: String = ""
     var createdAt: Date = Date.now
 
+    /// Downscaled avatar image (JPEG). Stored outside the SQLite file.
+    @Attribute(.externalStorage) var photoData: Data?
+
     // Labeled emails and phone numbers.
     @Relationship(deleteRule: .cascade, inverse: \ContactField.contact)
     var fields: [ContactField]

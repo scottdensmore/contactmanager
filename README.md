@@ -21,13 +21,14 @@ ContactManager/
 ├── App/      ContactManagerApp.swift   – @main entry point, model container, menu commands
 ├── Models/   Contact.swift             – the @Model contact entity + derived values
 │             ContactField.swift        – labeled, repeatable email/phone child entity
-│             ContactQuery.swift        – pure, testable filter/sort helpers
+│             ContactQuery.swift        – pure, testable filter/sort/section helpers
 │             SampleData.swift          – first-launch seed data
+├── Support/  ImageProcessing.swift     – downscales picked images into avatar JPEGs
 └── Views/    ContentView.swift         – NavigationSplitView shell + create/delete actions
               SidebarView.swift         – groups sidebar (All Contacts)
-              ContactListView.swift     – selectable contact list + toolbar
-              ContactDetailView.swift   – editable detail form
-              AvatarView.swift          – initials avatar with a per-contact tint
+              ContactListView.swift     – searchable, sectioned contact list + toolbar
+              ContactDetailView.swift   – editable detail form + photo well
+              AvatarView.swift          – photo or initials avatar with a per-contact tint
 ```
 
 ---
@@ -40,7 +41,7 @@ ContactManager/
 - Company, job title, postal address, birthday, and free-form notes.
 - Live search across name, company, title, notes, and field values.
 - Alphabetical sections with a first-name / last-name sort toggle.
-- Initials-based avatars.
+- Contact photos (downscaled on import) with an initials avatar fallback.
 - Sample contacts seeded on first launch.
 
 ### Roadmap
@@ -50,7 +51,7 @@ Shipped as small, single-purpose PRs:
 1. ✅ **Foundation** — SwiftUI + SwiftData rewrite, CRUD, project modernized to macOS 26.
 2. ✅ **Richer fields** — multiple emails/phones, company/title, address, birthday, notes.
 3. ✅ **Search & sections** — live search and alphabetical sectioning.
-4. **Contact photos** — photo import with initials fallback.
+4. ✅ **Contact photos** — photo import with initials fallback.
 5. **Groups & vCard** — user groups/tags and `.vcf` import/export.
 6. **Tahoe polish** — Liquid Glass refinements, animations, and richer empty states.
 

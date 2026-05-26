@@ -8,10 +8,12 @@
 
 import SwiftUI
 import SwiftData
+import UniformTypeIdentifiers
 
 struct ContactDetailView: View {
     @Environment(\.modelContext) private var context
     @Bindable var contact: Contact
+    @State private var isImportingPhoto = false
 
     var body: some View {
         Form {
@@ -59,7 +61,7 @@ struct ContactDetailView: View {
     private var header: some View {
         Section {
             HStack(spacing: 16) {
-                AvatarView(contact: contact, size: 72)
+                photoWell
                 VStack(alignment: .leading, spacing: 2) {
                     Text(contact.fullName)
                         .font(.title2.weight(.semibold))
@@ -73,6 +75,35 @@ struct ContactDetailView: View {
                 Spacer()
             }
             .padding(.vertical, 4)
+        }
+    }
+
+    /// Tappable avatar that offers choosing or removing a photo.
+    private var photoWell: some View {
+        Menu {
+            Button("Choose Photo…") { isImportingPhoto = true }
+            if contact.photoData != nil {
+                Button("Remove Photo", role: .destructive, action: removePhoto)
+            }
+        } label: {
+            AvatarView(contact: contact, size: 72)
+                .overlay(alignment: .bottomTrailing) {
+                    Image(systemName: "camera.circle.fill")
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(.white, .blue)
+                        .font(.system(size: 22))
+                        .background(.white, in: Circle())
+                }
+        }
+        .buttonStyle(.plain)
+        .help("Change Photo")
+        .fileImporter(
+            isPresented: $isImportingPhoto,
+            allowedContentTypes: [.image]
+        ) { result in
+            if case .success(let url) = result {
+                importPhoto(from: url)
+            }
         }
     }
 
@@ -99,6 +130,21 @@ struct ContactDetailView: View {
     }
 
     // MARK: - Actions
+
+    private func importPhoto(from url: URL) {
+        // The picked URL is security-scoped; access it while reading.
+        let didAccess = url.startAccessingSecurityScopedResource()
+        defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
+
+        guard let data = ImageProcessing.avatarData(from: url) else { return }
+        contact.photoData = data
+        try? context.save()
+    }
+
+    private func removePhoto() {
+        contact.photoData = nil
+        try? context.save()
+    }
 
     private func addField(kind: FieldKind) {
         // Use max+1 (not count) so indices stay strictly increasing even after
