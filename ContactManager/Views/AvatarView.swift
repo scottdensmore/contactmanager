@@ -36,6 +36,7 @@ struct AvatarView: View {
         }
         .frame(width: size, height: size)
         .clipShape(Circle())
+        .animation(.smooth, value: contact.photoData)
         .task(id: contact.photoData) {
             photo = contact.photoData.flatMap { NSImage(data: $0) }
         }

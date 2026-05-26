@@ -30,6 +30,7 @@ struct ContactListView: View {
         }
         .navigationTitle("Contacts")
         .navigationSplitViewColumnWidth(min: 240, ideal: 280, max: 420)
+        .animation(.smooth, value: sortOrder)
         .searchable(text: $searchText, prompt: "Search Contacts")
         .overlay { emptyState }
         .onDeleteCommand {
@@ -72,11 +73,14 @@ struct ContactListView: View {
         if sections.isEmpty {
             if totalCount == 0 {
                 // An empty store always reads as "No Contacts", even mid-search.
-                ContentUnavailableView(
-                    "No Contacts",
-                    systemImage: "person.crop.circle.badge.plus",
-                    description: Text("Add a contact to get started.")
-                )
+                ContentUnavailableView {
+                    Label("No Contacts", systemImage: "person.crop.circle.badge.plus")
+                } description: {
+                    Text("Add a contact to get started.")
+                } actions: {
+                    Button("New Contact", action: addContact)
+                        .buttonStyle(.glassProminent)
+                }
             } else if !searchText.isEmpty {
                 ContentUnavailableView.search(text: searchText)
             }
