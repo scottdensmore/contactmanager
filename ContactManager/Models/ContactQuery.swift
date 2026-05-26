@@ -15,12 +15,13 @@ enum ContactQuery {
             if lhs.sortKey != rhs.sortKey {
                 return lhs.sortKey < rhs.sortKey
             }
-            return lhs.firstName.lowercased() < rhs.firstName.lowercased()
+            return lhs.firstNameSortKey < rhs.firstNameSortKey
         }
     }
 
-    /// Filters contacts whose name, email, or phone contains the query.
-    /// An empty query returns every contact unchanged.
+    /// Filters contacts whose name, company, job title, notes, or any email/
+    /// phone field value contains the query. An empty query returns every
+    /// contact unchanged.
     static func filtered(_ contacts: [Contact], matching query: String) -> [Contact] {
         let needle = query.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         guard !needle.isEmpty else { return contacts }

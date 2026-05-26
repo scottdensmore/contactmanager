@@ -101,10 +101,13 @@ struct ContactDetailView: View {
     // MARK: - Actions
 
     private func addField(kind: FieldKind) {
+        // Use max+1 (not count) so indices stay strictly increasing even after
+        // rows are deleted, keeping insertion order stable.
+        let nextIndex = (contact.fields(of: kind).map(\.sortIndex).max() ?? -1) + 1
         let field = ContactField(
             kind: kind,
             label: kind.defaultLabel,
-            sortIndex: contact.fields(of: kind).count
+            sortIndex: nextIndex
         )
         field.contact = contact
         context.insert(field)
