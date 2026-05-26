@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "236b7f1e512c",
+  "strategy": "manual-commit",
+  "branch": "feature/richer-fields",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/App/ContactManagerApp.swift",
+    "ContactManager/Models/Contact.swift",
+    "ContactManager/Models/ContactQuery.swift",
+    "ContactManager/Views/ContactDetailView.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/23/6b7f1e512c/0/metadata.json",
+      "transcript": "/23/6b7f1e512c/0/full.jsonl",
+      "content_hash": "/23/6b7f1e512c/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 6881,
+    "cache_creation_tokens": 22042,
+    "cache_read_tokens": 2894215,
+    "output_tokens": 11838,
+    "api_call_count": 12
+  }
+}
