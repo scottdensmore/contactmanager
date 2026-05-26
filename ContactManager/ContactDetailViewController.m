@@ -35,13 +35,24 @@
     self.watermarkImageView = [[NSImageView alloc] initWithFrame:self.view.bounds];
     self.watermarkImageView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    NSImage *appIcon = [NSImage imageNamed:@"AppIcon"];
-    if (!appIcon) {
-        appIcon = [NSImage imageNamed:NSImageNameApplicationIcon];
+    NSImage *watermarkImage = [NSImage imageNamed:@"Watermark"];
+    if (watermarkImage) {
+        watermarkImage.template = YES;
+        self.watermarkImageView.image = watermarkImage;
+    } else {
+        NSImage *appIcon = [NSImage imageNamed:@"AppIcon"];
+        if (!appIcon) {
+            appIcon = [NSImage imageNamed:NSImageNameApplicationIcon];
+        }
+        appIcon.template = YES;
+        self.watermarkImageView.image = appIcon;
     }
-    self.watermarkImageView.image = appIcon;
     self.watermarkImageView.imageScaling = NSImageScaleProportionallyUpOrDown;
-    self.watermarkImageView.alphaValue = 0.15; // Elegant, subtle alpha for premium aesthetic
+    
+    if (@available(macOS 10.14, *)) {
+        self.watermarkImageView.contentTintColor = [NSColor tertiaryLabelColor];
+    }
+    self.watermarkImageView.alphaValue = 0.20; // Elegant, subtle alpha for premium aesthetic
     
     [self.view addSubview:self.watermarkImageView];
     
