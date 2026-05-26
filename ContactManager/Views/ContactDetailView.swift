@@ -8,10 +8,13 @@
 
 import SwiftUI
 import SwiftData
+import UniformTypeIdentifiers
 
 struct ContactDetailView: View {
     @Environment(\.modelContext) private var context
     @Bindable var contact: Contact
+    @State private var isImportingPhoto = false
+    @State private var photoError: String?
 
     var body: some View {
         Form {
@@ -52,6 +55,15 @@ struct ContactDetailView: View {
         }
         .formStyle(.grouped)
         .navigationTitle(contact.fullName)
+        .alert(
+            "Couldn't Add Photo",
+            isPresented: Binding(get: { photoError != nil }, set: { if !$0 { photoError = nil } }),
+            presenting: photoError
+        ) { _ in
+            Button("OK", role: .cancel) {}
+        } message: { message in
+            Text(message)
+        }
     }
 
     // MARK: - Header
@@ -59,7 +71,7 @@ struct ContactDetailView: View {
     private var header: some View {
         Section {
             HStack(spacing: 16) {
-                AvatarView(contact: contact, size: 72)
+                photoWell
                 VStack(alignment: .leading, spacing: 2) {
                     Text(contact.fullName)
                         .font(.title2.weight(.semibold))
@@ -73,6 +85,34 @@ struct ContactDetailView: View {
                 Spacer()
             }
             .padding(.vertical, 4)
+        }
+    }
+
+    /// Tappable avatar that offers choosing or removing a photo.
+    private var photoWell: some View {
+        Menu {
+            Button("Choose Photo…") { isImportingPhoto = true }
+            if contact.photoData != nil {
+                Button("Remove Photo", role: .destructive, action: removePhoto)
+            }
+        } label: {
+            AvatarView(contact: contact, size: 72)
+                .overlay(alignment: .bottomTrailing) {
+                    Image(systemName: "camera.circle.fill")
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(.white, .blue)
+                        .font(.system(size: 22))
+                        .background(.white, in: Circle())
+                }
+        }
+        .buttonStyle(.plain)
+        .help("Change Photo")
+        .accessibilityLabel("Change Photo")
+        .fileImporter(
+            isPresented: $isImportingPhoto,
+            allowedContentTypes: [.image]
+        ) { result in
+            handleImport(result)
         }
     }
 
@@ -99,6 +139,42 @@ struct ContactDetailView: View {
     }
 
     // MARK: - Actions
+
+    private func handleImport(_ result: Result<URL, Error>) {
+        switch result {
+        case .failure(let error):
+            photoError = error.localizedDescription
+        case .success(let url):
+            // Read the picked file while its security scope is held, then hand
+            // the bytes off; downscaling happens off the main actor below.
+            let didAccess = url.startAccessingSecurityScopedResource()
+            defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
+            do {
+                let fileData = try Data(contentsOf: url)
+                processPhoto(fileData)
+            } catch {
+                photoError = error.localizedDescription
+            }
+        }
+    }
+
+    private func processPhoto(_ fileData: Data) {
+        Task {
+            // Decode/downscale off the main actor so large images don't block UI.
+            let avatar = await Task.detached { ImageProcessing.avatarData(from: fileData) }.value
+            guard let avatar else {
+                photoError = "That file couldn't be read as an image."
+                return
+            }
+            contact.photoData = avatar
+            do { try context.save() } catch { photoError = error.localizedDescription }
+        }
+    }
+
+    private func removePhoto() {
+        contact.photoData = nil
+        try? context.save()
+    }
 
     private func addField(kind: FieldKind) {
         // Use max+1 (not count) so indices stay strictly increasing even after
