@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "d63850f5fca6",
+  "strategy": "manual-commit",
+  "branch": "feature/search-and-sections",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/Models/Contact.swift",
+    "ContactManager/Models/ContactQuery.swift",
+    "ContactManager/Views/ContactListView.swift",
+    "ContactManager/Views/ContentView.swift",
+    "ContactManagerTests/ContactModelTests.swift",
+    "README.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/d6/3850f5fca6/0/metadata.json",
+      "transcript": "/d6/3850f5fca6/0/full.jsonl",
+      "content_hash": "/d6/3850f5fca6/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 566,
+    "cache_creation_tokens": 33141,
+    "cache_read_tokens": 6626511,
+    "output_tokens": 26664,
+    "api_call_count": 25
+  }
+}
