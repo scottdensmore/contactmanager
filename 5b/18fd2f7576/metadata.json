@@ -1,0 +1,31 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "5b18fd2f7576",
+  "strategy": "manual-commit",
+  "branch": "feature/swiftui-swiftdata-foundation",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/App/ContactManagerApp.swift",
+    "ContactManager/Models/Contact.swift",
+    "ContactManager/Models/ContactQuery.swift",
+    "ContactManager/Models/SampleData.swift",
+    "ContactManager/Views/AvatarView.swift",
+    "ContactManager/Views/ContentView.swift",
+    "ContactManagerTests/ContactModelTests.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/5b/18fd2f7576/0/metadata.json",
+      "transcript": "/5b/18fd2f7576/0/full.jsonl",
+      "content_hash": "/5b/18fd2f7576/0/content_hash.txt",
+      "prompt": "/5b/18fd2f7576/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 6443,
+    "cache_creation_tokens": 34130,
+    "cache_read_tokens": 2993430,
+    "output_tokens": 20016,
+    "api_call_count": 14
+  }
+}
