@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "f37dc0179147",
+  "strategy": "manual-commit",
+  "branch": "feature/tahoe-polish",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/App/ContactManagerApp.swift",
+    "ContactManager/Views/AvatarView.swift",
+    "ContactManager/Views/ContactListView.swift",
+    "ContactManager/Views/ContentView.swift",
+    "README.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/f3/7dc0179147/0/metadata.json",
+      "transcript": "/f3/7dc0179147/0/full.jsonl",
+      "content_hash": "/f3/7dc0179147/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 294,
+    "cache_creation_tokens": 18342,
+    "cache_read_tokens": 7013843,
+    "output_tokens": 15724,
+    "api_call_count": 18
+  }
+}
