@@ -11,8 +11,6 @@
 
 @interface ContactDetailViewController ()
 
-@property (nonatomic, strong) NSImageView *watermarkImageView;
-
 - (void)updateFieldVisibility;
 
 @end
@@ -32,37 +30,6 @@
 {
     [super viewDidLoad];
     
-    self.watermarkImageView = [[NSImageView alloc] initWithFrame:self.view.bounds];
-    self.watermarkImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    NSImage *watermarkImage = [NSImage imageNamed:@"Watermark"];
-    if (watermarkImage) {
-        watermarkImage.template = YES;
-        self.watermarkImageView.image = watermarkImage;
-    } else {
-        NSImage *appIcon = [NSImage imageNamed:@"AppIcon"];
-        if (!appIcon) {
-            appIcon = [NSImage imageNamed:NSImageNameApplicationIcon];
-        }
-        appIcon.template = YES;
-        self.watermarkImageView.image = appIcon;
-    }
-    self.watermarkImageView.imageScaling = NSImageScaleProportionallyUpOrDown;
-    
-    if (@available(macOS 10.14, *)) {
-        self.watermarkImageView.contentTintColor = [NSColor tertiaryLabelColor];
-    }
-    self.watermarkImageView.alphaValue = 0.20; // Elegant, subtle alpha for premium aesthetic
-    
-    [self.view addSubview:self.watermarkImageView];
-    
-    [NSLayoutConstraint activateConstraints:@[
-        [self.watermarkImageView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
-        [self.watermarkImageView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
-        [self.watermarkImageView.widthAnchor constraintEqualToConstant:128],
-        [self.watermarkImageView.heightAnchor constraintEqualToConstant:128]
-    ]];
-    
     [self updateFieldVisibility];
 }
 
@@ -79,12 +46,9 @@
 - (void)updateFieldVisibility
 {
     BOOL hasContact = (self.contact != nil);
-    self.watermarkImageView.hidden = hasContact;
     
     for (NSView *subview in self.view.subviews) {
-        if (subview != self.watermarkImageView) {
-            subview.hidden = !hasContact;
-        }
+        subview.hidden = !hasContact;
     }
 }
 

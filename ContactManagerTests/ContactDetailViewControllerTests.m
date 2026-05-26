@@ -13,10 +13,6 @@
 #import "ContactDetailViewController.h"
 #import "MainWindowController.h"
 
-@interface ContactDetailViewController (Testing)
-@property (nonatomic, strong) NSImageView *watermarkImageView;
-@end
-
 @interface ContactDetailViewControllerTests : BaseTestCase
 
 @property (nonatomic, strong) MainWindowController *mainWindowController;
@@ -99,13 +95,10 @@
     
 }
 
-- (void)testShouldHideFieldsAndShowWatermarkWhenContactIsNil
+- (void)testShouldHideFieldsWhenContactIsNil
 {
     [_contactDetailViewController view];
     _contactDetailViewController.contact = nil;
-    
-    XCTAssertNotNil(_contactDetailViewController.watermarkImageView, @"Watermark image view should be instantiated.");
-    XCTAssertFalse(_contactDetailViewController.watermarkImageView.isHidden, @"Watermark should be visible when contact is nil.");
     
     XCTAssertTrue(_contactDetailViewController.firstNameTextField.isHidden, @"First name text field should be hidden.");
     XCTAssertTrue(_contactDetailViewController.lastNameTextField.isHidden, @"Last name text field should be hidden.");
@@ -113,7 +106,7 @@
     XCTAssertTrue(_contactDetailViewController.phoneNumberTextField.isHidden, @"Phone number text field should be hidden.");
 }
 
-- (void)testShouldShowFieldsAndHideWatermarkWhenContactIsSet
+- (void)testShouldShowFieldsWhenContactIsSet
 {
     [_contactDetailViewController view];
     
@@ -122,9 +115,6 @@
     Contact *contact = [contactDataController createContact];
     
     _contactDetailViewController.contact = contact;
-    
-    XCTAssertNotNil(_contactDetailViewController.watermarkImageView, @"Watermark image view should be instantiated.");
-    XCTAssertTrue(_contactDetailViewController.watermarkImageView.isHidden, @"Watermark should be hidden when contact is set.");
     
     XCTAssertFalse(_contactDetailViewController.firstNameTextField.isHidden, @"First name text field should be visible.");
     XCTAssertFalse(_contactDetailViewController.lastNameTextField.isHidden, @"Last name text field should be visible.");
