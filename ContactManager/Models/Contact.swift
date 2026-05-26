@@ -56,4 +56,18 @@ extension Contact {
         let primary = last.isEmpty ? firstName : last
         return primary.trimmingCharacters(in: .whitespaces).lowercased()
     }
+
+    /// Lowercased first name, trimmed — used as the secondary sort key so it
+    /// stays consistent with `sortKey`.
+    var firstNameSortKey: String {
+        firstName.trimmingCharacters(in: .whitespaces).lowercased()
+    }
+
+    /// Deterministic, launch-stable seed for the avatar tint. Derived from the
+    /// persisted creation date so the color survives relaunches (unlike
+    /// `hashValue`, which is per-process) and doesn't shift when the name is
+    /// edited.
+    var colorSeed: Int {
+        Int(truncatingIfNeeded: createdAt.timeIntervalSinceReferenceDate.bitPattern)
+    }
 }

@@ -15,7 +15,7 @@ enum ContactQuery {
             if lhs.sortKey != rhs.sortKey {
                 return lhs.sortKey < rhs.sortKey
             }
-            return lhs.firstName.lowercased() < rhs.firstName.lowercased()
+            return lhs.firstNameSortKey < rhs.firstNameSortKey
         }
     }
 

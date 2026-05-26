@@ -17,6 +17,7 @@ struct ContentView: View {
 
     @State private var sidebarSelection: SidebarItem? = .allContacts
     @State private var selectedContact: Contact?
+    @State private var errorMessage: String?
 
     var body: some View {
         NavigationSplitView {
@@ -39,6 +40,15 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .newContactRequested)) { _ in
             addContact()
         }
+        .alert(
+            "Couldn't Save Changes",
+            isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } }),
+            presenting: errorMessage
+        ) { _ in
+            Button("OK", role: .cancel) {}
+        } message: { message in
+            Text(message)
+        }
     }
 
     // MARK: - Actions
@@ -46,16 +56,28 @@ struct ContentView: View {
     private func addContact() {
         let contact = Contact()
         context.insert(contact)
-        try? context.save()
-        selectedContact = contact
+        do {
+            try context.save()
+            selectedContact = contact
+        } catch {
+            // Roll back the insert so the UI doesn't show a contact that
+            // wasn't actually persisted.
+            context.delete(contact)
+            errorMessage = error.localizedDescription
+        }
     }
 
     private func deleteContact(_ contact: Contact) {
-        if selectedContact?.persistentModelID == contact.persistentModelID {
-            selectedContact = nil
-        }
+        let wasSelected = selectedContact?.persistentModelID == contact.persistentModelID
         context.delete(contact)
-        try? context.save()
+        do {
+            try context.save()
+            if wasSelected { selectedContact = nil }
+        } catch {
+            // Keep the contact (and selection) if the delete didn't persist.
+            context.rollback()
+            errorMessage = error.localizedDescription
+        }
     }
 }
 

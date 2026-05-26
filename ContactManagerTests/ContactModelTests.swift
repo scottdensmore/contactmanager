@@ -50,11 +50,11 @@ struct ContactModelTests {
     }
 
     @Test func seedingPopulatesAnEmptyStoreOnce() throws {
-        SampleData.seedIfNeeded(context)
+        try SampleData.seedIfNeeded(context)
         #expect(try context.fetchCount(FetchDescriptor<Contact>()) == SampleData.count)
 
         // Seeding again should be a no-op on a non-empty store.
-        SampleData.seedIfNeeded(context)
+        try SampleData.seedIfNeeded(context)
         #expect(try context.fetchCount(FetchDescriptor<Contact>()) == SampleData.count)
     }
 

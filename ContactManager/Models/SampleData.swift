@@ -26,15 +26,16 @@ enum SampleData {
         ]
     }
 
-    /// Inserts the sample contacts only when the store is empty.
+    /// Inserts the sample contacts only when the store is verified empty.
+    /// Throws if the store can't be read or saved, so callers can react to a
+    /// genuine store problem instead of masking it as "empty".
     @MainActor
-    static func seedIfNeeded(_ context: ModelContext) {
-        let existing = (try? context.fetchCount(FetchDescriptor<Contact>())) ?? 0
-        guard existing == 0 else { return }
+    static func seedIfNeeded(_ context: ModelContext) throws {
+        guard try context.fetchCount(FetchDescriptor<Contact>()) == 0 else { return }
 
         for contact in makeContacts() {
             context.insert(contact)
         }
-        try? context.save()
+        try context.save()
     }
 }
