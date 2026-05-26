@@ -2,8 +2,7 @@
 //  Contact.swift
 //  ContactManager
 //
-//  The SwiftData model backing a single contact. Replaces the legacy
-//  Core Data `Contact` NSManagedObject.
+//  The SwiftData model backing a single contact.
 //
 
 import Foundation
@@ -11,42 +10,80 @@ import SwiftData
 
 @Model
 final class Contact {
-    var firstName: String
-    var lastName: String
-    var emailAddress: String
-    var phoneNumber: String
-    var createdAt: Date
+    // Identity
+    var firstName: String = ""
+    var lastName: String = ""
+
+    // Work
+    var company: String = ""
+    var jobTitle: String = ""
+
+    // Postal address
+    var street: String = ""
+    var city: String = ""
+    var state: String = ""
+    var postalCode: String = ""
+    var country: String = ""
+
+    // Misc
+    var birthday: Date?
+    var notes: String = ""
+    var createdAt: Date = Date.now
+
+    // Labeled emails and phone numbers.
+    @Relationship(deleteRule: .cascade, inverse: \ContactField.contact)
+    var fields: [ContactField]
 
     init(
         firstName: String = "",
         lastName: String = "",
-        emailAddress: String = "",
-        phoneNumber: String = "",
+        company: String = "",
+        jobTitle: String = "",
+        street: String = "",
+        city: String = "",
+        state: String = "",
+        postalCode: String = "",
+        country: String = "",
+        birthday: Date? = nil,
+        notes: String = "",
         createdAt: Date = .now
     ) {
         self.firstName = firstName
         self.lastName = lastName
-        self.emailAddress = emailAddress
-        self.phoneNumber = phoneNumber
+        self.company = company
+        self.jobTitle = jobTitle
+        self.street = street
+        self.city = city
+        self.state = state
+        self.postalCode = postalCode
+        self.country = country
+        self.birthday = birthday
+        self.notes = notes
         self.createdAt = createdAt
+        self.fields = []
     }
 }
 
 extension Contact {
-    /// Human-readable name, falling back to a placeholder for brand-new contacts.
+    /// Human-readable name, falling back to company, then a placeholder.
     var fullName: String {
         let name = [firstName, lastName]
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty }
             .joined(separator: " ")
-        return name.isEmpty ? "New Contact" : name
+        if !name.isEmpty { return name }
+        let trimmedCompany = company.trimmingCharacters(in: .whitespaces)
+        return trimmedCompany.isEmpty ? "New Contact" : trimmedCompany
     }
 
     /// One or two uppercase letters used for the avatar placeholder.
     var initials: String {
         let first = firstName.trimmingCharacters(in: .whitespaces).first.map(String.init) ?? ""
         let last = lastName.trimmingCharacters(in: .whitespaces).first.map(String.init) ?? ""
-        let combined = (first + last).uppercased()
+        var combined = (first + last).uppercased()
+        if combined.isEmpty {
+            combined = company.trimmingCharacters(in: .whitespaces).first.map { String($0).uppercased() } ?? ""
+        }
         return combined.isEmpty ? "#" : combined
     }
 
@@ -55,5 +92,34 @@ extension Contact {
         let last = lastName.trimmingCharacters(in: .whitespaces)
         let primary = last.isEmpty ? firstName : last
         return primary.trimmingCharacters(in: .whitespaces).lowercased()
+    }
+
+    // MARK: - Field helpers
+
+    var emails: [ContactField] { fields(of: .email) }
+    var phones: [ContactField] { fields(of: .phone) }
+
+    func fields(of kind: FieldKind) -> [ContactField] {
+        fields
+            .filter { $0.kind == kind }
+            .sorted { $0.sortIndex < $1.sortIndex }
+    }
+
+    /// The first non-empty email, used as the list subtitle.
+    var primaryEmail: String? {
+        emails.first { !$0.value.trimmingCharacters(in: .whitespaces).isEmpty }?.value
+    }
+
+    /// The first non-empty phone number.
+    var primaryPhone: String? {
+        phones.first { !$0.value.trimmingCharacters(in: .whitespaces).isEmpty }?.value
+    }
+
+    /// Best available secondary line for list rows: email, then phone, then company.
+    var subtitle: String? {
+        if let email = primaryEmail { return email }
+        if let phone = primaryPhone { return phone }
+        let trimmedCompany = company.trimmingCharacters(in: .whitespaces)
+        return trimmedCompany.isEmpty ? nil : trimmedCompany
     }
 }

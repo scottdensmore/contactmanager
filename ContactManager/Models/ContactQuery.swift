@@ -26,9 +26,14 @@ enum ContactQuery {
         guard !needle.isEmpty else { return contacts }
 
         return contacts.filter { contact in
-            contact.fullName.lowercased().contains(needle)
-                || contact.emailAddress.lowercased().contains(needle)
-                || contact.phoneNumber.lowercased().contains(needle)
+            let haystacks = [
+                contact.fullName,
+                contact.company,
+                contact.jobTitle,
+                contact.notes,
+            ] + contact.fields.map(\.value)
+
+            return haystacks.contains { $0.lowercased().contains(needle) }
         }
     }
 }

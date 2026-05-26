@@ -25,7 +25,7 @@ struct ContactManagerApp: App {
         }
 
         do {
-            let built = try ModelContainer(for: Contact.self)
+            let built = try ModelContainer(for: Contact.self, ContactField.self)
             SampleData.seedIfNeeded(built.mainContext)
             container = built
         } catch {

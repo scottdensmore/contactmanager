@@ -64,8 +64,8 @@ struct ContactRow: View {
             VStack(alignment: .leading, spacing: 1) {
                 Text(contact.fullName)
                     .lineLimit(1)
-                if !contact.emailAddress.isEmpty {
-                    Text(contact.emailAddress)
+                if let subtitle = contact.subtitle {
+                    Text(subtitle)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
