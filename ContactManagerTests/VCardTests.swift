@@ -81,6 +81,21 @@ struct VCardTests {
         #expect(parsed.last?.firstName == "Alan")
     }
 
+    @Test func foldsLongLinesOnWriteAndRoundTrips() {
+        let longNote = String(repeating: "All models are wrong but some are useful. ", count: 5)
+        let contact = Contact(firstName: "Box", lastName: "George", notes: longNote)
+        let document = VCard.card(for: contact)
+
+        // A continuation line (folded) begins with a single space.
+        let hasFoldedLine = document
+            .components(separatedBy: "\r\n")
+            .contains { $0.hasPrefix(" ") }
+        #expect(hasFoldedLine)
+
+        // Folding is reversible: parsing recovers the original note.
+        #expect(VCard.parse(document).first?.notes == longNote)
+    }
+
     @Test func ignoresEmptyDocuments() {
         #expect(VCard.parse("").isEmpty)
         #expect(VCard.parse("not a vcard at all").isEmpty)

@@ -15,7 +15,7 @@ struct ContactDetailView: View {
     @Bindable var contact: Contact
     @Query(sort: \ContactGroup.name) private var allGroups: [ContactGroup]
     @State private var isImportingPhoto = false
-    @State private var photoError: String?
+    @State private var errorMessage: String?
 
     var body: some View {
         Form {
@@ -68,9 +68,9 @@ struct ContactDetailView: View {
         .formStyle(.grouped)
         .navigationTitle(contact.fullName)
         .alert(
-            "Couldn't Add Photo",
-            isPresented: Binding(get: { photoError != nil }, set: { if !$0 { photoError = nil } }),
-            presenting: photoError
+            "Couldn't Save Changes",
+            isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } }),
+            presenting: errorMessage
         ) { _ in
             Button("OK", role: .cancel) {}
         } message: { message in
@@ -155,7 +155,7 @@ struct ContactDetailView: View {
     private func handleImport(_ result: Result<URL, Error>) {
         switch result {
         case .failure(let error):
-            photoError = error.localizedDescription
+            errorMessage = error.localizedDescription
         case .success(let url):
             // Read the picked file while its security scope is held, then hand
             // the bytes off; downscaling happens off the main actor below.
@@ -165,7 +165,7 @@ struct ContactDetailView: View {
                 let fileData = try Data(contentsOf: url)
                 processPhoto(fileData)
             } catch {
-                photoError = error.localizedDescription
+                errorMessage = error.localizedDescription
             }
         }
     }
@@ -175,11 +175,11 @@ struct ContactDetailView: View {
             // Decode/downscale off the main actor so large images don't block UI.
             let avatar = await Task.detached { ImageProcessing.avatarData(from: fileData) }.value
             guard let avatar else {
-                photoError = "That file couldn't be read as an image."
+                errorMessage = "That file couldn't be read as an image."
                 return
             }
             contact.photoData = avatar
-            do { try context.save() } catch { photoError = error.localizedDescription }
+            do { try context.save() } catch { errorMessage = error.localizedDescription }
         }
     }
 
@@ -222,7 +222,10 @@ struct ContactDetailView: View {
                 } else {
                     contact.groups.removeAll { $0.persistentModelID == group.persistentModelID }
                 }
-                try? context.save()
+                do { try context.save() } catch {
+                    context.rollback()
+                    errorMessage = error.localizedDescription
+                }
             }
         )
     }

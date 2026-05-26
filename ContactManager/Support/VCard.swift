@@ -2,9 +2,9 @@
 //  VCard.swift
 //  ContactManager
 //
-//  Pure vCard 3.0 reading and writing. Kept free of SwiftData/UI types so it
-//  is straightforward to unit test; the import/export views map between these
-//  values and `Contact` models.
+//  vCard 3.0 reading and writing. The reading side returns plain
+//  `ParsedContact` values (independent of SwiftData); the writing side reads
+//  directly from `Contact` for convenience and runs on the main actor.
 //
 
 import Foundation
@@ -46,7 +46,9 @@ enum VCard {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd"
-        formatter.timeZone = TimeZone(identifier: "UTC")
+        // Use the local time zone so the serialized day matches the day the
+        // user picked (birthdays are date-only, stored as a local midnight).
+        formatter.timeZone = .autoupdatingCurrent
         return formatter
     }()
 
@@ -89,7 +91,35 @@ enum VCard {
         }
 
         lines.append("END:VCARD")
-        return lines.joined(separator: lineEnding) + lineEnding
+        return lines.map(fold).joined(separator: lineEnding) + lineEnding
+    }
+
+    /// Folds a logical line to the vCard 3.0 75-octet limit. Continuation
+    /// lines begin with a single space, which `unfold` strips on read.
+    private static func fold(_ line: String) -> String {
+        let limit = 75
+        guard line.utf8.count > limit else { return line }
+
+        var folded = ""
+        var segment = ""
+        var octets = 0
+        var isFirstSegment = true
+
+        for character in line {
+            let charOctets = String(character).utf8.count
+            // Continuation lines spend one octet on the leading space.
+            let segmentLimit = isFirstSegment ? limit : limit - 1
+            if octets + charOctets > segmentLimit {
+                folded += (isFirstSegment ? "" : " ") + segment + lineEnding
+                isFirstSegment = false
+                segment = ""
+                octets = 0
+            }
+            segment.append(character)
+            octets += charOctets
+        }
+        folded += (isFirstSegment ? "" : " ") + segment
+        return folded
     }
 
     // MARK: - Reading

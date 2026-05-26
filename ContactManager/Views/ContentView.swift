@@ -29,11 +29,14 @@ struct ContentView: View {
     @State private var exportDocument = VCardDocument(text: "")
 
     /// Contacts shown for the current sidebar selection, before search.
+    /// Reads a group's members from the relationship rather than scanning
+    /// every contact's groups.
     private var scopedContacts: [Contact] {
-        guard case .group(let id) = sidebarSelection else { return contacts }
-        return contacts.filter { contact in
-            contact.groups.contains { $0.persistentModelID == id }
+        guard case .group(let id) = sidebarSelection,
+              let group = groups.first(where: { $0.persistentModelID == id }) else {
+            return contacts
         }
+        return group.contacts
     }
 
     private var sections: [ContactSection] {
@@ -154,15 +157,27 @@ struct ContentView: View {
         let trimmed = name.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
         group.name = trimmed
-        try? context.save()
+        do { try context.save() } catch {
+            context.rollback()
+            errorMessage = error.localizedDescription
+        }
     }
 
     private func deleteGroup(_ group: ContactGroup) {
+        let wasSelected: Bool
         if case .group(let id) = sidebarSelection, id == group.persistentModelID {
-            sidebarSelection = .allContacts
+            wasSelected = true
+        } else {
+            wasSelected = false
         }
         context.delete(group)
-        try? context.save()
+        do {
+            try context.save()
+            if wasSelected { sidebarSelection = .allContacts }
+        } catch {
+            context.rollback()
+            errorMessage = error.localizedDescription
+        }
     }
 
     // MARK: - vCard import
@@ -172,25 +187,36 @@ struct ContentView: View {
         case .failure(let error):
             errorMessage = error.localizedDescription
         case .success(let url):
-            let didAccess = url.startAccessingSecurityScopedResource()
-            defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
+            Task {
+                // Read and parse off the main actor so large files don't block UI.
+                let parsed: [ParsedContact]? = await Task.detached {
+                    let didAccess = url.startAccessingSecurityScopedResource()
+                    defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
+                    guard let data = try? Data(contentsOf: url),
+                          let text = String(data: data, encoding: .utf8) else { return nil }
+                    return VCard.parse(text)
+                }.value
 
-            guard let data = try? Data(contentsOf: url),
-                  let text = String(data: data, encoding: .utf8) else {
-                errorMessage = "That file couldn't be read as a vCard."
-                return
-            }
+                guard let parsed else {
+                    errorMessage = "That file couldn't be read as a vCard."
+                    return
+                }
+                guard !parsed.isEmpty else {
+                    errorMessage = "No contacts were found in that file."
+                    return
+                }
 
-            let parsed = VCard.parse(text)
-            guard !parsed.isEmpty else {
-                errorMessage = "No contacts were found in that file."
-                return
+                for card in parsed {
+                    context.insert(makeContact(from: card))
+                }
+                do {
+                    try context.save()
+                } catch {
+                    // Drop the just-inserted, unsaved contacts.
+                    context.rollback()
+                    errorMessage = error.localizedDescription
+                }
             }
-
-            for card in parsed {
-                context.insert(makeContact(from: card))
-            }
-            do { try context.save() } catch { errorMessage = error.localizedDescription }
         }
     }
 
