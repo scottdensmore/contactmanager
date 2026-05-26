@@ -38,6 +38,16 @@ struct ContactManagerApp: App {
                 }
                 .keyboardShortcut("n", modifiers: .command)
             }
+            CommandGroup(replacing: .importExport) {
+                Button("Import vCard…") {
+                    NotificationCenter.default.post(name: .importVCardRequested, object: nil)
+                }
+                .keyboardShortcut("i", modifiers: [.command, .shift])
+                Button("Export vCard…") {
+                    NotificationCenter.default.post(name: .exportVCardRequested, object: nil)
+                }
+                .keyboardShortcut("e", modifiers: [.command, .shift])
+            }
         }
     }
 
@@ -55,7 +65,7 @@ struct ContactManagerApp: App {
         }
 
         do {
-            let container = try ModelContainer(for: Contact.self, ContactField.self)
+            let container = try ModelContainer(for: Contact.self, ContactField.self, ContactGroup.self)
             do {
                 try SampleData.seedIfNeeded(container.mainContext)
             } catch {
@@ -109,6 +119,8 @@ private struct StoreErrorView: View {
 }
 
 extension Notification.Name {
-    /// Posted by the New Contact menu command; observed by `ContentView`.
+    /// Posted by menu commands; observed by `ContentView`.
     static let newContactRequested = Notification.Name("ContactManager.newContactRequested")
+    static let importVCardRequested = Notification.Name("ContactManager.importVCardRequested")
+    static let exportVCardRequested = Notification.Name("ContactManager.exportVCardRequested")
 }
