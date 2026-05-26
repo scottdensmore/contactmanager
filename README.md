@@ -1,38 +1,53 @@
 # Contact Manager
 
-**ContactManager** is a native, modern macOS desktop application demonstrating best practices in desktop architecture, persistence, and unit testing.
+**ContactManager** is a native macOS contact manager built with **SwiftUI** and **SwiftData**, targeting the modern macOS Tahoe (macOS 26) look and feel. It is **100% self-contained** with zero third-party dependencies.
 
-The project is **100% self-contained and standalone**, featuring zero third-party dependencies. It has been fully modernized to target macOS 13.0+ and compiles under modern Xcode toolchains with zero warnings.
-
----
-
-## Key Modernization Features
-
-1. **Modern Persistence Stack**:
-   - Replaced legacy manual Core Data lifecycle management with Apple's standard **`NSPersistentContainer`** framework.
-   - Core Data stores are fully loaded synchronously on initialization for deterministic runtime behavior.
-   - Built-in automatic migration support and clean directory setup inside standard Application Support paths.
-
-2. **Objective-C Modernization**:
-   - **Full Nullability Coverage**: Entire codebase annotated with `NS_ASSUME_NONNULL` and proper pointer specifiers (`nonnull`, `nullable`) for complete type safety and seamless Swift interoperability.
-   - **Type-Safe Generics**: Standardized all collections (e.g. `NSArray<Contact *> *` and `NSFetchRequest<__kindof NSManagedObject *> *`) to enable compile-time type checking.
-   - **Memory Safety**: Converted delegates and interface outlets to modern `weak` pointers to eliminate risk of retain cycles.
-   - **Unavailable Initializers**: Standardized designated initializers and marked legacy default `init`/`new` initializers as `NS_UNAVAILABLE` to guarantee correct instance construction.
-
-3. **Zero-Dependency Testing**:
-   - Swapped out the legacy third-party `OCMock` framework in favor of lightweight native testing constructs.
-   - Integration tests are backed by a real, blazing-fast, in-memory Core Data stack (`NSInMemoryStoreType`), executing type-safe code without polluting local developer filesystems.
-   - Subclassed view controllers directly inside the test target to spy on KVO bindings.
+The app was originally an Objective-C / AppKit / Core Data demo and is being rebuilt, in focused increments, into a polished native Tahoe application.
 
 ---
 
-## Tech Stack & Architecture
+## Architecture
 
-- **Platform**: macOS 13.0+ (AppKit)
-- **Language**: Objective-C (Automatic Reference Counting, LLVM Modules enabled)
-- **Database**: Core Data (`NSPersistentContainer`)
-- **UI Binding**: Cocoa Bindings & Key-Value Observing (KVO)
-- **Unit Testing**: XCTest
+- **Platform**: macOS 26.0+ (Tahoe)
+- **UI**: SwiftUI — a three-column `NavigationSplitView` (sidebar / contact list / detail) that automatically adopts the Liquid Glass appearance when built against the macOS 26 SDK.
+- **Persistence**: SwiftData (`@Model`, `ModelContainer`, `@Query`), replacing the legacy Core Data stack.
+- **Language**: Swift
+- **Testing**: Swift Testing, backed by an in-memory `ModelContainer`.
+
+### Source layout
+
+```
+ContactManager/
+├── App/      ContactManagerApp.swift   – @main entry point, model container, menu commands
+├── Models/   Contact.swift             – the @Model contact entity + derived values
+│             ContactQuery.swift        – pure, testable filter/sort helpers
+│             SampleData.swift          – first-launch seed data
+└── Views/    ContentView.swift         – NavigationSplitView shell + create/delete actions
+              SidebarView.swift         – groups sidebar (All Contacts)
+              ContactListView.swift     – selectable contact list + toolbar
+              ContactDetailView.swift   – editable detail form
+              AvatarView.swift          – initials avatar with a per-contact tint
+```
+
+---
+
+## Features
+
+- Three-column native layout with a Liquid Glass toolbar.
+- Create, edit (inline, autosaving), and delete contacts.
+- Initials-based avatars.
+- Sample contacts seeded on first launch.
+
+### Roadmap
+
+Shipped as small, single-purpose PRs:
+
+1. ✅ **Foundation** — SwiftUI + SwiftData rewrite, CRUD, project modernized to macOS 26.
+2. **Richer fields** — multiple emails/phones, company/title, address, birthday, notes.
+3. **Search & sections** — live search and alphabetical sectioning.
+4. **Contact photos** — photo import with initials fallback.
+5. **Groups & vCard** — user groups/tags and `.vcf` import/export.
+6. **Tahoe polish** — Liquid Glass refinements, animations, and richer empty states.
 
 ---
 
@@ -40,20 +55,14 @@ The project is **100% self-contained and standalone**, featuring zero third-part
 
 ### Prerequisites
 
-No dependency managers (such as Carthage, CocoaPods, or Swift Package Manager) are required.
-
-To prepare the local homebrew build environment (if any tools are missing):
-```shell
-./scripts/bootstrap.sh
-```
+Xcode 26 or later (macOS 26 SDK). No dependency managers required.
 
 ### Building & Running
 
-Open `ContactManager.xcodeproj` in Xcode and select the **ContactManager** scheme. Press `Cmd + R` to build and run.
+Open `ContactManager.xcodeproj` in Xcode, select the **ContactManager** scheme, and press `Cmd + R`.
 
 ### Running the Test Suite
 
-To run all 31 unit tests directly from the command line:
 ```shell
-xcodebuild -project ContactManager.xcodeproj -scheme ContactManager -configuration Debug test
+xcodebuild -project ContactManager.xcodeproj -scheme ContactManager -destination 'platform=macOS' test
 ```

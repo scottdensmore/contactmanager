@@ -1,4 +1,0 @@
-/* Localized versions of strings */
-"QuitQuestion" = "Could not save changes while quitting. Quit anyway?";
-"Quit" = "Quit";
-"Cancel" = "Cancel";
