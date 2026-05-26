@@ -19,16 +19,22 @@ enum ContactQuery {
         }
     }
 
-    /// Filters contacts whose name, email, or phone contains the query.
-    /// An empty query returns every contact unchanged.
+    /// Filters contacts whose name, company, job title, notes, or any email/
+    /// phone field value contains the query. An empty query returns every
+    /// contact unchanged.
     static func filtered(_ contacts: [Contact], matching query: String) -> [Contact] {
         let needle = query.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         guard !needle.isEmpty else { return contacts }
 
         return contacts.filter { contact in
-            contact.fullName.lowercased().contains(needle)
-                || contact.emailAddress.lowercased().contains(needle)
-                || contact.phoneNumber.lowercased().contains(needle)
+            let haystacks = [
+                contact.fullName,
+                contact.company,
+                contact.jobTitle,
+                contact.notes,
+            ] + contact.fields.map(\.value)
+
+            return haystacks.contains { $0.lowercased().contains(needle) }
         }
     }
 }

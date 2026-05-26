@@ -55,7 +55,7 @@ struct ContactManagerApp: App {
         }
 
         do {
-            let container = try ModelContainer(for: Contact.self)
+            let container = try ModelContainer(for: Contact.self, ContactField.self)
             do {
                 try SampleData.seedIfNeeded(container.mainContext)
             } catch {

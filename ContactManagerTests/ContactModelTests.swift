@@ -21,7 +21,7 @@ struct ContactModelTests {
 
     init() throws {
         container = try ModelContainer(
-            for: Contact.self,
+            for: Contact.self, ContactField.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
     }
@@ -45,13 +45,28 @@ struct ContactModelTests {
         context.delete(contact)
         try context.save()
 
-        let count = try context.fetchCount(FetchDescriptor<Contact>())
-        #expect(count == 0)
+        #expect(try context.fetchCount(FetchDescriptor<Contact>()) == 0)
+    }
+
+    @Test func deletingContactCascadesToItsFields() throws {
+        let contact = Contact(firstName: "Ada", lastName: "Lovelace")
+        contact.fields = [
+            ContactField(kind: .email, value: "ada@analytical.engine"),
+            ContactField(kind: .phone, value: "+1 (555) 0100"),
+        ]
+        context.insert(contact)
+        try context.save()
+        #expect(try context.fetchCount(FetchDescriptor<ContactField>()) == 2)
+
+        context.delete(contact)
+        try context.save()
+        #expect(try context.fetchCount(FetchDescriptor<ContactField>()) == 0)
     }
 
     @Test func seedingPopulatesAnEmptyStoreOnce() throws {
         try SampleData.seedIfNeeded(context)
         #expect(try context.fetchCount(FetchDescriptor<Contact>()) == SampleData.count)
+        #expect(try context.fetchCount(FetchDescriptor<ContactField>()) > 0)
 
         // Seeding again should be a no-op on a non-empty store.
         try SampleData.seedIfNeeded(context)
@@ -60,16 +75,32 @@ struct ContactModelTests {
 
     // MARK: - Derived values
 
-    @Test func fullNameJoinsAvailableParts() {
+    @Test func fullNameJoinsAvailablePartsThenFallsBackToCompany() {
         #expect(Contact(firstName: "Ada", lastName: "Lovelace").fullName == "Ada Lovelace")
         #expect(Contact(firstName: "Ada").fullName == "Ada")
+        #expect(Contact(company: "Acme").fullName == "Acme")
         #expect(Contact().fullName == "New Contact")
     }
 
     @Test func initialsUseFirstAndLastInitial() {
         #expect(Contact(firstName: "Ada", lastName: "Lovelace").initials == "AL")
         #expect(Contact(firstName: "grace").initials == "G")
+        #expect(Contact(company: "acme").initials == "A")
         #expect(Contact().initials == "#")
+    }
+
+    @Test func primaryValuesAndSubtitlePreferEmail() {
+        let contact = Contact(firstName: "Ada", company: "Analytical")
+        contact.fields = [
+            ContactField(kind: .phone, value: "+1 (555) 0100", sortIndex: 0),
+            ContactField(kind: .email, value: "ada@analytical.engine", sortIndex: 0),
+        ]
+        #expect(contact.primaryEmail == "ada@analytical.engine")
+        #expect(contact.primaryPhone == "+1 (555) 0100")
+        #expect(contact.subtitle == "ada@analytical.engine")
+
+        let companyOnly = Contact(firstName: "Bob", company: "Globex")
+        #expect(companyOnly.subtitle == "Globex")
     }
 
     // MARK: - Query helpers
@@ -84,15 +115,21 @@ struct ContactModelTests {
         #expect(sorted.map(\.lastName) == ["Hopper", "Lovelace", "Turing"])
     }
 
-    @Test func filteringMatchesNameEmailAndPhone() {
-        let contacts = [
-            Contact(firstName: "Ada", lastName: "Lovelace", emailAddress: "ada@analytical.engine"),
-            Contact(firstName: "Alan", lastName: "Turing", phoneNumber: "+44 20 7555 0142"),
-        ]
-        #expect(ContactQuery.filtered(contacts, matching: "love").count == 1)
-        #expect(ContactQuery.filtered(contacts, matching: "analytical").first?.firstName == "Ada")
-        #expect(ContactQuery.filtered(contacts, matching: "7555").first?.firstName == "Alan")
-        #expect(ContactQuery.filtered(contacts, matching: "").count == 2)
-        #expect(ContactQuery.filtered(contacts, matching: "nobody").isEmpty)
+    @Test func filteringMatchesName_Company_Notes_AndFieldValues() throws {
+        let ada = Contact(firstName: "Ada", lastName: "Lovelace", company: "Analytical Engine")
+        ada.fields = [ContactField(kind: .email, value: "ada@analytical.engine")]
+        let alan = Contact(firstName: "Alan", lastName: "Turing", notes: "Enigma")
+        alan.fields = [ContactField(kind: .phone, value: "+44 20 7555 0142")]
+        context.insert(ada)
+        context.insert(alan)
+        try context.save()
+
+        let all = try context.fetch(FetchDescriptor<Contact>())
+        #expect(ContactQuery.filtered(all, matching: "love").count == 1)        // name
+        #expect(ContactQuery.filtered(all, matching: "analytical").count == 1)  // company + email
+        #expect(ContactQuery.filtered(all, matching: "enigma").first?.firstName == "Alan") // notes
+        #expect(ContactQuery.filtered(all, matching: "7555").first?.firstName == "Alan")   // phone field
+        #expect(ContactQuery.filtered(all, matching: "").count == 2)
+        #expect(ContactQuery.filtered(all, matching: "nobody").isEmpty)
     }
 }

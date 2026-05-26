@@ -20,6 +20,7 @@ The app was originally an Objective-C / AppKit / Core Data demo and is being reb
 ContactManager/
 ├── App/      ContactManagerApp.swift   – @main entry point, model container, menu commands
 ├── Models/   Contact.swift             – the @Model contact entity + derived values
+│             ContactField.swift        – labeled, repeatable email/phone child entity
 │             ContactQuery.swift        – pure, testable filter/sort helpers
 │             SampleData.swift          – first-launch seed data
 └── Views/    ContentView.swift         – NavigationSplitView shell + create/delete actions
@@ -35,6 +36,8 @@ ContactManager/
 
 - Three-column native layout with a Liquid Glass toolbar.
 - Create, edit (inline, autosaving), and delete contacts.
+- Multiple labeled emails and phone numbers per contact (add/remove inline).
+- Company, job title, postal address, birthday, and free-form notes.
 - Initials-based avatars.
 - Sample contacts seeded on first launch.
 
@@ -43,7 +46,7 @@ ContactManager/
 Shipped as small, single-purpose PRs:
 
 1. ✅ **Foundation** — SwiftUI + SwiftData rewrite, CRUD, project modernized to macOS 26.
-2. **Richer fields** — multiple emails/phones, company/title, address, birthday, notes.
+2. ✅ **Richer fields** — multiple emails/phones, company/title, address, birthday, notes.
 3. **Search & sections** — live search and alphabetical sectioning.
 4. **Contact photos** — photo import with initials fallback.
 5. **Groups & vCard** — user groups/tags and `.vcf` import/export.

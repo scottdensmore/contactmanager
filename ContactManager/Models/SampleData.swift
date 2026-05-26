@@ -16,14 +16,38 @@ enum SampleData {
     /// Builds a fresh set of sample contacts. Each call returns brand-new
     /// instances so they can be safely inserted into any model context.
     static func makeContacts() -> [Contact] {
-        [
-            Contact(firstName: "Ada", lastName: "Lovelace",
-                    emailAddress: "ada@analytical.engine", phoneNumber: "+1 (555) 0100"),
-            Contact(firstName: "Alan", lastName: "Turing",
-                    emailAddress: "alan@bletchley.uk", phoneNumber: "+44 20 7555 0142"),
-            Contact(firstName: "Grace", lastName: "Hopper",
-                    emailAddress: "grace@navy.mil", phoneNumber: "+1 (555) 0199"),
+        let ada = Contact(
+            firstName: "Ada", lastName: "Lovelace",
+            company: "Analytical Engine Co.", jobTitle: "Mathematician",
+            city: "London", country: "United Kingdom",
+            notes: "First computer programmer."
+        )
+        ada.fields = [
+            ContactField(kind: .email, label: .work, value: "ada@analytical.engine", sortIndex: 0),
+            ContactField(kind: .phone, label: .mobile, value: "+1 (555) 0100", sortIndex: 0),
         ]
+
+        let alan = Contact(
+            firstName: "Alan", lastName: "Turing",
+            company: "Bletchley Park", jobTitle: "Cryptanalyst",
+            city: "Milton Keynes", country: "United Kingdom"
+        )
+        alan.fields = [
+            ContactField(kind: .email, label: .work, value: "alan@bletchley.uk", sortIndex: 0),
+            ContactField(kind: .phone, label: .work, value: "+44 20 7555 0142", sortIndex: 0),
+        ]
+
+        let grace = Contact(
+            firstName: "Grace", lastName: "Hopper",
+            company: "US Navy", jobTitle: "Rear Admiral",
+            city: "Arlington", state: "VA", country: "USA"
+        )
+        grace.fields = [
+            ContactField(kind: .email, label: .work, value: "grace@navy.mil", sortIndex: 0),
+            ContactField(kind: .phone, label: .main, value: "+1 (555) 0199", sortIndex: 0),
+        ]
+
+        return [ada, alan, grace]
     }
 
     /// Inserts the sample contacts only when the store is verified empty.
