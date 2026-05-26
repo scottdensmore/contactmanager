@@ -87,11 +87,15 @@ extension Contact {
         return combined.isEmpty ? "#" : combined
     }
 
-    /// Lowercased key used to sort contacts by last name, then first name.
+    /// Lowercased key used to sort contacts: last name, then first name, then
+    /// company. Falling back to company keeps sorting/sectioning aligned with
+    /// the displayed `fullName` for company-only contacts.
     var sortKey: String {
-        let last = lastName.trimmingCharacters(in: .whitespaces)
-        let primary = last.isEmpty ? firstName : last
-        return primary.trimmingCharacters(in: .whitespaces).lowercased()
+        for candidate in [lastName, firstName, company] {
+            let trimmed = candidate.trimmingCharacters(in: .whitespaces)
+            if !trimmed.isEmpty { return trimmed.lowercased() }
+        }
+        return ""
     }
 
     /// Lowercased first name, trimmed — used as the secondary sort key so it

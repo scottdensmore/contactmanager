@@ -70,14 +70,15 @@ struct ContactListView: View {
     @ViewBuilder
     private var emptyState: some View {
         if sections.isEmpty {
-            if !searchText.isEmpty {
-                ContentUnavailableView.search(text: searchText)
-            } else if totalCount == 0 {
+            if totalCount == 0 {
+                // An empty store always reads as "No Contacts", even mid-search.
                 ContentUnavailableView(
                     "No Contacts",
                     systemImage: "person.crop.circle.badge.plus",
                     description: Text("Add a contact to get started.")
                 )
+            } else if !searchText.isEmpty {
+                ContentUnavailableView.search(text: searchText)
             }
         }
     }

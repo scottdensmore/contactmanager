@@ -127,6 +127,13 @@ struct ContactModelTests {
         #expect(sections.first?.contacts.first?.lastName == "Hopper")
     }
 
+    @Test func companyOnlyContactGroupsUnderCompanyInitial() {
+        let acme = Contact(company: "Acme")          // letter → "A"
+        let numeric = Contact(company: "1Password")  // non-letter → "#"
+        let sections = ContactQuery.sections([acme, numeric], by: .lastName)
+        #expect(sections.map(\.title) == ["A", "#"])
+    }
+
     @Test func sortingAndSectioningByFirstNameUsesFirstNameInitial() {
         let contacts = [
             Contact(firstName: "Ada", lastName: "Lovelace"),
