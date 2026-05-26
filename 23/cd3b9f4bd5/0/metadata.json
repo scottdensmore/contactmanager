@@ -1,0 +1,42 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "23cd3b9f4bd5",
+  "session_id": "a22e27bd-7ce5-4bdb-b1b8-083a9eedbb19",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-26T05:06:43.343433Z",
+  "branch": "feature/contact-photos",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/Models/Contact.swift",
+    "ContactManagerTests/ImageProcessingTests.swift",
+    "ContactManager/Views/AvatarView.swift",
+    "ContactManager/Views/ContactDetailView.swift"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "947d83fbf7d9",
+  "checkpoint_transcript_start": 823,
+  "transcript_lines_at_start": 823,
+  "token_usage": {
+    "input_tokens": 417,
+    "cache_creation_tokens": 14808,
+    "cache_read_tokens": 4805790,
+    "output_tokens": 12318,
+    "api_call_count": 15
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-26T05:06:43.312289Z",
+    "agent_lines": 52,
+    "agent_removed": 14,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 52,
+    "total_lines_changed": 66,
+    "agent_percentage": 100,
+    "metric_version": 2
+  }
+}
