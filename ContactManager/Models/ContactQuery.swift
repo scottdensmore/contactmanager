@@ -2,20 +2,44 @@
 //  ContactQuery.swift
 //  ContactManager
 //
-//  Pure, testable helpers for filtering and sorting contacts. Keeping this
-//  logic out of the views makes it straightforward to unit test.
+//  Pure, testable helpers for filtering, sorting, and sectioning contacts.
+//  Keeping this logic out of the views makes it straightforward to unit test.
 //
 
 import Foundation
 
+/// The order contacts are sorted and grouped by.
+enum ContactSortOrder: String, CaseIterable, Identifiable {
+    case lastName
+    case firstName
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .lastName: return "Last Name"
+        case .firstName: return "First Name"
+        }
+    }
+}
+
+/// An alphabetical group of contacts, titled by initial ("A"…"Z" or "#").
+struct ContactSection: Identifiable {
+    let title: String
+    let contacts: [Contact]
+    var id: String { title }
+}
+
 enum ContactQuery {
-    /// Sorts contacts by last name, then first name, case-insensitively.
-    static func sorted(_ contacts: [Contact]) -> [Contact] {
+    /// Sorts contacts by the given order's primary key, then its secondary key.
+    static func sorted(_ contacts: [Contact], by order: ContactSortOrder = .lastName) -> [Contact] {
         contacts.sorted { lhs, rhs in
-            if lhs.sortKey != rhs.sortKey {
-                return lhs.sortKey < rhs.sortKey
+            let l = lhs.sortKeys(for: order)
+            let r = rhs.sortKeys(for: order)
+            if l.primary != r.primary {
+                return l.primary < r.primary
             }
-            return lhs.firstNameSortKey < rhs.firstNameSortKey
+            return l.secondary < r.secondary
         }
     }
 
@@ -36,5 +60,28 @@ enum ContactQuery {
 
             return haystacks.contains { $0.lowercased().contains(needle) }
         }
+    }
+
+    /// Groups contacts into alphabetical sections by their initial, sorted
+    /// within each section. Names that don't start with a letter land in a
+    /// trailing "#" section.
+    static func sections(_ contacts: [Contact], by order: ContactSortOrder = .lastName) -> [ContactSection] {
+        let ordered = sorted(contacts, by: order)
+        let grouped = Dictionary(grouping: ordered) { sectionTitle(for: $0, order: order) }
+
+        let titles = grouped.keys.sorted { lhs, rhs in
+            if lhs == "#" { return false }   // "#" always sorts last
+            if rhs == "#" { return true }
+            return lhs < rhs
+        }
+
+        return titles.map { ContactSection(title: $0, contacts: grouped[$0] ?? []) }
+    }
+
+    private static func sectionTitle(for contact: Contact, order: ContactSortOrder) -> String {
+        guard let first = contact.sortKeys(for: order).primary.first, first.isLetter else {
+            return "#"
+        }
+        return String(first).uppercased()
     }
 }

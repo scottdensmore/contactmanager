@@ -108,6 +108,18 @@ extension Contact {
         Int(truncatingIfNeeded: createdAt.timeIntervalSinceReferenceDate.bitPattern)
     }
 
+    /// Primary/secondary keys for a given sort order. The primary key also
+    /// drives alphabetical section grouping.
+    func sortKeys(for order: ContactSortOrder) -> (primary: String, secondary: String) {
+        switch order {
+        case .lastName:
+            return (sortKey, firstNameSortKey)
+        case .firstName:
+            let first = firstNameSortKey
+            return (first.isEmpty ? sortKey : first, sortKey)
+        }
+    }
+
     // MARK: - Field helpers
 
     var emails: [ContactField] { fields(of: .email) }
