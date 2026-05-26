@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "77a5bf2b00c8",
+  "strategy": "manual-commit",
+  "branch": "feature/contact-photos",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/Models/Contact.swift",
+    "ContactManager/Support/ImageProcessing.swift",
+    "ContactManager/Views/AvatarView.swift",
+    "ContactManager/Views/ContactDetailView.swift",
+    "ContactManagerTests/ImageProcessingTests.swift",
+    "README.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/77/a5bf2b00c8/0/metadata.json",
+      "transcript": "/77/a5bf2b00c8/0/full.jsonl",
+      "content_hash": "/77/a5bf2b00c8/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 435,
+    "cache_creation_tokens": 20846,
+    "cache_read_tokens": 7301996,
+    "output_tokens": 16663,
+    "api_call_count": 24
+  }
+}
