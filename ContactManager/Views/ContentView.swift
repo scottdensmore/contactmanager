@@ -18,13 +18,25 @@ struct ContentView: View {
     @State private var sidebarSelection: SidebarItem? = .allContacts
     @State private var selectedContact: Contact?
     @State private var errorMessage: String?
+    @State private var searchText = ""
+    @AppStorage("contactSortOrder") private var sortOrder: ContactSortOrder = .lastName
+
+    private var sections: [ContactSection] {
+        ContactQuery.sections(
+            ContactQuery.filtered(contacts, matching: searchText),
+            by: sortOrder
+        )
+    }
 
     var body: some View {
         NavigationSplitView {
             SidebarView(selection: $sidebarSelection, contactCount: contacts.count)
         } content: {
             ContactListView(
-                contacts: contacts,
+                sections: sections,
+                totalCount: contacts.count,
+                searchText: $searchText,
+                sortOrder: $sortOrder,
                 selection: $selectedContact,
                 addContact: addContact,
                 deleteContact: deleteContact

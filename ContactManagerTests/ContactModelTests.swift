@@ -115,6 +115,37 @@ struct ContactModelTests {
         #expect(sorted.map(\.lastName) == ["Hopper", "Lovelace", "Turing"])
     }
 
+    @Test func sectionsGroupByInitialWithSymbolsLast() {
+        let contacts = [
+            Contact(firstName: "Ada", lastName: "Lovelace"),
+            Contact(firstName: "Alan", lastName: "Turing"),
+            Contact(firstName: "Grace", lastName: "Hopper"),
+            Contact(company: "1Password"), // no person name → "#"
+        ]
+        let sections = ContactQuery.sections(contacts, by: .lastName)
+        #expect(sections.map(\.title) == ["H", "L", "T", "#"])
+        #expect(sections.first?.contacts.first?.lastName == "Hopper")
+    }
+
+    @Test func companyOnlyContactGroupsUnderCompanyInitial() {
+        let acme = Contact(company: "Acme")          // letter → "A"
+        let numeric = Contact(company: "1Password")  // non-letter → "#"
+        let sections = ContactQuery.sections([acme, numeric], by: .lastName)
+        #expect(sections.map(\.title) == ["A", "#"])
+    }
+
+    @Test func sortingAndSectioningByFirstNameUsesFirstNameInitial() {
+        let contacts = [
+            Contact(firstName: "Ada", lastName: "Lovelace"),
+            Contact(firstName: "Alan", lastName: "Turing"),
+            Contact(firstName: "Grace", lastName: "Hopper"),
+        ]
+        let sections = ContactQuery.sections(contacts, by: .firstName)
+        #expect(sections.map(\.title) == ["A", "G"])
+        // Within "A": Ada (Lovelace) before Alan (Turing).
+        #expect(sections.first?.contacts.map(\.firstName) == ["Ada", "Alan"])
+    }
+
     @Test func filteringMatchesName_Company_Notes_AndFieldValues() throws {
         let ada = Contact(firstName: "Ada", lastName: "Lovelace", company: "Analytical Engine")
         ada.fields = [ContactField(kind: .email, value: "ada@analytical.engine")]

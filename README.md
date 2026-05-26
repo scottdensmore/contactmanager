@@ -38,6 +38,8 @@ ContactManager/
 - Create, edit (inline, autosaving), and delete contacts.
 - Multiple labeled emails and phone numbers per contact (add/remove inline).
 - Company, job title, postal address, birthday, and free-form notes.
+- Live search across name, company, title, notes, and field values.
+- Alphabetical sections with a first-name / last-name sort toggle.
 - Initials-based avatars.
 - Sample contacts seeded on first launch.
 
@@ -47,7 +49,7 @@ Shipped as small, single-purpose PRs:
 
 1. ✅ **Foundation** — SwiftUI + SwiftData rewrite, CRUD, project modernized to macOS 26.
 2. ✅ **Richer fields** — multiple emails/phones, company/title, address, birthday, notes.
-3. **Search & sections** — live search and alphabetical sectioning.
+3. ✅ **Search & sections** — live search and alphabetical sectioning.
 4. **Contact photos** — photo import with initials fallback.
 5. **Groups & vCard** — user groups/tags and `.vcf` import/export.
 6. **Tahoe polish** — Liquid Glass refinements, animations, and richer empty states.
