@@ -13,10 +13,14 @@ struct AvatarView: View {
     let contact: Contact
     var size: CGFloat = 64
 
+    // Decoded once per photo change rather than on every body evaluation
+    // (important for list rows that re-render frequently).
+    @State private var photo: NSImage?
+
     var body: some View {
         Group {
-            if let data = contact.photoData, let image = NSImage(data: data) {
-                Image(nsImage: image)
+            if let photo {
+                Image(nsImage: photo)
                     .resizable()
                     .scaledToFill()
             } else {
@@ -32,6 +36,9 @@ struct AvatarView: View {
         }
         .frame(width: size, height: size)
         .clipShape(Circle())
+        .task(id: contact.photoData) {
+            photo = contact.photoData.flatMap { NSImage(data: $0) }
+        }
     }
 
     /// A stable per-contact color so avatars stay visually distinct.

@@ -15,7 +15,7 @@ struct ImageProcessingTests {
 
     /// Encodes a solid-color image of the given size as PNG data.
     private func makePNG(width: Int, height: Int) throws -> Data {
-        let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
+        let colorSpace = try #require(CGColorSpace(name: CGColorSpace.sRGB))
         let context = try #require(CGContext(
             data: nil, width: width, height: height,
             bitsPerComponent: 8, bytesPerRow: 0, space: colorSpace,

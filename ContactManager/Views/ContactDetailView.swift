@@ -14,6 +14,7 @@ struct ContactDetailView: View {
     @Environment(\.modelContext) private var context
     @Bindable var contact: Contact
     @State private var isImportingPhoto = false
+    @State private var photoError: String?
 
     var body: some View {
         Form {
@@ -54,6 +55,15 @@ struct ContactDetailView: View {
         }
         .formStyle(.grouped)
         .navigationTitle(contact.fullName)
+        .alert(
+            "Couldn't Add Photo",
+            isPresented: Binding(get: { photoError != nil }, set: { if !$0 { photoError = nil } }),
+            presenting: photoError
+        ) { _ in
+            Button("OK", role: .cancel) {}
+        } message: { message in
+            Text(message)
+        }
     }
 
     // MARK: - Header
@@ -97,13 +107,12 @@ struct ContactDetailView: View {
         }
         .buttonStyle(.plain)
         .help("Change Photo")
+        .accessibilityLabel("Change Photo")
         .fileImporter(
             isPresented: $isImportingPhoto,
             allowedContentTypes: [.image]
         ) { result in
-            if case .success(let url) = result {
-                importPhoto(from: url)
-            }
+            handleImport(result)
         }
     }
 
@@ -131,14 +140,35 @@ struct ContactDetailView: View {
 
     // MARK: - Actions
 
-    private func importPhoto(from url: URL) {
-        // The picked URL is security-scoped; access it while reading.
-        let didAccess = url.startAccessingSecurityScopedResource()
-        defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
+    private func handleImport(_ result: Result<URL, Error>) {
+        switch result {
+        case .failure(let error):
+            photoError = error.localizedDescription
+        case .success(let url):
+            // Read the picked file while its security scope is held, then hand
+            // the bytes off; downscaling happens off the main actor below.
+            let didAccess = url.startAccessingSecurityScopedResource()
+            defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
+            do {
+                let fileData = try Data(contentsOf: url)
+                processPhoto(fileData)
+            } catch {
+                photoError = error.localizedDescription
+            }
+        }
+    }
 
-        guard let data = ImageProcessing.avatarData(from: url) else { return }
-        contact.photoData = data
-        try? context.save()
+    private func processPhoto(_ fileData: Data) {
+        Task {
+            // Decode/downscale off the main actor so large images don't block UI.
+            let avatar = await Task.detached { ImageProcessing.avatarData(from: fileData) }.value
+            guard let avatar else {
+                photoError = "That file couldn't be read as an image."
+                return
+            }
+            contact.photoData = avatar
+            do { try context.save() } catch { photoError = error.localizedDescription }
+        }
     }
 
     private func removePhoto() {
