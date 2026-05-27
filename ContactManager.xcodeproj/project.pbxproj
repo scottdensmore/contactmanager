@@ -23,8 +23,6 @@
 		97E98BCB6784672DCB8C1625 /* VCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D515CA167FBF4C47299 /* VCard.swift */; };
 		A94AB327927F2F1FBBD81119 /* ContactGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFE362455F20C848F729EEE /* ContactGroup.swift */; };
 		C2A11D686722C70868435ACE /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6303A7F66E428BF3662142C0 /* SidebarView.swift */; };
-		DED8178E13A452A900EC3234 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED8178D13A452A900EC3234 /* Cocoa.framework */; };
-		DED817AB13A452AA00EC3234 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED8178D13A452A900EC3234 /* Cocoa.framework */; };
 		E5EB465B5CE3964197D29ADF /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F82C8A388E97CC4F1106176 /* SampleData.swift */; };
 		FA702A2E92FAC86D4587641B /* ContactManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA2A3FA3C7375D63CFC55 /* ContactManagerApp.swift */; };
 /* End PBXBuildFile section */
@@ -55,10 +53,6 @@
 		B75D02267D3BC6C014143329 /* ContactModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactModelTests.swift; sourceTree = "<group>"; };
 		DEAB729518FA2A6600E3570B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		DED8178913A452A900EC3234 /* ContactManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DED8178D13A452A900EC3234 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		DED8179013A452AA00EC3234 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		DED8179113A452AA00EC3234 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		DED8179213A452AA00EC3234 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		DED817AA13A452AA00EC3234 /* ContactManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContactManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEFCA6D1259AAB9C00DB0749 /* SharedSettings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = SharedSettings.xcconfig; sourceTree = "<group>"; };
 		EBDDA2A3FA3C7375D63CFC55 /* ContactManagerApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactManagerApp.swift; sourceTree = "<group>"; };
@@ -72,7 +66,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DED8178E13A452A900EC3234 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,7 +73,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DED817AB13A452AA00EC3234 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,72 +125,11 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		DE0285C613B192BE0069A885 /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Helpers;
-			sourceTree = "<group>";
-		};
-		DE0E381713B837FB0017EA58 /* View Controller Tests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "View Controller Tests";
-			sourceTree = "<group>";
-		};
-		DE25CA5A13A7222800D71422 /* View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "View Controllers";
-			sourceTree = "<group>";
-		};
-		DE25CA5B13A7226900D71422 /* Window Controllers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Window Controllers";
-			sourceTree = "<group>";
-		};
-		DE25CA6113A7B37500D71422 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				DE25CA5A13A7222800D71422 /* View Controllers */,
-				DE25CA5B13A7226900D71422 /* Window Controllers */,
-			);
-			name = Controllers;
-			sourceTree = "<group>";
-		};
-		DE27DD9413B7C68900EF7A92 /* Model Tests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Model Tests";
-			sourceTree = "<group>";
-		};
-		DE78DB3913B7EC29002E0F97 /* Controller Tests */ = {
-			isa = PBXGroup;
-			children = (
-				DE0E381713B837FB0017EA58 /* View Controller Tests */,
-				DE78DB3A13B7EC3F002E0F97 /* Window Controller Tests */,
-			);
-			name = "Controller Tests";
-			sourceTree = "<group>";
-		};
-		DE78DB3A13B7EC3F002E0F97 /* Window Controller Tests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Window Controller Tests";
-			sourceTree = "<group>";
-		};
 		DED8177E13A452A900EC3234 = {
 			isa = PBXGroup;
 			children = (
 				DED8179313A452AA00EC3234 /* ContactManager */,
 				DED817AE13A452AA00EC3234 /* ContactManagerTests */,
-				DED8178C13A452A900EC3234 /* Frameworks */,
 				DED8178A13A452A900EC3234 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -212,74 +143,27 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DED8178C13A452A900EC3234 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				DED8178D13A452A900EC3234 /* Cocoa.framework */,
-				DED8178F13A452A900EC3234 /* Other Frameworks */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		DED8178F13A452A900EC3234 /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				DED8179013A452AA00EC3234 /* AppKit.framework */,
-				DED8179113A452AA00EC3234 /* CoreData.framework */,
-				DED8179213A452AA00EC3234 /* Foundation.framework */,
-			);
-			name = "Other Frameworks";
-			sourceTree = "<group>";
-		};
 		DED8179313A452AA00EC3234 /* ContactManager */ = {
 			isa = PBXGroup;
 			children = (
-				DEFCA6D0259AAB8000DB0749 /* Config */,
-				DE25CA6113A7B37500D71422 /* Controllers */,
-				DE0285C613B192BE0069A885 /* Helpers */,
-				DEAB729518FA2A6600E3570B /* Images.xcassets */,
-				DED817DC13A47A8D00EC3234 /* Model */,
-				DED8179413A452AA00EC3234 /* Supporting Files */,
 				05B7EB62632E82EC1D048F88 /* App */,
+				DEFCA6D0259AAB8000DB0749 /* Config */,
+				DEAB729518FA2A6600E3570B /* Images.xcassets */,
 				1A7FF215BB060EF1483FD33C /* Models */,
-				C876089F42640D0818FE333F /* Views */,
 				A34742F5CC5340B2EE610BF4 /* Support */,
+				C876089F42640D0818FE333F /* Views */,
 			);
 			path = ContactManager;
-			sourceTree = "<group>";
-		};
-		DED8179413A452AA00EC3234 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		DED817AE13A452AA00EC3234 /* ContactManagerTests */ = {
 			isa = PBXGroup;
 			children = (
-				DE78DB3913B7EC29002E0F97 /* Controller Tests */,
-				DE27DD9413B7C68900EF7A92 /* Model Tests */,
-				DED817AF13A452AA00EC3234 /* Supporting Files */,
 				B75D02267D3BC6C014143329 /* ContactModelTests.swift */,
 				5588D3AA3B4B31F1094D954F /* ImageProcessingTests.swift */,
 				7E7D5B554122CF852B0D825C /* VCardTests.swift */,
 			);
 			path = ContactManagerTests;
-			sourceTree = "<group>";
-		};
-		DED817AF13A452AA00EC3234 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		DED817DC13A47A8D00EC3234 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Model;
 			sourceTree = "<group>";
 		};
 		DEFCA6D0259AAB8000DB0749 /* Config */ = {
