@@ -23,6 +23,7 @@ struct AvatarView: View {
                 Image(nsImage: photo)
                     .resizable()
                     .scaledToFill()
+                    .transition(.opacity)
             } else {
                 Circle()
                     .fill(gradient)
@@ -32,13 +33,15 @@ struct AvatarView: View {
                             .foregroundStyle(.white)
                             .minimumScaleFactor(0.5)
                     }
+                    .transition(.opacity)
             }
         }
         .frame(width: size, height: size)
         .clipShape(Circle())
-        .animation(.smooth, value: contact.photoData)
         .task(id: contact.photoData) {
-            photo = contact.photoData.flatMap { NSImage(data: $0) }
+            let decoded = contact.photoData.flatMap { NSImage(data: $0) }
+            // Animate the actual swap, which happens when `photo` updates.
+            withAnimation(.smooth) { photo = decoded }
         }
     }
 
