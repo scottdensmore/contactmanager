@@ -1,0 +1,5 @@
+When trying to preview the content in ContentView I am getting ”ContactManager.app” needs an unoptimized build to be able to
+  preview.
+  
+  Current setting is “-O” but needs to be “-Onone”. This could happen if attempting to preview using the Release build
+  configuration instead of Debug. Previews require unoptimized builds to proceed."
