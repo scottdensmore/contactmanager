@@ -1,0 +1,1 @@
+Clean up the project in Xcode. Remove empty folders and make sure everything matches and follows the best conventions.
