@@ -1,0 +1,2 @@
+I am getting this warning SwiftLint not installed — run ./scripts/bootstrap.sh (brew bundle)
+and also I updated the project to all the recommended settings
