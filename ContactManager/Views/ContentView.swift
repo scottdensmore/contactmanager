@@ -28,16 +28,19 @@ struct ContentView: View {
     @State private var isExportingVCard = false
     @State private var exportDocument = VCardDocument(text: "")
 
+    private var store: ContactStore { ContactStore(context) }
+
+    /// The group backing the current sidebar selection, if any.
+    private var selectedGroup: ContactGroup? {
+        guard case .group(let id) = sidebarSelection else { return nil }
+        return groups.first { $0.persistentModelID == id }
+    }
+
     /// Contacts shown for the current sidebar selection, before search.
     /// Reads a group's members from the relationship rather than scanning
     /// every contact's groups.
     private var scopedContacts: [Contact] {
-        guard case .group(let id) = sidebarSelection,
-              let group = groups.first(where: { $0.persistentModelID == id })
-        else {
-            return contacts
-        }
-        return group.contacts
+        selectedGroup?.contacts ?? contacts
     }
 
     private var sections: [ContactSection] {
@@ -83,7 +86,7 @@ struct ContentView: View {
             isImportingVCard = true
         }
         .onReceive(NotificationCenter.default.publisher(for: .exportVCardRequested)) { _ in
-            exportDocument = VCardDocument(text: VCard.makeDocument(from: ContactQuery.sorted(contacts)))
+            exportDocument = VCardDocument(text: store.exportVCards(contacts))
             isExportingVCard = true
         }
         .fileImporter(isPresented: $isImportingVCard, allowedContentTypes: [.vCard]) { result in
@@ -113,30 +116,21 @@ struct ContentView: View {
     // MARK: - Contact actions
 
     private func addContact() {
-        let contact = Contact()
-        // New contacts join the currently selected group, if any.
-        if case .group(let id) = sidebarSelection,
-           let group = groups.first(where: { $0.persistentModelID == id }) {
-            contact.groups = [group]
-        }
-        context.insert(contact)
         do {
-            try context.save()
+            // New contacts join the currently selected group, if any.
+            let contact = try store.createContact(in: selectedGroup)
             withAnimation(.snappy) { selectedContact = contact }
         } catch {
-            context.delete(contact)
             errorMessage = error.localizedDescription
         }
     }
 
     private func deleteContact(_ contact: Contact) {
         let wasSelected = selectedContact?.persistentModelID == contact.persistentModelID
-        context.delete(contact)
         do {
-            try context.save()
+            try store.delete(contact)
             if wasSelected { selectedContact = nil }
         } catch {
-            context.rollback()
             errorMessage = error.localizedDescription
         }
     }
@@ -144,35 +138,28 @@ struct ContentView: View {
     // MARK: - Group actions
 
     private func addGroup() {
-        let group = ContactGroup(name: "New Group")
-        context.insert(group)
         do {
-            try context.save()
+            let group = try store.createGroup()
             withAnimation(.snappy) { sidebarSelection = .group(group.persistentModelID) }
         } catch {
-            context.delete(group)
             errorMessage = error.localizedDescription
         }
     }
 
     private func renameGroup(_ group: ContactGroup, to name: String) {
-        let trimmed = name.trimmingCharacters(in: .whitespaces)
-        guard !trimmed.isEmpty else { return }
-        group.name = trimmed
-        do { try context.save() } catch {
-            context.rollback()
+        do {
+            try store.rename(group, to: name)
+        } catch {
             errorMessage = error.localizedDescription
         }
     }
 
     private func deleteGroup(_ group: ContactGroup) {
         let wasSelected = sidebarSelection == .group(group.persistentModelID)
-        context.delete(group)
         do {
-            try context.save()
+            try store.delete(group)
             if wasSelected { sidebarSelection = .allContacts }
         } catch {
-            context.rollback()
             errorMessage = error.localizedDescription
         }
     }
@@ -202,38 +189,13 @@ struct ContentView: View {
                     errorMessage = "No contacts were found in that file."
                     return
                 }
-
-                for card in parsed {
-                    context.insert(makeContact(from: card))
-                }
                 do {
-                    try context.save()
+                    try store.importContacts(parsed)
                 } catch {
-                    // Drop the just-inserted, unsaved contacts.
-                    context.rollback()
                     errorMessage = error.localizedDescription
                 }
             }
         }
-    }
-
-    private func makeContact(from parsed: ParsedContact) -> Contact {
-        let contact = Contact(
-            firstName: parsed.firstName, lastName: parsed.lastName,
-            company: parsed.company, jobTitle: parsed.jobTitle,
-            street: parsed.street, city: parsed.city, state: parsed.state,
-            postalCode: parsed.postalCode, country: parsed.country,
-            birthday: parsed.birthday, notes: parsed.notes
-        )
-        var fields: [ContactField] = []
-        for (index, email) in parsed.emails.enumerated() {
-            fields.append(ContactField(kind: .email, label: email.label, value: email.value, sortIndex: index))
-        }
-        for (index, phone) in parsed.phones.enumerated() {
-            fields.append(ContactField(kind: .phone, label: phone.label, value: phone.value, sortIndex: index))
-        }
-        contact.fields = fields
-        return contact
     }
 }
 

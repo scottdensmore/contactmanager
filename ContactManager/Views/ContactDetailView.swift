@@ -17,6 +17,8 @@ struct ContactDetailView: View {
     @State private var isImportingPhoto = false
     @State private var errorMessage: String?
 
+    private var store: ContactStore { ContactStore(context) }
+
     var body: some View {
         Form {
             header
@@ -177,35 +179,36 @@ struct ContactDetailView: View {
                 errorMessage = "That file couldn't be read as an image."
                 return
             }
-            contact.photoData = avatar
-            do { try context.save() } catch { errorMessage = error.localizedDescription }
+            do {
+                try store.setPhotoData(avatar, on: contact)
+            } catch {
+                errorMessage = error.localizedDescription
+            }
         }
     }
 
     private func removePhoto() {
-        contact.photoData = nil
-        try? context.save()
+        do {
+            try store.setPhotoData(nil, on: contact)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
     }
 
     private func addField(kind: FieldKind) {
-        // Use max+1 (not count) so indices stay strictly increasing even after
-        // rows are deleted, keeping insertion order stable.
-        let nextIndex = (contact.fields(of: kind).map(\.sortIndex).max() ?? -1) + 1
-        let field = ContactField(
-            kind: kind,
-            label: kind.defaultLabel,
-            sortIndex: nextIndex
-        )
-        field.contact = contact
-        context.insert(field)
-        try? context.save()
+        do {
+            try store.addField(kind, to: contact)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
     }
 
     private func delete(_ offsets: IndexSet, from fields: [ContactField]) {
-        for index in offsets {
-            context.delete(fields[index])
+        do {
+            try store.delete(offsets.map { fields[$0] })
+        } catch {
+            errorMessage = error.localizedDescription
         }
-        try? context.save()
     }
 
     // MARK: - Group membership
@@ -214,15 +217,9 @@ struct ContactDetailView: View {
         Binding(
             get: { contact.groups.contains { $0.persistentModelID == group.persistentModelID } },
             set: { isMember in
-                if isMember {
-                    if !contact.groups.contains(where: { $0.persistentModelID == group.persistentModelID }) {
-                        contact.groups.append(group)
-                    }
-                } else {
-                    contact.groups.removeAll { $0.persistentModelID == group.persistentModelID }
-                }
-                do { try context.save() } catch {
-                    context.rollback()
+                do {
+                    try store.setMembership(of: contact, in: group, isMember: isMember)
+                } catch {
                     errorMessage = error.localizedDescription
                 }
             }
