@@ -70,6 +70,8 @@ pattern), then build to confirm it compiles.
   The `.glassEffect()` modifier / `GlassEffectContainer` are not in this SDK's SwiftUI
   interface; use `.buttonStyle(.glass)` / `.buttonStyle(.glassProminent)` for explicit glass.
 - `SWIFT_VERSION` is 5.0 (language mode 5). Full Swift 6 strict-concurrency is a future migration.
+- Build settings are per-configuration: Debug uses `SWIFT_OPTIMIZATION_LEVEL = -Onone`
+  (required for SwiftUI `#Preview`), Release uses `-O` + `SWIFT_COMPILATION_MODE = wholemodule`.
 
 ## Workflow
 
