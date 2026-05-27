@@ -21,11 +21,14 @@
 		6DDC44CAA558E1DB276460CF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833F1AF82CACF7B9E89BADCA /* ContentView.swift */; };
 		7755029B0E36200BB139ECFA /* VCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7D5B554122CF852B0D825C /* VCardTests.swift */; };
 		7F3D3F509379FD171AEC3606 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEAB729518FA2A6600E3570B /* Images.xcassets */; };
+		81F488BB8E6D53268C607C68 /* DuplicatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C373BD237429970D6A7C86 /* DuplicatesView.swift */; };
+		827CF451F0B38B89C4469595 /* DuplicateFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E788AA97AF3C5715FA19FE5B /* DuplicateFinder.swift */; };
 		9506DFC07D9490AEDFB096EC /* ImageProcessingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5588D3AA3B4B31F1094D954F /* ImageProcessingTests.swift */; };
 		97E98BCB6784672DCB8C1625 /* VCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D515CA167FBF4C47299 /* VCard.swift */; };
 		A94AB327927F2F1FBBD81119 /* ContactGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFE362455F20C848F729EEE /* ContactGroup.swift */; };
 		C2A11D686722C70868435ACE /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6303A7F66E428BF3662142C0 /* SidebarView.swift */; };
 		E5EB465B5CE3964197D29ADF /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F82C8A388E97CC4F1106176 /* SampleData.swift */; };
+		FA63688E94483238D7C29FE9 /* DuplicateFinderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3628F70C39D4CE2FAA596291 /* DuplicateFinderTests.swift */; };
 		FA702A2E92FAC86D4587641B /* ContactManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA2A3FA3C7375D63CFC55 /* ContactManagerApp.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +49,8 @@
 		0F82C8A388E97CC4F1106176 /* SampleData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
 		2A7B150B6DB35B8EF10D2135 /* AvatarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		2D13D7A4D4AF6172FA6E89AB /* VCardDocument.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VCardDocument.swift; sourceTree = "<group>"; };
+		3628F70C39D4CE2FAA596291 /* DuplicateFinderTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DuplicateFinderTests.swift; sourceTree = "<group>"; };
+		54C373BD237429970D6A7C86 /* DuplicatesView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DuplicatesView.swift; sourceTree = "<group>"; };
 		5588D3AA3B4B31F1094D954F /* ImageProcessingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ImageProcessingTests.swift; sourceTree = "<group>"; };
 		617D7B082A403094284FBD38 /* ContactStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactStore.swift; sourceTree = "<group>"; };
 		6303A7F66E428BF3662142C0 /* SidebarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
@@ -59,6 +64,7 @@
 		DED8178913A452A900EC3234 /* ContactManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DED817AA13A452AA00EC3234 /* ContactManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContactManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEFCA6D1259AAB9C00DB0749 /* SharedSettings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = SharedSettings.xcconfig; sourceTree = "<group>"; };
+		E788AA97AF3C5715FA19FE5B /* DuplicateFinder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DuplicateFinder.swift; sourceTree = "<group>"; };
 		EBDDA2A3FA3C7375D63CFC55 /* ContactManagerApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactManagerApp.swift; sourceTree = "<group>"; };
 		F51E6728EF90B1D2BF8EA5AE /* Contact.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		F76507F3A1E2222FB64D7F31 /* ImageProcessing.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ImageProcessing.swift; sourceTree = "<group>"; };
@@ -100,6 +106,7 @@
 				B25751DDEC1515E341AF67F5 /* ContactField.swift */,
 				FAFE362455F20C848F729EEE /* ContactGroup.swift */,
 				617D7B082A403094284FBD38 /* ContactStore.swift */,
+				E788AA97AF3C5715FA19FE5B /* DuplicateFinder.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -122,6 +129,7 @@
 				08E2EBA5EFDEE6888B84E10B /* ContactListView.swift */,
 				2A7B150B6DB35B8EF10D2135 /* AvatarView.swift */,
 				73D22E8B17D14280F44AB0B2 /* ContactDetailView.swift */,
+				54C373BD237429970D6A7C86 /* DuplicatesView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -164,6 +172,7 @@
 				5588D3AA3B4B31F1094D954F /* ImageProcessingTests.swift */,
 				7E7D5B554122CF852B0D825C /* VCardTests.swift */,
 				03763AB80D45F026EC585490 /* ContactStoreTests.swift */,
+				3628F70C39D4CE2FAA596291 /* DuplicateFinderTests.swift */,
 			);
 			path = ContactManagerTests;
 			sourceTree = "<group>";
@@ -281,6 +290,8 @@
 				97E98BCB6784672DCB8C1625 /* VCard.swift in Sources */,
 				61F22EEDEE6075BD602203D5 /* VCardDocument.swift in Sources */,
 				134F890B4875E8BF294A92B2 /* ContactStore.swift in Sources */,
+				827CF451F0B38B89C4469595 /* DuplicateFinder.swift in Sources */,
+				81F488BB8E6D53268C607C68 /* DuplicatesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,6 +303,7 @@
 				9506DFC07D9490AEDFB096EC /* ImageProcessingTests.swift in Sources */,
 				7755029B0E36200BB139ECFA /* VCardTests.swift in Sources */,
 				0ABBB9962C4AC14A077728FF /* ContactStoreTests.swift in Sources */,
+				FA63688E94483238D7C29FE9 /* DuplicateFinderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

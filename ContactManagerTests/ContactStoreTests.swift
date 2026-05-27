@@ -198,6 +198,74 @@ struct ContactStoreTests {
         #expect(restored.primaryPhone == "+1 (555) 0100")
     }
 
+    // MARK: - Journey: merge duplicates
+
+    @Test func mergeUnionsFieldsAndKeepsEarliestAsPrimary() throws {
+        let older = try store.createContact()
+        older.firstName = "Ada"
+        try store.addField(.email, value: "ada@work.com", to: older)
+
+        let newer = try store.createContact()
+        newer.lastName = "Lovelace"
+        newer.company = "Analytical"
+        try store.addField(.email, value: "ada@work.com", to: newer) // duplicate email
+        try store.addField(.phone, value: "+1 (555) 0100", to: newer)
+        try context.save()
+
+        // Order in the argument shouldn't matter — earliest created wins.
+        let merged = try store.merge([newer, older])
+        #expect(merged.persistentModelID == older.persistentModelID)
+        #expect(try count(Contact.self) == 1)
+
+        #expect(merged.emails.map(\.value) == ["ada@work.com"]) // de-duplicated
+        #expect(merged.phones.map(\.value) == ["+1 (555) 0100"])
+        #expect(try count(ContactField.self) == 2)
+
+        // Empty fields filled from the other contact.
+        #expect(merged.firstName == "Ada")
+        #expect(merged.lastName == "Lovelace")
+        #expect(merged.company == "Analytical")
+    }
+
+    @Test func mergeUnionsGroupsAndAdoptsMissingPhoto() throws {
+        let work = try store.createGroup(named: "Work")
+        let friends = try store.createGroup(named: "Friends")
+
+        let primary = try store.createContact(in: work)
+        primary.firstName = "Ada"
+        let other = try store.createContact(in: friends)
+        other.firstName = "Ada"
+        try store.setPhotoData(Data([0x01, 0x02, 0x03]), on: other)
+        try context.save()
+
+        let merged = try store.merge([primary, other])
+        #expect(Set(merged.groups.map(\.name)) == ["Work", "Friends"])
+        #expect(merged.photoData != nil) // adopted from the other contact
+        #expect(try count(Contact.self) == 1)
+        #expect(try count(ContactGroup.self) == 2) // groups themselves survive
+    }
+
+    @Test func mergeDropsBlankFields() throws {
+        let withBlank = try store.createContact()
+        withBlank.firstName = "Ada"
+        try store.addField(.email, to: withBlank) // blank value
+
+        let withEmail = try store.createContact()
+        withEmail.firstName = "Ada"
+        try store.addField(.email, value: "ada@x.com", to: withEmail)
+        try context.save()
+
+        let merged = try store.merge([withBlank, withEmail])
+        #expect(merged.emails.map(\.value) == ["ada@x.com"])
+    }
+
+    @Test func mergingASingleContactIsANoOp() throws {
+        let contact = try store.createContact()
+        let result = try store.merge([contact])
+        #expect(result.persistentModelID == contact.persistentModelID)
+        #expect(try count(Contact.self) == 1)
+    }
+
     // MARK: - Journey: search across the store
 
     @Test func searchSpansNameCompanyEmailAndNotes() throws {

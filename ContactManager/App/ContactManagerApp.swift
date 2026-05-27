@@ -38,6 +38,12 @@ struct ContactManagerApp: App {
                 }
                 .keyboardShortcut("n", modifiers: .command)
             }
+            CommandGroup(after: .pasteboard) {
+                Button("Find Duplicates…") {
+                    NotificationCenter.default.post(name: .findDuplicatesRequested, object: nil)
+                }
+                .keyboardShortcut("d", modifiers: [.command, .shift])
+            }
             CommandGroup(replacing: .importExport) {
                 Button("Import vCard…") {
                     NotificationCenter.default.post(name: .importVCardRequested, object: nil)
@@ -123,4 +129,5 @@ extension Notification.Name {
     static let newContactRequested = Notification.Name("ContactManager.newContactRequested")
     static let importVCardRequested = Notification.Name("ContactManager.importVCardRequested")
     static let exportVCardRequested = Notification.Name("ContactManager.exportVCardRequested")
+    static let findDuplicatesRequested = Notification.Name("ContactManager.findDuplicatesRequested")
 }

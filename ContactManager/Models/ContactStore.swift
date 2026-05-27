@@ -99,6 +99,84 @@ struct ContactStore {
         try saveOrRollback()
     }
 
+    // MARK: - Merge duplicates
+
+    /// Merges several contacts into one canonical contact (the earliest
+    /// created), then deletes the rest. Empty fields on the canonical contact
+    /// are filled from the others, emails/phones are unioned and de-duplicated,
+    /// group memberships are unioned, and a missing photo is adopted.
+    @discardableResult
+    func merge(_ contacts: [Contact]) throws -> Contact {
+        let ordered = contacts.sorted { $0.createdAt < $1.createdAt }
+        guard let primary = ordered.first else {
+            throw ContactStoreError.nothingToMerge
+        }
+        let others = ordered.dropFirst()
+        guard !others.isEmpty else { return primary }
+
+        for other in others {
+            fillEmptyFields(of: primary, from: other)
+            adoptGroups(into: primary, from: other)
+        }
+        mergeFields(into: primary, from: Array(others))
+
+        others.forEach(context.delete)
+        try saveOrRollback()
+        return primary
+    }
+
+    private func fillEmptyFields(of primary: Contact, from other: Contact) {
+        if primary.firstName.isEmpty { primary.firstName = other.firstName }
+        if primary.lastName.isEmpty { primary.lastName = other.lastName }
+        if primary.company.isEmpty { primary.company = other.company }
+        if primary.jobTitle.isEmpty { primary.jobTitle = other.jobTitle }
+        if primary.street.isEmpty { primary.street = other.street }
+        if primary.city.isEmpty { primary.city = other.city }
+        if primary.state.isEmpty { primary.state = other.state }
+        if primary.postalCode.isEmpty { primary.postalCode = other.postalCode }
+        if primary.country.isEmpty { primary.country = other.country }
+        if primary.notes.isEmpty { primary.notes = other.notes }
+        if primary.birthday == nil { primary.birthday = other.birthday }
+        if primary.photoData == nil { primary.photoData = other.photoData }
+    }
+
+    private func adoptGroups(into primary: Contact, from other: Contact) {
+        let existing = Set(primary.groups.map(\.persistentModelID))
+        for group in other.groups where !existing.contains(group.persistentModelID) {
+            primary.groups.append(group)
+        }
+    }
+
+    /// Reassigns every contact's email/phone fields to `primary`, dropping
+    /// blanks and value-duplicates and reindexing for a stable order.
+    private func mergeFields(into primary: Contact, from others: [Contact]) {
+        for kind in FieldKind.allCases {
+            let candidates = primary.fields(of: kind) + others.flatMap { $0.fields(of: kind) }
+            var seenValues: Set<String> = []
+            var keptIndex = 0
+            for field in candidates {
+                let normalized = normalizedValue(of: field)
+                if normalized.isEmpty || seenValues.contains(normalized) {
+                    context.delete(field)
+                    continue
+                }
+                seenValues.insert(normalized)
+                field.contact = primary
+                field.sortIndex = keptIndex
+                keptIndex += 1
+            }
+        }
+    }
+
+    private func normalizedValue(of field: ContactField) -> String {
+        switch field.kind {
+        case .email:
+            field.value.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        case .phone:
+            String(field.value.filter(\.isNumber))
+        }
+    }
+
     // MARK: - vCard import / export
 
     /// Parses a vCard document and inserts the contacts it describes.
@@ -149,6 +227,16 @@ struct ContactStore {
         } catch {
             context.rollback()
             throw error
+        }
+    }
+}
+
+enum ContactStoreError: LocalizedError {
+    case nothingToMerge
+
+    var errorDescription: String? {
+        switch self {
+        case .nothingToMerge: "There were no contacts to merge."
         }
     }
 }
