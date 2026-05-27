@@ -34,11 +34,11 @@ final class Contact {
     /// large blobs outside the SQLite file when appropriate.
     @Attribute(.externalStorage) var photoData: Data?
 
-    // Labeled emails and phone numbers.
+    /// Labeled emails and phone numbers.
     @Relationship(deleteRule: .cascade, inverse: \ContactField.contact)
     var fields: [ContactField]
 
-    // Groups this contact belongs to (many-to-many; inverse on ContactGroup).
+    /// Groups this contact belongs to (many-to-many; inverse on ContactGroup).
     var groups: [ContactGroup] = []
 
     init(
@@ -67,7 +67,7 @@ final class Contact {
         self.birthday = birthday
         self.notes = notes
         self.createdAt = createdAt
-        self.fields = []
+        fields = []
     }
 }
 

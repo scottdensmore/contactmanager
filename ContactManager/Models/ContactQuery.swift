@@ -17,8 +17,8 @@ enum ContactSortOrder: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .lastName: return "Last Name"
-        case .firstName: return "First Name"
+        case .lastName: "Last Name"
+        case .firstName: "First Name"
         }
     }
 }
@@ -34,12 +34,12 @@ enum ContactQuery {
     /// Sorts contacts by the given order's primary key, then its secondary key.
     static func sorted(_ contacts: [Contact], by order: ContactSortOrder = .lastName) -> [Contact] {
         contacts.sorted { lhs, rhs in
-            let l = lhs.sortKeys(for: order)
-            let r = rhs.sortKeys(for: order)
-            if l.primary != r.primary {
-                return l.primary < r.primary
+            let lhsKeys = lhs.sortKeys(for: order)
+            let rhsKeys = rhs.sortKeys(for: order)
+            if lhsKeys.primary != rhsKeys.primary {
+                return lhsKeys.primary < rhsKeys.primary
             }
-            return l.secondary < r.secondary
+            return lhsKeys.secondary < rhsKeys.secondary
         }
     }
 
@@ -70,7 +70,7 @@ enum ContactQuery {
         let grouped = Dictionary(grouping: ordered) { sectionTitle(for: $0, order: order) }
 
         let titles = grouped.keys.sorted { lhs, rhs in
-            if lhs == "#" { return false }   // "#" always sorts last
+            if lhs == "#" { return false } // "#" always sorts last
             if rhs == "#" { return true }
             return lhs < rhs
         }

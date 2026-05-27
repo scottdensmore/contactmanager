@@ -6,15 +6,15 @@
 //  initials over a stable per-contact tinted gradient.
 //
 
-import SwiftUI
 import AppKit
+import SwiftUI
 
 struct AvatarView: View {
     let contact: Contact
     var size: CGFloat = 64
 
-    // Decoded once per photo change rather than on every body evaluation
-    // (important for list rows that re-render frequently).
+    /// Decoded once per photo change rather than on every body evaluation
+    /// (important for list rows that re-render frequently).
     @State private var photo: NSImage?
 
     var body: some View {

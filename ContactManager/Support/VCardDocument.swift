@@ -19,11 +19,15 @@ struct VCardDocument: FileDocument {
     }
 
     init(configuration: ReadConfiguration) throws {
-        let data = configuration.file.regularFileContents ?? Data()
-        text = String(decoding: data, as: UTF8.self)
+        guard let data = configuration.file.regularFileContents,
+              let decoded = String(data: data, encoding: .utf8)
+        else {
+            throw CocoaError(.fileReadCorruptFile)
+        }
+        text = decoded
     }
 
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+    func fileWrapper(configuration _: WriteConfiguration) throws -> FileWrapper {
         FileWrapper(regularFileWithContents: Data(text.utf8))
     }
 }

@@ -7,8 +7,8 @@
 //  import/export.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var context
@@ -33,7 +33,8 @@ struct ContentView: View {
     /// every contact's groups.
     private var scopedContacts: [Contact] {
         guard case .group(let id) = sidebarSelection,
-              let group = groups.first(where: { $0.persistentModelID == id }) else {
+              let group = groups.first(where: { $0.persistentModelID == id })
+        else {
             return contacts
         }
         return group.contacts
@@ -165,12 +166,7 @@ struct ContentView: View {
     }
 
     private func deleteGroup(_ group: ContactGroup) {
-        let wasSelected: Bool
-        if case .group(let id) = sidebarSelection, id == group.persistentModelID {
-            wasSelected = true
-        } else {
-            wasSelected = false
-        }
+        let wasSelected = sidebarSelection == .group(group.persistentModelID)
         context.delete(group)
         do {
             try context.save()

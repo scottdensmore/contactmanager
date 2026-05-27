@@ -6,14 +6,13 @@
 //  original in-memory Core Data integration tests.
 //
 
-import Testing
-import SwiftData
 @testable import ContactManager
+import SwiftData
+import Testing
 
 @MainActor
 @Suite(.serialized)
 struct ContactModelTests {
-
     // A fresh in-memory container per test instance. Holding it as a stored
     // property keeps it alive for the lifetime of the test.
     let container: ModelContainer
@@ -156,8 +155,8 @@ struct ContactModelTests {
     }
 
     @Test func companyOnlyContactGroupsUnderCompanyInitial() {
-        let acme = Contact(company: "Acme")          // letter → "A"
-        let numeric = Contact(company: "1Password")  // non-letter → "#"
+        let acme = Contact(company: "Acme") // letter → "A"
+        let numeric = Contact(company: "1Password") // non-letter → "#"
         let sections = ContactQuery.sections([acme, numeric], by: .lastName)
         #expect(sections.map(\.title) == ["A", "#"])
     }
@@ -184,10 +183,10 @@ struct ContactModelTests {
         try context.save()
 
         let all = try context.fetch(FetchDescriptor<Contact>())
-        #expect(ContactQuery.filtered(all, matching: "love").count == 1)        // name
-        #expect(ContactQuery.filtered(all, matching: "analytical").count == 1)  // company + email
+        #expect(ContactQuery.filtered(all, matching: "love").count == 1) // name
+        #expect(ContactQuery.filtered(all, matching: "analytical").count == 1) // company + email
         #expect(ContactQuery.filtered(all, matching: "enigma").first?.firstName == "Alan") // notes
-        #expect(ContactQuery.filtered(all, matching: "7555").first?.firstName == "Alan")   // phone field
+        #expect(ContactQuery.filtered(all, matching: "7555").first?.firstName == "Alan") // phone field
         #expect(ContactQuery.filtered(all, matching: "").count == 2)
         #expect(ContactQuery.filtered(all, matching: "nobody").isEmpty)
     }

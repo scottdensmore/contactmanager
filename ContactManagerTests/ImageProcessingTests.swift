@@ -5,14 +5,13 @@
 //  Verifies avatar generation downscales and re-encodes images.
 //
 
-import Testing
+@testable import ContactManager
 import CoreGraphics
 import ImageIO
+import Testing
 import UniformTypeIdentifiers
-@testable import ContactManager
 
 struct ImageProcessingTests {
-
     /// Encodes a solid-color image of the given size as PNG data.
     private func makePNG(width: Int, height: Int) throws -> Data {
         let colorSpace = try #require(CGColorSpace(name: CGColorSpace.sRGB))
