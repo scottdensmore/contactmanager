@@ -6,8 +6,8 @@
 //  AppKit launch path.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @main
 struct ContactManagerApp: App {

@@ -1,0 +1,16 @@
+# SwiftFormat configuration — see https://github.com/nicklockwood/SwiftFormat
+# Run: swiftformat .            (format in place)
+#      swiftformat --lint .     (check only, used in CI / `make format-check`)
+
+--swiftversion 5.10
+
+# Style choices
+--patternlet inline          # keep `case .group(let id)` rather than `case let .group(id)`
+# Keep opening braces on the same line as multiline conditions, matching
+# SwiftLint's opening_brace rule (and keeping formatting idempotent).
+--disable wrapPropertyBodies,wrapMultilineStatementBraces
+--commas always              # trailing commas in multiline collections (diff-friendly)
+--self remove                # drop redundant `self.`
+
+# Don't touch generated/build output
+--exclude .build,DerivedData,**/*.generated.swift

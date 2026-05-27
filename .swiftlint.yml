@@ -1,0 +1,45 @@
+# SwiftLint configuration — see https://github.com/realm/SwiftLint
+# Run: swiftlint               (lint)
+#      swiftlint --fix         (autocorrect what it can)
+
+included:
+  - ContactManager
+  - ContactManagerTests
+
+excluded:
+  - .build
+  - DerivedData
+
+# SwiftFormat owns comma style (it adds trailing commas in multiline literals),
+# so SwiftLint shouldn't also police them.
+disabled_rules:
+  - trailing_comma
+
+opt_in_rules:
+  - force_unwrapping
+  - empty_count
+  - empty_string
+  - first_where
+  - last_where
+  - contains_over_filter_count
+  - contains_over_first_not_nil
+  - sorted_first_last
+  - redundant_nil_coalescing
+  - closure_spacing
+  - explicit_init
+  - toggle_bool
+  - joined_default_parameter
+  - modifier_order
+  - prefer_self_type_over_type_of_self
+  - fatal_error_message
+
+line_length:
+  warning: 120
+  error: 200
+  ignores_comments: true
+  ignores_urls: true
+
+# A property/parser dispatch `switch` is naturally branchy but readable.
+cyclomatic_complexity:
+  warning: 15
+  error: 25

@@ -5,13 +5,12 @@
 //  Verifies vCard writing and parsing, including a full round-trip.
 //
 
-import Testing
-import Foundation
 @testable import ContactManager
+import Foundation
+import Testing
 
 @MainActor
 struct VCardTests {
-
     private func sampleContact() -> Contact {
         let contact = Contact(
             firstName: "Ada", lastName: "Lovelace",
@@ -35,8 +34,8 @@ struct VCardTests {
         #expect(card.contains("FN:Ada Lovelace"))
         #expect(card.contains("EMAIL;TYPE=WORK:ada@analytical.engine"))
         #expect(card.contains("TEL;TYPE=CELL:+1 (555) 0100"))
-        // Commas/semicolons in NOTE are escaped.
-        #expect(card.contains("NOTE:First programmer; loves semicolons, commas.".replacingOccurrences(of: ";", with: "\\;").replacingOccurrences(of: ",", with: "\\,")))
+        // Commas and semicolons in NOTE are escaped with a backslash.
+        #expect(card.contains(#"NOTE:First programmer\; loves semicolons\, commas."#))
     }
 
     @Test func roundTripsCoreFields() {

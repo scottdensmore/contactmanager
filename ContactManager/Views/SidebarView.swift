@@ -6,8 +6,8 @@
 //  groups, with create / rename / delete.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 enum SidebarItem: Hashable {
     case allContacts

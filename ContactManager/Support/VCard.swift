@@ -136,8 +136,9 @@ enum VCard {
             } else if upper == "END:VCARD" {
                 if let card = current { results.append(card) }
                 current = nil
-            } else if current != nil {
-                apply(line: line, to: &current!)
+            } else if var card = current {
+                apply(line: line, to: &card)
+                current = card
             }
         }
         return results
@@ -145,7 +146,7 @@ enum VCard {
 
     private static func apply(line: String, to card: inout ParsedContact) {
         guard let colon = line.firstIndex(of: ":") else { return }
-        let descriptor = String(line[line.startIndex..<colon])
+        let descriptor = String(line[line.startIndex ..< colon])
         let value = String(line[line.index(after: colon)...])
 
         let segments = descriptor.uppercased().split(separator: ";").map(String.init)
@@ -155,11 +156,11 @@ enum VCard {
         switch property {
         case "N":
             let comps = splitStructured(value)
-            card.lastName = comps.count > 0 ? comps[0] : ""
+            card.lastName = comps.first ?? ""
             card.firstName = comps.count > 1 ? comps[1] : ""
         case "FN":
             // Only use FN for names if N didn't provide them.
-            if card.firstName.isEmpty && card.lastName.isEmpty {
+            if card.firstName.isEmpty, card.lastName.isEmpty {
                 let unescaped = unescape(value)
                 let pieces = unescaped.split(separator: " ", maxSplits: 1).map(String.init)
                 card.firstName = pieces.first ?? unescaped
@@ -194,11 +195,11 @@ enum VCard {
 
     private static func typeName(_ label: FieldLabel) -> String {
         switch label {
-        case .home: return "HOME"
-        case .work: return "WORK"
-        case .mobile: return "CELL"
-        case .main: return "MAIN"
-        case .other: return "OTHER"
+        case .home: "HOME"
+        case .work: "WORK"
+        case .mobile: "CELL"
+        case .main: "MAIN"
+        case .other: "OTHER"
         }
     }
 

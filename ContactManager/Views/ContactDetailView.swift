@@ -6,8 +6,8 @@
 //  Edits autosave through the model context.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 import UniformTypeIdentifiers
 
 struct ContactDetailView: View {
@@ -62,7 +62,7 @@ struct ContactDetailView: View {
 
             Section("Notes") {
                 TextField("Notes", text: $contact.notes, axis: .vertical)
-                    .lineLimit(3...10)
+                    .lineLimit(3 ... 10)
             }
         }
         .formStyle(.grouped)
@@ -130,7 +130,6 @@ struct ContactDetailView: View {
 
     // MARK: - Repeatable field sections
 
-    @ViewBuilder
     private func fieldSection(_ title: String, kind: FieldKind, fields: [ContactField]) -> some View {
         Section(title) {
             ForEach(fields) { field in

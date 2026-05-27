@@ -297,6 +297,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DED817BB13A452AA00EC3234 /* Build configuration list for PBXNativeTarget "ContactManager" */;
 			buildPhases = (
+				31E30EDAEDB1AC28FD0090AA /* SwiftLint */,
 				DED8178513A452A900EC3234 /* Sources */,
 				DED8178613A452A900EC3234 /* Frameworks */,
 				DED8178713A452A900EC3234 /* Resources */,
@@ -373,6 +374,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		31E30EDAEDB1AC28FD0090AA /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Lint Swift sources during build (warnings only). See .swiftlint.yml\nif command -v swiftlint >/dev/null 2>&1; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed — run ./scripts/bootstrap.sh (brew bundle)\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DED8178513A452A900EC3234 /* Sources */ = {

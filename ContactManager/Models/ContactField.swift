@@ -52,8 +52,8 @@ extension FieldKind {
     /// Sensible default label when adding a new field of this kind.
     var defaultLabel: FieldLabel {
         switch self {
-        case .email: return .home
-        case .phone: return .mobile
+        case .email: .home
+        case .phone: .mobile
         }
     }
 }
