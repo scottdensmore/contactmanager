@@ -1,0 +1,1 @@
+I got a warning /Users/scottdensmore/Developer/scottdensmore/contactmanager/ContactManagerTests/VCardTests.swift:47:34 '#require(_:_:)' is redundant because 'parsed.first' never equals 'nil' (from macro 'require')

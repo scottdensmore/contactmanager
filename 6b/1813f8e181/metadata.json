@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "6b1813f8e181",
+  "strategy": "manual-commit",
+  "branch": "fix/vcard-test-require-warning",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManagerTests/VCardTests.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/6b/1813f8e181/0/metadata.json",
+      "transcript": "/6b/1813f8e181/0/full.jsonl",
+      "content_hash": "/6b/1813f8e181/0/content_hash.txt",
+      "prompt": "/6b/1813f8e181/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 141,
+    "cache_creation_tokens": 14391,
+    "cache_read_tokens": 3463452,
+    "output_tokens": 11444,
+    "api_call_count": 6
+  }
+}
