@@ -89,9 +89,11 @@ struct ContactStore {
 
     func setMembership(of contact: Contact, in group: ContactGroup, isMember: Bool) throws {
         let alreadyMember = contact.groups.contains { $0.persistentModelID == group.persistentModelID }
-        if isMember, !alreadyMember {
+        guard isMember != alreadyMember else { return } // no-op; avoid an unnecessary save
+
+        if isMember {
             contact.groups.append(group)
-        } else if !isMember {
+        } else {
             contact.groups.removeAll { $0.persistentModelID == group.persistentModelID }
         }
         try saveOrRollback()
