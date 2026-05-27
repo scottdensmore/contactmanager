@@ -32,7 +32,9 @@ ContactManagerTests/     Swift Testing suites
 Run `make format` and `make lint` before committing; both must pass (or `make check`).
 Configs: `.swiftformat`, `.swiftlint.yml`. Linting is intentionally **not** an Xcode
 build phase: the project enables `ENABLE_USER_SCRIPT_SANDBOXING`, which blocks a
-whole-tree SwiftLint run script from reading sources. Lint from the command line / CI.
+whole-tree SwiftLint run script from reading sources. Instead, CI
+(`.github/workflows/ci.yml`) runs `swiftformat --lint` + `swiftlint --strict` on every
+PR, so enforcement happens with zero local build/commit friction.
 
 - 4-space indent; opening braces on the same line; trailing commas in multiline
   literals (SwiftFormat owns comma style — SwiftLint's `trailing_comma` is disabled

@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint & Format
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tooling
+        run: brew bundle
+
+      - name: Check formatting (SwiftFormat)
+        run: swiftformat --lint .
+
+      - name: Lint (SwiftLint)
+        run: swiftlint lint --strict
