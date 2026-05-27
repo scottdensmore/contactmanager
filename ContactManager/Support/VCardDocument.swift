@@ -19,9 +19,13 @@ struct VCardDocument: FileDocument {
     }
 
     init(configuration: ReadConfiguration) throws {
-        guard let data = configuration.file.regularFileContents,
-              let decoded = String(data: data, encoding: .utf8)
-        else {
+        // An empty/absent payload is an empty document; only genuinely
+        // undecodable bytes are treated as a corrupt file.
+        guard let data = configuration.file.regularFileContents else {
+            text = ""
+            return
+        }
+        guard let decoded = String(data: data, encoding: .utf8) else {
             throw CocoaError(.fileReadCorruptFile)
         }
         text = decoded
