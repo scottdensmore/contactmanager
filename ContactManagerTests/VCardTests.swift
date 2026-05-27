@@ -38,24 +38,24 @@ struct VCardTests {
         #expect(card.contains(#"NOTE:First programmer\; loves semicolons\, commas."#))
     }
 
-    @Test func roundTripsCoreFields() {
+    @Test func roundTripsCoreFields() throws {
         let original = sampleContact()
         let document = VCard.makeDocument(from: [original])
         let parsed = VCard.parse(document)
 
         #expect(parsed.count == 1)
-        let card = try? #require(parsed.first)
-        #expect(card?.firstName == "Ada")
-        #expect(card?.lastName == "Lovelace")
-        #expect(card?.company == "Analytical Engine Co.")
-        #expect(card?.jobTitle == "Mathematician")
-        #expect(card?.notes == "First programmer; loves semicolons, commas.")
-        #expect(card?.city == "London")
-        #expect(card?.country == "United Kingdom")
-        #expect(card?.emails.first?.value == "ada@analytical.engine")
-        #expect(card?.emails.first?.label == .work)
-        #expect(card?.phones.first?.value == "+1 (555) 0100")
-        #expect(card?.phones.first?.label == .mobile)
+        let card = try #require(parsed.first)
+        #expect(card.firstName == "Ada")
+        #expect(card.lastName == "Lovelace")
+        #expect(card.company == "Analytical Engine Co.")
+        #expect(card.jobTitle == "Mathematician")
+        #expect(card.notes == "First programmer; loves semicolons, commas.")
+        #expect(card.city == "London")
+        #expect(card.country == "United Kingdom")
+        #expect(card.emails.first?.value == "ada@analytical.engine")
+        #expect(card.emails.first?.label == .work)
+        #expect(card.phones.first?.value == "+1 (555) 0100")
+        #expect(card.phones.first?.label == .mobile)
     }
 
     @Test func parsesMultipleCardsAndFoldedLines() {
