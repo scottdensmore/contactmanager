@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "a12bcbd8ac1b",
+  "strategy": "manual-commit",
+  "branch": "chore/recommended-settings-and-swiftlint",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".github/workflows/ci.yml",
+    "CLAUDE.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/a1/2bcbd8ac1b/0/metadata.json",
+      "transcript": "/a1/2bcbd8ac1b/0/full.jsonl",
+      "content_hash": "/a1/2bcbd8ac1b/0/content_hash.txt",
+      "prompt": "/a1/2bcbd8ac1b/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 137,
+    "cache_creation_tokens": 8258,
+    "cache_read_tokens": 2237614,
+    "output_tokens": 8468,
+    "api_call_count": 4
+  }
+}
