@@ -1,0 +1,5 @@
+How can I give you visual access so you can screen shot etc?
+
+---
+
+Before moving onto new features: Lets do a quick code review and make sure we are following great swift idioms. Also we should add linters etc. You can then create a CLAUDE.md file to make sure things are kept in sync if needed. Also make sure files are in a good format. Humans should be able to read and review code not just agents

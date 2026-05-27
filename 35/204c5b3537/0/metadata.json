@@ -1,0 +1,66 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "35204c5b3537",
+  "session_id": "a22e27bd-7ce5-4bdb-b1b8-083a9eedbb19",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-27T02:30:15.177833Z",
+  "branch": "chore/lint-format-and-conventions",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/Models/ContactQuery.swift",
+    "ContactManager/Support/VCard.swift",
+    "ContactManager/Support/VCardDocument.swift",
+    "ContactManager/Views/ContentView.swift",
+    "ContactManagerTests/VCardTests.swift",
+    ".swiftformat",
+    ".swiftlint.yml",
+    "Brewfile",
+    "Makefile",
+    "CLAUDE.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "8025c32bf56e",
+  "checkpoint_transcript_start": 1214,
+  "transcript_lines_at_start": 1214,
+  "token_usage": {
+    "input_tokens": 8619,
+    "cache_creation_tokens": 493029,
+    "cache_read_tokens": 17351923,
+    "output_tokens": 50535,
+    "api_call_count": 39
+  },
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-27T02:30:15.129438Z",
+    "agent_lines": 208,
+    "agent_removed": 35,
+    "human_added": 44,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 252,
+    "total_lines_changed": 358,
+    "agent_percentage": 67.87709497206704,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 269,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/agents/entire-search.md": 25,
+        ".claude/settings.json": 84,
+        ".claude/settings.local.json": 21,
+        ".codex/agents/entire-search.toml": 23,
+        ".codex/config.toml": 3,
+        ".codex/hooks.json": 52,
+        ".github/hooks/entire.json": 61
+      }
+    }
+  ]
+}
