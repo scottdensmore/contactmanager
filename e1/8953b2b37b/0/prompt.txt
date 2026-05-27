@@ -1,0 +1,1 @@
+Before adding new features: we should make sure we have plenty of tests and tests for critical user journys

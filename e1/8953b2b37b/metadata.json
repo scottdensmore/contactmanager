@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "e18953b2b37b",
+  "strategy": "manual-commit",
+  "branch": "test/contact-store-and-journeys",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "CLAUDE.md",
+    "ContactManager/Models/ContactStore.swift",
+    "ContactManager/Views/ContactDetailView.swift",
+    "ContactManager/Views/ContentView.swift",
+    "ContactManagerTests/ContactStoreTests.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e1/8953b2b37b/0/metadata.json",
+      "transcript": "/e1/8953b2b37b/0/full.jsonl",
+      "content_hash": "/e1/8953b2b37b/0/content_hash.txt",
+      "prompt": "/e1/8953b2b37b/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 4042,
+    "cache_creation_tokens": 47671,
+    "cache_read_tokens": 13829840,
+    "output_tokens": 37471,
+    "api_call_count": 22
+  }
+}
