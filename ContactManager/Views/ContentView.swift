@@ -74,6 +74,7 @@ struct ContentView: View {
                 ContactPlaceholderView()
             }
         }
+        .frame(minWidth: 840, minHeight: 480)
         .onReceive(NotificationCenter.default.publisher(for: .newContactRequested)) { _ in
             addContact()
         }
@@ -120,7 +121,7 @@ struct ContentView: View {
         context.insert(contact)
         do {
             try context.save()
-            selectedContact = contact
+            withAnimation(.snappy) { selectedContact = contact }
         } catch {
             context.delete(contact)
             errorMessage = error.localizedDescription
@@ -146,7 +147,7 @@ struct ContentView: View {
         context.insert(group)
         do {
             try context.save()
-            sidebarSelection = .group(group.persistentModelID)
+            withAnimation(.snappy) { sidebarSelection = .group(group.persistentModelID) }
         } catch {
             context.delete(group)
             errorMessage = error.localizedDescription

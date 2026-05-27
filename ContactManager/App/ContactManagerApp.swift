@@ -112,7 +112,7 @@ private struct StoreErrorView: View {
             Text(message)
         } actions: {
             Button("Reset Data", role: .destructive, action: onReset)
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.glassProminent)
         }
         .frame(minWidth: 360, minHeight: 240)
     }

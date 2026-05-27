@@ -2,7 +2,7 @@
 
 **ContactManager** is a native macOS contact manager built with **SwiftUI** and **SwiftData**, targeting the modern macOS Tahoe (macOS 26) look and feel. It is **100% self-contained** with zero third-party dependencies.
 
-The app was originally an Objective-C / AppKit / Core Data demo and is being rebuilt, in focused increments, into a polished native Tahoe application.
+The app was originally an Objective-C / AppKit / Core Data demo and was rebuilt, in focused increments, into a polished native Tahoe application.
 
 ---
 
@@ -47,6 +47,7 @@ ContactManager/
 - Contact photos (downscaled on import) with an initials avatar fallback.
 - User-defined groups (sidebar create/rename/delete) with per-contact membership.
 - vCard 3.0 import and export (File ▸ Import/Export vCard…).
+- Liquid Glass styling, glass-prominent actions, and smooth list/selection animations.
 - Sample contacts seeded on first launch.
 
 ### Roadmap
@@ -58,7 +59,7 @@ Shipped as small, single-purpose PRs:
 3. ✅ **Search & sections** — live search and alphabetical sectioning.
 4. ✅ **Contact photos** — photo import with initials fallback.
 5. ✅ **Groups & vCard** — user groups/tags and `.vcf` import/export.
-6. **Tahoe polish** — Liquid Glass refinements, animations, and richer empty states.
+6. ✅ **Tahoe polish** — Liquid Glass refinements, animations, and richer empty states.
 
 ---
 
