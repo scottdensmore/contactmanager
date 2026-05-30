@@ -43,7 +43,11 @@ PR, so enforcement happens with zero local build/commit friction.
   or `#require` in tests.
 - Route create/edit/delete, group, and vCard operations through `ContactStore`
   (each op saves and rolls back on failure), so views stay thin and the journeys are
-  tested in `ContactStoreTests` against an in-memory container.
+  tested in `ContactStoreTests` against an in-memory container. Every `ContactStore`
+  mutation also wraps its body in a named undo group via `mutate("…") { … }`, so
+  Edit ▸ Undo/Redo (⌘Z / ⇧⌘Z) shows the right action name and reverses what it can.
+  (SwiftData's automatic undo doesn't always recreate models after a `save`+`delete`;
+  the menu name is still set so future improvements are observable.)
 - Keep views thin: put pure, testable logic in `Models/` or `Support/` and unit-test it
   there rather than in views.
 - User-initiated actions surface persistence errors (alert + `context.rollback()`);

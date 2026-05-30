@@ -29,6 +29,7 @@
 		C0D417119625FF46FA986771 /* ContactInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B570567907E6F1CD444A936 /* ContactInspectorView.swift */; };
 		C2A11D686722C70868435ACE /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6303A7F66E428BF3662142C0 /* SidebarView.swift */; };
 		E5EB465B5CE3964197D29ADF /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F82C8A388E97CC4F1106176 /* SampleData.swift */; };
+		ECB7FDD8D0C3091EA0D42917 /* UndoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DCAF444714BC3726B212C4 /* UndoTests.swift */; };
 		FA63688E94483238D7C29FE9 /* DuplicateFinderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3628F70C39D4CE2FAA596291 /* DuplicateFinderTests.swift */; };
 		FA702A2E92FAC86D4587641B /* ContactManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDDA2A3FA3C7375D63CFC55 /* ContactManagerApp.swift */; };
 /* End PBXBuildFile section */
@@ -62,6 +63,7 @@
 		A7276D515CA167FBF4C47299 /* VCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VCard.swift; sourceTree = "<group>"; };
 		B25751DDEC1515E341AF67F5 /* ContactField.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactField.swift; sourceTree = "<group>"; };
 		B75D02267D3BC6C014143329 /* ContactModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactModelTests.swift; sourceTree = "<group>"; };
+		C7DCAF444714BC3726B212C4 /* UndoTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UndoTests.swift; sourceTree = "<group>"; };
 		DEAB729518FA2A6600E3570B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		DED8178913A452A900EC3234 /* ContactManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DED817AA13A452AA00EC3234 /* ContactManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContactManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,6 +178,7 @@
 				7E7D5B554122CF852B0D825C /* VCardTests.swift */,
 				03763AB80D45F026EC585490 /* ContactStoreTests.swift */,
 				3628F70C39D4CE2FAA596291 /* DuplicateFinderTests.swift */,
+				C7DCAF444714BC3726B212C4 /* UndoTests.swift */,
 			);
 			path = ContactManagerTests;
 			sourceTree = "<group>";
@@ -308,6 +311,7 @@
 				7755029B0E36200BB139ECFA /* VCardTests.swift in Sources */,
 				0ABBB9962C4AC14A077728FF /* ContactStoreTests.swift in Sources */,
 				FA63688E94483238D7C29FE9 /* DuplicateFinderTests.swift in Sources */,
+				ECB7FDD8D0C3091EA0D42917 /* UndoTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

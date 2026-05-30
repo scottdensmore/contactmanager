@@ -12,6 +12,7 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var context
+    @Environment(\.undoManager) private var undoManager
 
     @Query(sort: [SortDescriptor(\Contact.lastName), SortDescriptor(\Contact.firstName)])
     private var contacts: [Contact]
@@ -105,6 +106,14 @@ struct ContentView: View {
             }
         }
         .frame(minWidth: 840, minHeight: 480)
+        .onAppear {
+            // Route every ContactStore mutation through the window's undo
+            // manager so Edit ▸ Undo/Redo (⌘Z / ⇧⌘Z) work.
+            context.undoManager = undoManager
+        }
+        .onChange(of: undoManager) { _, new in
+            context.undoManager = new
+        }
         .onReceive(NotificationCenter.default.publisher(for: .newContactRequested)) { _ in
             addContact()
         }
