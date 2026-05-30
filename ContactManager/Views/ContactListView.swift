@@ -13,6 +13,7 @@ struct ContactListView: View {
     let totalCount: Int
     @Binding var searchText: String
     @Binding var sortOrder: ContactSortOrder
+    @Binding var isInspectorVisible: Bool
     @Binding var selection: Contact?
     var addContact: () -> Void
     var deleteContact: (Contact) -> Void
@@ -37,22 +38,10 @@ struct ContactListView: View {
             if let selection { deleteContact(selection) }
         }
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button(action: addContact) {
-                    Label("New Contact", systemImage: "plus")
-                }
-                .help("New Contact")
-            }
-            ToolbarItem(placement: .destructiveAction) {
-                Button(role: .destructive) {
-                    if let selection { deleteContact(selection) }
-                } label: {
-                    Label("Delete Contact", systemImage: "trash")
-                }
-                .help("Delete Contact")
-                .disabled(selection == nil)
-            }
-            ToolbarItem {
+            // One cohesive trailing group so the buttons render together in
+            // a single Liquid Glass capsule. The destructive trash button is
+            // gone; `.onDeleteCommand` above still handles ⌫ on selection.
+            ToolbarItemGroup(placement: .primaryAction) {
                 Menu {
                     Picker("Sort By", selection: $sortOrder) {
                         ForEach(ContactSortOrder.allCases) { order in
@@ -64,6 +53,18 @@ struct ContactListView: View {
                     Label("Sort", systemImage: "arrow.up.arrow.down")
                 }
                 .help("Sort Order")
+
+                Button(action: addContact) {
+                    Label("New Contact", systemImage: "plus")
+                }
+                .help("New Contact")
+
+                Button {
+                    isInspectorVisible.toggle()
+                } label: {
+                    Label("Inspector", systemImage: "sidebar.right")
+                }
+                .help("Toggle Inspector")
             }
         }
     }

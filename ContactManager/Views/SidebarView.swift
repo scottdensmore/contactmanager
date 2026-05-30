@@ -33,8 +33,12 @@ struct SidebarView: View {
                     .tag(SidebarItem.allContacts)
             }
 
-            if !groups.isEmpty {
-                Section("Groups") {
+            Section("Groups") {
+                if groups.isEmpty {
+                    Text("Use the + button above to add one.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                } else {
                     ForEach(groups) { group in
                         Label(group.displayName, systemImage: "folder")
                             .badge(group.contacts.count)
