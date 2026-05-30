@@ -27,7 +27,6 @@
 		9506DFC07D9490AEDFB096EC /* ImageProcessingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5588D3AA3B4B31F1094D954F /* ImageProcessingTests.swift */; };
 		97E98BCB6784672DCB8C1625 /* VCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D515CA167FBF4C47299 /* VCard.swift */; };
 		A94AB327927F2F1FBBD81119 /* ContactGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFE362455F20C848F729EEE /* ContactGroup.swift */; };
-		C0D417119625FF46FA986771 /* ContactInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B570567907E6F1CD444A936 /* ContactInspectorView.swift */; };
 		C2A11D686722C70868435ACE /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6303A7F66E428BF3662142C0 /* SidebarView.swift */; };
 		E5EB465B5CE3964197D29ADF /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F82C8A388E97CC4F1106176 /* SampleData.swift */; };
 		ECB7FDD8D0C3091EA0D42917 /* UndoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DCAF444714BC3726B212C4 /* UndoTests.swift */; };
@@ -61,7 +60,6 @@
 		73D22E8B17D14280F44AB0B2 /* ContactDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactDetailView.swift; sourceTree = "<group>"; };
 		7E7D5B554122CF852B0D825C /* VCardTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VCardTests.swift; sourceTree = "<group>"; };
 		833F1AF82CACF7B9E89BADCA /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		8B570567907E6F1CD444A936 /* ContactInspectorView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactInspectorView.swift; sourceTree = "<group>"; };
 		A7276D515CA167FBF4C47299 /* VCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VCard.swift; sourceTree = "<group>"; };
 		B25751DDEC1515E341AF67F5 /* ContactField.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactField.swift; sourceTree = "<group>"; };
 		B75D02267D3BC6C014143329 /* ContactModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactModelTests.swift; sourceTree = "<group>"; };
@@ -136,7 +134,6 @@
 				2A7B150B6DB35B8EF10D2135 /* AvatarView.swift */,
 				73D22E8B17D14280F44AB0B2 /* ContactDetailView.swift */,
 				54C373BD237429970D6A7C86 /* DuplicatesView.swift */,
-				8B570567907E6F1CD444A936 /* ContactInspectorView.swift */,
 				734D363DD0CB0BAA7AE9460B /* LayoutMetrics.swift */,
 			);
 			path = Views;
@@ -301,7 +298,6 @@
 				134F890B4875E8BF294A92B2 /* ContactStore.swift in Sources */,
 				827CF451F0B38B89C4469595 /* DuplicateFinder.swift in Sources */,
 				81F488BB8E6D53268C607C68 /* DuplicatesView.swift in Sources */,
-				C0D417119625FF46FA986771 /* ContactInspectorView.swift in Sources */,
 				2B9D4C628CAAECD10F00F5E2 /* LayoutMetrics.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
