@@ -36,7 +36,10 @@ struct ContactListView: View {
             max: LayoutMetrics.listMaxWidth
         )
         .animation(.smooth, value: sortOrder)
-        .searchable(text: $searchText, prompt: "Search Contacts")
+        // Place the search in the toolbar's principal (centered) area so the
+        // field anchors to the middle of the window instead of stretching
+        // across the trailing edge and overlapping the inspector pane.
+        .searchable(text: $searchText, placement: .toolbarPrincipal, prompt: "Search Contacts")
         .overlay { emptyState }
         .onDeleteCommand {
             if let selection { deleteContact(selection) }
