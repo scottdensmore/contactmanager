@@ -23,6 +23,7 @@ struct ContentView: View {
     @State private var errorMessage: String?
     @State private var searchText = ""
     @AppStorage("contactSortOrder") private var sortOrder: ContactSortOrder = .lastName
+    @AppStorage("contactInspectorVisible") private var isInspectorVisible = true
 
     @State private var isImportingVCard = false
     @State private var isExportingVCard = false
@@ -77,6 +78,30 @@ struct ContentView: View {
                     .id(selectedContact.persistentModelID)
             } else {
                 ContactPlaceholderView()
+            }
+        }
+        .inspector(isPresented: $isInspectorVisible) {
+            if let selectedContact {
+                ContactInspectorView(contact: selectedContact)
+                    .id(selectedContact.persistentModelID)
+                    .inspectorColumnWidth(min: 240, ideal: 300, max: 420)
+            } else {
+                ContentUnavailableView(
+                    "No Contact Selected",
+                    systemImage: "sidebar.right",
+                    description: Text("Select a contact to see its details here.")
+                )
+                .inspectorColumnWidth(min: 240, ideal: 300, max: 420)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    isInspectorVisible.toggle()
+                } label: {
+                    Label("Inspector", systemImage: "sidebar.right")
+                }
+                .help("Toggle Inspector")
             }
         }
         .frame(minWidth: 840, minHeight: 480)
