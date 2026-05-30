@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "a9b9c7cfc3d1",
+  "strategy": "manual-commit",
+  "branch": "fix/search-inspector-overlap",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/Views/ContactListView.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/a9/b9c7cfc3d1/0/metadata.json",
+      "transcript": "/a9/b9c7cfc3d1/0/full.jsonl",
+      "content_hash": "/a9/b9c7cfc3d1/0/content_hash.txt",
+      "prompt": "/a9/b9c7cfc3d1/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 23,
+    "cache_creation_tokens": 970226,
+    "cache_read_tokens": 11338907,
+    "output_tokens": 18858,
+    "api_call_count": 13
+  }
+}

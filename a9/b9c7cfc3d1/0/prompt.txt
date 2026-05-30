@@ -1,0 +1,5 @@
+getting /Users/scottdensmore/Developer/scottdensmore/contactmanager/ContactManager/Views/SidebarView.swift:58:18 Cannot find 'LayoutMetrics' in scope
+
+---
+
+[Image #2] with the info view flyout open the searchbar covers it up. That doesn't look good.
