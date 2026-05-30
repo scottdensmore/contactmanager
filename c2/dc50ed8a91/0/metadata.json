@@ -1,0 +1,60 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "c2dc50ed8a91",
+  "session_id": "a22e27bd-7ce5-4bdb-b1b8-083a9eedbb19",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-30T20:19:00.130992Z",
+  "branch": "fix/drop-inspector-column",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/Views/ContactDetailView.swift",
+    "ContactManager/Views/ContentView.swift",
+    "ContactManager/Views/ContactListView.swift",
+    "ContactManager/Views/LayoutMetrics.swift"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7",
+  "turn_id": "a61da8553100",
+  "checkpoint_transcript_start": 2776,
+  "transcript_lines_at_start": 2776,
+  "token_usage": {
+    "input_tokens": 27,
+    "cache_creation_tokens": 1028510,
+    "cache_read_tokens": 15086381,
+    "output_tokens": 16309,
+    "api_call_count": 23
+  },
+  "session_metrics": {
+    "turn_count": 20
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-30T20:19:00.018439Z",
+    "agent_lines": 178,
+    "agent_removed": 60,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 178,
+    "total_lines_changed": 438,
+    "agent_percentage": 54.337899543378995,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 281,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/agents/entire-search.md": 25,
+        ".claude/settings.json": 84,
+        ".claude/settings.local.json": 33,
+        ".codex/agents/entire-search.toml": 23,
+        ".codex/config.toml": 3,
+        ".codex/hooks.json": 52,
+        ".github/hooks/entire.json": 61
+      }
+    }
+  ]
+}

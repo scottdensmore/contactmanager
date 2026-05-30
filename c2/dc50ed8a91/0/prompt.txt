@@ -1,0 +1,21 @@
+<task-notification>
+<task-id>bz55b6f9p</task-id>
+<tool-use-id>toolu_01GV8gdjV3ck2MBqnqhrdJMo</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-scottdensmore-Developer-scottdensmore-contactmanager/a22e27bd-7ce5-4bdb-b1b8-083a9eedbb19/tasks/bz55b6f9p.output</output-file>
+<status>killed</status>
+<summary>Background command "Wait for background test job to finish" was stopped</summary>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>baf2awbdq</task-id>
+<tool-use-id>toolu_01STnNPti1UfoaAmSe1rALSB</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-scottdensmore-Developer-scottdensmore-contactmanager/a22e27bd-7ce5-4bdb-b1b8-083a9eedbb19/tasks/baf2awbdq.output</output-file>
+<status>killed</status>
+<summary>Background command "Wait for test result" was stopped</summary>
+</task-notification>
+
+---
+
+The app is stil not resizing right. The right pane seems to get pushed out to the left and hides content. The search convers to much and when the right pane is hidden the contacts word is now out of frame. We should just have one toolbar that covers the contact information that doesn't then span the information flyout. (maybe the info flyout is to much(?))/Users/scottdensmore/Desktop/CleanShot\ 2026-05-30\ at\ 13.01.42.mp4
