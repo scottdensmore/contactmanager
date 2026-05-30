@@ -73,12 +73,17 @@ struct ContentView: View {
                 deleteContact: deleteContact
             )
         } detail: {
-            if let selectedContact {
-                ContactDetailView(contact: selectedContact)
-                    .id(selectedContact.persistentModelID)
-            } else {
-                ContactPlaceholderView()
+            Group {
+                if let selectedContact {
+                    ContactDetailView(contact: selectedContact)
+                        .id(selectedContact.persistentModelID)
+                } else {
+                    ContactPlaceholderView()
+                }
             }
+            // Without this the divider can be dragged left far enough that
+            // the detail toolbar overlaps the contact list column.
+            .navigationSplitViewColumnWidth(min: LayoutMetrics.detailMinWidth, ideal: 520)
         }
         .frame(
             minWidth: LayoutMetrics.windowMinWidth,

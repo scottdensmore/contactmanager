@@ -58,7 +58,9 @@ struct SidebarView: View {
             max: LayoutMetrics.sidebarMaxWidth
         )
         .toolbar {
-            ToolbarItem {
+            // `.primaryAction` keeps + visible at every window width;
+            // the default `.automatic` placement lets the chevron eat it.
+            ToolbarItem(placement: .primaryAction) {
                 Button(action: addGroup) {
                     Label("New Group", systemImage: "folder.badge.plus")
                 }
