@@ -97,15 +97,18 @@ struct VCardTests {
 
     // MARK: - Photo
 
-    @Test func writesPhotoAsBase64() {
+    @Test func writesPhotoAsBase64WithoutTypeForUnrecognizedBytes() {
         let contact = Contact(firstName: "Ada", lastName: "Lovelace")
-        contact.photoData = Data([0xDE, 0xAD, 0xBE, 0xEF])
+        let payload = Data([0xDE, 0xAD, 0xBE, 0xEF])
+        contact.photoData = payload
 
         let card = VCard.card(for: contact)
-        let expected = "PHOTO;ENCODING=b;TYPE=JPEG:\(Data([0xDE, 0xAD, 0xBE, 0xEF]).base64EncodedString())"
         // Folding may insert continuation breaks; strip them for the assertion.
         let unfolded = card.replacingOccurrences(of: "\r\n ", with: "")
-        #expect(unfolded.contains(expected))
+        // Encoding is always present; TYPE is only emitted for recognized
+        // image bytes, so it should be omitted here.
+        #expect(unfolded.contains("PHOTO;ENCODING=b:\(payload.base64EncodedString())"))
+        #expect(!unfolded.contains("TYPE=JPEG"))
     }
 
     @Test func roundTripsPhotoBytesExactly() {

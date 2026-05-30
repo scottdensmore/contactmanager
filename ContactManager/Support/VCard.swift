@@ -8,6 +8,8 @@
 //
 
 import Foundation
+import ImageIO
+import UniformTypeIdentifiers
 
 /// A contact decoded from a vCard, independent of SwiftData.
 struct ParsedContact: Equatable {
@@ -92,8 +94,11 @@ enum VCard {
             lines.append("NOTE:\(escape(contact.notes))")
         }
         if let photo = contact.photoData {
-            // 3.0 inline base64: PHOTO;ENCODING=b;TYPE=JPEG:<base64>
-            lines.append("PHOTO;ENCODING=b;TYPE=JPEG:\(photo.base64EncodedString())")
+            // 3.0 inline base64. Advertise the TYPE only when we can identify
+            // the image format from the bytes; otherwise leave it off so we
+            // don't mislabel non-JPEG payloads.
+            let typeParam = detectedPhotoType(for: photo).map { ";TYPE=\($0)" } ?? ""
+            lines.append("PHOTO;ENCODING=b\(typeParam):\(photo.base64EncodedString())")
         }
 
         lines.append("END:VCARD")
@@ -197,6 +202,20 @@ enum VCard {
         default:
             break
         }
+    }
+
+    /// Identifies a vCard `PHOTO` TYPE token (e.g. "JPEG") from raw bytes when
+    /// the payload is a recognizable image format; returns nil otherwise so the
+    /// emitter can omit `TYPE` rather than mislabel arbitrary bytes.
+    private static func detectedPhotoType(for data: Data) -> String? {
+        guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+              let identifier = CGImageSourceGetType(source) as String?,
+              let type = UTType(identifier)
+        else { return nil }
+        if type.conforms(to: .jpeg) { return "JPEG" }
+        if type.conforms(to: .png) { return "PNG" }
+        if type.conforms(to: .gif) { return "GIF" }
+        return nil
     }
 
     /// Decodes the value of a PHOTO line into the raw image bytes. Tolerates

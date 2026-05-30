@@ -272,13 +272,20 @@ struct ContactStoreTests {
     // MARK: - Journey: photo round-trips through vCard export/import
 
     @Test func photoRoundTripsThroughVCard() throws {
+        // Mirror the real app flow: a picked photo is normalized through
+        // ImageProcessing before being stored.
         let png = try makePNGData(width: 200, height: 150)
+        let jpeg = try #require(ImageProcessing.avatarData(from: png))
+
         let contact = try store.createContact()
         contact.firstName = "Ada"
-        try store.setPhotoData(png, on: contact)
+        try store.setPhotoData(jpeg, on: contact)
         try context.save()
 
         let document = try store.exportVCards(allContacts())
+        // Real JPEG bytes are advertised with their detected TYPE.
+        #expect(document.contains("PHOTO;ENCODING=b;TYPE=JPEG"))
+
         for existing in try allContacts() {
             try store.delete(existing)
         }
