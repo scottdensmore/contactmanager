@@ -163,28 +163,25 @@ struct ContactInspectorView: View {
         case .failure(let error):
             errorMessage = error.localizedDescription
         case .success(let url):
-            let didAccess = url.startAccessingSecurityScopedResource()
-            defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
-            do {
-                let fileData = try Data(contentsOf: url)
-                processPhoto(fileData)
-            } catch {
-                errorMessage = error.localizedDescription
-            }
-        }
-    }
+            Task {
+                // Read the file and run the avatar pipeline off the main actor
+                // so a multi-megabyte photo can't hitch the UI.
+                let avatar: Data? = await Task.detached {
+                    let didAccess = url.startAccessingSecurityScopedResource()
+                    defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
+                    guard let fileData = try? Data(contentsOf: url) else { return nil }
+                    return ImageProcessing.avatarData(from: fileData)
+                }.value
 
-    private func processPhoto(_ fileData: Data) {
-        Task {
-            let avatar = await Task.detached { ImageProcessing.avatarData(from: fileData) }.value
-            guard let avatar else {
-                errorMessage = "That file couldn't be read as an image."
-                return
-            }
-            do {
-                try store.setPhotoData(avatar, on: contact)
-            } catch {
-                errorMessage = error.localizedDescription
+                guard let avatar else {
+                    errorMessage = "That file couldn't be read as an image."
+                    return
+                }
+                do {
+                    try store.setPhotoData(avatar, on: contact)
+                } catch {
+                    errorMessage = error.localizedDescription
+                }
             }
         }
     }

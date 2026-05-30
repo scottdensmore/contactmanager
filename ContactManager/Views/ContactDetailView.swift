@@ -2,9 +2,11 @@
 //  ContactDetailView.swift
 //  ContactManager
 //
-//  The detail column's editable form. Focuses on text fields and uses the
-//  ContactStore for mutations; the avatar, photo controls, quick-copy
-//  email/phone, and group membership live in the trailing inspector pane.
+//  The detail column's editable form. Text fields bind directly to the
+//  SwiftData model (autosaved by the context); add/remove field actions and
+//  the birthday toggle go through ContactStore. The avatar + photo controls,
+//  quick-copy email/phone, and group-membership toggles live in the
+//  trailing inspector pane.
 //
 
 import SwiftData
