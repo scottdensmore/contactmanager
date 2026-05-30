@@ -69,6 +69,7 @@ struct ContentView: View {
                 totalCount: scopedContacts.count,
                 searchText: $searchText,
                 sortOrder: $sortOrder,
+                isInspectorVisible: $isInspectorVisible,
                 selection: $selectedContact,
                 addContact: addContact,
                 deleteContact: deleteContact
@@ -93,16 +94,6 @@ struct ContentView: View {
                     description: Text("Select a contact to see its details here.")
                 )
                 .inspectorColumnWidth(min: 240, ideal: 300, max: 420)
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button {
-                    isInspectorVisible.toggle()
-                } label: {
-                    Label("Inspector", systemImage: "sidebar.right")
-                }
-                .help("Toggle Inspector")
             }
         }
         .frame(minWidth: 840, minHeight: 480)
