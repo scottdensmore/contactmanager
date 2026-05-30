@@ -36,7 +36,7 @@ final class Contact {
 
     /// Labeled emails and phone numbers.
     @Relationship(deleteRule: .cascade, inverse: \ContactField.contact)
-    var fields: [ContactField]
+    var fields: [ContactField] = []
 
     /// Groups this contact belongs to (many-to-many; inverse on ContactGroup).
     var groups: [ContactGroup] = []

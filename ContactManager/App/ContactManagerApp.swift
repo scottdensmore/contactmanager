@@ -70,18 +70,42 @@ struct ContactManagerApp: App {
             deleteDefaultStore()
         }
 
+        // Build a CloudKit-backed container when the iCloud capability is
+        // present, and fall back to a local-only container otherwise so the
+        // app still runs without iCloud.
+        let schema = Schema([Contact.self, ContactField.self, ContactGroup.self])
+
+        let container: ModelContainer
+        var isLocalOnlyFallback = false
         do {
-            let container = try ModelContainer(for: Contact.self, ContactField.self, ContactGroup.self)
+            // `.automatic` uses the project's iCloud container when an iCloud
+            // entitlement is present; without one it still loads successfully
+            // and behaves as a local-only store.
+            let cloudConfiguration = ModelConfiguration(schema: schema, cloudKitDatabase: .automatic)
+            container = try ModelContainer(for: schema, configurations: cloudConfiguration)
+        } catch {
+            print("ContactManager: CloudKit container failed (\(error.localizedDescription)); using local.")
+            do {
+                let localConfiguration = ModelConfiguration(schema: schema, cloudKitDatabase: .none)
+                container = try ModelContainer(for: schema, configurations: localConfiguration)
+                isLocalOnlyFallback = true
+            } catch {
+                return .failed(error.localizedDescription)
+            }
+        }
+
+        // Only seed sample data on the confirmed local-only fallback. On a
+        // CloudKit-capable container the user's real contacts might be about
+        // to sync down (a fresh install on a second device); seeding then
+        // would race the sync and propagate the samples to every device.
+        if isLocalOnlyFallback {
             do {
                 try SampleData.seedIfNeeded(container.mainContext)
             } catch {
-                // Seeding is best-effort; a failure here shouldn't block launch.
                 print("ContactManager: sample data seeding skipped — \(error)")
             }
-            return .ready(container)
-        } catch {
-            return .failed(error.localizedDescription)
         }
+        return .ready(container)
     }
 
     /// Removes the default SwiftData store files so a corrupt store can be

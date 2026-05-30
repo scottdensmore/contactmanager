@@ -57,12 +57,17 @@ pattern), then build to confirm it compiles.
 
 ## SwiftData
 
-- Top-level models must be listed in the `ModelContainer(for:)` call in
-  `ContactManagerApp.swift`: `Contact`, `ContactField`, `ContactGroup`.
+- Top-level models are listed in the `Schema` built in `ContactManagerApp.loadContainer`:
+  `Contact`, `ContactField`, `ContactGroup`.
 - **Migration:** every new *non-optional scalar* attribute MUST have an inline default
   (e.g. `var city: String = ""`), or in-place migration fails (`NSCocoaError 134110`).
   Optional attributes and relationships migrate cleanly. Verify by launching against an
   existing store.
+- **CloudKit-ready:** the container is built with `ModelConfiguration(cloudKitDatabase:
+  .automatic)` and falls back to `.none` (local-only) on failure, so the app runs with or
+  without an iCloud entitlement. To keep the schema sync-compatible, every non-optional
+  attribute needs an inline default (already covered by the migration rule), every to-many
+  relationship needs `= []`, and we avoid `@Attribute(.unique)` and `.deny` delete rules.
 - **Tests:** use an in-memory `ModelContainer`; the suite is `@MainActor @Suite(.serialized)`
   and holds the container as a stored property. The app skips creating its own container
   under tests (`XCTestConfigurationFilePath`) so the test owns the only one — keep that guard.
