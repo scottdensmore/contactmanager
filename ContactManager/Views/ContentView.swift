@@ -96,7 +96,10 @@ struct ContentView: View {
                 .inspectorColumnWidth(min: 240, ideal: 300, max: 420)
             }
         }
-        .frame(minWidth: 840, minHeight: 480)
+        // Grow the window's minimum width when the inspector is visible so
+        // the 4-column layout has room: sidebar (180) + list (240) + detail
+        // (~300) + inspector (240). Without the inspector, ~760 is plenty.
+        .frame(minWidth: isInspectorVisible ? 980 : 760, minHeight: 480)
         .onAppear {
             // Route every ContactStore mutation through the window's undo
             // manager so Edit ▸ Undo/Redo (⌘Z / ⇧⌘Z) work.
