@@ -1,0 +1,60 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "e6cccf803043",
+  "session_id": "a22e27bd-7ce5-4bdb-b1b8-083a9eedbb19",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-30T05:40:22.815836Z",
+  "branch": "feature/undo-redo",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/Models/ContactStore.swift",
+    "ContactManager/Views/ContentView.swift",
+    "ContactManagerTests/UndoTests.swift",
+    "CLAUDE.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "0738fbcb9348",
+  "checkpoint_transcript_start": 2375,
+  "transcript_lines_at_start": 2375,
+  "token_usage": {
+    "input_tokens": 54,
+    "cache_creation_tokens": 915056,
+    "cache_read_tokens": 32588553,
+    "output_tokens": 52255,
+    "api_call_count": 39
+  },
+  "session_metrics": {
+    "turn_count": 15
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-30T05:40:22.735413Z",
+    "agent_lines": 192,
+    "agent_removed": 48,
+    "human_added": 4,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 196,
+    "total_lines_changed": 244,
+    "agent_percentage": 98.36065573770492,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 281,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/agents/entire-search.md": 25,
+        ".claude/settings.json": 84,
+        ".claude/settings.local.json": 33,
+        ".codex/agents/entire-search.toml": 23,
+        ".codex/config.toml": 3,
+        ".codex/hooks.json": 52,
+        ".github/hooks/entire.json": 61
+      }
+    }
+  ]
+}

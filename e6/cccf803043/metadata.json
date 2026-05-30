@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "e6cccf803043",
+  "strategy": "manual-commit",
+  "branch": "feature/undo-redo",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "CLAUDE.md",
+    "ContactManager/Models/ContactStore.swift",
+    "ContactManager/Views/ContentView.swift",
+    "ContactManagerTests/UndoTests.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e6/cccf803043/0/metadata.json",
+      "transcript": "/e6/cccf803043/0/full.jsonl",
+      "content_hash": "/e6/cccf803043/0/content_hash.txt",
+      "prompt": "/e6/cccf803043/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 54,
+    "cache_creation_tokens": 915056,
+    "cache_read_tokens": 32588553,
+    "output_tokens": 52255,
+    "api_call_count": 39
+  }
+}
