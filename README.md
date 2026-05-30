@@ -47,6 +47,7 @@ ContactManager/
 - Contact photos (downscaled on import) with an initials avatar fallback.
 - User-defined groups (sidebar create/rename/delete) with per-contact membership.
 - vCard 3.0 import and export (File ▸ Import/Export vCard…).
+- Duplicate detection & merge (Edit ▸ Find Duplicates…) — review and combine contacts that share an email, phone, or name.
 - Liquid Glass styling, glass-prominent actions, and smooth list/selection animations.
 - Sample contacts seeded on first launch.
 

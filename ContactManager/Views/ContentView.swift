@@ -27,6 +27,7 @@ struct ContentView: View {
     @State private var isImportingVCard = false
     @State private var isExportingVCard = false
     @State private var exportDocument = VCardDocument(text: "")
+    @State private var showingDuplicates = false
 
     private var store: ContactStore { ContactStore(context) }
 
@@ -88,6 +89,12 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .exportVCardRequested)) { _ in
             exportDocument = VCardDocument(text: store.exportVCards(contacts))
             isExportingVCard = true
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .findDuplicatesRequested)) { _ in
+            showingDuplicates = true
+        }
+        .sheet(isPresented: $showingDuplicates) {
+            DuplicatesView()
         }
         .fileImporter(isPresented: $isImportingVCard, allowedContentTypes: [.vCard]) { result in
             handleImport(result)
