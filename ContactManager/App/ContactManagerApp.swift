@@ -70,18 +70,35 @@ struct ContactManagerApp: App {
             deleteDefaultStore()
         }
 
+        // Build a CloudKit-backed container when the iCloud capability is
+        // present, and fall back to a local-only container otherwise so the
+        // app still runs without iCloud.
+        let schema = Schema([Contact.self, ContactField.self, ContactGroup.self])
+
+        let container: ModelContainer
         do {
-            let container = try ModelContainer(for: Contact.self, ContactField.self, ContactGroup.self)
-            do {
-                try SampleData.seedIfNeeded(container.mainContext)
-            } catch {
-                // Seeding is best-effort; a failure here shouldn't block launch.
-                print("ContactManager: sample data seeding skipped — \(error)")
-            }
-            return .ready(container)
+            // `.automatic` uses the project's iCloud container when an iCloud
+            // entitlement is present; without one it still loads successfully
+            // and behaves as a local-only store.
+            let cloudConfiguration = ModelConfiguration(schema: schema, cloudKitDatabase: .automatic)
+            container = try ModelContainer(for: schema, configurations: cloudConfiguration)
         } catch {
-            return .failed(error.localizedDescription)
+            print("ContactManager: CloudKit container failed (\(error.localizedDescription)); using local.")
+            do {
+                let localConfiguration = ModelConfiguration(schema: schema, cloudKitDatabase: .none)
+                container = try ModelContainer(for: schema, configurations: localConfiguration)
+            } catch {
+                return .failed(error.localizedDescription)
+            }
         }
+
+        do {
+            try SampleData.seedIfNeeded(container.mainContext)
+        } catch {
+            // Seeding is best-effort; a failure here shouldn't block launch.
+            print("ContactManager: sample data seeding skipped — \(error)")
+        }
+        return .ready(container)
     }
 
     /// Removes the default SwiftData store files so a corrupt store can be

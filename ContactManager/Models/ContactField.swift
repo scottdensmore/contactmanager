@@ -28,11 +28,13 @@ enum FieldLabel: String, Codable, CaseIterable, Identifiable {
 
 @Model
 final class ContactField {
-    var kind: FieldKind
-    var label: FieldLabel
-    var value: String
+    // Inline defaults make this CloudKit-compatible: every non-optional
+    // attribute must have a default value for the synced schema.
+    var kind: FieldKind = FieldKind.email
+    var label: FieldLabel = FieldLabel.home
+    var value: String = ""
     /// Preserves the order fields were added within their kind.
-    var sortIndex: Int
+    var sortIndex: Int = 0
     var contact: Contact?
 
     init(
