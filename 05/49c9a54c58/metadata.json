@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "0549c9a54c58",
+  "strategy": "manual-commit",
+  "branch": "feature/duplicate-detection-merge",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/Models/ContactStore.swift",
+    "ContactManager/Views/DuplicatesView.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/05/49c9a54c58/0/metadata.json",
+      "transcript": "/05/49c9a54c58/0/full.jsonl",
+      "content_hash": "/05/49c9a54c58/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 149,
+    "cache_creation_tokens": 732284,
+    "cache_read_tokens": 7015149,
+    "output_tokens": 8027,
+    "api_call_count": 11
+  }
+}
