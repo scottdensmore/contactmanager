@@ -219,6 +219,11 @@ struct ContactStore {
             postalCode: parsed.postalCode, country: parsed.country,
             birthday: parsed.birthday, notes: parsed.notes
         )
+        // Normalize an imported photo through the avatar pipeline so storage
+        // stays consistent (downscaled JPEG); an undecodable photo is dropped.
+        if let raw = parsed.photoData {
+            contact.photoData = ImageProcessing.avatarData(from: raw)
+        }
         let emails = parsed.emails.enumerated().map { index, email in
             ContactField(kind: .email, label: email.label, value: email.value, sortIndex: index)
         }

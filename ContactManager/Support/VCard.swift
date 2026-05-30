@@ -8,6 +8,8 @@
 //
 
 import Foundation
+import ImageIO
+import UniformTypeIdentifiers
 
 /// A contact decoded from a vCard, independent of SwiftData.
 struct ParsedContact: Equatable {
@@ -22,6 +24,7 @@ struct ParsedContact: Equatable {
     var state = ""
     var postalCode = ""
     var country = ""
+    var photoData: Data?
     var emails: [(label: FieldLabel, value: String)] = []
     var phones: [(label: FieldLabel, value: String)] = []
 
@@ -32,6 +35,7 @@ struct ParsedContact: Equatable {
             && lhs.street == rhs.street && lhs.city == rhs.city
             && lhs.state == rhs.state && lhs.postalCode == rhs.postalCode
             && lhs.country == rhs.country
+            && lhs.photoData == rhs.photoData
             && lhs.emails.map(\.value) == rhs.emails.map(\.value)
             && lhs.emails.map(\.label) == rhs.emails.map(\.label)
             && lhs.phones.map(\.value) == rhs.phones.map(\.value)
@@ -88,6 +92,13 @@ enum VCard {
         }
         if !contact.notes.isEmpty {
             lines.append("NOTE:\(escape(contact.notes))")
+        }
+        if let photo = contact.photoData {
+            // 3.0 inline base64. Advertise the TYPE only when we can identify
+            // the image format from the bytes; otherwise leave it off so we
+            // don't mislabel non-JPEG payloads.
+            let typeParam = detectedPhotoType(for: photo).map { ";TYPE=\($0)" } ?? ""
+            lines.append("PHOTO;ENCODING=b\(typeParam):\(photo.base64EncodedString())")
         }
 
         lines.append("END:VCARD")
@@ -186,9 +197,37 @@ enum VCard {
             card.birthday = birthdayFormatter.date(from: String(value.prefix(10)))
         case "NOTE":
             card.notes = unescape(value)
+        case "PHOTO":
+            card.photoData = decodePhoto(value)
         default:
             break
         }
+    }
+
+    /// Identifies a vCard `PHOTO` TYPE token (e.g. "JPEG") from raw bytes when
+    /// the payload is a recognizable image format; returns nil otherwise so the
+    /// emitter can omit `TYPE` rather than mislabel arbitrary bytes.
+    private static func detectedPhotoType(for data: Data) -> String? {
+        guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+              let identifier = CGImageSourceGetType(source) as String?,
+              let type = UTType(identifier)
+        else { return nil }
+        if type.conforms(to: .jpeg) { return "JPEG" }
+        if type.conforms(to: .png) { return "PNG" }
+        if type.conforms(to: .gif) { return "GIF" }
+        return nil
+    }
+
+    /// Decodes the value of a PHOTO line into the raw image bytes. Tolerates
+    /// vCard 4.0 data-URI prefixes (`data:image/...;base64,`) and any stray
+    /// whitespace left over after line unfolding.
+    private static func decodePhoto(_ value: String) -> Data? {
+        var clean = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let range = clean.range(of: "base64,", options: .caseInsensitive) {
+            clean = String(clean[range.upperBound...])
+        }
+        clean = String(clean.filter { !$0.isWhitespace })
+        return Data(base64Encoded: clean)
     }
 
     // MARK: - Label mapping
