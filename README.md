@@ -38,7 +38,7 @@ ContactManager/
 
 ## Features
 
-- Three-column native layout with a Liquid Glass toolbar.
+- Three-column native layout with a Liquid Glass toolbar and a toggleable trailing inspector pane.
 - Create, edit (inline, autosaving), and delete contacts.
 - Multiple labeled emails and phone numbers per contact (add/remove inline).
 - Company, job title, postal address, birthday, and free-form notes.
