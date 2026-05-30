@@ -86,7 +86,11 @@ struct ContentView: View {
             if let selectedContact {
                 ContactInspectorView(contact: selectedContact)
                     .id(selectedContact.persistentModelID)
-                    .inspectorColumnWidth(min: 240, ideal: 300, max: 420)
+                    .inspectorColumnWidth(
+                        min: LayoutMetrics.inspectorMinWidth,
+                        ideal: LayoutMetrics.inspectorIdealWidth,
+                        max: LayoutMetrics.inspectorMaxWidth
+                    )
             } else {
                 ContentUnavailableView(
                     "No Contact Selected",
@@ -96,10 +100,12 @@ struct ContentView: View {
                 .inspectorColumnWidth(min: 240, ideal: 300, max: 420)
             }
         }
-        // Grow the window's minimum width when the inspector is visible so
-        // the 4-column layout has room: sidebar (180) + list (240) + detail
-        // (~300) + inspector (240). Without the inspector, ~760 is plenty.
-        .frame(minWidth: isInspectorVisible ? 980 : 760, minHeight: 480)
+        // Derived from `LayoutMetrics` so the window minimum stays in sync
+        // with the column minimums, including the inspector when visible.
+        .frame(
+            minWidth: LayoutMetrics.windowMinWidth(isInspectorVisible: isInspectorVisible),
+            minHeight: LayoutMetrics.windowMinHeight
+        )
         .onAppear {
             // Route every ContactStore mutation through the window's undo
             // manager so Edit ▸ Undo/Redo (⌘Z / ⇧⌘Z) work.

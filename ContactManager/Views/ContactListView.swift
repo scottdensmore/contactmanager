@@ -30,7 +30,11 @@ struct ContactListView: View {
             }
         }
         .navigationTitle("Contacts")
-        .navigationSplitViewColumnWidth(min: 240, ideal: 280, max: 420)
+        .navigationSplitViewColumnWidth(
+            min: LayoutMetrics.listMinWidth,
+            ideal: LayoutMetrics.listIdealWidth,
+            max: LayoutMetrics.listMaxWidth
+        )
         .animation(.smooth, value: sortOrder)
         .searchable(text: $searchText, prompt: "Search Contacts")
         .overlay { emptyState }
