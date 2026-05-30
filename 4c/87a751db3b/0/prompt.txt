@@ -1,0 +1,1 @@
+The toolbar is still not quite right. The right pane should have a min width so the toolbar doesn't cover the middle pane. Also the new group toolbar is always behind the chevron no matter the size./Users/scottdensmore/Desktop/CleanShot\ 2026-05-30\ at\ 13.41.34.mp4

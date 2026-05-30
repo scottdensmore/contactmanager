@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "4c87a751db3b",
+  "strategy": "manual-commit",
+  "branch": "fix/drop-inspector-column",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/Views/ContentView.swift",
+    "ContactManager/Views/SidebarView.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/4c/87a751db3b/0/metadata.json",
+      "transcript": "/4c/87a751db3b/0/full.jsonl",
+      "content_hash": "/4c/87a751db3b/0/content_hash.txt",
+      "prompt": "/4c/87a751db3b/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 12,
+    "cache_creation_tokens": 6090,
+    "cache_read_tokens": 353245,
+    "output_tokens": 3678,
+    "api_call_count": 7
+  }
+}
