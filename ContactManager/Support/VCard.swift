@@ -22,6 +22,7 @@ struct ParsedContact: Equatable {
     var state = ""
     var postalCode = ""
     var country = ""
+    var photoData: Data?
     var emails: [(label: FieldLabel, value: String)] = []
     var phones: [(label: FieldLabel, value: String)] = []
 
@@ -32,6 +33,7 @@ struct ParsedContact: Equatable {
             && lhs.street == rhs.street && lhs.city == rhs.city
             && lhs.state == rhs.state && lhs.postalCode == rhs.postalCode
             && lhs.country == rhs.country
+            && lhs.photoData == rhs.photoData
             && lhs.emails.map(\.value) == rhs.emails.map(\.value)
             && lhs.emails.map(\.label) == rhs.emails.map(\.label)
             && lhs.phones.map(\.value) == rhs.phones.map(\.value)
@@ -88,6 +90,10 @@ enum VCard {
         }
         if !contact.notes.isEmpty {
             lines.append("NOTE:\(escape(contact.notes))")
+        }
+        if let photo = contact.photoData {
+            // 3.0 inline base64: PHOTO;ENCODING=b;TYPE=JPEG:<base64>
+            lines.append("PHOTO;ENCODING=b;TYPE=JPEG:\(photo.base64EncodedString())")
         }
 
         lines.append("END:VCARD")
@@ -186,9 +192,23 @@ enum VCard {
             card.birthday = birthdayFormatter.date(from: String(value.prefix(10)))
         case "NOTE":
             card.notes = unescape(value)
+        case "PHOTO":
+            card.photoData = decodePhoto(value)
         default:
             break
         }
+    }
+
+    /// Decodes the value of a PHOTO line into the raw image bytes. Tolerates
+    /// vCard 4.0 data-URI prefixes (`data:image/...;base64,`) and any stray
+    /// whitespace left over after line unfolding.
+    private static func decodePhoto(_ value: String) -> Data? {
+        var clean = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let range = clean.range(of: "base64,", options: .caseInsensitive) {
+            clean = String(clean[range.upperBound...])
+        }
+        clean = String(clean.filter { !$0.isWhitespace })
+        return Data(base64Encoded: clean)
     }
 
     // MARK: - Label mapping

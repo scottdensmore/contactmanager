@@ -95,6 +95,45 @@ struct VCardTests {
         #expect(VCard.parse(document).first?.notes == longNote)
     }
 
+    // MARK: - Photo
+
+    @Test func writesPhotoAsBase64() {
+        let contact = Contact(firstName: "Ada", lastName: "Lovelace")
+        contact.photoData = Data([0xDE, 0xAD, 0xBE, 0xEF])
+
+        let card = VCard.card(for: contact)
+        let expected = "PHOTO;ENCODING=b;TYPE=JPEG:\(Data([0xDE, 0xAD, 0xBE, 0xEF]).base64EncodedString())"
+        // Folding may insert continuation breaks; strip them for the assertion.
+        let unfolded = card.replacingOccurrences(of: "\r\n ", with: "")
+        #expect(unfolded.contains(expected))
+    }
+
+    @Test func roundTripsPhotoBytesExactly() {
+        let contact = Contact(firstName: "Ada", lastName: "Lovelace")
+        // A few KB of varied bytes so the line is long enough to be folded.
+        let photo = Data((0 ..< 2048).map { UInt8($0 % 251) })
+        contact.photoData = photo
+
+        let document = VCard.card(for: contact)
+        let parsed = VCard.parse(document)
+
+        #expect(parsed.first?.photoData == photo)
+    }
+
+    @Test func parsesPhotoWithDataURIPrefix() {
+        let photo = Data([0x01, 0x02, 0x03, 0x04, 0x05, 0x06])
+        let base64 = photo.base64EncodedString()
+        let document = """
+        BEGIN:VCARD
+        VERSION:3.0
+        FN:Ada Lovelace
+        PHOTO;VALUE=URI:data:image/jpeg;base64,\(base64)
+        END:VCARD
+        """
+
+        #expect(VCard.parse(document).first?.photoData == photo)
+    }
+
     @Test func ignoresEmptyDocuments() {
         #expect(VCard.parse("").isEmpty)
         #expect(VCard.parse("not a vcard at all").isEmpty)

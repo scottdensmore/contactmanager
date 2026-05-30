@@ -7,9 +7,12 @@
 //
 
 @testable import ContactManager
+import CoreGraphics
 import Foundation
+import ImageIO
 import SwiftData
 import Testing
+import UniformTypeIdentifiers
 
 @MainActor
 @Suite(.serialized)
@@ -264,6 +267,51 @@ struct ContactStoreTests {
         let result = try store.merge([contact])
         #expect(result.persistentModelID == contact.persistentModelID)
         #expect(try count(Contact.self) == 1)
+    }
+
+    // MARK: - Journey: photo round-trips through vCard export/import
+
+    @Test func photoRoundTripsThroughVCard() throws {
+        let png = try makePNGData(width: 200, height: 150)
+        let contact = try store.createContact()
+        contact.firstName = "Ada"
+        try store.setPhotoData(png, on: contact)
+        try context.save()
+
+        let document = try store.exportVCards(allContacts())
+        for existing in try allContacts() {
+            try store.delete(existing)
+        }
+
+        let reimported = try store.importVCards(from: document)
+        let restored = try #require(reimported.first)
+
+        let imageData = try #require(restored.photoData)
+        let source = try #require(CGImageSourceCreateWithData(imageData as CFData, nil))
+        let image = try #require(CGImageSourceCreateImageAtIndex(source, 0, nil))
+        // Imported photo is normalized via ImageProcessing.
+        #expect(max(image.width, image.height) <= Int(ImageProcessing.maxPixelSize))
+    }
+
+    /// Synthesizes a solid-color PNG of the given size for tests.
+    private func makePNGData(width: Int, height: Int) throws -> Data {
+        let colorSpace = try #require(CGColorSpace(name: CGColorSpace.sRGB))
+        let context = try #require(CGContext(
+            data: nil, width: width, height: height,
+            bitsPerComponent: 8, bytesPerRow: 0, space: colorSpace,
+            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+        ))
+        context.setFillColor(CGColor(red: 0.2, green: 0.4, blue: 0.8, alpha: 1))
+        context.fill(CGRect(x: 0, y: 0, width: width, height: height))
+        let image = try #require(context.makeImage())
+
+        let data = NSMutableData()
+        let destination = try #require(CGImageDestinationCreateWithData(
+            data, UTType.png.identifier as CFString, 1, nil
+        ))
+        CGImageDestinationAddImage(destination, image, nil)
+        #expect(CGImageDestinationFinalize(destination))
+        return data as Data
     }
 
     // MARK: - Journey: search across the store
