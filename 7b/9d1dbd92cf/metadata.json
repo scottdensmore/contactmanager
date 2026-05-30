@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "7b9d1dbd92cf",
+  "strategy": "manual-commit",
+  "branch": "feature/cloudkit-ready",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "CLAUDE.md",
+    "ContactManager/App/ContactManagerApp.swift",
+    "ContactManager/Models/Contact.swift",
+    "ContactManager/Models/ContactField.swift",
+    "README.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/7b/9d1dbd92cf/0/metadata.json",
+      "transcript": "/7b/9d1dbd92cf/0/full.jsonl",
+      "content_hash": "/7b/9d1dbd92cf/0/content_hash.txt",
+      "prompt": "/7b/9d1dbd92cf/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 26,
+    "cache_creation_tokens": 24489,
+    "cache_read_tokens": 16749210,
+    "output_tokens": 21880,
+    "api_call_count": 21
+  }
+}

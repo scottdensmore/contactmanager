@@ -1,0 +1,1 @@
+lets land it and then test it in Xcode when I have a device handy. It should still work even if iCloud is not avaialable
