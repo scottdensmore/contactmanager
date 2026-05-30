@@ -107,7 +107,12 @@ struct ContactStore {
     /// group memberships are unioned, and a missing photo is adopted.
     @discardableResult
     func merge(_ contacts: [Contact]) throws -> Contact {
-        let ordered = contacts.sorted { $0.createdAt < $1.createdAt }
+        // Earliest created wins, with a stable tiebreaker so the choice is
+        // deterministic even when timestamps are identical.
+        let ordered = contacts.sorted { lhs, rhs in
+            if lhs.createdAt != rhs.createdAt { return lhs.createdAt < rhs.createdAt }
+            return String(describing: lhs.persistentModelID) < String(describing: rhs.persistentModelID)
+        }
         guard let primary = ordered.first else {
             throw ContactStoreError.nothingToMerge
         }
@@ -126,16 +131,21 @@ struct ContactStore {
     }
 
     private func fillEmptyFields(of primary: Contact, from other: Contact) {
-        if primary.firstName.isEmpty { primary.firstName = other.firstName }
-        if primary.lastName.isEmpty { primary.lastName = other.lastName }
-        if primary.company.isEmpty { primary.company = other.company }
-        if primary.jobTitle.isEmpty { primary.jobTitle = other.jobTitle }
-        if primary.street.isEmpty { primary.street = other.street }
-        if primary.city.isEmpty { primary.city = other.city }
-        if primary.state.isEmpty { primary.state = other.state }
-        if primary.postalCode.isEmpty { primary.postalCode = other.postalCode }
-        if primary.country.isEmpty { primary.country = other.country }
-        if primary.notes.isEmpty { primary.notes = other.notes }
+        /// Treat whitespace-only values as empty, consistent with the rest of
+        /// the codebase (Contact.fullName, primaryEmail, etc.).
+        func isBlank(_ value: String) -> Bool {
+            value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        }
+        if isBlank(primary.firstName) { primary.firstName = other.firstName }
+        if isBlank(primary.lastName) { primary.lastName = other.lastName }
+        if isBlank(primary.company) { primary.company = other.company }
+        if isBlank(primary.jobTitle) { primary.jobTitle = other.jobTitle }
+        if isBlank(primary.street) { primary.street = other.street }
+        if isBlank(primary.city) { primary.city = other.city }
+        if isBlank(primary.state) { primary.state = other.state }
+        if isBlank(primary.postalCode) { primary.postalCode = other.postalCode }
+        if isBlank(primary.country) { primary.country = other.country }
+        if isBlank(primary.notes) { primary.notes = other.notes }
         if primary.birthday == nil { primary.birthday = other.birthday }
         if primary.photoData == nil { primary.photoData = other.photoData }
     }

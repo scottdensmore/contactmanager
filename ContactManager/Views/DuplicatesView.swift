@@ -22,8 +22,10 @@ struct DuplicatesView: View {
     private var store: ContactStore { ContactStore(context) }
 
     private var duplicateGroups: [DuplicateGroup] {
-        DuplicateFinder.duplicateGroups(in: contacts).map { group in
-            DuplicateGroup(id: group.map(\.persistentModelID).hashValue, contacts: group)
+        // Each contact belongs to at most one group, so the first member's
+        // identifier is a stable, unique id for the group.
+        DuplicateFinder.duplicateGroups(in: contacts).compactMap { group in
+            group.first.map { DuplicateGroup(id: $0.persistentModelID, contacts: group) }
         }
     }
 
@@ -87,7 +89,7 @@ struct DuplicatesView: View {
 }
 
 private struct DuplicateGroup: Identifiable {
-    let id: Int
+    let id: PersistentIdentifier
     let contacts: [Contact]
 }
 
