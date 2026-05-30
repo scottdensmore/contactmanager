@@ -50,7 +50,6 @@ ContactManager/
 - Duplicate detection & merge (Edit ▸ Find Duplicates…) — review and combine contacts that share an email, phone, or name.
 - iCloud sync (when the iCloud capability is enabled in Xcode) with a graceful local-only fallback when it isn't.
 - Liquid Glass styling, glass-prominent actions, and smooth list/selection animations.
-- Sample contacts seeded on first launch.
 
 ### Roadmap
 

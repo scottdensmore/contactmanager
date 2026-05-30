@@ -76,6 +76,7 @@ struct ContactManagerApp: App {
         let schema = Schema([Contact.self, ContactField.self, ContactGroup.self])
 
         let container: ModelContainer
+        var isLocalOnlyFallback = false
         do {
             // `.automatic` uses the project's iCloud container when an iCloud
             // entitlement is present; without one it still loads successfully
@@ -87,16 +88,22 @@ struct ContactManagerApp: App {
             do {
                 let localConfiguration = ModelConfiguration(schema: schema, cloudKitDatabase: .none)
                 container = try ModelContainer(for: schema, configurations: localConfiguration)
+                isLocalOnlyFallback = true
             } catch {
                 return .failed(error.localizedDescription)
             }
         }
 
-        do {
-            try SampleData.seedIfNeeded(container.mainContext)
-        } catch {
-            // Seeding is best-effort; a failure here shouldn't block launch.
-            print("ContactManager: sample data seeding skipped — \(error)")
+        // Only seed sample data on the confirmed local-only fallback. On a
+        // CloudKit-capable container the user's real contacts might be about
+        // to sync down (a fresh install on a second device); seeding then
+        // would race the sync and propagate the samples to every device.
+        if isLocalOnlyFallback {
+            do {
+                try SampleData.seedIfNeeded(container.mainContext)
+            } catch {
+                print("ContactManager: sample data seeding skipped — \(error)")
+            }
         }
         return .ready(container)
     }
