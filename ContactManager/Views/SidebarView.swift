@@ -52,7 +52,11 @@ struct SidebarView: View {
             }
         }
         .navigationTitle("Groups")
-        .navigationSplitViewColumnWidth(min: 180, ideal: 215, max: 320)
+        .navigationSplitViewColumnWidth(
+            min: LayoutMetrics.sidebarMinWidth,
+            ideal: LayoutMetrics.sidebarIdealWidth,
+            max: LayoutMetrics.sidebarMaxWidth
+        )
         .toolbar {
             ToolbarItem {
                 Button(action: addGroup) {
