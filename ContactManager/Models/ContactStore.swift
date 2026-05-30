@@ -6,8 +6,9 @@
 //  group, and vCard operation goes through here so the views stay thin and
 //  the logic is unit-testable against an in-memory ModelContext.
 //
-//  Each mutating operation saves and, on failure, rolls back so the context
-//  is left consistent and the caller can surface the thrown error.
+//  Each mutating operation runs inside an explicit undo group, saves, and
+//  rolls back on failure. The group's action name shows up in the Edit menu
+//  (e.g. "Undo Create Contact") when the context has an UndoManager attached.
 //
 
 import Foundation
@@ -26,23 +27,24 @@ struct ContactStore {
     /// Creates an empty contact, optionally adding it to a group.
     @discardableResult
     func createContact(in group: ContactGroup? = nil) throws -> Contact {
-        let contact = Contact()
-        if let group {
-            contact.groups = [group]
+        try mutate("Create Contact") {
+            let contact = Contact()
+            if let group { contact.groups = [group] }
+            context.insert(contact)
+            return contact
         }
-        context.insert(contact)
-        try saveOrRollback()
-        return contact
     }
 
     func delete(_ contact: Contact) throws {
-        context.delete(contact)
-        try saveOrRollback()
+        try mutate("Delete Contact") {
+            context.delete(contact)
+        }
     }
 
     func setPhotoData(_ data: Data?, on contact: Contact) throws {
-        contact.photoData = data
-        try saveOrRollback()
+        try mutate("Change Photo") {
+            contact.photoData = data
+        }
     }
 
     // MARK: - Fields (emails / phones)
@@ -51,52 +53,58 @@ struct ContactStore {
     /// is stable even after deletions.
     @discardableResult
     func addField(_ kind: FieldKind, value: String = "", to contact: Contact) throws -> ContactField {
-        let nextIndex = (contact.fields(of: kind).map(\.sortIndex).max() ?? -1) + 1
-        let field = ContactField(kind: kind, label: kind.defaultLabel, value: value, sortIndex: nextIndex)
-        field.contact = contact
-        context.insert(field)
-        try saveOrRollback()
-        return field
+        try mutate(kind == .email ? "Add Email" : "Add Phone") {
+            let nextIndex = (contact.fields(of: kind).map(\.sortIndex).max() ?? -1) + 1
+            let field = ContactField(kind: kind, label: kind.defaultLabel, value: value, sortIndex: nextIndex)
+            field.contact = contact
+            context.insert(field)
+            return field
+        }
     }
 
     func delete(_ fields: [ContactField]) throws {
-        fields.forEach(context.delete)
-        try saveOrRollback()
+        try mutate("Delete Field") {
+            fields.forEach(context.delete)
+        }
     }
 
     // MARK: - Groups
 
     @discardableResult
     func createGroup(named name: String = "New Group") throws -> ContactGroup {
-        let group = ContactGroup(name: name)
-        context.insert(group)
-        try saveOrRollback()
-        return group
+        try mutate("New Group") {
+            let group = ContactGroup(name: name)
+            context.insert(group)
+            return group
+        }
     }
 
     /// Renames a group, ignoring blank names.
     func rename(_ group: ContactGroup, to name: String) throws {
         let trimmed = name.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
-        group.name = trimmed
-        try saveOrRollback()
+        try mutate("Rename Group") {
+            group.name = trimmed
+        }
     }
 
     func delete(_ group: ContactGroup) throws {
-        context.delete(group)
-        try saveOrRollback()
+        try mutate("Delete Group") {
+            context.delete(group)
+        }
     }
 
     func setMembership(of contact: Contact, in group: ContactGroup, isMember: Bool) throws {
         let alreadyMember = contact.groups.contains { $0.persistentModelID == group.persistentModelID }
         guard isMember != alreadyMember else { return } // no-op; avoid an unnecessary save
 
-        if isMember {
-            contact.groups.append(group)
-        } else {
-            contact.groups.removeAll { $0.persistentModelID == group.persistentModelID }
+        try mutate("Change Group Membership") {
+            if isMember {
+                contact.groups.append(group)
+            } else {
+                contact.groups.removeAll { $0.persistentModelID == group.persistentModelID }
+            }
         }
-        try saveOrRollback()
     }
 
     // MARK: - Merge duplicates
@@ -119,15 +127,15 @@ struct ContactStore {
         let others = ordered.dropFirst()
         guard !others.isEmpty else { return primary }
 
-        for other in others {
-            fillEmptyFields(of: primary, from: other)
-            adoptGroups(into: primary, from: other)
+        return try mutate("Merge Contacts") {
+            for other in others {
+                fillEmptyFields(of: primary, from: other)
+                adoptGroups(into: primary, from: other)
+            }
+            mergeFields(into: primary, from: Array(others))
+            others.forEach(context.delete)
+            return primary
         }
-        mergeFields(into: primary, from: Array(others))
-
-        others.forEach(context.delete)
-        try saveOrRollback()
-        return primary
     }
 
     private func fillEmptyFields(of primary: Contact, from other: Contact) {
@@ -199,10 +207,11 @@ struct ContactStore {
     /// off the main actor by the caller; insertion happens here.)
     @discardableResult
     func importContacts(_ parsed: [ParsedContact]) throws -> [Contact] {
-        let contacts = parsed.map(Self.makeContact(from:))
-        contacts.forEach(context.insert)
-        try saveOrRollback()
-        return contacts
+        try mutate("Import Contacts") {
+            let contacts = parsed.map(Self.makeContact(from:))
+            contacts.forEach(context.insert)
+            return contacts
+        }
     }
 
     /// Serializes contacts to a vCard document, sorted for stable output.
@@ -234,13 +243,24 @@ struct ContactStore {
         return contact
     }
 
-    // MARK: - Saving
+    // MARK: - Saving + undo
 
-    private func saveOrRollback() throws {
+    /// Wraps `body` in an explicit undo group, saves the context, and rolls
+    /// back on failure. The group is given `actionName` so the Edit menu shows
+    /// e.g. "Undo Create Contact".
+    @discardableResult
+    private func mutate<Result>(_ actionName: String, _ body: () throws -> Result) throws -> Result {
+        let undoManager = context.undoManager
+        undoManager?.beginUndoGrouping()
         do {
+            let result = try body()
             try context.save()
+            undoManager?.endUndoGrouping()
+            undoManager?.setActionName(actionName)
+            return result
         } catch {
             context.rollback()
+            undoManager?.endUndoGrouping()
             throw error
         }
     }
