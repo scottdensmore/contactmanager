@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "b89617163c18",
+  "strategy": "manual-commit",
+  "branch": "fix/inspector-min-width",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/Views/ContactListView.swift",
+    "ContactManager/Views/ContentView.swift",
+    "ContactManager/Views/LayoutMetrics.swift",
+    "ContactManager/Views/SidebarView.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/b8/9617163c18/0/metadata.json",
+      "transcript": "/b8/9617163c18/0/full.jsonl",
+      "content_hash": "/b8/9617163c18/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 9,
+    "cache_creation_tokens": 7744,
+    "cache_read_tokens": 8334017,
+    "output_tokens": 5638,
+    "api_call_count": 9
+  }
+}
