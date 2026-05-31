@@ -7,6 +7,7 @@
 //  import/export.
 //
 
+import CoreSpotlight
 import SwiftData
 import SwiftUI
 
@@ -21,7 +22,9 @@ struct ContentView: View {
 
     @State private var sidebarSelection: SidebarItem? = .allContacts
     @State private var selectedContact: Contact?
-    @State private var errorMessage: String?
+    // Internal so the import handlers in `ContentView+Import.swift` can
+    // set this when a parse/insert fails.
+    @State var errorMessage: String?
     @State private var searchText = ""
     @AppStorage("contactSortOrder") private var sortOrder: ContactSortOrder = .lastName
     @AppStorage("defaultGroupID") private var defaultGroupID: String = ""
@@ -31,7 +34,9 @@ struct ContentView: View {
     @State private var exportDocument = VCardDocument(text: "")
     @State private var showingDuplicates = false
 
-    private var store: ContactStore { ContactStore(context) }
+    /// Internal so the import handlers in `ContentView+Import.swift` can
+    /// reach the same store the main view uses.
+    var store: ContactStore { ContactStore(context) }
 
     /// The group backing the current sidebar selection, if any.
     private var selectedGroup: ContactGroup? {
@@ -135,6 +140,18 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .importSystemContactsRequested)) { _ in
             importSystemContacts()
         }
+        .onReceive(NotificationCenter.default.publisher(for: .openContactRequested)) { note in
+            selectContact(byEncodedID: note.userInfo?["id"] as? String)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .contactsDidChange)) { _ in
+            // The @Query above will have refreshed; snapshot it for Spotlight.
+            let snapshot = contacts.map(ContactEntity.init(contact:))
+            Task { await SpotlightIndexer.reindex(snapshot) }
+        }
+        .onContinueUserActivity(CSSearchableItemActionType) { activity in
+            let id = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String
+            selectContact(byEncodedID: id)
+        }
         .sheet(isPresented: $showingDuplicates) {
             DuplicatesView()
         }
@@ -212,93 +229,18 @@ struct ContentView: View {
         }
     }
 
-    // MARK: - System Contacts import
+    // MARK: - Open by ID (Spotlight + App Intents)
 
-    private func importSystemContacts() {
-        Task {
-            // Permission prompt + fetch + mapping all run off the main actor;
-            // only the final insert hops back here.
-            let parsed: [ParsedContact]
-            do {
-                parsed = try await Task.detached(priority: .userInitiated) {
-                    try await ContactsBridge.fetchAllParsed()
-                }.value
-            } catch {
-                errorMessage = error.localizedDescription
-                return
-            }
-            guard !parsed.isEmpty else {
-                errorMessage = "No contacts were found in your system Contacts."
-                return
-            }
-            do {
-                try store.importContacts(parsed)
-            } catch {
-                errorMessage = error.localizedDescription
-            }
-        }
-    }
-
-    // MARK: - vCard import
-
-    /// Imports one or more vCard files dropped onto the contact list.
-    private func importVCardURLs(_ urls: [URL]) {
-        Task {
-            let parsed: [ParsedContact] = await Task.detached {
-                var all: [ParsedContact] = []
-                for url in urls {
-                    let didAccess = url.startAccessingSecurityScopedResource()
-                    defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
-                    guard let data = try? Data(contentsOf: url),
-                          let text = String(data: data, encoding: .utf8)
-                    else { continue }
-                    all.append(contentsOf: VCard.parse(text))
-                }
-                return all
-            }.value
-
-            guard !parsed.isEmpty else {
-                errorMessage = "No contacts were found in that file."
-                return
-            }
-            do {
-                try store.importContacts(parsed)
-            } catch {
-                errorMessage = error.localizedDescription
-            }
-        }
-    }
-
-    private func handleImport(_ result: Result<URL, Error>) {
-        switch result {
-        case .failure(let error):
-            errorMessage = error.localizedDescription
-        case .success(let url):
-            Task {
-                // Read and parse off the main actor so large files don't block UI.
-                let parsed: [ParsedContact]? = await Task.detached {
-                    let didAccess = url.startAccessingSecurityScopedResource()
-                    defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
-                    guard let data = try? Data(contentsOf: url),
-                          let text = String(data: data, encoding: .utf8) else { return nil }
-                    return VCard.parse(text)
-                }.value
-
-                guard let parsed else {
-                    errorMessage = "That file couldn't be read as a vCard."
-                    return
-                }
-                guard !parsed.isEmpty else {
-                    errorMessage = "No contacts were found in that file."
-                    return
-                }
-                do {
-                    try store.importContacts(parsed)
-                } catch {
-                    errorMessage = error.localizedDescription
-                }
-            }
-        }
+    private func selectContact(byEncodedID encoded: String?) {
+        guard let encoded,
+              let id = PersistentIdentifier.decode(stored: encoded),
+              let contact = contacts.first(where: { $0.persistentModelID == id })
+        else { return }
+        // Drop a group selection so the contact is guaranteed visible in the
+        // middle column even if the user arrived via Spotlight while a
+        // narrower group was active.
+        if case .group = sidebarSelection { sidebarSelection = .allContacts }
+        withAnimation(.snappy) { selectedContact = contact }
     }
 }
 

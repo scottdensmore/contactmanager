@@ -124,6 +124,13 @@ struct ContactManagerApp: App {
                 print("ContactManager: sample data seeding skipped — \(error)")
             }
         }
+        // Publish the container for App Intents (Shortcuts/Spotlight queries)
+        // and kick off an initial Spotlight reindex.
+        EntityModelContainer.shared = container
+        Task.detached {
+            let entities = await (try? ContactEntityQuery().allEntities()) ?? []
+            await SpotlightIndexer.reindex(entities)
+        }
         return .ready(container)
     }
 
@@ -174,4 +181,11 @@ extension Notification.Name {
     static let importSystemContactsRequested = Notification.Name("ContactManager.importSystemContactsRequested")
     static let exportVCardRequested = Notification.Name("ContactManager.exportVCardRequested")
     static let findDuplicatesRequested = Notification.Name("ContactManager.findDuplicatesRequested")
+    /// Posted by App Intents (and `Spotlight` taps via `ContentView`'s
+    /// `onContinueUserActivity`). UserInfo carries `id: String` — the
+    /// encoded `PersistentIdentifier` of the contact to select.
+    static let openContactRequested = Notification.Name("ContactManager.openContactRequested")
+    /// Posted by `ContactStore` after every successful mutation so observers
+    /// (currently the Spotlight indexer) can refresh derived state.
+    static let contactsDidChange = Notification.Name("ContactManager.contactsDidChange")
 }
