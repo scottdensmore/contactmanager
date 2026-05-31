@@ -31,6 +31,20 @@ struct ContactManagerApp: App {
                 }
             }
         }
+        // Detached single-contact window. The value type is the encoded
+        // `PersistentIdentifier` string (the same scheme used by App
+        // Intents/Spotlight) so it round-trips cleanly through
+        // `OpenWindowAction` and SwiftUI's window-restoration store.
+        WindowGroup(id: "contact", for: String.self) { $encodedID in
+            switch loadState {
+            case .ready(let container):
+                ContactWindowView(encodedID: encodedID)
+                    .modelContainer(container)
+            case .testing, .failed:
+                EmptyView()
+            }
+        }
+        .defaultSize(width: 520, height: 640)
         Settings {
             // The Settings scene gets its own model container injection so
             // the default-group picker can @Query groups. When the store

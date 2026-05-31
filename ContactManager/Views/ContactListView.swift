@@ -19,6 +19,9 @@ struct ContactListView: View {
     /// Called when a `.vcf` file is dropped onto the list from Finder.
     var importVCardURLs: ([URL]) -> Void
 
+    /// SwiftUI's `OpenWindowAction` for the detached-contact window.
+    @Environment(\.openWindow) private var openWindow
+
     var body: some View {
         List(selection: $selection) {
             ForEach(sections) { section in
@@ -28,6 +31,7 @@ struct ContactListView: View {
                             .tag(contact)
                             // Drag a row to Finder to write `<Name>.vcf`.
                             .draggable(transfer(for: contact))
+                            .contextMenu { rowContextMenu(for: contact) }
                     }
                 }
             }
@@ -82,6 +86,23 @@ struct ContactListView: View {
             suggestedName: VCardTransfer.suggestedFilename(for: contact.fullName),
             text: VCard.card(for: contact)
         )
+    }
+
+    @ViewBuilder
+    private func rowContextMenu(for contact: Contact) -> some View {
+        Button("Open in New Window") {
+            // The detached window resolves the contact via its encoded
+            // `PersistentIdentifier` — the same scheme used by App
+            // Intents/Spotlight, so closed windows can survive a relaunch
+            // (or fail gracefully if the contact was deleted in between).
+            if let encoded = contact.persistentModelID.storedString {
+                openWindow(id: "contact", value: encoded)
+            }
+        }
+        Divider()
+        Button("Delete", role: .destructive) {
+            deleteContact(contact)
+        }
     }
 
     @ViewBuilder
