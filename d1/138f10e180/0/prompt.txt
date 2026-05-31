@@ -1,0 +1,1 @@
+Yes before you check in you need to make sure you run the lint with strict

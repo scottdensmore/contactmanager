@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "d1138f10e180",
+  "strategy": "manual-commit",
+  "branch": "feature/contacts-bridge",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "Makefile"
+  ],
+  "sessions": [
+    {
+      "metadata": "/d1/138f10e180/0/metadata.json",
+      "transcript": "/d1/138f10e180/0/full.jsonl",
+      "content_hash": "/d1/138f10e180/0/content_hash.txt",
+      "prompt": "/d1/138f10e180/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 9,
+    "cache_creation_tokens": 1510,
+    "cache_read_tokens": 677956,
+    "output_tokens": 940,
+    "api_call_count": 4
+  }
+}
