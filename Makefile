@@ -19,8 +19,8 @@ build: ## Build the app
 test: ## Run the test suite
 	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -destination '$(DESTINATION)' test
 
-lint: ## Lint sources with SwiftLint
-	swiftlint lint --quiet
+lint: ## Lint sources with SwiftLint (strict — matches CI; warnings fail)
+	swiftlint lint --quiet --strict
 
 lint-fix: ## Autocorrect SwiftLint violations where possible
 	swiftlint --fix
