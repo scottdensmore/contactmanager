@@ -13,7 +13,6 @@ struct ContactListView: View {
     let totalCount: Int
     @Binding var searchText: String
     @Binding var sortOrder: ContactSortOrder
-    @Binding var isInspectorVisible: Bool
     @Binding var selection: Contact?
     var addContact: () -> Void
     var deleteContact: (Contact) -> Void
@@ -36,18 +35,15 @@ struct ContactListView: View {
             max: LayoutMetrics.listMaxWidth
         )
         .animation(.smooth, value: sortOrder)
-        // Place the search in the toolbar's principal (centered) area so the
-        // field anchors to the middle of the window instead of stretching
-        // across the trailing edge and overlapping the inspector pane.
-        .searchable(text: $searchText, placement: .toolbarPrincipal, prompt: "Search Contacts")
+        .searchable(text: $searchText, prompt: "Search Contacts")
         .overlay { emptyState }
         .onDeleteCommand {
             if let selection { deleteContact(selection) }
         }
         .toolbar {
-            // One cohesive trailing group so the buttons render together in
-            // a single Liquid Glass capsule. The destructive trash button is
-            // gone; `.onDeleteCommand` above still handles ⌫ on selection.
+            // One cohesive trailing group so sort and add render as a single
+            // Liquid Glass capsule. ⌫ on the selected row deletes via
+            // `.onDeleteCommand` above; no trash button needed.
             ToolbarItemGroup(placement: .primaryAction) {
                 Menu {
                     Picker("Sort By", selection: $sortOrder) {
@@ -65,13 +61,6 @@ struct ContactListView: View {
                     Label("New Contact", systemImage: "plus")
                 }
                 .help("New Contact")
-
-                Button {
-                    isInspectorVisible.toggle()
-                } label: {
-                    Label("Inspector", systemImage: "sidebar.right")
-                }
-                .help("Toggle Inspector")
             }
         }
     }

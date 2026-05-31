@@ -24,7 +24,6 @@ struct ContentView: View {
     @State private var errorMessage: String?
     @State private var searchText = ""
     @AppStorage("contactSortOrder") private var sortOrder: ContactSortOrder = .lastName
-    @AppStorage("contactInspectorVisible") private var isInspectorVisible = true
 
     @State private var isImportingVCard = false
     @State private var isExportingVCard = false
@@ -69,41 +68,25 @@ struct ContentView: View {
                 totalCount: scopedContacts.count,
                 searchText: $searchText,
                 sortOrder: $sortOrder,
-                isInspectorVisible: $isInspectorVisible,
                 selection: $selectedContact,
                 addContact: addContact,
                 deleteContact: deleteContact
             )
         } detail: {
-            if let selectedContact {
-                ContactDetailView(contact: selectedContact)
-                    .id(selectedContact.persistentModelID)
-            } else {
-                ContactPlaceholderView()
+            Group {
+                if let selectedContact {
+                    ContactDetailView(contact: selectedContact)
+                        .id(selectedContact.persistentModelID)
+                } else {
+                    ContactPlaceholderView()
+                }
             }
+            // Without this the divider can be dragged left far enough that
+            // the detail toolbar overlaps the contact list column.
+            .navigationSplitViewColumnWidth(min: LayoutMetrics.detailMinWidth, ideal: 520)
         }
-        .inspector(isPresented: $isInspectorVisible) {
-            if let selectedContact {
-                ContactInspectorView(contact: selectedContact)
-                    .id(selectedContact.persistentModelID)
-                    .inspectorColumnWidth(
-                        min: LayoutMetrics.inspectorMinWidth,
-                        ideal: LayoutMetrics.inspectorIdealWidth,
-                        max: LayoutMetrics.inspectorMaxWidth
-                    )
-            } else {
-                ContentUnavailableView(
-                    "No Contact Selected",
-                    systemImage: "sidebar.right",
-                    description: Text("Select a contact to see its details here.")
-                )
-                .inspectorColumnWidth(min: 240, ideal: 300, max: 420)
-            }
-        }
-        // Derived from `LayoutMetrics` so the window minimum stays in sync
-        // with the column minimums, including the inspector when visible.
         .frame(
-            minWidth: LayoutMetrics.windowMinWidth(isInspectorVisible: isInspectorVisible),
+            minWidth: LayoutMetrics.windowMinWidth,
             minHeight: LayoutMetrics.windowMinHeight
         )
         .onAppear {
