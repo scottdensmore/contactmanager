@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "83444e4f716d",
+  "strategy": "manual-commit",
+  "branch": "feature/accessibility-pass",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/Views/AvatarView.swift",
+    "ContactManager/Views/ContactDetailView.swift",
+    "ContactManager/Views/ContactListView.swift",
+    "ContactManager/Views/DuplicatesView.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/83/444e4f716d/0/metadata.json",
+      "transcript": "/83/444e4f716d/0/full.jsonl",
+      "content_hash": "/83/444e4f716d/0/content_hash.txt",
+      "prompt": "/83/444e4f716d/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 27,
+    "cache_creation_tokens": 14915,
+    "cache_read_tokens": 1491000,
+    "output_tokens": 10283,
+    "api_call_count": 17
+  }
+}
