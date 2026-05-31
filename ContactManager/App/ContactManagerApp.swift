@@ -31,6 +31,21 @@ struct ContactManagerApp: App {
                 }
             }
         }
+        Settings {
+            // The Settings scene gets its own model container injection so
+            // the default-group picker can @Query groups. When the store
+            // hasn't loaded we point the user back to the main window
+            // instead of showing an empty preferences pane.
+            switch loadState {
+            case .ready(let container):
+                SettingsView()
+                    .modelContainer(container)
+            case .testing, .failed:
+                Text("Open ContactManager to manage preferences.")
+                    .padding()
+                    .frame(width: 360, height: 120)
+            }
+        }
         .commands {
             CommandGroup(replacing: .newItem) {
                 Button("New Contact") {

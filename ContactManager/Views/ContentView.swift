@@ -24,6 +24,7 @@ struct ContentView: View {
     @State private var errorMessage: String?
     @State private var searchText = ""
     @AppStorage("contactSortOrder") private var sortOrder: ContactSortOrder = .lastName
+    @AppStorage("defaultGroupName") private var defaultGroupName: String = ""
 
     @State private var isImportingVCard = false
     @State private var isExportingVCard = false
@@ -36,6 +37,14 @@ struct ContentView: View {
     private var selectedGroup: ContactGroup? {
         guard case .group(let id) = sidebarSelection else { return nil }
         return groups.first { $0.persistentModelID == id }
+    }
+
+    /// User-configured default group for new contacts when the sidebar is on
+    /// All Contacts. Resolved by name; renaming or deleting the group quietly
+    /// clears the default — see SettingsView for that trade-off.
+    private var defaultGroup: ContactGroup? {
+        guard !defaultGroupName.isEmpty else { return nil }
+        return groups.first { $0.name == defaultGroupName }
     }
 
     /// Contacts shown for the current sidebar selection, before search.
@@ -141,8 +150,10 @@ struct ContentView: View {
 
     private func addContact() {
         do {
-            // New contacts join the currently selected group, if any.
-            let contact = try store.createContact(in: selectedGroup)
+            // New contacts join the currently selected group, or — when no
+            // group is selected — the user's configured default group.
+            let target = selectedGroup ?? defaultGroup
+            let contact = try store.createContact(in: target)
             withAnimation(.snappy) { selectedContact = contact }
         } catch {
             errorMessage = error.localizedDescription
