@@ -57,7 +57,10 @@ enum ContactsBridge {
 
     private static func ensureAccess(store: CNContactStore) async throws {
         switch CNContactStore.authorizationStatus(for: .contacts) {
-        case .authorized: return
+        // `.limited` (macOS 15+) means the user granted access to a subset
+        // of contacts via the system picker; `enumerateContacts` will
+        // return only that subset, which is exactly the behavior we want.
+        case .authorized, .limited: return
         case .denied: throw AccessError.denied
         case .restricted: throw AccessError.restricted
         case .notDetermined:
