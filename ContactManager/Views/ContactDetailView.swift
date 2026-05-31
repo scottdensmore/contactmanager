@@ -133,6 +133,12 @@ struct ContactDetailView: View {
         ) { result in
             handleImport(result)
         }
+        // Drop an image from Finder (or another app) directly on the avatar.
+        .dropDestination(for: URL.self) { urls, _ in
+            guard let url = urls.first else { return false }
+            handleImport(.success(url))
+            return true
+        }
     }
 
     // MARK: - Quick primary info
