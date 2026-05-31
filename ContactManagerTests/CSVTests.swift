@@ -90,6 +90,14 @@ struct CSVTests {
         #expect(CSV.column(forHeader: "Photo") == nil)
     }
 
+    @Test func doesNotConflateOutlookTitleWithJobTitle() {
+        // "Title" in Outlook/Apple exports is the honorific (Mr./Mrs./Dr.),
+        // not the role. It must not map to jobTitle or it would overwrite
+        // a real "Job Title" cell depending on column order.
+        #expect(CSV.column(forHeader: "Title") == nil)
+        #expect(CSV.column(forHeader: "Job Title") == .scalar(.jobTitle))
+    }
+
     @Test func headersAreCaseAndPunctuationInsensitive() {
         #expect(CSV.column(forHeader: "FIRST_NAME") == .scalar(.firstName))
         #expect(CSV.column(forHeader: "first.name") == .scalar(.firstName))

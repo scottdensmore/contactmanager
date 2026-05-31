@@ -216,7 +216,10 @@ enum CSV {
         "displayname": .scalar(.fullName),
         "company": .scalar(.company), "companyname": .scalar(.company),
         "organization": .scalar(.company), "organizationname": .scalar(.company),
-        "jobtitle": .scalar(.jobTitle), "title": .scalar(.jobTitle),
+        // Deliberately not mapping bare "Title": in Outlook/Apple CSV
+        // exports that's the honorific (Mr./Mrs./Dr.), not the role —
+        // mapping it here silently overwrote the real "Job Title".
+        "jobtitle": .scalar(.jobTitle),
         "organizationtitle": .scalar(.jobTitle), "position": .scalar(.jobTitle),
         "notes": .scalar(.notes), "note": .scalar(.notes),
         "birthday": .scalar(.birthday), "dob": .scalar(.birthday),
