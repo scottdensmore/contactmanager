@@ -257,6 +257,9 @@ struct ContactStore {
             try context.save()
             undoManager?.endUndoGrouping()
             undoManager?.setActionName(actionName)
+            // Observed by ContentView to refresh the Spotlight index. Fired
+            // after the save commits so observers see the post-mutation state.
+            NotificationCenter.default.post(name: .contactsDidChange, object: nil)
             return result
         } catch {
             context.rollback()
