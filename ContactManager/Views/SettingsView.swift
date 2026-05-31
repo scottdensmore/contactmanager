@@ -12,10 +12,11 @@ import SwiftUI
 
 struct SettingsView: View {
     @AppStorage("contactSortOrder") private var sortOrder: ContactSortOrder = .lastName
-    /// The default group is stored by name rather than `PersistentIdentifier`
-    /// because PI isn't a friendly `@AppStorage` value; the trade-off is that
-    /// renaming a group silently clears the default.
-    @AppStorage("defaultGroupName") private var defaultGroupName: String = ""
+    /// JSON-encoded `PersistentIdentifier` of the default group, or "" for
+    /// "no group". Storing the PID (not the group's name) means renaming the
+    /// group keeps the preference pointed at the right model and avoids
+    /// ambiguity when two groups share a name.
+    @AppStorage("defaultGroupID") private var defaultGroupID: String = ""
 
     @Query(sort: \ContactGroup.name) private var groups: [ContactGroup]
 
@@ -28,12 +29,13 @@ struct SettingsView: View {
                     }
                 }
 
-                Picker("New Contact Joins", selection: $defaultGroupName) {
+                Picker("New Contact Joins", selection: $defaultGroupID) {
                     Text("No Group").tag("")
                     if !groups.isEmpty {
                         Divider()
                         ForEach(groups) { group in
-                            Text(group.displayName).tag(group.name)
+                            Text(group.displayName)
+                                .tag(group.persistentModelID.storedString ?? "")
                         }
                     }
                 }
@@ -43,11 +45,28 @@ struct SettingsView: View {
             Section {
                 Button("Restore Defaults", role: .destructive) {
                     sortOrder = .lastName
-                    defaultGroupName = ""
+                    defaultGroupID = ""
                 }
             }
         }
         .formStyle(.grouped)
         .frame(width: 440, height: 240)
+        // Prune the preference if its target group was renamed (the encoded
+        // PID stays valid) or deleted (the lookup now misses) — keeps the
+        // picker's selection consistent with what's actually on disk.
+        .onChange(of: groups) { _, _ in pruneStaleDefaultGroup() }
+        .onAppear { pruneStaleDefaultGroup() }
+    }
+
+    private func pruneStaleDefaultGroup() {
+        guard !defaultGroupID.isEmpty,
+              let id = PersistentIdentifier.decode(stored: defaultGroupID)
+        else {
+            if !defaultGroupID.isEmpty { defaultGroupID = "" }
+            return
+        }
+        if !groups.contains(where: { $0.persistentModelID == id }) {
+            defaultGroupID = ""
+        }
     }
 }

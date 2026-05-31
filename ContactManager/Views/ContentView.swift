@@ -24,7 +24,7 @@ struct ContentView: View {
     @State private var errorMessage: String?
     @State private var searchText = ""
     @AppStorage("contactSortOrder") private var sortOrder: ContactSortOrder = .lastName
-    @AppStorage("defaultGroupName") private var defaultGroupName: String = ""
+    @AppStorage("defaultGroupID") private var defaultGroupID: String = ""
 
     @State private var isImportingVCard = false
     @State private var isExportingVCard = false
@@ -39,12 +39,24 @@ struct ContentView: View {
         return groups.first { $0.persistentModelID == id }
     }
 
-    /// User-configured default group for new contacts when the sidebar is on
-    /// All Contacts. Resolved by name; renaming or deleting the group quietly
-    /// clears the default — see SettingsView for that trade-off.
+    /// User-configured default group for new contacts when the sidebar is
+    /// on All Contacts. Resolved by encoded `PersistentIdentifier` so it
+    /// survives a rename; if the target group was deleted the lookup
+    /// returns nil and SettingsView prunes the preference on next view.
     private var defaultGroup: ContactGroup? {
-        guard !defaultGroupName.isEmpty else { return nil }
-        return groups.first { $0.name == defaultGroupName }
+        guard let id = PersistentIdentifier.decode(stored: defaultGroupID) else { return nil }
+        return groups.first { $0.persistentModelID == id }
+    }
+
+    /// Where a new contact should land. The default group is only used when
+    /// the sidebar is explicitly on All Contacts — never as a silent rescue
+    /// from a `.group(...)` selection whose target was deleted, which would
+    /// surprise the user by adding their contact to an unrelated group.
+    private var groupForNewContact: ContactGroup? {
+        switch sidebarSelection {
+        case .group: selectedGroup
+        case .allContacts, .none: defaultGroup
+        }
     }
 
     /// Contacts shown for the current sidebar selection, before search.
@@ -150,10 +162,7 @@ struct ContentView: View {
 
     private func addContact() {
         do {
-            // New contacts join the currently selected group, or — when no
-            // group is selected — the user's configured default group.
-            let target = selectedGroup ?? defaultGroup
-            let contact = try store.createContact(in: target)
+            let contact = try store.createContact(in: groupForNewContact)
             withAnimation(.snappy) { selectedContact = contact }
         } catch {
             errorMessage = error.localizedDescription
