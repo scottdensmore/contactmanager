@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "4b87609dff72",
+  "strategy": "manual-commit",
+  "branch": "feature/csv-import",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/App/ContactManagerApp.swift",
+    "ContactManager/Support/CSV.swift",
+    "ContactManager/Views/ContentView+Import.swift",
+    "ContactManager/Views/ContentView.swift",
+    "ContactManagerTests/CSVTests.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/4b/87609dff72/0/metadata.json",
+      "transcript": "/4b/87609dff72/0/full.jsonl",
+      "content_hash": "/4b/87609dff72/0/content_hash.txt",
+      "prompt": "/4b/87609dff72/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 57,
+    "cache_creation_tokens": 55727,
+    "cache_read_tokens": 11922246,
+    "output_tokens": 39915,
+    "api_call_count": 42
+  }
+}
