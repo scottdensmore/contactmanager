@@ -16,6 +16,8 @@ struct ContactListView: View {
     @Binding var selection: Contact?
     var addContact: () -> Void
     var deleteContact: (Contact) -> Void
+    /// Called when a `.vcf` file is dropped onto the list from Finder.
+    var importVCardURLs: ([URL]) -> Void
 
     var body: some View {
         List(selection: $selection) {
@@ -24,6 +26,8 @@ struct ContactListView: View {
                     ForEach(section.contacts) { contact in
                         ContactRow(contact: contact)
                             .tag(contact)
+                            // Drag a row to Finder to write `<Name>.vcf`.
+                            .draggable(transfer(for: contact))
                     }
                 }
             }
@@ -37,6 +41,14 @@ struct ContactListView: View {
         .animation(.smooth, value: sortOrder)
         .searchable(text: $searchText, prompt: "Search Contacts")
         .overlay { emptyState }
+        // Accept `.vcf` drops from Finder. Filtering on extension keeps
+        // arbitrary file drops from triggering a no-op import.
+        .dropDestination(for: URL.self) { urls, _ in
+            let vcards = urls.filter { $0.pathExtension.lowercased() == "vcf" }
+            guard !vcards.isEmpty else { return false }
+            importVCardURLs(vcards)
+            return true
+        }
         .onDeleteCommand {
             if let selection { deleteContact(selection) }
         }
@@ -63,6 +75,13 @@ struct ContactListView: View {
                 .help("New Contact")
             }
         }
+    }
+
+    private func transfer(for contact: Contact) -> VCardTransfer {
+        VCardTransfer(
+            suggestedName: VCardTransfer.suggestedFilename(for: contact.fullName),
+            text: VCard.card(for: contact)
+        )
     }
 
     @ViewBuilder

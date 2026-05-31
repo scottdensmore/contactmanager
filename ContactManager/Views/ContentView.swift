@@ -91,7 +91,8 @@ struct ContentView: View {
                 sortOrder: $sortOrder,
                 selection: $selectedContact,
                 addContact: addContact,
-                deleteContact: deleteContact
+                deleteContact: deleteContact,
+                importVCardURLs: importVCardURLs
             )
         } detail: {
             Group {
@@ -239,6 +240,34 @@ struct ContentView: View {
     }
 
     // MARK: - vCard import
+
+    /// Imports one or more vCard files dropped onto the contact list.
+    private func importVCardURLs(_ urls: [URL]) {
+        Task {
+            let parsed: [ParsedContact] = await Task.detached {
+                var all: [ParsedContact] = []
+                for url in urls {
+                    let didAccess = url.startAccessingSecurityScopedResource()
+                    defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
+                    guard let data = try? Data(contentsOf: url),
+                          let text = String(data: data, encoding: .utf8)
+                    else { continue }
+                    all.append(contentsOf: VCard.parse(text))
+                }
+                return all
+            }.value
+
+            guard !parsed.isEmpty else {
+                errorMessage = "No contacts were found in that file."
+                return
+            }
+            do {
+                try store.importContacts(parsed)
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+        }
+    }
 
     private func handleImport(_ result: Result<URL, Error>) {
         switch result {
