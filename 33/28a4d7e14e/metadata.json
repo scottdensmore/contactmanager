@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "3328a4d7e14e",
+  "strategy": "manual-commit",
+  "branch": "feature/settings-scene",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/Support/PersistentIdentifierEncoding.swift",
+    "ContactManager/Views/ContentView.swift",
+    "ContactManager/Views/SettingsView.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/33/28a4d7e14e/0/metadata.json",
+      "transcript": "/33/28a4d7e14e/0/full.jsonl",
+      "content_hash": "/33/28a4d7e14e/0/content_hash.txt",
+      "prompt": "/33/28a4d7e14e/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 18,
+    "cache_creation_tokens": 10493,
+    "cache_read_tokens": 1655723,
+    "output_tokens": 8764,
+    "api_call_count": 13
+  }
+}
