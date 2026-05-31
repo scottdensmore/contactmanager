@@ -73,7 +73,7 @@ struct DuplicatesView: View {
                             Button("Merge") { merge(group.contacts) }
                                 .buttonStyle(.borderedProminent)
                                 .accessibilityLabel(
-                                    "Merge \(group.contacts.count) duplicate contacts"
+                                    Text("Merge ^[\(group.contacts.count) duplicate contact](inflect: true)")
                                 )
                         }
                     }
