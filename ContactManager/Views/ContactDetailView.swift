@@ -3,9 +3,10 @@
 //  ContactManager
 //
 //  The detail column: an identity header (photo well + name/role + quick
-//  primary email/phone) followed by an editable form. Text fields bind
-//  directly to the SwiftData model (autosaved by the context); every other
-//  mutation goes through ContactStore.
+//  primary email/phone) followed by an editable form. Text fields and the
+//  birthday toggle bind directly to the SwiftData model (autosaved by the
+//  context); structural and group/photo/field mutations go through
+//  ContactStore so they're atomic, undoable, and rolled back on failure.
 //
 
 import AppKit
