@@ -72,6 +72,9 @@ struct DuplicatesView: View {
                             Spacer()
                             Button("Merge") { merge(group.contacts) }
                                 .buttonStyle(.borderedProminent)
+                                .accessibilityLabel(
+                                    "Merge \(group.contacts.count) duplicate contacts"
+                                )
                         }
                     }
                 }
@@ -109,5 +112,6 @@ private struct DuplicateRow: View {
             }
         }
         .padding(.vertical, 2)
+        .accessibilityElement(children: .combine)
     }
 }

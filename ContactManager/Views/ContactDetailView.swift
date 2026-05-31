@@ -94,6 +94,7 @@ struct ContactDetailView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(contact.fullName)
                     .font(.title2.weight(.semibold))
+                    .accessibilityAddTraits(.isHeader)
                 let role = [contact.jobTitle, contact.company]
                     .filter { !$0.isEmpty }
                     .joined(separator: " · ")
@@ -152,13 +153,20 @@ struct ContactDetailView: View {
 
     private func quickRow(label: String, value: String) -> some View {
         HStack {
-            Text(label)
-                .foregroundStyle(.secondary)
-            Spacer()
-            Text(value)
-                .textSelection(.enabled)
-                .lineLimit(1)
-                .truncationMode(.middle)
+            // Combined so VoiceOver reads "Email, name@example.com" as a
+            // single element, instead of "Email" and "name@example.com"
+            // separately. The copy button stays its own focusable element.
+            HStack {
+                Text(label)
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Text(value)
+                    .textSelection(.enabled)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+            }
+            .accessibilityElement(children: .combine)
+
             Button {
                 copyToPasteboard(value)
             } label: {
@@ -297,9 +305,14 @@ private struct ContactFieldRow: View {
             }
             .labelsHidden()
             .fixedSize()
+            // labelsHidden strips the picker's visible label, but VoiceOver
+            // then only reads the current selection — confusing without
+            // context. Restore an explicit a11y label per kind.
+            .accessibilityLabel(field.kind == .email ? "Email label" : "Phone label")
 
             TextField(placeholder, text: $field.value)
                 .textContentType(field.kind == .email ? .emailAddress : .telephoneNumber)
+                .accessibilityLabel(field.kind == .email ? "Email address" : "Phone number")
         }
     }
 
