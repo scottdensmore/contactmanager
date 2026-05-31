@@ -30,6 +30,7 @@ struct ContentView: View {
     @AppStorage("defaultGroupID") private var defaultGroupID: String = ""
 
     @State private var isImportingVCard = false
+    @State private var isImportingCSV = false
     @State private var isExportingVCard = false
     @State private var exportDocument = VCardDocument(text: "")
     @State private var showingDuplicates = false
@@ -130,6 +131,9 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .importVCardRequested)) { _ in
             isImportingVCard = true
         }
+        .onReceive(NotificationCenter.default.publisher(for: .importCSVRequested)) { _ in
+            isImportingCSV = true
+        }
         .onReceive(NotificationCenter.default.publisher(for: .exportVCardRequested)) { _ in
             exportDocument = VCardDocument(text: store.exportVCards(contacts))
             isExportingVCard = true
@@ -158,6 +162,9 @@ struct ContentView: View {
         }
         .fileImporter(isPresented: $isImportingVCard, allowedContentTypes: [.vCard]) { result in
             handleImport(result)
+        }
+        .fileImporter(isPresented: $isImportingCSV, allowedContentTypes: [.commaSeparatedText]) { result in
+            handleCSVImport(result)
         }
         .fileExporter(
             isPresented: $isExportingVCard,

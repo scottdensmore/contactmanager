@@ -12,6 +12,12 @@
 import Foundation
 import SwiftUI
 
+private enum CSVImportOutcome {
+    case parsed([ParsedContact])
+    case unrecognized
+    case unreadable
+}
+
 extension ContentView {
     // MARK: - System Contacts import
 
@@ -66,6 +72,52 @@ extension ContentView {
                 try store.importContacts(parsed)
             } catch {
                 errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    // MARK: - CSV import
+
+    func handleCSVImport(_ result: Result<URL, Error>) {
+        switch result {
+        case .failure(let error):
+            errorMessage = error.localizedDescription
+        case .success(let url):
+            Task {
+                let outcome: CSVImportOutcome = await Task.detached {
+                    let didAccess = url.startAccessingSecurityScopedResource()
+                    defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
+                    guard let data = try? Data(contentsOf: url) else { return .unreadable }
+                    // CSV exports are commonly UTF-8 but Excel still emits
+                    // UTF-16 with a BOM; try both before giving up.
+                    let text: String
+                    if let utf8 = String(data: data, encoding: .utf8) {
+                        text = utf8
+                    } else if let utf16 = String(data: data, encoding: .utf16) {
+                        text = utf16
+                    } else {
+                        return .unreadable
+                    }
+                    guard let parsed = CSV.parseContacts(text) else { return .unrecognized }
+                    return .parsed(parsed)
+                }.value
+
+                switch outcome {
+                case .unreadable:
+                    errorMessage = "That file couldn't be read as a CSV."
+                case .unrecognized:
+                    errorMessage = "Couldn't recognize the CSV — the header row " +
+                        "doesn't include any known contact columns (e.g. First Name, " +
+                        "Email, Phone)."
+                case .parsed(let contacts) where contacts.isEmpty:
+                    errorMessage = "No contacts were found in that file."
+                case .parsed(let contacts):
+                    do {
+                        try store.importContacts(contacts)
+                    } catch {
+                        errorMessage = error.localizedDescription
+                    }
+                }
             }
         }
     }
