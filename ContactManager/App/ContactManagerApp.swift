@@ -127,10 +127,7 @@ struct ContactManagerApp: App {
         // Publish the container for App Intents (Shortcuts/Spotlight queries)
         // and kick off an initial Spotlight reindex.
         EntityModelContainer.shared = container
-        Task.detached {
-            let entities = await (try? ContactEntityQuery().allEntities()) ?? []
-            await SpotlightIndexer.reindex(entities)
-        }
+        Task.detached { await SpotlightIndexer.shared.reindex() }
         return .ready(container)
     }
 

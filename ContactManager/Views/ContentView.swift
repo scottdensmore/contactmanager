@@ -144,9 +144,10 @@ struct ContentView: View {
             selectContact(byEncodedID: note.userInfo?["id"] as? String)
         }
         .onReceive(NotificationCenter.default.publisher(for: .contactsDidChange)) { _ in
-            // The @Query above will have refreshed; snapshot it for Spotlight.
-            let snapshot = contacts.map(ContactEntity.init(contact:))
-            Task { await SpotlightIndexer.reindex(snapshot) }
+            // The indexer fetches its own snapshot — `@Query`'s post-save
+            // refresh is asynchronous and can still reflect pre-save state
+            // when this notification fires.
+            Task { await SpotlightIndexer.shared.reindex() }
         }
         .onContinueUserActivity(CSSearchableItemActionType) { activity in
             let id = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String

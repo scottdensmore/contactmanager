@@ -39,17 +39,19 @@ struct ContactEntity: AppEntity, IndexedEntity {
         attrs.contentDescription = subtitleText
         if !emails.isEmpty { attrs.emailAddresses = emails }
         if !phones.isEmpty { attrs.phoneNumbers = phones }
-        if !company.isEmpty { attrs.organizations = [company] }
-        if !jobTitle.isEmpty { attrs.title = jobTitle }
+        if !company.isBlank { attrs.organizations = [company] }
+        if !jobTitle.isBlank { attrs.title = jobTitle }
         return attrs
     }
 
     /// Subtitle preferences match the contact list row: primary email, then
-    /// primary phone, then company. Returns `nil` if everything is empty.
+    /// primary phone, then company. Whitespace-only values are treated as
+    /// empty (same as `Contact.subtitle`) so Shortcuts/Spotlight never show
+    /// a blank-looking subtitle.
     private var subtitleText: String? {
-        if let first = emails.first, !first.isEmpty { return first }
-        if let first = phones.first, !first.isEmpty { return first }
-        if !company.isEmpty { return company }
+        if let first = emails.first(where: { !$0.isBlank }) { return first }
+        if let first = phones.first(where: { !$0.isBlank }) { return first }
+        if !company.isBlank { return company }
         return nil
     }
 }
@@ -62,7 +64,17 @@ extension ContactEntity {
         displayName = contact.fullName
         company = contact.company
         jobTitle = contact.jobTitle
-        emails = contact.emails.map(\.value).filter { !$0.isEmpty }
-        phones = contact.phones.map(\.value).filter { !$0.isEmpty }
+        // Drop blank/whitespace-only values so Spotlight doesn't index
+        // empty rows. Matches `Contact.primaryEmail/primaryPhone` semantics.
+        emails = contact.emails.map(\.value).filter { !$0.isBlank }
+        phones = contact.phones.map(\.value).filter { !$0.isBlank }
+    }
+}
+
+private extension String {
+    /// Treats whitespace-only strings as empty, matching how the rest of
+    /// the codebase decides whether a contact field is "set".
+    var isBlank: Bool {
+        trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 }

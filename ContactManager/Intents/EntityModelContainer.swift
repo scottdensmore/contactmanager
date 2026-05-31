@@ -7,14 +7,22 @@
 //  SwiftUI environment; the app sets this once after `loadContainer()`
 //  succeeds and the entity query reads it from any actor.
 //
+//  Access is guarded by an `OSAllocatedUnfairLock` so concurrent reads
+//  during a launch-time setup are well-defined. The lock is held only
+//  long enough to read or write the container reference itself.
+//
 
 import Foundation
+import os
 import SwiftData
 
 enum EntityModelContainer {
+    private static let storage = OSAllocatedUnfairLock<ModelContainer?>(initialState: nil)
+
     /// The shared container, populated by `ContactManagerApp` after the
     /// store loads. `nil` if loading failed or we're running under tests.
-    /// Reads are nominally racy but in practice the container is set once
-    /// during app launch before any query runs.
-    nonisolated(unsafe) static var shared: ModelContainer?
+    static var shared: ModelContainer? {
+        get { storage.withLock { $0 } }
+        set { storage.withLock { $0 = newValue } }
+    }
 }
