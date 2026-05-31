@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "e884a2f43a44",
+  "strategy": "manual-commit",
+  "branch": "feature/accessibility-pass",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager/Views/DuplicatesView.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e8/84a2f43a44/0/metadata.json",
+      "transcript": "/e8/84a2f43a44/0/full.jsonl",
+      "content_hash": "/e8/84a2f43a44/0/content_hash.txt",
+      "prompt": "/e8/84a2f43a44/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 10,
+    "cache_creation_tokens": 3117,
+    "cache_read_tokens": 490848,
+    "output_tokens": 2397,
+    "api_call_count": 5
+  }
+}
