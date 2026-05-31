@@ -38,6 +38,10 @@ struct AvatarView: View {
         }
         .frame(width: size, height: size)
         .clipShape(Circle())
+        // The avatar is always shown next to the contact's name (in list
+        // rows, the detail header, duplicate rows); treating it as
+        // decorative keeps VoiceOver from announcing a redundant "Image".
+        .accessibilityHidden(true)
         .task(id: contact.photoData) {
             let decoded = contact.photoData.flatMap { NSImage(data: $0) }
             // Animate the actual swap, which happens when `photo` updates.

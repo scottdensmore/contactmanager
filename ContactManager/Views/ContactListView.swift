@@ -103,5 +103,8 @@ struct ContactRow: View {
             }
         }
         .padding(.vertical, 2)
+        // Read the row as a single VoiceOver element ("John Smith, name@example.com")
+        // rather than three (avatar + name + subtitle).
+        .accessibilityElement(children: .combine)
     }
 }
