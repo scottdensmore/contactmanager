@@ -68,6 +68,9 @@ struct ContactManagerApp: App {
                     NotificationCenter.default.post(name: .importVCardRequested, object: nil)
                 }
                 .keyboardShortcut("i", modifiers: [.command, .shift])
+                Button("Import CSV…") {
+                    NotificationCenter.default.post(name: .importCSVRequested, object: nil)
+                }
                 Button("Export vCard…") {
                     NotificationCenter.default.post(name: .exportVCardRequested, object: nil)
                 }
@@ -175,6 +178,7 @@ extension Notification.Name {
     /// Posted by menu commands; observed by `ContentView`.
     static let newContactRequested = Notification.Name("ContactManager.newContactRequested")
     static let importVCardRequested = Notification.Name("ContactManager.importVCardRequested")
+    static let importCSVRequested = Notification.Name("ContactManager.importCSVRequested")
     static let importSystemContactsRequested = Notification.Name("ContactManager.importSystemContactsRequested")
     static let exportVCardRequested = Notification.Name("ContactManager.exportVCardRequested")
     static let findDuplicatesRequested = Notification.Name("ContactManager.findDuplicatesRequested")
