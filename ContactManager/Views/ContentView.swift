@@ -131,6 +131,9 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .findDuplicatesRequested)) { _ in
             showingDuplicates = true
         }
+        .onReceive(NotificationCenter.default.publisher(for: .importSystemContactsRequested)) { _ in
+            importSystemContacts()
+        }
         .sheet(isPresented: $showingDuplicates) {
             DuplicatesView()
         }
@@ -205,6 +208,33 @@ struct ContentView: View {
             if wasSelected { sidebarSelection = .allContacts }
         } catch {
             errorMessage = error.localizedDescription
+        }
+    }
+
+    // MARK: - System Contacts import
+
+    private func importSystemContacts() {
+        Task {
+            // Permission prompt + fetch + mapping all run off the main actor;
+            // only the final insert hops back here.
+            let parsed: [ParsedContact]
+            do {
+                parsed = try await Task.detached(priority: .userInitiated) {
+                    try await ContactsBridge.fetchAllParsed()
+                }.value
+            } catch {
+                errorMessage = error.localizedDescription
+                return
+            }
+            guard !parsed.isEmpty else {
+                errorMessage = "No contacts were found in your system Contacts."
+                return
+            }
+            do {
+                try store.importContacts(parsed)
+            } catch {
+                errorMessage = error.localizedDescription
+            }
         }
     }
 
