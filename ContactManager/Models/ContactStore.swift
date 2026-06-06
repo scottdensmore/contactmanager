@@ -254,12 +254,46 @@ struct ContactStore {
         undoManager?.beginUndoGrouping()
         do {
             let result = try body()
+
+            // Snapshot the context's pending changes *before* the save clears
+            // them, so the notification can carry a precise delta and the
+            // Spotlight index updates incrementally rather than rebuilding the
+            // whole thing on every edit.
+            let touched = context.insertedModelsArray + context.changedModelsArray
+            let deletedModels = context.deletedModelsArray
+            // Deleted contacts already hold permanent ids (they were saved
+            // before), so read them now — after the save the objects are gone.
+            let deletedIDs = Set(
+                deletedModels.compactMap { ($0 as? Contact)?.persistentModelID.storedString }
+            )
+            // A field can be deleted while its owning contact survives (Delete
+            // Field, or merge folding duplicates). Capture those owners now,
+            // while the inverse relationship is still intact, so the contact's
+            // emails/phones get refreshed.
+            let survivingFieldOwnerIDs = Set(
+                deletedModels.compactMap { ($0 as? ContactField)?.contact?.persistentModelID.storedString }
+            )
+
             try context.save()
             undoManager?.endUndoGrouping()
             undoManager?.setActionName(actionName)
+
+            // Read updated ids *after* the save: a freshly inserted contact's
+            // pre-save id is temporary and wouldn't match a later fetch-by-id;
+            // the save promotes it to the permanent identifier in place.
+            var updatedIDs = Set(touched.compactMap(Self.affectedContactID))
+            updatedIDs.formUnion(survivingFieldOwnerIDs)
+            updatedIDs.subtract(deletedIDs) // never re-index a contact we just deleted
+            let change = ContactChange(updatedIDs: updatedIDs, deletedIDs: deletedIDs)
+
             // Observed by ContentView to refresh the Spotlight index. Fired
-            // after the save commits so observers see the post-mutation state.
-            NotificationCenter.default.post(name: .contactsDidChange, object: nil)
+            // after the save commits so observers see the post-mutation state,
+            // and carries the delta so the refresh stays incremental.
+            NotificationCenter.default.post(
+                name: .contactsDidChange,
+                object: nil,
+                userInfo: [ContactChange.userInfoKey: change]
+            )
             return result
         } catch {
             context.rollback()
@@ -267,6 +301,38 @@ struct ContactStore {
             throw error
         }
     }
+
+    /// Maps a touched model to the contact whose Spotlight entry it affects: a
+    /// `Contact` directly, or a `ContactField` via its owner. Other models
+    /// (e.g. `ContactGroup`) don't appear in the index and map to `nil`.
+    private static func affectedContactID(of model: any PersistentModel) -> String? {
+        switch model {
+        case let contact as Contact:
+            contact.persistentModelID.storedString
+        case let field as ContactField:
+            field.contact?.persistentModelID.storedString
+        default:
+            nil
+        }
+    }
+}
+
+/// The set of contacts a `ContactStore` mutation touched, delivered in the
+/// `.contactsDidChange` notification so observers (the Spotlight indexer) can
+/// update incrementally. Ids are encoded `PersistentIdentifier`s — the same
+/// scheme `ContactEntity.id` uses, so they round-trip through a fetch-by-id.
+struct ContactChange {
+    /// Contacts created or edited — their Spotlight entry needs refreshing.
+    var updatedIDs: Set<String>
+    /// Contacts deleted — their Spotlight entry must be removed.
+    var deletedIDs: Set<String>
+
+    /// True when the mutation touched no indexable contact (e.g. renaming a
+    /// group), letting observers skip work entirely.
+    var isEmpty: Bool { updatedIDs.isEmpty && deletedIDs.isEmpty }
+
+    /// `userInfo` key the change rides under in `.contactsDidChange`.
+    static let userInfoKey = "ContactManager.contactChange"
 }
 
 enum ContactStoreError: LocalizedError {

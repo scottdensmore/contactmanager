@@ -15,8 +15,16 @@ import SwiftData
 extension PersistentIdentifier {
     /// JSON-encoded string suitable for `@AppStorage`. Returns `nil` only
     /// if encoding unexpectedly fails (shouldn't in practice).
+    ///
+    /// Keys are sorted so the *same* identifier always encodes to the *same*
+    /// string. Without this, `PersistentIdentifier`'s Codable output reorders
+    /// keys between encodings (even within one process), and any code that
+    /// compares two separately-encoded ids by string — Spotlight's
+    /// `entities(for:)` lookup, incremental re-index matching — would miss.
     var storedString: String? {
-        guard let data = try? JSONEncoder().encode(self) else { return nil }
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        guard let data = try? encoder.encode(self) else { return nil }
         return String(data: data, encoding: .utf8)
     }
 

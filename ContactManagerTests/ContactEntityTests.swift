@@ -88,4 +88,15 @@ struct ContactEntityTests {
         let decoded = try #require(PersistentIdentifier.decode(stored: entity.id))
         #expect(decoded == contact.persistentModelID)
     }
+
+    @Test func encodedIdIsStableAcrossEncodings() throws {
+        // Spotlight's incremental re-index and `entities(for:)` lookup match
+        // contacts by comparing two separately-encoded ids as strings, so the
+        // same identifier must always encode to the same string. Unwrap both
+        // so a `nil` encoding fails the test instead of trivially matching.
+        let id = sampleContact().persistentModelID
+        let first = try #require(id.storedString)
+        let second = try #require(id.storedString)
+        #expect(first == second)
+    }
 }

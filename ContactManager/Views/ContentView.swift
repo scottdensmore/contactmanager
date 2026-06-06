@@ -166,11 +166,17 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .openContactRequested)) { note in
             selectContact(byEncodedID: note.userInfo?["id"] as? String)
         }
-        .onReceive(NotificationCenter.default.publisher(for: .contactsDidChange)) { _ in
-            // The indexer fetches its own snapshot — `@Query`'s post-save
+        .onReceive(NotificationCenter.default.publisher(for: .contactsDidChange)) { note in
+            // Apply just the mutation's delta — the indexer fetches the
+            // affected contacts fresh by id, since `@Query`'s post-save
             // refresh is asynchronous and can still reflect pre-save state
-            // when this notification fires.
-            Task { await SpotlightIndexer.shared.reindex() }
+            // when this notification fires. A post without a payload falls
+            // back to a full reindex.
+            if let change = note.userInfo?[ContactChange.userInfoKey] as? ContactChange {
+                Task { await SpotlightIndexer.shared.apply(change) }
+            } else {
+                Task { await SpotlightIndexer.shared.reindex() }
+            }
         }
         .onContinueUserActivity(CSSearchableItemActionType) { activity in
             let id = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String
