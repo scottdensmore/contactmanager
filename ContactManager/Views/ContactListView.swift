@@ -22,6 +22,9 @@ struct ContactListView: View {
     /// SwiftUI's `OpenWindowAction` for the detached-contact window.
     @Environment(\.openWindow) private var openWindow
 
+    /// Drives the search field's focus so the Find command (⌘F) can jump to it.
+    @FocusState private var searchFocused: Bool
+
     var body: some View {
         List(selection: $selection) {
             ForEach(sections) { section in
@@ -44,6 +47,11 @@ struct ContactListView: View {
         )
         .animation(.smooth, value: sortOrder)
         .searchable(text: $searchText, prompt: "Search Contacts")
+        .searchFocused($searchFocused)
+        // The Find menu command (⌘F) routes here to focus the search field.
+        .onReceive(NotificationCenter.default.publisher(for: .focusSearchRequested)) { _ in
+            searchFocused = true
+        }
         .overlay { emptyState }
         // Accept `.vcf` drops from Finder. Filtering on extension keeps
         // arbitrary file drops from triggering a no-op import.
