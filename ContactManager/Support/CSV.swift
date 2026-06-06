@@ -8,9 +8,9 @@
 //  pipeline used by vCard and the macOS Contacts bridge.
 //
 //  Scope choices for the first version:
-//  - Birthdays are accepted in ISO `yyyy-MM-dd` form only (Google's
-//    export format). Locale-dependent forms fall through silently —
-//    same behavior as the vCard reader.
+//  - Birthdays are parsed by the shared `Birthday` helper (UTC-anchored,
+//    accepting `YYYY-MM-DD`, `YYYYMMDD`, and the year-less `--MMDD` forms);
+//    locale-dependent forms fall through silently, same as the vCard reader.
 //  - "Address 1 - …" columns from Google fill the single address slot
 //    we model. Address 2+ is intentionally dropped; we don't have
 //    multi-address support today.
@@ -171,16 +171,8 @@ enum CSV {
         }
     }
 
-    private static let isoBirthdayFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.dateFormat = "yyyy-MM-dd"
-        formatter.timeZone = .autoupdatingCurrent
-        return formatter
-    }()
-
     private static func parseBirthday(_ value: String) -> Date? {
-        isoBirthdayFormatter.date(from: value)
+        Birthday.parse(value)
     }
 
     // MARK: - Header → column

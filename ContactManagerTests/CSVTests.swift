@@ -132,11 +132,21 @@ struct CSVTests {
         #expect(row.phones.count == 1)
         #expect(row.phones[0].value == "+1 555 0100")
         #expect(row.phones[0].label == .mobile)
-        let parts = try Calendar(identifier: .gregorian)
-            .dateComponents([.year, .month, .day], from: #require(row.birthday))
-        #expect(parts.year == 1815)
-        #expect(parts.month == 12)
-        #expect(parts.day == 10)
+        // Read back through the UTC-anchored calendar the importer uses, so
+        // the assertion doesn't depend on the test machine's time zone.
+        let fields = try Birthday.fields(of: #require(row.birthday))
+        #expect(fields.year == 1815)
+        #expect(fields.month == 12)
+        #expect(fields.day == 10)
+    }
+
+    @Test func parsesYearlessBirthdayColumn() throws {
+        let csv = "First Name,Birthday\nNoYear,--04-15"
+        let parsed = try #require(CSV.parseContacts(csv))
+        let fields = try Birthday.fields(of: #require(parsed.first?.birthday))
+        #expect(fields.year == nil)
+        #expect(fields.month == 4)
+        #expect(fields.day == 15)
     }
 
     @Test func parsesOutlookExportWithLabeledPhones() throws {

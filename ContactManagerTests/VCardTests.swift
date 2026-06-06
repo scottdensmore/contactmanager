@@ -58,6 +58,70 @@ struct VCardTests {
         #expect(card.phones.first?.label == .mobile)
     }
 
+    @Test func roundTripsBirthdayWithYear() throws {
+        let contact = Contact(firstName: "Ada", lastName: "Lovelace")
+        contact.birthday = Birthday.date(year: 1815, month: 12, day: 10)
+
+        let card = VCard.card(for: contact)
+        #expect(card.contains("BDAY:1815-12-10"))
+
+        let parsed = try #require(VCard.parse(card).first)
+        let birthday = try #require(parsed.birthday)
+        let fields = Birthday.fields(of: birthday)
+        #expect(fields.year == 1815)
+        #expect(fields.month == 12)
+        #expect(fields.day == 10)
+    }
+
+    @Test func roundTripsYearlessBirthday() throws {
+        // A birthday with no year survives as the year-less --MMDD form
+        // instead of being silently dropped or gaining a fabricated year.
+        let contact = Contact(firstName: "No", lastName: "Year")
+        contact.birthday = Birthday.date(year: nil, month: 4, day: 15)
+
+        let card = VCard.card(for: contact)
+        #expect(card.contains("BDAY:--0415"))
+
+        let parsed = try #require(VCard.parse(card).first)
+        let birthday = try #require(parsed.birthday)
+        let fields = Birthday.fields(of: birthday)
+        #expect(fields.year == nil)
+        #expect(fields.month == 4)
+        #expect(fields.day == 15)
+    }
+
+    @Test func keepsAHistoricalYearThatResemblesTheSentinel() throws {
+        // Regression: the no-year sentinel must be impossible for a real
+        // birthday, so a genuine historical year keeps its year rather than
+        // collapsing to the year-less form.
+        let contact = Contact(firstName: "Historical", lastName: "Figure")
+        contact.birthday = Birthday.date(year: 1604, month: 6, day: 1)
+
+        let card = VCard.card(for: contact)
+        #expect(card.contains("BDAY:1604-06-01"))
+
+        let parsed = try #require(VCard.parse(card).first)
+        let fields = try Birthday.fields(of: #require(parsed.birthday))
+        #expect(fields.year == 1604)
+    }
+
+    @Test func parsesYearlessBirthdayInExtendedForm() throws {
+        // The extended --MM-DD spelling (with a separator) parses too.
+        let text = """
+        BEGIN:VCARD
+        VERSION:3.0
+        FN:Some One
+        BDAY:--12-25
+        END:VCARD
+        """
+        let parsed = try #require(VCard.parse(text).first)
+        let birthday = try #require(parsed.birthday)
+        let fields = Birthday.fields(of: birthday)
+        #expect(fields.year == nil)
+        #expect(fields.month == 12)
+        #expect(fields.day == 25)
+    }
+
     @Test func parsesMultipleCardsAndFoldedLines() {
         let text = """
         BEGIN:VCARD
