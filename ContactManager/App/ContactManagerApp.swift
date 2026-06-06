@@ -67,6 +67,12 @@ struct ContactManagerApp: App {
                 }
                 .keyboardShortcut("n", modifiers: .command)
             }
+            CommandGroup(after: .textEditing) {
+                Button("Find") {
+                    NotificationCenter.default.post(name: .focusSearchRequested, object: nil)
+                }
+                .keyboardShortcut("f", modifiers: .command)
+            }
             CommandGroup(after: .pasteboard) {
                 Button("Find Duplicates…") {
                     NotificationCenter.default.post(name: .findDuplicatesRequested, object: nil)
@@ -230,13 +236,17 @@ private struct StoreErrorView: View {
 }
 
 extension Notification.Name {
-    /// Posted by menu commands; observed by `ContentView`.
+    /// Posted by menu commands and observed by the relevant view — most by
+    /// `ContentView`, except `.focusSearchRequested`, handled by
+    /// `ContactListView` where the search field lives.
     static let newContactRequested = Notification.Name("ContactManager.newContactRequested")
     static let importVCardRequested = Notification.Name("ContactManager.importVCardRequested")
     static let importCSVRequested = Notification.Name("ContactManager.importCSVRequested")
     static let importSystemContactsRequested = Notification.Name("ContactManager.importSystemContactsRequested")
     static let exportVCardRequested = Notification.Name("ContactManager.exportVCardRequested")
     static let findDuplicatesRequested = Notification.Name("ContactManager.findDuplicatesRequested")
+    /// Posted by the Find menu command (⌘F); focuses the contact search field.
+    static let focusSearchRequested = Notification.Name("ContactManager.focusSearchRequested")
     /// Posted by App Intents (and `Spotlight` taps via `ContentView`'s
     /// `onContinueUserActivity`). UserInfo carries `id: String` — the
     /// encoded `PersistentIdentifier` of the contact to select.
