@@ -46,19 +46,20 @@ enum ContactQuery {
     /// Filters contacts whose name, company, job title, notes, or any email/
     /// phone field value contains the query. An empty query returns every
     /// contact unchanged.
+    ///
+    /// Uses `localizedCaseInsensitiveContains` (no per-string `.lowercased()`
+    /// allocation) and short-circuits on the cheap scalar attributes before
+    /// walking the to-many `fields` relationship.
     static func filtered(_ contacts: [Contact], matching query: String) -> [Contact] {
-        let needle = query.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let needle = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !needle.isEmpty else { return contacts }
 
         return contacts.filter { contact in
-            let haystacks = [
-                contact.fullName,
-                contact.company,
-                contact.jobTitle,
-                contact.notes,
-            ] + contact.fields.map(\.value)
-
-            return haystacks.contains { $0.lowercased().contains(needle) }
+            if contact.fullName.localizedCaseInsensitiveContains(needle) { return true }
+            if contact.company.localizedCaseInsensitiveContains(needle) { return true }
+            if contact.jobTitle.localizedCaseInsensitiveContains(needle) { return true }
+            if contact.notes.localizedCaseInsensitiveContains(needle) { return true }
+            return contact.fields.contains { $0.value.localizedCaseInsensitiveContains(needle) }
         }
     }
 

@@ -26,6 +26,10 @@ struct ContentView: View {
     // set this when a parse/insert fails.
     @State var errorMessage: String?
     @State private var searchText = ""
+    /// Trails `searchText` by 150 ms so we don't re-filter the entire contact
+    /// list on every keystroke. Cleared instantly when the user clears the
+    /// search field — only typing-into-non-empty pays the debounce delay.
+    @State private var debouncedSearchText = ""
     @AppStorage("contactSortOrder") private var sortOrder: ContactSortOrder = .lastName
     @AppStorage("defaultGroupID") private var defaultGroupID: String = ""
 
@@ -74,7 +78,7 @@ struct ContentView: View {
 
     private var sections: [ContactSection] {
         ContactQuery.sections(
-            ContactQuery.filtered(scopedContacts, matching: searchText),
+            ContactQuery.filtered(scopedContacts, matching: debouncedSearchText),
             by: sortOrder
         )
     }
@@ -117,6 +121,21 @@ struct ContentView: View {
             minWidth: LayoutMetrics.windowMinWidth,
             minHeight: LayoutMetrics.windowMinHeight
         )
+        .task(id: searchText) {
+            // Empty → clear immediately. Otherwise wait 150 ms before
+            // committing the new query so a burst of keystrokes only
+            // triggers one filter pass.
+            if searchText.isEmpty {
+                debouncedSearchText = ""
+                return
+            }
+            do {
+                try await Task.sleep(for: .milliseconds(150))
+                debouncedSearchText = searchText
+            } catch {
+                // Task cancelled — a newer keystroke superseded this one.
+            }
+        }
         .onAppear {
             // Route every ContactStore mutation through the window's undo
             // manager so Edit ▸ Undo/Redo (⌘Z / ⇧⌘Z) work.
