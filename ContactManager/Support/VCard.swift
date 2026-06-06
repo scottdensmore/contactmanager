@@ -57,31 +57,6 @@ enum VCard {
         return String(format: "--%02d%02d", fields.month, fields.day)
     }
 
-    /// Parses a vCard `BDAY` value into a UTC-anchored birthday `Date`.
-    /// Accepts the year-less `--MMDD` / `--MM-DD` forms (returning a sentinel
-    /// year) as well as `YYYY-MM-DD` / `YYYYMMDD`, ignoring any time suffix.
-    /// Returns `nil` when no month/day can be read, so a junk value is dropped
-    /// rather than mis-parsed.
-    private static func parseBirthday(_ value: String) -> Date? {
-        let trimmed = value.trimmingCharacters(in: .whitespaces)
-        if trimmed.hasPrefix("--") {
-            let digits = trimmed.dropFirst(2).filter(\.isNumber)
-            guard digits.count >= 4,
-                  let month = Int(digits.prefix(2)),
-                  let day = Int(digits.dropFirst(2).prefix(2))
-            else { return nil }
-            return Birthday.date(year: nil, month: month, day: day)
-        }
-        let datePart = trimmed.split(separator: "T").first.map(String.init) ?? trimmed
-        let digits = datePart.filter(\.isNumber)
-        guard digits.count >= 8,
-              let year = Int(digits.prefix(4)),
-              let month = Int(digits.dropFirst(4).prefix(2)),
-              let day = Int(digits.dropFirst(6).prefix(2))
-        else { return nil }
-        return Birthday.date(year: year, month: month, day: day)
-    }
-
     // MARK: - Writing
 
     /// Serializes contacts into a single vCard document.
@@ -220,7 +195,7 @@ enum VCard {
             card.postalCode = comps.count > 5 ? comps[5] : ""
             card.country = comps.count > 6 ? comps[6] : ""
         case "BDAY":
-            card.birthday = parseBirthday(value)
+            card.birthday = Birthday.parse(value)
         case "NOTE":
             card.notes = unescape(value)
         case "PHOTO":

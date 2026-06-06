@@ -90,6 +90,21 @@ struct VCardTests {
         #expect(fields.day == 15)
     }
 
+    @Test func keepsAHistoricalYearThatResemblesTheSentinel() throws {
+        // Regression: the no-year sentinel must be impossible for a real
+        // birthday, so a genuine historical year keeps its year rather than
+        // collapsing to the year-less form.
+        let contact = Contact(firstName: "Historical", lastName: "Figure")
+        contact.birthday = Birthday.date(year: 1604, month: 6, day: 1)
+
+        let card = VCard.card(for: contact)
+        #expect(card.contains("BDAY:1604-06-01"))
+
+        let parsed = try #require(VCard.parse(card).first)
+        let fields = try Birthday.fields(of: #require(parsed.birthday))
+        #expect(fields.year == 1604)
+    }
+
     @Test func parsesYearlessBirthdayInExtendedForm() throws {
         // The extended --MM-DD spelling (with a separator) parses too.
         let text = """

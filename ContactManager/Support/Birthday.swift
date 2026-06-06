@@ -26,10 +26,12 @@ enum Birthday {
     }()
 
     /// Year stored for birthdays whose source omitted it (a vCard `--MMDD`,
-    /// or a Contacts card with no year). Predates any living person, so export
-    /// can recognize it and round-trip back to the year-less form rather than
-    /// emitting a fabricated year.
-    static let omittedYear = 1604
+    /// or a Contacts card with no year), so export can recognize it and
+    /// round-trip back to the year-less form rather than emitting a
+    /// fabricated year. A *future* leap year: impossible for a real (past)
+    /// birthday — so a genuine historical year like 1604 keeps its year — and
+    /// a leap year so a year-less Feb 29 survives.
+    static let omittedYear = 9996
 
     /// Builds a UTC-anchored birthday `Date` from calendar fields. A `nil`
     /// `year` means "year unknown" and stores the sentinel.
@@ -55,5 +57,31 @@ enum Birthday {
         let parts = calendar.dateComponents([.year, .month, .day], from: date)
         let year = parts.year == omittedYear ? nil : parts.year
         return Fields(year: year, month: parts.month ?? 1, day: parts.day ?? 1)
+    }
+
+    /// Parses a date-only birthday string into a UTC-anchored `Date`. Accepts
+    /// the year-less `--MMDD` / `--MM-DD` forms (storing the sentinel year) as
+    /// well as `YYYY-MM-DD` / `YYYYMMDD`, ignoring any `T` time suffix.
+    /// Returns `nil` when no month/day can be read, so junk is dropped rather
+    /// than mis-parsed. Shared by the vCard and CSV importers so every entry
+    /// path lands on the same UTC convention.
+    static func parse(_ string: String) -> Date? {
+        let trimmed = string.trimmingCharacters(in: .whitespaces)
+        if trimmed.hasPrefix("--") {
+            let digits = trimmed.dropFirst(2).filter(\.isNumber)
+            guard digits.count >= 4,
+                  let month = Int(digits.prefix(2)),
+                  let day = Int(digits.dropFirst(2).prefix(2))
+            else { return nil }
+            return date(year: nil, month: month, day: day)
+        }
+        let datePart = trimmed.split(separator: "T").first.map(String.init) ?? trimmed
+        let digits = datePart.filter(\.isNumber)
+        guard digits.count >= 8,
+              let year = Int(digits.prefix(4)),
+              let month = Int(digits.dropFirst(4).prefix(2)),
+              let day = Int(digits.dropFirst(6).prefix(2))
+        else { return nil }
+        return date(year: year, month: month, day: day)
     }
 }
