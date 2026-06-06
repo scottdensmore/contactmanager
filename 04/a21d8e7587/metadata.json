@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "04a21d8e7587",
+  "strategy": "manual-commit",
+  "branch": "feature/mailto-tel-actions",
+  "checkpoints_count": 1,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/04/a21d8e7587/0/metadata.json",
+      "transcript": "/04/a21d8e7587/0/full.jsonl",
+      "content_hash": "/04/a21d8e7587/0/content_hash.txt",
+      "prompt": "/04/a21d8e7587/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 10999,
+    "cache_creation_tokens": 485727,
+    "cache_read_tokens": 16682510,
+    "output_tokens": 134025,
+    "api_call_count": 185
+  }
+}
