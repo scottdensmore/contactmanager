@@ -1,0 +1,5 @@
+check the pr to see if Copilot has left any comments.
+
+---
+
+Yes lets fix it... tests shouldn't use cloudkit and always mock out calls that might affect local state of the real application. So you could use in-memorty database or a different fil
