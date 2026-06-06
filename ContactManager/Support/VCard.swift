@@ -46,15 +46,41 @@ struct ParsedContact: Equatable {
 enum VCard {
     private static let lineEnding = "\r\n"
 
-    private static let birthdayFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.dateFormat = "yyyy-MM-dd"
-        // Use the local time zone so the serialized day matches the day the
-        // user picked (birthdays are date-only, stored as a local midnight).
-        formatter.timeZone = .autoupdatingCurrent
-        return formatter
-    }()
+    /// Serializes a birthday to a vCard `BDAY` value. A known year uses the
+    /// ISO `YYYY-MM-DD` form; an unknown year (the `Birthday` sentinel) uses
+    /// the year-less `--MMDD` form so it survives a round-trip.
+    private static func bday(from birthday: Date) -> String {
+        let fields = Birthday.fields(of: birthday)
+        if let year = fields.year {
+            return String(format: "%04d-%02d-%02d", year, fields.month, fields.day)
+        }
+        return String(format: "--%02d%02d", fields.month, fields.day)
+    }
+
+    /// Parses a vCard `BDAY` value into a UTC-anchored birthday `Date`.
+    /// Accepts the year-less `--MMDD` / `--MM-DD` forms (returning a sentinel
+    /// year) as well as `YYYY-MM-DD` / `YYYYMMDD`, ignoring any time suffix.
+    /// Returns `nil` when no month/day can be read, so a junk value is dropped
+    /// rather than mis-parsed.
+    private static func parseBirthday(_ value: String) -> Date? {
+        let trimmed = value.trimmingCharacters(in: .whitespaces)
+        if trimmed.hasPrefix("--") {
+            let digits = trimmed.dropFirst(2).filter(\.isNumber)
+            guard digits.count >= 4,
+                  let month = Int(digits.prefix(2)),
+                  let day = Int(digits.dropFirst(2).prefix(2))
+            else { return nil }
+            return Birthday.date(year: nil, month: month, day: day)
+        }
+        let datePart = trimmed.split(separator: "T").first.map(String.init) ?? trimmed
+        let digits = datePart.filter(\.isNumber)
+        guard digits.count >= 8,
+              let year = Int(digits.prefix(4)),
+              let month = Int(digits.dropFirst(4).prefix(2)),
+              let day = Int(digits.dropFirst(6).prefix(2))
+        else { return nil }
+        return Birthday.date(year: year, month: month, day: day)
+    }
 
     // MARK: - Writing
 
@@ -88,7 +114,7 @@ enum VCard {
         }
 
         if let birthday = contact.birthday {
-            lines.append("BDAY:\(birthdayFormatter.string(from: birthday))")
+            lines.append("BDAY:\(bday(from: birthday))")
         }
         if !contact.notes.isEmpty {
             lines.append("NOTE:\(escape(contact.notes))")
@@ -194,7 +220,7 @@ enum VCard {
             card.postalCode = comps.count > 5 ? comps[5] : ""
             card.country = comps.count > 6 ? comps[6] : ""
         case "BDAY":
-            card.birthday = birthdayFormatter.date(from: String(value.prefix(10)))
+            card.birthday = parseBirthday(value)
         case "NOTE":
             card.notes = unescape(value)
         case "PHOTO":

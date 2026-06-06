@@ -54,6 +54,11 @@ struct ContactDetailView: View {
                 Toggle("Has Birthday", isOn: birthdayEnabled)
                 if contact.birthday != nil {
                     DatePicker("Date", selection: birthdayValue, displayedComponents: .date)
+                        // Birthdays are stored anchored to UTC; show/edit them
+                        // in the same calendar (its time zone is UTC) so the
+                        // picked day matches what's saved and what other devices
+                        // see, regardless of the local time zone.
+                        .environment(\.calendar, Birthday.calendar)
                 }
             }
 

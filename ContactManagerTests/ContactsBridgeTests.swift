@@ -90,11 +90,25 @@ struct ContactsBridgeTests {
         cnContact.birthday = DateComponents(year: 1815, month: 12, day: 10)
         let parsed = ContactsBridge.parsed(from: cnContact)
         let birthday = try #require(parsed.birthday)
-        let parts = Calendar(identifier: .gregorian)
-            .dateComponents([.year, .month, .day], from: birthday)
-        #expect(parts.year == 1815)
-        #expect(parts.month == 12)
-        #expect(parts.day == 10)
+        // Read back through the same UTC-anchored calendar the mapping used,
+        // so the assertion doesn't depend on the test machine's time zone.
+        let fields = Birthday.fields(of: birthday)
+        #expect(fields.year == 1815)
+        #expect(fields.month == 12)
+        #expect(fields.day == 10)
+    }
+
+    @Test func mapsYearlessBirthday() throws {
+        // A Contacts card with no birth year (year omitted) must keep its
+        // month/day and report no year, not collapse to a wrong date.
+        let cnContact = CNMutableContact()
+        cnContact.birthday = DateComponents(month: 4, day: 15)
+        let parsed = ContactsBridge.parsed(from: cnContact)
+        let birthday = try #require(parsed.birthday)
+        let fields = Birthday.fields(of: birthday)
+        #expect(fields.year == nil)
+        #expect(fields.month == 4)
+        #expect(fields.day == 15)
     }
 
     @Test func passesThroughPhotoData() {

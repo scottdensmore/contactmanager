@@ -81,8 +81,11 @@ enum ContactsBridge {
             company: cnContact.organizationName,
             jobTitle: cnContact.jobTitle
         )
-        if let birthday = cnContact.birthday {
-            parsed.birthday = Calendar(identifier: .gregorian).date(from: birthday)
+        // CNContact.birthday is date-only DateComponents; its year is absent
+        // for "no year" birthdays. Anchor to UTC (and keep the no-year case)
+        // so the stored day doesn't shift with the device's time zone.
+        if let birthday = cnContact.birthday, let month = birthday.month, let day = birthday.day {
+            parsed.birthday = Birthday.date(year: birthday.year, month: month, day: day)
         }
         if let primary = cnContact.postalAddresses.first?.value {
             parsed.street = primary.street
