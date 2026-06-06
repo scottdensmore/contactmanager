@@ -236,7 +236,9 @@ private struct StoreErrorView: View {
 }
 
 extension Notification.Name {
-    /// Posted by menu commands; observed by `ContentView`.
+    /// Posted by menu commands and observed by the relevant view — most by
+    /// `ContentView`, except `.focusSearchRequested`, handled by
+    /// `ContactListView` where the search field lives.
     static let newContactRequested = Notification.Name("ContactManager.newContactRequested")
     static let importVCardRequested = Notification.Name("ContactManager.importVCardRequested")
     static let importCSVRequested = Notification.Name("ContactManager.importCSVRequested")
