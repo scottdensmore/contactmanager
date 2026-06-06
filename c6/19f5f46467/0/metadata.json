@@ -1,0 +1,37 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "c619f5f46467",
+  "session_id": "5ea1dbe6-8812-489a-b85a-b1b21cf14a47",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-06T23:57:51.162462Z",
+  "branch": "feature/focus-new-contact-name",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "ContactManager/Views/ContentView.swift"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "aa425f215b4e",
+  "token_usage": {
+    "input_tokens": 39105,
+    "cache_creation_tokens": 654652,
+    "cache_read_tokens": 58415630,
+    "output_tokens": 237961,
+    "api_call_count": 344
+  },
+  "session_metrics": {
+    "turn_count": 16
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-06T23:57:51.122819Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 80,
+    "human_modified": 2,
+    "human_removed": 0,
+    "total_committed": 80,
+    "total_lines_changed": 125,
+    "agent_percentage": 0,
+    "metric_version": 2
+  }
+}
