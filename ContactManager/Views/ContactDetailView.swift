@@ -17,11 +17,17 @@ import UniformTypeIdentifiers
 struct ContactDetailView: View {
     @Environment(\.modelContext) private var context
     @Bindable var contact: Contact
+    /// Set for a just-created contact so the form opens with the cursor in
+    /// First Name; the view clears it via `onNameFieldFocused` after focusing.
+    var focusNameField = false
+    var onNameFieldFocused: () -> Void = {}
     @Query(sort: \ContactGroup.name) private var allGroups: [ContactGroup]
     @State private var isImportingPhoto = false
-    @State private var errorMessage: String?
+    // Not private: the photo handlers in ContactDetailView+Photo.swift read them.
+    @State var errorMessage: String?
+    @FocusState private var nameFieldFocused: Bool
 
-    private var store: ContactStore { ContactStore(context) }
+    var store: ContactStore { ContactStore(context) }
 
     var body: some View {
         Form {
@@ -31,6 +37,7 @@ struct ContactDetailView: View {
 
             Section("Name") {
                 TextField("First Name", text: $contact.firstName)
+                    .focused($nameFieldFocused)
                 TextField("Last Name", text: $contact.lastName)
             }
 
@@ -80,6 +87,14 @@ struct ContactDetailView: View {
         }
         .formStyle(.grouped)
         .navigationTitle(contact.fullName)
+        // A freshly created contact opens with the cursor in First Name so you
+        // can type a name immediately instead of reaching for the mouse.
+        .onAppear {
+            if focusNameField {
+                nameFieldFocused = true
+                onNameFieldFocused()
+            }
+        }
         .toolbar {
             ToolbarItem {
                 ShareLink(item: vcardTransfer, preview: SharePreview(shareTitle))
@@ -271,47 +286,6 @@ struct ContactDetailView: View {
                 }
             }
         )
-    }
-
-    // MARK: - Photo actions
-
-    private func handleImport(_ result: Result<URL, Error>) {
-        switch result {
-        case .failure(let error):
-            errorMessage = error.localizedDescription
-        case .success(let url):
-            Task {
-                // Read the file and run the avatar pipeline off the main actor
-                // so a multi-megabyte photo can't hitch the UI.
-                let avatar: Data? = await Task.detached {
-                    let didAccess = url.startAccessingSecurityScopedResource()
-                    defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
-                    // Decode straight from the file via ImageIO so a huge image
-                    // is downsampled to a thumbnail without ever loading its
-                    // full raw bytes into memory (dropping a 300 MB file no
-                    // longer allocates 300 MB).
-                    return ImageProcessing.avatarData(from: url)
-                }.value
-
-                guard let avatar else {
-                    errorMessage = "That file couldn't be read as an image."
-                    return
-                }
-                do {
-                    try store.setPhotoData(avatar, on: contact)
-                } catch {
-                    errorMessage = error.localizedDescription
-                }
-            }
-        }
-    }
-
-    private func removePhoto() {
-        do {
-            try store.setPhotoData(nil, on: contact)
-        } catch {
-            errorMessage = error.localizedDescription
-        }
     }
 }
 

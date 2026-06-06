@@ -22,6 +22,9 @@ struct ContentView: View {
 
     @State private var sidebarSelection: SidebarItem? = .allContacts
     @State private var selectedContact: Contact?
+    /// The contact just created via ⌘N/＋, so the detail form can open with
+    /// the cursor in First Name. Cleared once the field takes focus.
+    @State private var contactPendingNameFocus: PersistentIdentifier?
     // Internal so the import handlers in `ContentView+Import.swift` can
     // set this when a parse/insert fails.
     @State var errorMessage: String?
@@ -107,8 +110,12 @@ struct ContentView: View {
         } detail: {
             Group {
                 if let selectedContact {
-                    ContactDetailView(contact: selectedContact)
-                        .id(selectedContact.persistentModelID)
+                    ContactDetailView(
+                        contact: selectedContact,
+                        focusNameField: selectedContact.persistentModelID == contactPendingNameFocus,
+                        onNameFieldFocused: { contactPendingNameFocus = nil }
+                    )
+                    .id(selectedContact.persistentModelID)
                 } else {
                     ContactPlaceholderView()
                 }
@@ -217,6 +224,7 @@ struct ContentView: View {
     private func addContact() {
         do {
             let contact = try store.createContact(in: groupForNewContact)
+            contactPendingNameFocus = contact.persistentModelID
             withAnimation(.snappy) { selectedContact = contact }
         } catch {
             errorMessage = error.localizedDescription
