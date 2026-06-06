@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "0632c4755841",
+  "strategy": "manual-commit",
+  "branch": "feature/sharelink-vcard",
+  "checkpoints_count": 1,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/06/32c4755841/0/metadata.json",
+      "transcript": "/06/32c4755841/0/full.jsonl",
+      "content_hash": "/06/32c4755841/0/content_hash.txt",
+      "prompt": "/06/32c4755841/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 30908,
+    "cache_creation_tokens": 612352,
+    "cache_read_tokens": 42018078,
+    "output_tokens": 212906,
+    "api_call_count": 292
+  }
+}

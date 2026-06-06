@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "0632c4755841",
+  "session_id": "5ea1dbe6-8812-489a-b85a-b1b21cf14a47",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-06T23:45:27.636249Z",
+  "branch": "feature/sharelink-vcard",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "aa425f215b4e",
+  "token_usage": {
+    "input_tokens": 30908,
+    "cache_creation_tokens": 612352,
+    "cache_read_tokens": 42018078,
+    "output_tokens": 212906,
+    "api_call_count": 292
+  },
+  "session_metrics": {
+    "turn_count": 16
+  }
+}
