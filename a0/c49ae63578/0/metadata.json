@@ -1,0 +1,68 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "a0c49ae63578",
+  "session_id": "5ea1dbe6-8812-489a-b85a-b1b21cf14a47",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-06T18:48:06.447243Z",
+  "branch": "feature/app-sandbox",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "ContactManager.xcodeproj/project.pbxproj",
+    "ContactManager/ContactManager.entitlements"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "4330b2017d86",
+  "checkpoint_transcript_start": 70,
+  "transcript_lines_at_start": 70,
+  "token_usage": {
+    "input_tokens": 82,
+    "cache_creation_tokens": 48826,
+    "cache_read_tokens": 3165743,
+    "output_tokens": 26198,
+    "api_call_count": 43
+  },
+  "session_metrics": {
+    "turn_count": 7
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-06T18:48:06.439477Z",
+    "agent_lines": 18,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 18,
+    "total_lines_changed": 18,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 297,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/agents/entire-search.md": 25,
+        ".claude/settings.json": 97,
+        ".claude/settings.local.json": 36,
+        ".codex/agents/entire-search.toml": 23,
+        ".codex/config.toml": 3,
+        ".codex/hooks.json": 52,
+        ".github/hooks/entire.json": 61
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 36,
+      "user_lines_removed": 0,
+      "agent_lines_added": 280,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 36
+      }
+    }
+  ]
+}

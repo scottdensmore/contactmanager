@@ -1,0 +1,21 @@
+ok lets push the changes then make sure we address the comment
+
+---
+
+Lets now merge the PR
+
+---
+
+what is left to do that you suggested
+
+---
+
+Ok.. then can you scan the app like you are a expert Apple Developer and give me feedback on what is left to do for the application
+
+---
+
+/fewer-permission-prompts
+
+---
+
+Ok lets do P0 #1
