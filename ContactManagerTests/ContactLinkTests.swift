@@ -34,6 +34,15 @@ struct ContactLinkTests {
         #expect(url.absoluteString == "mailto:ada%20lovelace@example.com")
     }
 
+    @Test func mailtoEncodesReservedDelimitersInsteadOfInjectingHeaders() throws {
+        // A value carrying `?`/`#` must fold into the address, not turn into
+        // mailto query headers or a fragment.
+        let url = try #require(ContactLink.mailto("ada@example.com?subject=hi#x"))
+        #expect(url.query == nil)
+        #expect(url.fragment == nil)
+        #expect(url.absoluteString.hasPrefix("mailto:ada@example.com"))
+    }
+
     @Test func mailtoIsNilForBlank() {
         #expect(ContactLink.mailto("") == nil)
         #expect(ContactLink.mailto("   ") == nil)
