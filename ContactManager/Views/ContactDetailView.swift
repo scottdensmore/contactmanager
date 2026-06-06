@@ -148,20 +148,21 @@ struct ContactDetailView: View {
         if contact.primaryEmail != nil || contact.primaryPhone != nil {
             Section {
                 if let email = contact.primaryEmail {
-                    quickRow(label: "Email", value: email)
+                    quickRow(kind: .email, value: email)
                 }
                 if let phone = contact.primaryPhone {
-                    quickRow(label: "Phone", value: phone)
+                    quickRow(kind: .phone, value: phone)
                 }
             }
         }
     }
 
-    private func quickRow(label: String, value: String) -> some View {
-        HStack {
+    private func quickRow(kind: FieldKind, value: String) -> some View {
+        let label = kind == .email ? "Email" : "Phone"
+        return HStack {
             // Combined so VoiceOver reads "Email, name@example.com" as a
             // single element, instead of "Email" and "name@example.com"
-            // separately. The copy button stays its own focusable element.
+            // separately. The action buttons stay their own focusable elements.
             HStack {
                 Text(label)
                     .foregroundStyle(.secondary)
@@ -173,6 +174,17 @@ struct ContactDetailView: View {
             }
             .accessibilityElement(children: .combine)
 
+            // Click-to-mail / click-to-call. Only shown when the value yields
+            // a usable URL, so a junk entry doesn't offer a dead action.
+            if let url = actionURL(for: kind, value: value) {
+                Link(destination: url) {
+                    Image(systemName: kind == .email ? "envelope" : "phone")
+                }
+                .buttonStyle(.borderless)
+                .help(kind == .email ? "Send Email" : "Call")
+                .accessibilityLabel(kind == .email ? "Send Email" : "Call")
+            }
+
             Button {
                 copyToPasteboard(value)
             } label: {
@@ -181,6 +193,13 @@ struct ContactDetailView: View {
             .buttonStyle(.borderless)
             .help("Copy \(label)")
             .accessibilityLabel("Copy \(label)")
+        }
+    }
+
+    private func actionURL(for kind: FieldKind, value: String) -> URL? {
+        switch kind {
+        case .email: ContactLink.mailto(value)
+        case .phone: ContactLink.tel(value)
         }
     }
 
