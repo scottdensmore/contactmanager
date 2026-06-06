@@ -280,8 +280,11 @@ struct ContactDetailView: View {
                 let avatar: Data? = await Task.detached {
                     let didAccess = url.startAccessingSecurityScopedResource()
                     defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
-                    guard let fileData = try? Data(contentsOf: url) else { return nil }
-                    return ImageProcessing.avatarData(from: fileData)
+                    // Decode straight from the file via ImageIO so a huge image
+                    // is downsampled to a thumbnail without ever loading its
+                    // full raw bytes into memory (dropping a 300 MB file no
+                    // longer allocates 300 MB).
+                    return ImageProcessing.avatarData(from: url)
                 }.value
 
                 guard let avatar else {
