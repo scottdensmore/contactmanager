@@ -65,8 +65,16 @@ struct SettingsView: View {
             if !defaultGroupID.isEmpty { defaultGroupID = "" }
             return
         }
-        if !groups.contains(where: { $0.persistentModelID == id }) {
+        guard groups.contains(where: { $0.persistentModelID == id }) else {
             defaultGroupID = ""
+            return
+        }
+        // Re-store in the canonical (sorted-key) encoding. A value written by
+        // an older build used a non-deterministic key order, so its string
+        // wouldn't match the freshly-encoded picker tags; normalizing here
+        // keeps the selection highlighted without a separate migration.
+        if let canonical = id.storedString, canonical != defaultGroupID {
+            defaultGroupID = canonical
         }
     }
 }
