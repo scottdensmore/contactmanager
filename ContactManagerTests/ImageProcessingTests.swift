@@ -54,4 +54,26 @@ struct ImageProcessingTests {
         let garbage = Data("not an image".utf8)
         #expect(ImageProcessing.avatarData(from: garbage) == nil)
     }
+
+    @Test func downscalesFromAFileURLWithoutLoadingItWhole() throws {
+        // The URL overload streams via ImageIO (used by photo import) so a
+        // huge file isn't read into memory before downscaling.
+        let png = try makePNG(width: 1024, height: 768)
+        let url = FileManager.default.temporaryDirectory
+            .appending(path: "avatar-test-\(png.count).png")
+        try png.write(to: url)
+        defer { try? FileManager.default.removeItem(at: url) }
+
+        let avatar = try #require(ImageProcessing.avatarData(from: url))
+        let size = try pixelSize(of: avatar)
+        #expect(max(size.width, size.height) <= Int(ImageProcessing.maxPixelSize))
+        #expect(size.width == 512)
+        #expect(size.height == 384)
+    }
+
+    @Test func returnsNilForAMissingFileURL() {
+        let missing = FileManager.default.temporaryDirectory
+            .appending(path: "does-not-exist-\(UUID().uuidString).png")
+        #expect(ImageProcessing.avatarData(from: missing) == nil)
+    }
 }
