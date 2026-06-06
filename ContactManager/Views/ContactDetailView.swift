@@ -80,6 +80,12 @@ struct ContactDetailView: View {
         }
         .formStyle(.grouped)
         .navigationTitle(contact.fullName)
+        .toolbar {
+            ToolbarItem {
+                ShareLink(item: vcardTransfer, preview: SharePreview(shareTitle))
+                    .help("Share this contact as a vCard")
+            }
+        }
         .alert(
             "Couldn't Save Changes",
             isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } }),
@@ -307,17 +313,38 @@ struct ContactDetailView: View {
             errorMessage = error.localizedDescription
         }
     }
+}
+
+/// Non-view helpers, kept in an extension so the main view body stays focused
+/// on layout.
+private extension ContactDetailView {
+    // MARK: - Sharing
+
+    /// The contact rendered as a shareable vCard file (same payload as a
+    /// drag-to-Finder), built fresh so edits are reflected when shared.
+    var vcardTransfer: VCardTransfer {
+        VCardTransfer(
+            suggestedName: VCardTransfer.suggestedFilename(for: contact.fullName),
+            text: VCard.card(for: contact)
+        )
+    }
+
+    /// Share-sheet title; falls back to "Contact" for an unnamed contact.
+    var shareTitle: String {
+        let name = contact.fullName.trimmingCharacters(in: .whitespacesAndNewlines)
+        return name.isEmpty ? "Contact" : name
+    }
 
     // MARK: - Birthday bindings
 
-    private var birthdayEnabled: Binding<Bool> {
+    var birthdayEnabled: Binding<Bool> {
         Binding(
             get: { contact.birthday != nil },
             set: { contact.birthday = $0 ? (contact.birthday ?? .now) : nil }
         )
     }
 
-    private var birthdayValue: Binding<Date> {
+    var birthdayValue: Binding<Date> {
         Binding(
             get: { contact.birthday ?? .now },
             set: { contact.birthday = $0 }
