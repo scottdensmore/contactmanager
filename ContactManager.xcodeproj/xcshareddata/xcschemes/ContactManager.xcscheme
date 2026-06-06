@@ -48,6 +48,16 @@
                ReferencedContainer = "container:ContactManager.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BD0B92C23BB6B52557F89A2A"
+               BuildableName = "ContactManagerUITests.xctest"
+               BlueprintName = "ContactManagerUITests"
+               ReferencedContainer = "container:ContactManager.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

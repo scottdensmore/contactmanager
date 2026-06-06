@@ -96,21 +96,35 @@ struct ContactManagerApp: App {
     // MARK: - Container loading
 
     private static func loadContainer(resettingStore: Bool = false) -> ContainerLoadState {
-        // When hosting the unit tests, skip building the app's model container
-        // entirely so the test target owns the only container in the process.
-        let isTesting = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
-            || NSClassFromString("XCTestCase") != nil
-        if isTesting { return .testing }
+        // UI test mode is detected via env var and pre-empts the unit-test
+        // guard below: XCUITest injects an automation-support library
+        // that drags `XCTestCase` into the app's loaded classes, so the
+        // `NSClassFromString` check would short-circuit to `.testing` and
+        // render `EmptyView()`. The flag itself just forces a fresh disk
+        // store; the rest of the load path is identical to production so
+        // UI tests exercise the same code real users run.
+        let isUITestMode = ProcessInfo.processInfo
+            .environment["CONTACTMANAGER_UI_TEST_MODE"] != nil
 
-        if resettingStore {
+        if !isUITestMode {
+            // When hosting the unit tests, skip building the app's model
+            // container entirely so the test target owns the only
+            // container in the process.
+            let isUnitTesting = ProcessInfo.processInfo
+                .environment["XCTestConfigurationFilePath"] != nil
+                || NSClassFromString("XCTestCase") != nil
+            if isUnitTesting { return .testing }
+        }
+
+        if resettingStore || isUITestMode {
             deleteDefaultStore()
         }
+
+        let schema = Schema([Contact.self, ContactField.self, ContactGroup.self])
 
         // Build a CloudKit-backed container when the iCloud capability is
         // present, and fall back to a local-only container otherwise so the
         // app still runs without iCloud.
-        let schema = Schema([Contact.self, ContactField.self, ContactGroup.self])
-
         let container: ModelContainer
         var isLocalOnlyFallback = false
         do {
@@ -134,7 +148,9 @@ struct ContactManagerApp: App {
         // CloudKit-capable container the user's real contacts might be about
         // to sync down (a fresh install on a second device); seeding then
         // would race the sync and propagate the samples to every device.
-        if isLocalOnlyFallback {
+        // UI-test mode always seeds: the store was wiped above and the tests
+        // depend on the standard three sample contacts being present.
+        if isLocalOnlyFallback || isUITestMode {
             do {
                 try SampleData.seedIfNeeded(container.mainContext)
             } catch {
