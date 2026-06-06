@@ -96,21 +96,42 @@ struct ContactManagerApp: App {
     // MARK: - Container loading
 
     private static func loadContainer(resettingStore: Bool = false) -> ContainerLoadState {
-        // When hosting the unit tests, skip building the app's model container
-        // entirely so the test target owns the only container in the process.
-        let isTesting = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
-            || NSClassFromString("XCTestCase") != nil
-        if isTesting { return .testing }
+        // UI test mode is detected via env var and pre-empts the unit-test
+        // guard below: XCUITest injects an automation-support library
+        // that drags `XCTestCase` into the app's loaded classes, so the
+        // `NSClassFromString` check would short-circuit to `.testing` and
+        // render `EmptyView()`. UI tests run against an in-memory,
+        // CloudKit-disabled container so they never touch the user's real
+        // on-disk store or push sample contacts into iCloud.
+        let isUITestMode = ProcessInfo.processInfo
+            .environment["CONTACTMANAGER_UI_TEST_MODE"] != nil
+
+        if !isUITestMode {
+            // When hosting the unit tests, skip building the app's model
+            // container entirely so the test target owns the only
+            // container in the process.
+            let isUnitTesting = ProcessInfo.processInfo
+                .environment["XCTestConfigurationFilePath"] != nil
+                || NSClassFromString("XCTestCase") != nil
+            if isUnitTesting { return .testing }
+        }
 
         if resettingStore {
             deleteDefaultStore()
         }
 
+        let schema = Schema([Contact.self, ContactField.self, ContactGroup.self])
+
+        // UI-test mode uses an in-memory, CloudKit-disabled container so
+        // tests are deterministic and can't sync sample contacts to a
+        // signed-in iCloud account or pollute the user's local store.
+        if isUITestMode {
+            return loadUITestContainer(schema: schema)
+        }
+
         // Build a CloudKit-backed container when the iCloud capability is
         // present, and fall back to a local-only container otherwise so the
         // app still runs without iCloud.
-        let schema = Schema([Contact.self, ContactField.self, ContactGroup.self])
-
         let container: ModelContainer
         var isLocalOnlyFallback = false
         do {
@@ -146,6 +167,26 @@ struct ContactManagerApp: App {
         EntityModelContainer.shared = container
         Task.detached { await SpotlightIndexer.shared.reindex() }
         return .ready(container)
+    }
+
+    private static func loadUITestContainer(schema: Schema) -> ContainerLoadState {
+        do {
+            let configuration = ModelConfiguration(
+                schema: schema,
+                isStoredInMemoryOnly: true,
+                cloudKitDatabase: .none
+            )
+            let container = try ModelContainer(for: schema, configurations: configuration)
+            do {
+                try SampleData.seedIfNeeded(container.mainContext)
+            } catch {
+                print("ContactManager: sample data seeding skipped — \(error)")
+            }
+            EntityModelContainer.shared = container
+            return .ready(container)
+        } catch {
+            return .failed(error.localizedDescription)
+        }
     }
 
     /// Removes the default SwiftData store files so a corrupt store can be
