@@ -295,6 +295,15 @@ private extension ContentView {
                 let id = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String
                 selectContact(byEncodedID: id)
             }
+            // Advertise the open contact for Handoff, and accept it back.
+            .userActivity(ContactActivity.viewContactType, isActive: selectedContact != nil) { activity in
+                if let contact = selectedContact, let id = contact.persistentModelID.storedString {
+                    ContactActivity.configure(activity, contactID: id, displayName: contact.fullName)
+                }
+            }
+            .onContinueUserActivity(ContactActivity.viewContactType) { activity in
+                selectContact(byEncodedID: ContactActivity.contactID(from: activity))
+            }
     }
 
     /// The sheets, importers, exporters, and the error alert.
