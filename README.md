@@ -88,7 +88,7 @@ Tests use **Swift Testing** (`import Testing`, `@Test`, `#expect`/`#require`); `
 
 ### Building & Running
 
-Open `ContactManager.xcodeproj` in Xcode (26 or later, macOS 26 SDK), select the **ContactManager** scheme, and press `Cmd + R` — or run `make build`.
+Open `ContactManager.xcodeproj` in Xcode (26 or later, macOS 26 SDK), select the **ContactManager** scheme, and press `Cmd + R` — or run `make build`. `make build` needs no signing setup (it builds unsigned). For a **signed run from Xcode**, set your team once with `make setup TEAM=YOURTEAMID` — it writes a local, gitignored `DeveloperSettings.xcconfig` (your team isn't committed, so a fresh clone is never blocked by it).
 
 ### Running the Tests
 
@@ -115,13 +115,9 @@ To turn on sync for your own build:
 
 1. In Xcode, select the **ContactManager** target ▸ **Signing & Capabilities**.
 2. Make sure signing uses **your Team** (keep *Automatically manage signing*).
-   The team is set in `ContactManager/Config/SharedSettings.xcconfig`
-   (`DEVELOPMENT_TEAM`); if you're not the maintainer, override it without
-   touching that file by creating a local, gitignored
-   `ContactManager/DeveloperSettings.xcconfig` with your own:
-   ```
-   DEVELOPMENT_TEAM = YOURTEAMID
-   ```
+   The team isn't committed — set it once with `make setup TEAM=YOURTEAMID`
+   (or `./scripts/setup.sh YOURTEAMID`), which writes the gitignored
+   `ContactManager/DeveloperSettings.xcconfig` that the build pulls in.
 3. Click **+ Capability** ▸ **iCloud**, check **CloudKit**, and add a container
    (the default `iCloud.<your-bundle-id>` is fine — use your own bundle id).
 4. Click **+ Capability** ▸ **Push Notifications** so the store receives CloudKit

@@ -21,8 +21,6 @@ jobs:
     name: Bump, tag, and release
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    env:
-      XCCONFIG: ContactManager/Config/SharedSettings.xcconfig
     steps:
       # Check out the exact commit CI tested (not a moving `main`), so the
       # release is tied to that commit; if `main` has since advanced, the push
@@ -42,29 +40,36 @@ jobs:
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Compute next version and build
+      - name: Bump version + build in the Xcode project
         if: ${{ steps.guard.outputs.skip == 'false' }}
         id: ver
         run: |
           set -euo pipefail
-          current=$(grep -E '^MARKETING_VERSION' "$XCCONFIG" | sed -E 's/.*= *//')
-          IFS=. read -r major minor patch <<< "$current"
-          patch=${patch:-0}
-          version="${major}.${minor}.$((patch + 1))"
+          gem install xcodeproj --no-document
           build=$(git rev-list --count HEAD)
+          # Patch-bump MARKETING_VERSION and set CURRENT_PROJECT_VERSION on the
+          # app target (major/minor stay manual). xcodeproj edits the target
+          # precisely rather than sed across every target's settings.
+          version=$(BUILD="$build" ruby -e '
+            require "xcodeproj"
+            project = Xcodeproj::Project.open("ContactManager.xcodeproj")
+            app = project.targets.find { |t| t.name == "ContactManager" }
+            current = app.build_configurations.first.build_settings["MARKETING_VERSION"]
+            major, minor, patch = current.split(".")
+            version = "#{major}.#{minor}.#{(patch || "0").to_i + 1}"
+            app.build_configurations.each do |c|
+              c.build_settings["MARKETING_VERSION"] = version
+              c.build_settings["CURRENT_PROJECT_VERSION"] = ENV.fetch("BUILD")
+            end
+            project.save
+            print version
+          ')
           {
             echo "version=$version"
             echo "build=$build"
             echo "tag=v$version"
           } >> "$GITHUB_OUTPUT"
           echo "Next release: v$version (build $build)"
-
-      - name: Stamp version + build into the xcconfig
-        if: ${{ steps.guard.outputs.skip == 'false' }}
-        run: |
-          set -euo pipefail
-          sed -i -E "s|^MARKETING_VERSION = .*|MARKETING_VERSION = ${{ steps.ver.outputs.version }}|" "$XCCONFIG"
-          sed -i -E "s|^CURRENT_PROJECT_VERSION = .*|CURRENT_PROJECT_VERSION = ${{ steps.ver.outputs.build }}|" "$XCCONFIG"
 
       - name: Commit, tag, and create the release
         if: ${{ steps.guard.outputs.skip == 'false' }}

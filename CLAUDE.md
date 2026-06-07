@@ -22,6 +22,14 @@ build for distribution is done from Xcode), so they run identically locally and 
 XCUITest smoke suite (`make test`) is run from Xcode, since it flakes on app activation
 when the foreground is busy and isn't part of CI.
 
+**Build config:** `ContactManager/Config/SharedSettings.xcconfig` holds only shared,
+non-personal settings (signing style, org identifier). The **team** is personal and lives
+in a gitignored `ContactManager/DeveloperSettings.xcconfig` (pulled in via `#include?`);
+create it with `make setup TEAM=XXXX` (`scripts/setup.sh`). Nothing personal is committed,
+so a fresh clone builds (signing off) and is never blocked by a team/container it doesn't
+own. **Version + build** (`MARKETING_VERSION` / `CURRENT_PROJECT_VERSION`) live on the app
+target in the `.pbxproj` — not in any xcconfig — and the Release workflow patch-bumps them.
+
 ## Layout
 
 ```
