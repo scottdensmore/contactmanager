@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "43b7db17272d",
+  "session_id": "5ea1dbe6-8812-489a-b85a-b1b21cf14a47",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-07T06:32:01.90958Z",
+  "branch": "test/app-intents-query-coverage",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "1bfe53145f29",
+  "token_usage": {
+    "input_tokens": 133560,
+    "cache_creation_tokens": 1543509,
+    "cache_read_tokens": 424832018,
+    "output_tokens": 834103,
+    "api_call_count": 999
+  },
+  "session_metrics": {
+    "turn_count": 43
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

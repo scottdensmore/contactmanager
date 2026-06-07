@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "43b7db17272d",
+  "strategy": "manual-commit",
+  "branch": "test/app-intents-query-coverage",
+  "checkpoints_count": 1,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/43/b7db17272d/0/metadata.json",
+      "transcript": "/43/b7db17272d/0/full.jsonl",
+      "content_hash": "/43/b7db17272d/0/content_hash.txt",
+      "prompt": "/43/b7db17272d/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 133560,
+    "cache_creation_tokens": 1543509,
+    "cache_read_tokens": 424832018,
+    "output_tokens": 834103,
+    "api_call_count": 999
+  }
+}
