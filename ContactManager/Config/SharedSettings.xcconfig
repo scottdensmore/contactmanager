@@ -18,5 +18,5 @@ ORGANIZATION_IDENTIFIER = com.scottdensmore
 
 // App version + build. The patch and build auto-increment on each successful
 // merge (see .github/workflows/release.yml); bump major/minor by hand.
-MARKETING_VERSION = 2.0.0
+MARKETING_VERSION = 2.0.1
 CURRENT_PROJECT_VERSION = 134
