@@ -1,0 +1,9 @@
+// Copy this file to DeveloperSettings.xcconfig and set your own values, or run
+// `./setup.sh` from the repo root. This template is tracked; the generated
+// DeveloperSettings.xcconfig is gitignored.
+//
+// ORGANIZATION_IDENTIFIER drives the bundle id (and iCloud container), so each
+// developer builds with their own — no provisioning collisions.
+
+DEVELOPMENT_TEAM = <YOUR_APPLE_TEAM_ID>
+ORGANIZATION_IDENTIFIER = <YOUR_REVERSED_DOMAIN>
