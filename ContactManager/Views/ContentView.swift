@@ -62,8 +62,7 @@ struct ContentView: View {
     /// survives a rename; if the target group was deleted the lookup
     /// returns nil and SettingsView prunes the preference on next view.
     private var defaultGroup: ContactGroup? {
-        guard let id = PersistentIdentifier.decode(stored: defaultGroupID) else { return nil }
-        return groups.first { $0.persistentModelID == id }
+        DefaultGroupPreference.group(stored: defaultGroupID, in: groups)
     }
 
     /// Where a new contact should land. The default group is only used when

@@ -59,22 +59,9 @@ struct SettingsView: View {
     }
 
     private func pruneStaleDefaultGroup() {
-        guard !defaultGroupID.isEmpty,
-              let id = PersistentIdentifier.decode(stored: defaultGroupID)
-        else {
-            if !defaultGroupID.isEmpty { defaultGroupID = "" }
-            return
-        }
-        guard groups.contains(where: { $0.persistentModelID == id }) else {
-            defaultGroupID = ""
-            return
-        }
-        // Re-store in the canonical (sorted-key) encoding. A value written by
-        // an older build used a non-deterministic key order, so its string
-        // wouldn't match the freshly-encoded picker tags; normalizing here
-        // keeps the selection highlighted without a separate migration.
-        if let canonical = id.storedString, canonical != defaultGroupID {
-            defaultGroupID = canonical
-        }
+        // Clears a blank/deleted target and canonicalizes an old-format value
+        // so the picker's selection stays highlighted (see DefaultGroupPreference).
+        let normalized = DefaultGroupPreference.normalized(stored: defaultGroupID, in: groups)
+        if normalized != defaultGroupID { defaultGroupID = normalized }
     }
 }
