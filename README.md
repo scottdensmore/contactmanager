@@ -62,7 +62,7 @@ ContactManager/
 - Contact photos (downscaled on import, streamed via ImageIO) with an initials avatar fallback.
 - User-defined groups (sidebar create/rename/delete); drag contacts onto a group to add them.
 - Duplicate detection & merge (Edit ▸ Find Duplicates…).
-- **Import**: vCard `.vcf`, CSV (Google / Outlook / Apple exports), and the macOS **Contacts** app — chunked with a progress overlay. **Export / share**: vCard via File ▸ Export or the detail Share button.
+- **Import**: vCard `.vcf`, CSV (Google / Outlook / Apple exports), and the macOS **Contacts** app — chunked with a progress overlay. **Export / share**: vCard via File ▸ Export vCard… or the detail Share button.
 - **Print** a contact card and **Export as PDF** (⌘P / ⇧⌘P).
 - **Drag and drop**: drag a contact to Finder as a `.vcf`, drop a `.vcf` onto the list to import, drop an image onto the avatar.
 - **Open in New Window** for a single contact (the window closes itself if that contact is deleted).

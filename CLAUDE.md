@@ -87,6 +87,6 @@ pattern), then build to confirm it compiles.
 
 ## Workflow
 
-- Ship focused, single-purpose PRs. Keep the README roadmap and this file in sync.
+- Ship focused, single-purpose PRs. Keep the README and this file in sync.
 - Use the GitHub CLI (`gh`) for all GitHub operations, and address Copilot review comments
   before merging.
