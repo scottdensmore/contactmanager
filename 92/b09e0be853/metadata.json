@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "92b09e0be853",
+  "strategy": "manual-commit",
+  "branch": "test/p2-coverage",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "ContactManager/Views/SettingsView.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/92/b09e0be853/0/metadata.json",
+      "transcript": "/92/b09e0be853/0/full.jsonl",
+      "content_hash": "/92/b09e0be853/0/content_hash.txt",
+      "prompt": "/92/b09e0be853/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 71317,
+    "cache_creation_tokens": 867180,
+    "cache_read_tokens": 149061137,
+    "output_tokens": 386473,
+    "api_call_count": 551
+  }
+}
