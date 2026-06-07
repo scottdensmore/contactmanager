@@ -1,0 +1,44 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "020b67da282b",
+  "session_id": "5ea1dbe6-8812-489a-b85a-b1b21cf14a47",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-07T23:44:07.454236Z",
+  "branch": "scottdensmore/feat/reviewed-imports-durable-edits",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "ContactManager/Models/ContactStore.swift",
+    "ContactManager/Views/ContactListView.swift",
+    "ContactManager/Views/ContentView+Import.swift",
+    "ContactManager/Views/ContentView.swift",
+    "ContactManager/Views/SidebarView.swift",
+    "ContactManagerTests/ContactStoreTests.swift",
+    "ContactManagerUITests/ContactManagerUITests.swift",
+    "README.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "bd3f11a9fb14",
+  "token_usage": {
+    "input_tokens": 142457,
+    "cache_creation_tokens": 1862305,
+    "cache_read_tokens": 437375167,
+    "output_tokens": 873701,
+    "api_call_count": 1052
+  },
+  "session_metrics": {
+    "turn_count": 46
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-07T23:44:07.336903Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 1106,
+    "human_modified": 77,
+    "human_removed": 0,
+    "total_committed": 1106,
+    "total_lines_changed": 1283,
+    "agent_percentage": 0,
+    "metric_version": 2
+  }
+}

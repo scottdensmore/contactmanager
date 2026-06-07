@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "020b67da282b",
+  "strategy": "manual-commit",
+  "branch": "scottdensmore/feat/reviewed-imports-durable-edits",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "ContactManager/Models/ContactStore.swift",
+    "ContactManager/Views/ContactListView.swift",
+    "ContactManager/Views/ContentView+Import.swift",
+    "ContactManager/Views/ContentView.swift",
+    "ContactManager/Views/SidebarView.swift",
+    "ContactManagerTests/ContactStoreTests.swift",
+    "ContactManagerUITests/ContactManagerUITests.swift",
+    "README.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/02/0b67da282b/0/metadata.json",
+      "transcript": "/02/0b67da282b/0/full.jsonl",
+      "content_hash": "/02/0b67da282b/0/content_hash.txt",
+      "prompt": "/02/0b67da282b/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 142457,
+    "cache_creation_tokens": 1862305,
+    "cache_read_tokens": 437375167,
+    "output_tokens": 873701,
+    "api_call_count": 1052
+  }
+}
