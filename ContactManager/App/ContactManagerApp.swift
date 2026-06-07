@@ -95,6 +95,16 @@ struct ContactManagerApp: App {
                     NotificationCenter.default.post(name: .exportVCardRequested, object: nil)
                 }
                 .keyboardShortcut("e", modifiers: [.command, .shift])
+                Button("Export as PDF…") {
+                    NotificationCenter.default.post(name: .exportPDFRequested, object: nil)
+                }
+                .keyboardShortcut("p", modifiers: [.command, .shift])
+            }
+            CommandGroup(replacing: .printItem) {
+                Button("Print…") {
+                    NotificationCenter.default.post(name: .printContactRequested, object: nil)
+                }
+                .keyboardShortcut("p", modifiers: .command)
             }
         }
     }
@@ -244,6 +254,10 @@ extension Notification.Name {
     static let importCSVRequested = Notification.Name("ContactManager.importCSVRequested")
     static let importSystemContactsRequested = Notification.Name("ContactManager.importSystemContactsRequested")
     static let exportVCardRequested = Notification.Name("ContactManager.exportVCardRequested")
+    /// Posted by the Export as PDF / Print commands; handled by `ContentView`
+    /// for the selected contact.
+    static let exportPDFRequested = Notification.Name("ContactManager.exportPDFRequested")
+    static let printContactRequested = Notification.Name("ContactManager.printContactRequested")
     static let findDuplicatesRequested = Notification.Name("ContactManager.findDuplicatesRequested")
     /// Posted by the Find menu command (⌘F); focuses the contact search field.
     static let focusSearchRequested = Notification.Name("ContactManager.focusSearchRequested")

@@ -22,6 +22,7 @@
 		322103E6FBEAD59C6A2405E6 /* Birthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDED82FFB4B5F039052FFB5 /* Birthday.swift */; };
 		4515C79B40C414630F64BC5D /* PersistentIdentifierEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61587B4E14B400AF1CB16862 /* PersistentIdentifierEncoding.swift */; };
 		465C6AF22F5A45925B879752 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7B150B6DB35B8EF10D2135 /* AvatarView.swift */; };
+		488CA0C339AD3218073A02E8 /* PrintableContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37DB6CC43A76261CFF3987D /* PrintableContactView.swift */; };
 		4EC36757044377406665E53B /* ContactListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E2EBA5EFDEE6888B84E10B /* ContactListView.swift */; };
 		4F1E1A097740ECE3D42E55B8 /* GroupDropTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964ACD67CC8CB35694497A10 /* GroupDropTests.swift */; };
 		52F4C28719253736244342F9 /* SpotlightDeltaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604FB090CB5671DB6927238C /* SpotlightDeltaTests.swift */; };
@@ -31,8 +32,11 @@
 		63274FB1580421240D8EB57B /* ContactEntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C12246003379D5966F0210 /* ContactEntityTests.swift */; };
 		644397DD275B65E0F3A7C1DB /* ImportProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29335D93B2E97B9038F1481A /* ImportProgressView.swift */; };
 		64A0899508308C671981B72F /* ContactWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B17AADA860AEDB87017DF0B /* ContactWindowView.swift */; };
+		65E6B33886CF04648BEDF442 /* ContactPDFTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F303B7AE5B9202CDA6D9DA /* ContactPDFTests.swift */; };
+		6BD515E7E488C1261839AC60 /* ContactPDF.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0255C29CC874D2BA1C064CF /* ContactPDF.swift */; };
 		6BF479700A4101F1353CBF78 /* ContactQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B27567532AC1A51FF4CC13A /* ContactQuery.swift */; };
 		6DDC44CAA558E1DB276460CF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833F1AF82CACF7B9E89BADCA /* ContentView.swift */; };
+		6DF39989CF5CF55F228DA933 /* PDFExportDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC69A4C348D4BBEF0D8F1330 /* PDFExportDocument.swift */; };
 		7755029B0E36200BB139ECFA /* VCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7D5B554122CF852B0D825C /* VCardTests.swift */; };
 		7CD9C3EBF737E415B2561168 /* CSV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2F2242E59F2C42DDD0736B /* CSV.swift */; };
 		7F3D3F509379FD171AEC3606 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEAB729518FA2A6600E3570B /* Images.xcassets */; };
@@ -117,6 +121,7 @@
 		93C12246003379D5966F0210 /* ContactEntityTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactEntityTests.swift; sourceTree = "<group>"; };
 		964ACD67CC8CB35694497A10 /* GroupDropTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GroupDropTests.swift; sourceTree = "<group>"; };
 		A30CD9D085E7424A79159879 /* ChunkingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ChunkingTests.swift; sourceTree = "<group>"; };
+		A37DB6CC43A76261CFF3987D /* PrintableContactView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrintableContactView.swift; sourceTree = "<group>"; };
 		A7276D515CA167FBF4C47299 /* VCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VCard.swift; sourceTree = "<group>"; };
 		ABDED82FFB4B5F039052FFB5 /* Birthday.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Birthday.swift; sourceTree = "<group>"; };
 		AC2AA1D7BB15FC01B9CBA3B3 /* EntityModelContainer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EntityModelContainer.swift; sourceTree = "<group>"; };
@@ -124,7 +129,10 @@
 		B25751DDEC1515E341AF67F5 /* ContactField.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactField.swift; sourceTree = "<group>"; };
 		B75D02267D3BC6C014143329 /* ContactModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactModelTests.swift; sourceTree = "<group>"; };
 		BCAA25CCEE01127AA64D21D6 /* CSVTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CSVTests.swift; sourceTree = "<group>"; };
+		C0255C29CC874D2BA1C064CF /* ContactPDF.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactPDF.swift; sourceTree = "<group>"; };
+		C0F303B7AE5B9202CDA6D9DA /* ContactPDFTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactPDFTests.swift; sourceTree = "<group>"; };
 		C7DCAF444714BC3726B212C4 /* UndoTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UndoTests.swift; sourceTree = "<group>"; };
+		DC69A4C348D4BBEF0D8F1330 /* PDFExportDocument.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PDFExportDocument.swift; sourceTree = "<group>"; };
 		DEAB729518FA2A6600E3570B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		DED8178913A452A900EC3234 /* ContactManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DED817AA13A452AA00EC3234 /* ContactManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContactManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,6 +216,8 @@
 				90E3C45DEC115A2BF7DE83DF /* ContactLink.swift */,
 				ABDED82FFB4B5F039052FFB5 /* Birthday.swift */,
 				436B4115937E4350EB9A7EF7 /* Chunking.swift */,
+				C0255C29CC874D2BA1C064CF /* ContactPDF.swift */,
+				DC69A4C348D4BBEF0D8F1330 /* PDFExportDocument.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -240,6 +250,7 @@
 				7B17AADA860AEDB87017DF0B /* ContactWindowView.swift */,
 				05CB65D95AFA14C691F0D8C4 /* ContactDetailView+Photo.swift */,
 				29335D93B2E97B9038F1481A /* ImportProgressView.swift */,
+				A37DB6CC43A76261CFF3987D /* PrintableContactView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -296,6 +307,7 @@
 				6EE79F02FFFD9820269D3725 /* ContactLinkTests.swift */,
 				964ACD67CC8CB35694497A10 /* GroupDropTests.swift */,
 				A30CD9D085E7424A79159879 /* ChunkingTests.swift */,
+				C0F303B7AE5B9202CDA6D9DA /* ContactPDFTests.swift */,
 			);
 			path = ContactManagerTests;
 			sourceTree = "<group>";
@@ -460,6 +472,9 @@
 				552E226D873AE11781A7F97A /* ContactDetailView+Photo.swift in Sources */,
 				8DF0A36CE542853FF12BEF1A /* Chunking.swift in Sources */,
 				644397DD275B65E0F3A7C1DB /* ImportProgressView.swift in Sources */,
+				6BD515E7E488C1261839AC60 /* ContactPDF.swift in Sources */,
+				6DF39989CF5CF55F228DA933 /* PDFExportDocument.swift in Sources */,
+				488CA0C339AD3218073A02E8 /* PrintableContactView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,6 +496,7 @@
 				21EF2DF533DFA347DCF69BD0 /* ContactLinkTests.swift in Sources */,
 				4F1E1A097740ECE3D42E55B8 /* GroupDropTests.swift in Sources */,
 				AF36C8E991E2B6C96634FBA0 /* ChunkingTests.swift in Sources */,
+				65E6B33886CF04648BEDF442 /* ContactPDFTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
