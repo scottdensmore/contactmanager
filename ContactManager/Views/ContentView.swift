@@ -14,6 +14,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.undoManager) private var undoManager
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @Query(sort: [SortDescriptor(\Contact.lastName), SortDescriptor(\Contact.firstName)])
     private var contacts: [Contact]
@@ -177,7 +178,7 @@ struct ContentView: View {
         do {
             let contact = try store.createContact(in: groupForNewContact)
             contactPendingNameFocus = contact.persistentModelID
-            withAnimation(.snappy) { selectedContact = contact }
+            withAnimation(reduceMotion ? nil : .snappy) { selectedContact = contact }
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -198,7 +199,7 @@ struct ContentView: View {
     private func addGroup() {
         do {
             let group = try store.createGroup()
-            withAnimation(.snappy) { sidebarSelection = .group(group.persistentModelID) }
+            withAnimation(reduceMotion ? nil : .snappy) { sidebarSelection = .group(group.persistentModelID) }
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -241,7 +242,7 @@ struct ContentView: View {
         // middle column even if the user arrived via Spotlight while a
         // narrower group was active.
         if case .group = sidebarSelection { sidebarSelection = .allContacts }
-        withAnimation(.snappy) { selectedContact = contact }
+        withAnimation(reduceMotion ? nil : .snappy) { selectedContact = contact }
     }
 }
 
