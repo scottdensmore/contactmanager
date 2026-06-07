@@ -87,11 +87,10 @@
       "Bash(swift test *)",
       "Bash(swift build *)",
       "Bash(swiftlint lint *)",
-      "Bash(log show *)",
       "Bash(entire search *)"
     ],
     "deny": [
-      "Read(./.entire/metadata/**)"
+      "Read(./.entire/**)"
     ]
   }
 }
