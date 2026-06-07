@@ -49,6 +49,7 @@ extension ContentView {
     /// Inserts parsed contacts a chunk at a time — one save (and undo step) per
     /// chunk instead of one giant transaction — updating `importProgress` and
     /// yielding between chunks so the overlay animates rather than freezing.
+    @MainActor
     func insert(_ parsed: [ParsedContact]) async {
         importProgress = ImportProgress(done: 0, total: parsed.count)
         do {

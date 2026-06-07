@@ -7,8 +7,6 @@
 //  the whole set on the main actor in a single mega-undo step.
 //
 
-import Foundation
-
 extension Array {
     /// Splits the array into consecutive sub-arrays of at most `size` elements.
     /// A non-positive `size` returns the whole array as a single chunk (or no
