@@ -27,7 +27,10 @@ jobs:
 
   build-test:
     name: Build & Test
-    runs-on: macos-latest
+    # Must be macOS 26: the app's deployment target is macOS 26, so the tests
+    # can only *run* on a 26 runner (macos-latest is still 15 — it can build
+    # against the 26 SDK but not launch a 26-target app).
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
 
