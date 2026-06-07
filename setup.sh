@@ -17,6 +17,7 @@ SETTINGS_PATH="${SCRIPT_DIR}/ContactManager/DeveloperSettings.xcconfig"
 TEAM_ID="${DEV_TEAM_ID:-}"
 ORG_IDENTIFIER="${ORG_IDENTIFIER:-}"
 NON_INTERACTIVE=false
+FORCE=false
 
 usage() {
   cat <<'USAGE'
@@ -29,6 +30,7 @@ Options:
   --non-interactive          Run without prompts (requires all values)
   --dev-team-id <id>         Apple Developer Team ID
   --org-identifier <value>   Reverse-domain identifier (e.g. com.example)
+  --force                    Overwrite an existing DeveloperSettings.xcconfig
   -h, --help                 Show this help
 
 Environment fallbacks: DEV_TEAM_ID, ORG_IDENTIFIER
@@ -66,12 +68,19 @@ validate_settings() {
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --non-interactive) NON_INTERACTIVE=true; shift ;;
+    --force) FORCE=true; shift ;;
     --dev-team-id) require_option_value "$1" "${2:-}"; TEAM_ID="$2"; shift 2 ;;
     --org-identifier) require_option_value "$1" "${2:-}"; ORG_IDENTIFIER="$2"; shift 2 ;;
     -h|--help) usage; exit 0 ;;
     *) echo "error: unknown option: $1" >&2; usage >&2; exit 1 ;;
   esac
 done
+
+if [ -f "${SETTINGS_PATH}" ] && [ "${FORCE}" = false ]; then
+  echo "ContactManager/DeveloperSettings.xcconfig already exists — leaving it untouched."
+  echo "Re-run with --force to overwrite it."
+  exit 0
+fi
 
 if [ "${NON_INTERACTIVE}" = false ]; then
   if [ -z "${TEAM_ID}" ]; then
