@@ -112,8 +112,9 @@ To turn on sync for your own build:
 2. Set your **Team** (keep *Automatically manage signing*).
 3. Click **+ Capability** ▸ **iCloud**, check **CloudKit**, and add a container
    (the default `iCloud.<your-bundle-id>` is fine — use your own bundle id).
-4. Click **+ Capability** ▸ **Background Modes** and enable **Remote
-   notifications** so the store receives sync pushes.
+4. Click **+ Capability** ▸ **Push Notifications** so the store receives
+   CloudKit change pushes (this is the macOS capability; there's no
+   "Background Modes ▸ Remote notifications" toggle for a Mac app).
 5. Make sure the Mac is signed in to iCloud, then build and run. The store now
    syncs; on an empty CloudKit account your existing local contacts upload, and
    other devices using the same container pull them down.

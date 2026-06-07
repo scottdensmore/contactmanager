@@ -161,8 +161,10 @@ struct ContactManagerApp: App {
             )
             container = try ModelContainer(for: schema, configurations: configuration)
         } catch {
-            let mode = cloudKitEnabled ? "CloudKit" : "local"
-            print("ContactManager: \(mode) container failed (\(error.localizedDescription)); retrying local-only.")
+            // Only a CloudKit-backed attempt is worth retrying as local; if the
+            // local attempt itself failed there's nothing left to fall back to.
+            guard cloudKitEnabled else { return .failed(error.localizedDescription) }
+            print("ContactManager: CloudKit container failed (\(error.localizedDescription)); retrying local-only.")
             do {
                 let localConfiguration = ModelConfiguration(schema: schema, cloudKitDatabase: .none)
                 container = try ModelContainer(for: schema, configurations: localConfiguration)
