@@ -91,6 +91,7 @@ struct ContactListView: View {
 
     private func transfer(for contact: Contact) -> VCardTransfer {
         VCardTransfer(
+            contactID: contact.persistentModelID.storedString ?? "",
             suggestedName: VCardTransfer.suggestedFilename(for: contact.fullName),
             text: VCard.card(for: contact)
         )

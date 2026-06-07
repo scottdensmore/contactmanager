@@ -21,6 +21,8 @@ struct SidebarView: View {
     var addGroup: () -> Void
     var renameGroup: (ContactGroup, String) -> Void
     var deleteGroup: (ContactGroup) -> Void
+    /// Adds the dropped contacts (by encoded id) to a group — sidebar drag target.
+    var addContacts: ([String], ContactGroup) -> Void
 
     @State private var renameTarget: ContactGroup?
     @State private var renameText = ""
@@ -46,6 +48,16 @@ struct SidebarView: View {
                             .contextMenu {
                                 Button("Rename…") { beginRename(group) }
                                 Button("Delete", role: .destructive) { deleteGroup(group) }
+                            }
+                            // Drag contacts from the list onto a group to add
+                            // them. The transfer exposes the contact id as text;
+                            // reject drops that carry no valid contact id (e.g.
+                            // unrelated selected text) so they aren't "accepted".
+                            .dropDestination(for: String.self) { ids, _ in
+                                let valid = ids.filter { PersistentIdentifier.decode(stored: $0) != nil }
+                                guard !valid.isEmpty else { return false }
+                                addContacts(valid, group)
+                                return true
                             }
                     }
                 }

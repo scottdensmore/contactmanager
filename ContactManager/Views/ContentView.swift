@@ -94,7 +94,8 @@ struct ContentView: View {
                 groups: groups,
                 addGroup: addGroup,
                 renameGroup: renameGroup,
-                deleteGroup: deleteGroup
+                deleteGroup: deleteGroup,
+                addContacts: addContacts(encodedIDs:to:)
             )
         } content: {
             ContactListView(
@@ -247,6 +248,14 @@ struct ContentView: View {
         do {
             let group = try store.createGroup()
             withAnimation(.snappy) { sidebarSelection = .group(group.persistentModelID) }
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    private func addContacts(encodedIDs ids: [String], to group: ContactGroup) {
+        do {
+            try store.addContacts(withEncodedIDs: ids, to: group)
         } catch {
             errorMessage = error.localizedDescription
         }
