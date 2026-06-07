@@ -21,7 +21,10 @@ extension ContactDetailView {
             get: { contact.birthday.map { Birthday.fields(of: $0).year != nil } ?? false },
             set: { include in
                 guard let birthday = contact.birthday else { return }
-                let year = include ? Birthday.fields(of: .now).year : nil
+                // Derive "this year" from the user's local calendar, not the
+                // UTC birthday calendar: near New Year those disagree (Dec 31
+                // local can be Jan 1 UTC), and this is a user-facing choice.
+                let year = include ? Calendar(identifier: .gregorian).component(.year, from: .now) : nil
                 contact.birthday = Birthday.setting(year: year, of: birthday)
             }
         )
