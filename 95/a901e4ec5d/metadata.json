@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "95a901e4ec5d",
+  "strategy": "manual-commit",
+  "branch": "ci/harden-workflows",
+  "checkpoints_count": 1,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/95/a901e4ec5d/0/metadata.json",
+      "transcript": "/95/a901e4ec5d/0/full.jsonl",
+      "content_hash": "/95/a901e4ec5d/0/content_hash.txt",
+      "prompt": "/95/a901e4ec5d/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 117584,
+    "cache_creation_tokens": 1424088,
+    "cache_read_tokens": 412632240,
+    "output_tokens": 758063,
+    "api_call_count": 915
+  }
+}
