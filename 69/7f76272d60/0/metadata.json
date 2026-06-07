@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "697f76272d60",
+  "session_id": "5ea1dbe6-8812-489a-b85a-b1b21cf14a47",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-07T04:01:34.062013Z",
+  "branch": "fix/release-gem-sudo",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "15fe307a9b2c",
+  "token_usage": {
+    "input_tokens": 100002,
+    "cache_creation_tokens": 1224294,
+    "cache_read_tokens": 348422585,
+    "output_tokens": 664584,
+    "api_call_count": 833
+  },
+  "session_metrics": {
+    "turn_count": 30
+  }
+}

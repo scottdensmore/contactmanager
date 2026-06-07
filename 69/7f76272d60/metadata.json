@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "697f76272d60",
+  "strategy": "manual-commit",
+  "branch": "fix/release-gem-sudo",
+  "checkpoints_count": 1,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/69/7f76272d60/0/metadata.json",
+      "transcript": "/69/7f76272d60/0/full.jsonl",
+      "content_hash": "/69/7f76272d60/0/content_hash.txt",
+      "prompt": "/69/7f76272d60/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 100002,
+    "cache_creation_tokens": 1224294,
+    "cache_read_tokens": 348422585,
+    "output_tokens": 664584,
+    "api_call_count": 833
+  }
+}
