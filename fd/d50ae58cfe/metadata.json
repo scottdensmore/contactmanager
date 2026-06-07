@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "fdd50ae58cfe",
+  "strategy": "manual-commit",
+  "branch": "chore/signing-in-template",
+  "checkpoints_count": 1,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/fd/d50ae58cfe/0/metadata.json",
+      "transcript": "/fd/d50ae58cfe/0/full.jsonl",
+      "content_hash": "/fd/d50ae58cfe/0/content_hash.txt",
+      "prompt": "/fd/d50ae58cfe/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 104888,
+    "cache_creation_tokens": 1298263,
+    "cache_read_tokens": 399606057,
+    "output_tokens": 722210,
+    "api_call_count": 887
+  }
+}
