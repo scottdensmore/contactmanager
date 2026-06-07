@@ -117,7 +117,7 @@ struct ContentView: View {
             }
         // Split into helpers so the modifier chain stays within the SwiftUI
         // type-checker's budget (and the type-body length limit).
-        return handlingFileDialogs(handlingMenuCommands(scene))
+        return handlingFileDialogs(handlingHandoff(handlingMenuCommands(scene)))
     }
 
     /// The three-column split view, window frame, and the import overlay.
@@ -294,6 +294,24 @@ private extension ContentView {
             .onContinueUserActivity(CSSearchableItemActionType) { activity in
                 let id = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String
                 selectContact(byEncodedID: id)
+            }
+    }
+
+    /// Advertises the open contact for Handoff, and accepts it back. The
+    /// activity is only active once we have an encoded id, so the system never
+    /// holds an activity without a valid contact identifier.
+    func handlingHandoff(_ content: some View) -> some View {
+        content
+            .userActivity(
+                ContactActivity.viewContactType,
+                isActive: selectedContact?.persistentModelID.storedString != nil
+            ) { activity in
+                if let contact = selectedContact, let id = contact.persistentModelID.storedString {
+                    ContactActivity.configure(activity, contactID: id, displayName: contact.fullName)
+                }
+            }
+            .onContinueUserActivity(ContactActivity.viewContactType) { activity in
+                selectContact(byEncodedID: ContactActivity.contactID(from: activity))
             }
     }
 

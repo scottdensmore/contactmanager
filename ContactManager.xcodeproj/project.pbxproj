@@ -21,9 +21,11 @@
 		2EB13805320DA225F70D08F3 /* VCardTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B033A5B8DABE71E4CCF6A8E9 /* VCardTransfer.swift */; };
 		3076738411F8C3FA073D1BE0 /* ContactsBridgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8EC17CBADAAAFFF77E9FDF /* ContactsBridgeTests.swift */; };
 		322103E6FBEAD59C6A2405E6 /* Birthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDED82FFB4B5F039052FFB5 /* Birthday.swift */; };
+		442122E49889F5A9CA174B12 /* ContactActivityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3E51B04D43E299C787B243 /* ContactActivityTests.swift */; };
 		4515C79B40C414630F64BC5D /* PersistentIdentifierEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61587B4E14B400AF1CB16862 /* PersistentIdentifierEncoding.swift */; };
 		465C6AF22F5A45925B879752 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7B150B6DB35B8EF10D2135 /* AvatarView.swift */; };
 		488CA0C339AD3218073A02E8 /* PrintableContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37DB6CC43A76261CFF3987D /* PrintableContactView.swift */; };
+		4B9EAE3500BB10401AEB3746 /* ContactActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CF4C47C670B0A8C3B6B384 /* ContactActivity.swift */; };
 		4EC36757044377406665E53B /* ContactListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E2EBA5EFDEE6888B84E10B /* ContactListView.swift */; };
 		4F1E1A097740ECE3D42E55B8 /* GroupDropTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964ACD67CC8CB35694497A10 /* GroupDropTests.swift */; };
 		52F4C28719253736244342F9 /* SpotlightDeltaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604FB090CB5671DB6927238C /* SpotlightDeltaTests.swift */; };
@@ -135,6 +137,7 @@
 		AC2AA1D7BB15FC01B9CBA3B3 /* EntityModelContainer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EntityModelContainer.swift; sourceTree = "<group>"; };
 		B033A5B8DABE71E4CCF6A8E9 /* VCardTransfer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VCardTransfer.swift; sourceTree = "<group>"; };
 		B040B21B7E2002E00885A9BA /* BirthdayTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BirthdayTests.swift; sourceTree = "<group>"; };
+		B0CF4C47C670B0A8C3B6B384 /* ContactActivity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactActivity.swift; sourceTree = "<group>"; };
 		B25751DDEC1515E341AF67F5 /* ContactField.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactField.swift; sourceTree = "<group>"; };
 		B75D02267D3BC6C014143329 /* ContactModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactModelTests.swift; sourceTree = "<group>"; };
 		BCAA25CCEE01127AA64D21D6 /* CSVTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CSVTests.swift; sourceTree = "<group>"; };
@@ -142,6 +145,7 @@
 		C0255C29CC874D2BA1C064CF /* ContactPDF.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactPDF.swift; sourceTree = "<group>"; };
 		C0F303B7AE5B9202CDA6D9DA /* ContactPDFTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactPDFTests.swift; sourceTree = "<group>"; };
 		C7DCAF444714BC3726B212C4 /* UndoTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UndoTests.swift; sourceTree = "<group>"; };
+		DC3E51B04D43E299C787B243 /* ContactActivityTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactActivityTests.swift; sourceTree = "<group>"; };
 		DC69A4C348D4BBEF0D8F1330 /* PDFExportDocument.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PDFExportDocument.swift; sourceTree = "<group>"; };
 		DEAB729518FA2A6600E3570B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		DED8178913A452A900EC3234 /* ContactManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -229,6 +233,7 @@
 				436B4115937E4350EB9A7EF7 /* Chunking.swift */,
 				C0255C29CC874D2BA1C064CF /* ContactPDF.swift */,
 				DC69A4C348D4BBEF0D8F1330 /* PDFExportDocument.swift */,
+				B0CF4C47C670B0A8C3B6B384 /* ContactActivity.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -323,6 +328,7 @@
 				B040B21B7E2002E00885A9BA /* BirthdayTests.swift */,
 				2623DCD281C3DDAA29BB6B99 /* DefaultGroupPreferenceTests.swift */,
 				279FCAC10E829D7DAC9D8385 /* OpenContactIntentTests.swift */,
+				DC3E51B04D43E299C787B243 /* ContactActivityTests.swift */,
 			);
 			path = ContactManagerTests;
 			sourceTree = "<group>";
@@ -492,6 +498,7 @@
 				488CA0C339AD3218073A02E8 /* PrintableContactView.swift in Sources */,
 				8397B67D483997505B17269E /* ContactDetailView+Birthday.swift in Sources */,
 				AA43BCF64B0DC3F571E4A813 /* DefaultGroupPreference.swift in Sources */,
+				4B9EAE3500BB10401AEB3746 /* ContactActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,6 +524,7 @@
 				BC3D0CE8272648D0ACEF0C46 /* BirthdayTests.swift in Sources */,
 				8279EF938E1BAA17ACAB8D94 /* DefaultGroupPreferenceTests.swift in Sources */,
 				01001E025DB1348D36342E1C /* OpenContactIntentTests.swift in Sources */,
+				442122E49889F5A9CA174B12 /* ContactActivityTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -698,6 +706,7 @@
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ContactManager/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSContactsUsageDescription = "ContactManager imports contacts from your system Contacts when you choose Import from Contacts…";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Scott Densmore. All rights reserved.";
@@ -736,6 +745,7 @@
 				GCC_GENERATE_TEST_COVERAGE_FILES = NO;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ContactManager/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSContactsUsageDescription = "ContactManager imports contacts from your system Contacts when you choose Import from Contacts…";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Scott Densmore. All rights reserved.";
