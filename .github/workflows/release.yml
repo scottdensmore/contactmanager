@@ -1,0 +1,87 @@
+name: Release
+
+# Runs after CI finishes on main. Gated on success below, so only a merge that
+# passes Lint & Format + Build & Test produces a release.
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
+
+# Never let two releases run at once (they'd race on the version bump).
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Bump, tag, and release
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    env:
+      XCCONFIG: ContactManager/Config/SharedSettings.xcconfig
+    steps:
+      # Check out the exact commit CI tested (not a moving `main`), so the
+      # release is tied to that commit; if `main` has since advanced, the push
+      # below fails safely and that newer merge runs its own release.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0 # full history for the build number
+
+      - name: Skip if this commit is already a release bump
+        id: guard
+        run: |
+          set -euo pipefail
+          if git log -1 --pretty=%s | grep -q '^Release v'; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Compute next version and build
+        if: ${{ steps.guard.outputs.skip == 'false' }}
+        id: ver
+        run: |
+          set -euo pipefail
+          current=$(grep -E '^MARKETING_VERSION' "$XCCONFIG" | sed -E 's/.*= *//')
+          IFS=. read -r major minor patch <<< "$current"
+          patch=${patch:-0}
+          version="${major}.${minor}.$((patch + 1))"
+          build=$(git rev-list --count HEAD)
+          {
+            echo "version=$version"
+            echo "build=$build"
+            echo "tag=v$version"
+          } >> "$GITHUB_OUTPUT"
+          echo "Next release: v$version (build $build)"
+
+      - name: Stamp version + build into the xcconfig
+        if: ${{ steps.guard.outputs.skip == 'false' }}
+        run: |
+          set -euo pipefail
+          sed -i -E "s|^MARKETING_VERSION = .*|MARKETING_VERSION = ${{ steps.ver.outputs.version }}|" "$XCCONFIG"
+          sed -i -E "s|^CURRENT_PROJECT_VERSION = .*|CURRENT_PROJECT_VERSION = ${{ steps.ver.outputs.build }}|" "$XCCONFIG"
+
+      - name: Commit, tag, and create the release
+        if: ${{ steps.guard.outputs.skip == 'false' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="${{ steps.ver.outputs.tag }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Pushing with the default GITHUB_TOKEN does not re-trigger CI, so this
+          # version-bump commit can't kick off another release run. If main has
+          # advanced past the tested commit, this push fails (fail-safe).
+          git commit -am "Release $tag (build ${{ steps.ver.outputs.build }}) [skip ci]"
+          git tag -a "$tag" -m "$tag (build ${{ steps.ver.outputs.build }})"
+          git push origin HEAD:main
+          git push origin "$tag"
+          gh release create "$tag" \
+            --title "$tag (build ${{ steps.ver.outputs.build }})" \
+            --generate-notes

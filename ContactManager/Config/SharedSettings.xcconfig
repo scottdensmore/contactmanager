@@ -15,3 +15,8 @@ CODE_SIGN_STYLE = Automatic
 ORGANIZATION_IDENTIFIER = com.scottdensmore
 
 #include? "../DeveloperSettings.xcconfig"
+
+// App version + build. The patch and build auto-increment on each successful
+// merge (see .github/workflows/release.yml); bump major/minor by hand.
+MARKETING_VERSION = 2.0.0
+CURRENT_PROJECT_VERSION = 134

@@ -43,6 +43,14 @@ whole-tree SwiftLint run script from reading sources. Instead, CI
 (`make build` + `make test-unit`, code signing disabled), so enforcement happens with
 zero local build/commit friction.
 
+A separate **Release** workflow (`.github/workflows/release.yml`) runs after CI succeeds
+on `main` (`workflow_run`): it bumps the patch of `MARKETING_VERSION` and sets
+`CURRENT_PROJECT_VERSION` to the commit count, commits that back (via `GITHUB_TOKEN`, which
+doesn't re-trigger CI — no loop), tags `v{version}`, and creates a GitHub release with
+auto-generated notes. So every successful merge ships a tagged, notes-only release. Bump
+`MARKETING_VERSION`'s major/minor by hand when a release warrants it; the patch is
+automatic. Releases carry no binary (a runnable app needs signing/notarization).
+
 - 4-space indent; opening braces on the same line; trailing commas in multiline
   literals (SwiftFormat owns comma style — SwiftLint's `trailing_comma` is disabled
   so they don't fight).
