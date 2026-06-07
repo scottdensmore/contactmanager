@@ -118,6 +118,12 @@ pattern), then build to confirm it compiles.
 
 ## Workflow
 
-- Ship focused, single-purpose PRs. Keep the README and this file in sync.
-- Use the GitHub CLI (`gh`) for all GitHub operations, and address Copilot review comments
-  before merging.
+- **Write code TDD-style.** Add the failing Swift Testing test first, then the code to
+  make it pass, then refactor. Keep logic in `Models/`/`Support/` so it's unit-testable
+  without the UI (see "Code style").
+- **Review before every commit.** Run a code review over the staged diff and fix what it
+  finds *before* committing — don't commit unreviewed code.
+- Ship focused, single-purpose PRs via the GitHub CLI (`gh`). Open the PR, let CI run, and
+  **merge once all required checks pass.** Copilot review is no longer a gate — you don't
+  need to request it or wait on it before merging.
+- Keep the README and this file in sync.
