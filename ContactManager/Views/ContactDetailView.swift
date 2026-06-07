@@ -90,10 +90,12 @@ struct ContactDetailView: View {
         // A freshly created contact opens with the cursor in First Name so you
         // can type a name immediately instead of reaching for the mouse.
         .onAppear {
-            if focusNameField {
-                nameFieldFocused = true
-                onNameFieldFocused()
-            }
+            if focusNameField { nameFieldFocused = true }
+        }
+        // Clear the parent's one-shot flag only once focus has actually landed,
+        // so a missed/late focus application isn't dropped without a retry.
+        .onChange(of: nameFieldFocused) { _, focused in
+            if focused { onNameFieldFocused() }
         }
         .toolbar {
             ToolbarItem {

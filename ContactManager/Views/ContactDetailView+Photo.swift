@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 
 extension ContactDetailView {
+    @MainActor
     func handleImport(_ result: Result<URL, Error>) {
         switch result {
         case .failure(let error):
@@ -41,6 +42,7 @@ extension ContactDetailView {
         }
     }
 
+    @MainActor
     func removePhoto() {
         do {
             try store.setPhotoData(nil, on: contact)
