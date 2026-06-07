@@ -13,7 +13,14 @@ import Testing
 @MainActor
 struct OpenContactIntentTests {
     @Test func performPostsOpenRequestWithContactID() async throws {
-        let entity = ContactEntity(contact: Contact(firstName: "Ada", lastName: "Lovelace"))
+        // Use an explicit, known id so the test proves the posted payload
+        // carries *this* identifier — not just that two (possibly empty)
+        // strings happen to match.
+        let knownID = "contact-id-under-test"
+        let entity = ContactEntity(
+            id: knownID, displayName: "Ada Lovelace",
+            company: "", jobTitle: "", emails: [], phones: []
+        )
 
         var capturedID: String?
         let token = NotificationCenter.default.addObserver(
@@ -27,6 +34,6 @@ struct OpenContactIntentTests {
         intent.target = entity
         _ = try await intent.perform()
 
-        #expect(capturedID == entity.id)
+        #expect(capturedID == knownID)
     }
 }
