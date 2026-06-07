@@ -84,7 +84,7 @@ A `Makefile` wraps the common tasks (install tooling once with `make bootstrap`,
 | Format | `make format` (check only: `make format-check`) |
 | Pre-PR gate | `make check` (format-check + lint + unit tests) |
 
-Tests use **Swift Testing** (`import Testing`, `@Test`, `#expect`/`#require`); `make build`/`make test` disable code signing (compile + test gates — a signed build for distribution is done from Xcode), so they run identically locally and in CI. Linting and formatting are **SwiftLint** + **SwiftFormat**. CI (`.github/workflows/ci.yml`) runs two jobs on every PR: **Lint & Format** (`swiftformat --lint` + `swiftlint --strict`) and **Build & Test** (`make build` + `make test-unit` on a macOS 26 runner). The XCUITest smoke suite (`make test`) is run from Xcode, not CI. After CI passes on `main`, a **Release** workflow auto-bumps the version patch + build number, tags `v{version}`, and publishes a GitHub release with generated notes (bump the major/minor by hand when it's warranted). Contributor and agent conventions live in `CLAUDE.md`.
+Tests use **Swift Testing** (`import Testing`, `@Test`, `#expect`/`#require`); `make build`/`make test` disable code signing (compile + test gates — a signed build for distribution is done from Xcode), so they run identically locally and in CI. Linting and formatting are **SwiftLint** + **SwiftFormat**. CI (`.github/workflows/ci.yml`) runs two jobs on every PR: **Lint & Format** (`swiftformat --lint` + `swiftlint --strict`) and **Build & Test** (`make build` + `make test-unit` on a macOS 26 runner). The XCUITest smoke suite (`make test`) is run from Xcode, not CI. After CI passes on `main`, a **Release** workflow auto-bumps the version patch + build number, tags `v{version}`, and publishes a GitHub release with generated notes (bump the major/minor by hand when it's warranted). Contributor and agent conventions live in `AGENTS.md`.
 
 ### Building & Running
 
@@ -152,3 +152,11 @@ thing to try.
 > container). **Don't commit that change** — it's what would block anyone who
 > clones without your container. Your `DeveloperSettings.xcconfig` from step 2 is
 > already gitignored.
+
+### App Store privacy readiness
+
+The app includes `ContactManager/PrivacyInfo.xcprivacy`, currently declaring
+UserDefaults access for app preferences such as sort order and default group.
+Before TestFlight or App Store submission, keep that manifest aligned with any
+new required-reason APIs and complete App Store Connect's privacy details,
+including the privacy policy URL and any collected-data disclosures.

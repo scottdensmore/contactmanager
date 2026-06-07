@@ -87,13 +87,31 @@ final class ContactManagerUITests: XCTestCase {
         )
     }
 
-    // Row-level and detail-field assertions (seeded contacts rendering, ⌘N
-    // opening the editor) need stable accessibilityIdentifiers to be reliable
-    // on macOS — the rows are single combined a11y elements and TextFields
-    // expose their prompt as a placeholder, not a queryable label. That's a
-    // deliberately deferred step (it'd mean adding identifiers across the
-    // views); these journeys are covered at the data layer by ContactStore /
-    // ContactQuery unit tests.
+    /// Verifies the core keyboard-first loop: create a contact, edit its name,
+    /// then find it through the list search field.
+    func test_createEditAndSearchContact() {
+        let app = bootSeededApp()
+        app.typeKey("n", modifierFlags: .command)
+
+        let firstName = app.textFields["contact-first-name-field"]
+        XCTAssertTrue(firstName.waitForExistence(timeout: 3))
+        firstName.typeText("Test")
+
+        let lastName = app.textFields["contact-last-name-field"]
+        XCTAssertTrue(lastName.waitForExistence(timeout: 3))
+        lastName.click()
+        lastName.typeText("Person")
+
+        app.typeKey("f", modifierFlags: .command)
+        let search = app.searchFields.firstMatch
+        XCTAssertTrue(search.waitForExistence(timeout: 3))
+        search.typeText("Test")
+
+        XCTAssertTrue(
+            app.staticTexts["Test Person"].waitForExistence(timeout: 3),
+            "Newly edited contact should be searchable in the list"
+        )
+    }
 
     // MARK: - Helpers
 

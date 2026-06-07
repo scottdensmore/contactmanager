@@ -70,11 +70,3 @@ extension ContactEntity {
         phones = contact.phones.map(\.value).filter { !$0.isBlank }
     }
 }
-
-private extension String {
-    /// Treats whitespace-only strings as empty, matching how the rest of
-    /// the codebase decides whether a contact field is "set".
-    var isBlank: Bool {
-        trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
-}

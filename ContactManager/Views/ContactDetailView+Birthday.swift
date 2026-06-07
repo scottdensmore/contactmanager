@@ -84,6 +84,7 @@ struct MonthDayPicker: View {
             .labelsHidden()
             .fixedSize()
             .accessibilityLabel("Birthday month")
+            .accessibilityIdentifier("birthday-month-picker")
 
             Picker("Day", selection: $day) {
                 ForEach(1 ... Birthday.daysInMonth(month, year: nil), id: \.self) { value in
@@ -93,6 +94,7 @@ struct MonthDayPicker: View {
             .labelsHidden()
             .fixedSize()
             .accessibilityLabel("Birthday day")
+            .accessibilityIdentifier("birthday-day-picker")
         }
     }
 }

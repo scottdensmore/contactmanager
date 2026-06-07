@@ -17,7 +17,7 @@ struct ContentView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @Query(sort: [SortDescriptor(\Contact.lastName), SortDescriptor(\Contact.firstName)])
-    private var contacts: [Contact]
+    var contacts: [Contact]
 
     @Query(sort: \ContactGroup.name) private var groups: [ContactGroup]
 
@@ -47,6 +47,8 @@ struct ContentView: View {
     @State private var isExportingPDF = false
     @State private var pdfDocument = PDFExportDocument(data: Data())
     @State private var pdfFilename = "Contact"
+    @State var importReviewItems: [ImportReviewItem] = []
+    @State var isReviewingImport = false
 
     /// Internal so the import handlers in `ContentView+Import.swift` can
     /// reach the same store the main view uses.
@@ -346,6 +348,11 @@ private extension ContentView {
             ) { result in
                 if case .failure(let error) = result {
                     errorMessage = error.localizedDescription
+                }
+            }
+            .sheet(isPresented: $isReviewingImport) {
+                ImportReviewView(items: $importReviewItems) { items in
+                    Task { await applyImportReview(items) }
                 }
             }
             .alert(

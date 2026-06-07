@@ -18,7 +18,7 @@ enum DuplicateFinder {
         guard contacts.count > 1 else { return [] }
 
         var unionFind = UnionFind(count: contacts.count)
-        var ownerOfKey: [String: Int] = [:]
+        var ownerOfKey: [ContactMatchKey: Int] = [:]
 
         for (index, contact) in contacts.enumerated() {
             for key in matchKeys(for: contact) {
@@ -43,24 +43,47 @@ enum DuplicateFinder {
 
     /// Normalized keys identifying a contact for matching. A shared key between
     /// two contacts marks them as duplicates.
-    static func matchKeys(for contact: Contact) -> Set<String> {
-        var keys: Set<String> = []
+    static func matchKeys(for contact: Contact) -> Set<ContactMatchKey> {
+        ContactMatchKey.keys(
+            firstName: contact.firstName,
+            lastName: contact.lastName,
+            emails: contact.emails.map(\.value),
+            phones: contact.phones.map(\.value)
+        )
+    }
+}
 
-        for email in contact.emails {
-            let normalized = email.value.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-            if !normalized.isEmpty { keys.insert("email:\(normalized)") }
+/// A normalized identity fragment used for duplicate detection and import
+/// review. Shared by `DuplicateFinder` and `ImportReview` so both features
+/// agree on what counts as "the same person".
+enum ContactMatchKey: Hashable {
+    case email(String)
+    case phone(String)
+    case name(String)
+
+    static func keys(
+        firstName: String,
+        lastName: String,
+        emails: [String],
+        phones: [String]
+    ) -> Set<ContactMatchKey> {
+        var keys: Set<ContactMatchKey> = []
+
+        for email in emails {
+            let normalized = email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+            if !normalized.isEmpty { keys.insert(.email(normalized)) }
         }
-        for phone in contact.phones {
-            let digits = String(phone.value.filter(\.isNumber))
+        for phone in phones {
+            let digits = String(phone.filter(\.isNumber))
             // Ignore very short fragments (e.g. extensions) to avoid false matches.
-            if digits.count >= 7 { keys.insert("phone:\(digits)") }
+            if digits.count >= 7 { keys.insert(.phone(digits)) }
         }
 
-        let name = [contact.firstName, contact.lastName]
+        let name = [firstName, lastName]
             .map { $0.trimmingCharacters(in: .whitespaces).lowercased() }
             .filter { !$0.isEmpty }
             .joined(separator: " ")
-        if !name.isEmpty { keys.insert("name:\(name)") }
+        if !name.isEmpty { keys.insert(.name(name)) }
 
         return keys
     }
