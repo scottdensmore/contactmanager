@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "6123167a1bf8",
+  "strategy": "manual-commit",
+  "branch": "feature/focus-new-contact-name",
+  "checkpoints_count": 1,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/61/23167a1bf8/0/metadata.json",
+      "transcript": "/61/23167a1bf8/0/full.jsonl",
+      "content_hash": "/61/23167a1bf8/0/content_hash.txt",
+      "prompt": "/61/23167a1bf8/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 40595,
+    "cache_creation_tokens": 663878,
+    "cache_read_tokens": 63216515,
+    "output_tokens": 244337,
+    "api_call_count": 358
+  }
+}
