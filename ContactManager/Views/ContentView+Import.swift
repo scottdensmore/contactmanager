@@ -23,6 +23,8 @@ extension ContentView {
 
     func importSystemContacts() {
         Task {
+            importProgress = ImportProgress()
+            defer { importProgress = nil }
             // Permission prompt + fetch + mapping all run off the main actor;
             // only the final insert hops back here.
             let parsed: [ParsedContact]
@@ -38,11 +40,25 @@ extension ContentView {
                 errorMessage = "No contacts were found in your system Contacts."
                 return
             }
-            do {
-                try store.importContacts(parsed)
-            } catch {
-                errorMessage = error.localizedDescription
+            await insert(parsed)
+        }
+    }
+
+    // MARK: - Chunked insert + progress
+
+    /// Inserts parsed contacts a chunk at a time — one save (and undo step) per
+    /// chunk instead of one giant transaction — updating `importProgress` and
+    /// yielding between chunks so the overlay animates rather than freezing.
+    func insert(_ parsed: [ParsedContact]) async {
+        importProgress = ImportProgress(done: 0, total: parsed.count)
+        do {
+            for chunk in parsed.chunked(into: 500) {
+                try store.importContacts(chunk)
+                importProgress?.done += chunk.count
+                await Task.yield()
             }
+        } catch {
+            errorMessage = error.localizedDescription
         }
     }
 
@@ -51,6 +67,8 @@ extension ContentView {
     /// Imports one or more vCard files dropped onto the contact list.
     func importVCardURLs(_ urls: [URL]) {
         Task {
+            importProgress = ImportProgress()
+            defer { importProgress = nil }
             let parsed: [ParsedContact] = await Task.detached {
                 var all: [ParsedContact] = []
                 for url in urls {
@@ -68,11 +86,7 @@ extension ContentView {
                 errorMessage = "No contacts were found in that file."
                 return
             }
-            do {
-                try store.importContacts(parsed)
-            } catch {
-                errorMessage = error.localizedDescription
-            }
+            await insert(parsed)
         }
     }
 
@@ -84,6 +98,8 @@ extension ContentView {
             errorMessage = error.localizedDescription
         case .success(let url):
             Task {
+                importProgress = ImportProgress()
+                defer { importProgress = nil }
                 let outcome: CSVImportOutcome = await Task.detached {
                     let didAccess = url.startAccessingSecurityScopedResource()
                     defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
@@ -112,11 +128,7 @@ extension ContentView {
                 case .parsed(let contacts) where contacts.isEmpty:
                     errorMessage = "No contacts were found in that file."
                 case .parsed(let contacts):
-                    do {
-                        try store.importContacts(contacts)
-                    } catch {
-                        errorMessage = error.localizedDescription
-                    }
+                    await insert(contacts)
                 }
             }
         }
@@ -128,6 +140,8 @@ extension ContentView {
             errorMessage = error.localizedDescription
         case .success(let url):
             Task {
+                importProgress = ImportProgress()
+                defer { importProgress = nil }
                 // Read and parse off the main actor so large files don't block UI.
                 let parsed: [ParsedContact]? = await Task.detached {
                     let didAccess = url.startAccessingSecurityScopedResource()
@@ -145,11 +159,7 @@ extension ContentView {
                     errorMessage = "No contacts were found in that file."
                     return
                 }
-                do {
-                    try store.importContacts(parsed)
-                } catch {
-                    errorMessage = error.localizedDescription
-                }
+                await insert(parsed)
             }
         }
     }
