@@ -159,4 +159,31 @@ extension Contact {
         let trimmedCompany = company.trimmingCharacters(in: .whitespaces)
         return trimmedCompany.isEmpty ? nil : trimmedCompany
     }
+
+    /// "Job Title · Company" header line, or `nil` when both are blank. Trims
+    /// like the other derived strings so a whitespace-only field is dropped
+    /// rather than producing a stray separator. Shown under the name in the
+    /// detail view and the printable card.
+    var roleLine: String? {
+        let line = [jobTitle, company]
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+            .joined(separator: " · ")
+        return line.isEmpty ? nil : line
+    }
+
+    /// The postal address as display lines — street, then "city state postal",
+    /// then country — dropping any blank component. Empty when no address is
+    /// set. Backs the printable card's address block.
+    var addressLines: [String] {
+        let cityStatePostal = [city, state, postalCode]
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+            .joined(separator: " ")
+        return [
+            street.trimmingCharacters(in: .whitespaces),
+            cityStatePostal,
+            country.trimmingCharacters(in: .whitespaces),
+        ].filter { !$0.isEmpty }
+    }
 }

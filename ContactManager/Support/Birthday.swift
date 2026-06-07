@@ -59,6 +59,19 @@ enum Birthday {
         return Fields(year: year, month: parts.month ?? 1, day: parts.day ?? 1)
     }
 
+    /// A human-readable birthday string: "March 4, 1990", or "March 4" when the
+    /// year was omitted. Month names follow the current locale; the day and year
+    /// come from the UTC-anchored fields so the shown day matches what's stored.
+    static func formatted(_ date: Date) -> String {
+        let parts = fields(of: date)
+        let months = calendar.monthSymbols
+        let month = (1 ... 12).contains(parts.month) ? months[parts.month - 1] : ""
+        if let year = parts.year {
+            return "\(month) \(parts.day), \(year)"
+        }
+        return "\(month) \(parts.day)"
+    }
+
     /// Returns a copy of `date` with its year replaced — or cleared to the
     /// year-less form when `year` is `nil` — keeping month and day. Backs the
     /// editor's "include year" toggle so flipping it never touches the stored
