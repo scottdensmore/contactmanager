@@ -17,6 +17,8 @@ struct AvatarView: View {
     /// (important for list rows that re-render frequently).
     @State private var photo: NSImage?
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     var body: some View {
         Group {
             if let photo {
@@ -44,8 +46,9 @@ struct AvatarView: View {
         .accessibilityHidden(true)
         .task(id: contact.photoData) {
             let decoded = contact.photoData.flatMap { NSImage(data: $0) }
-            // Animate the actual swap, which happens when `photo` updates.
-            withAnimation(.smooth) { photo = decoded }
+            // Animate the actual swap, which happens when `photo` updates —
+            // unless the user has asked to reduce motion.
+            withAnimation(reduceMotion ? nil : .smooth) { photo = decoded }
         }
     }
 

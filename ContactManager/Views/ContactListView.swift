@@ -25,6 +25,8 @@ struct ContactListView: View {
     /// Drives the search field's focus so the Find command (⌘F) can jump to it.
     @FocusState private var searchFocused: Bool
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     var body: some View {
         List(selection: $selection) {
             ForEach(sections) { section in
@@ -45,7 +47,7 @@ struct ContactListView: View {
             ideal: LayoutMetrics.listIdealWidth,
             max: LayoutMetrics.listMaxWidth
         )
-        .animation(.smooth, value: sortOrder)
+        .animation(reduceMotion ? nil : .smooth, value: sortOrder)
         .searchable(text: $searchText, prompt: "Search Contacts")
         .searchFocused($searchFocused)
         // The Find menu command (⌘F) routes here to focus the search field.
