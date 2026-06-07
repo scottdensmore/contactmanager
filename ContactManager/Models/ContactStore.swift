@@ -163,7 +163,7 @@ struct ContactStore {
         }
     }
 
-    private func fillEmptyFields(of primary: Contact, from other: Contact) {
+    func fillEmptyFields(of primary: Contact, from other: Contact) {
         /// Treat whitespace-only values as empty, consistent with the rest of
         /// the codebase (Contact.fullName, primaryEmail, etc.).
         func isBlank(_ value: String) -> Bool {
@@ -192,7 +192,7 @@ struct ContactStore {
 
     /// Reassigns every contact's email/phone fields to `primary`, dropping
     /// blanks and value-duplicates and reindexing for a stable order.
-    private func mergeFields(into primary: Contact, from others: [Contact]) {
+    func mergeFields(into primary: Contact, from others: [Contact]) {
         for kind in FieldKind.allCases {
             let candidates = primary.fields(of: kind) + others.flatMap { $0.fields(of: kind) }
             var seenValues: Set<String> = []
@@ -274,51 +274,17 @@ struct ContactStore {
     /// back on failure. The group is given `actionName` so the Edit menu shows
     /// e.g. "Undo Create Contact".
     @discardableResult
-    private func mutate<Result>(_ actionName: String, _ body: () throws -> Result) throws -> Result {
+    func mutate<Result>(_ actionName: String, _ body: () throws -> Result) throws -> Result {
         let undoManager = context.undoManager
         undoManager?.beginUndoGrouping()
         do {
             let result = try body()
-
-            // Snapshot the context's pending changes *before* the save clears
-            // them, so the notification can carry a precise delta and the
-            // Spotlight index updates incrementally rather than rebuilding the
-            // whole thing on every edit.
-            let touched = context.insertedModelsArray + context.changedModelsArray
-            let deletedModels = context.deletedModelsArray
-            // Deleted contacts already hold permanent ids (they were saved
-            // before), so read them now — after the save the objects are gone.
-            let deletedIDs = Set(
-                deletedModels.compactMap { ($0 as? Contact)?.persistentModelID.storedString }
-            )
-            // A field can be deleted while its owning contact survives (Delete
-            // Field, or merge folding duplicates). Capture those owners now,
-            // while the inverse relationship is still intact, so the contact's
-            // emails/phones get refreshed.
-            let survivingFieldOwnerIDs = Set(
-                deletedModels.compactMap { ($0 as? ContactField)?.contact?.persistentModelID.storedString }
-            )
+            let pending = pendingContactChange()
 
             try context.save()
             undoManager?.endUndoGrouping()
             undoManager?.setActionName(actionName)
-
-            // Read updated ids *after* the save: a freshly inserted contact's
-            // pre-save id is temporary and wouldn't match a later fetch-by-id;
-            // the save promotes it to the permanent identifier in place.
-            var updatedIDs = Set(touched.compactMap(Self.affectedContactID))
-            updatedIDs.formUnion(survivingFieldOwnerIDs)
-            updatedIDs.subtract(deletedIDs) // never re-index a contact we just deleted
-            let change = ContactChange(updatedIDs: updatedIDs, deletedIDs: deletedIDs)
-
-            // Observed by ContentView to refresh the Spotlight index. Fired
-            // after the save commits so observers see the post-mutation state,
-            // and carries the delta so the refresh stays incremental.
-            NotificationCenter.default.post(
-                name: .contactsDidChange,
-                object: nil,
-                userInfo: [ContactChange.userInfoKey: change]
-            )
+            post(pending.contactChange())
             return result
         } catch {
             context.rollback()
@@ -330,7 +296,7 @@ struct ContactStore {
     /// Maps a touched model to the contact whose Spotlight entry it affects: a
     /// `Contact` directly, or a `ContactField` via its owner. Other models
     /// (e.g. `ContactGroup`) don't appear in the index and map to `nil`.
-    private static func affectedContactID(of model: any PersistentModel) -> String? {
+    static func affectedContactID(of model: any PersistentModel) -> String? {
         switch model {
         case let contact as Contact:
             contact.persistentModelID.storedString
@@ -339,6 +305,44 @@ struct ContactStore {
         default:
             nil
         }
+    }
+
+    func pendingContactChange() -> PendingContactChange {
+        // Snapshot the context's pending changes *before* the save clears
+        // them, so the notification can carry a precise delta and the
+        // Spotlight index updates incrementally rather than rebuilding the
+        // whole thing on every edit.
+        let touched = context.insertedModelsArray + context.changedModelsArray
+        let deletedModels = context.deletedModelsArray
+        // Deleted contacts already hold permanent ids (they were saved
+        // before), so read them now — after the save the objects are gone.
+        let deletedIDs = Set(
+            deletedModels.compactMap { ($0 as? Contact)?.persistentModelID.storedString }
+        )
+        // A field can be deleted while its owning contact survives (Delete
+        // Field, or merge folding duplicates). Capture those owners now,
+        // while the inverse relationship is still intact, so the contact's
+        // emails/phones get refreshed.
+        let survivingFieldOwnerIDs = Set(
+            deletedModels.compactMap { ($0 as? ContactField)?.contact?.persistentModelID.storedString }
+        )
+
+        return PendingContactChange(
+            touched: touched,
+            survivingFieldOwnerIDs: survivingFieldOwnerIDs,
+            deletedIDs: deletedIDs
+        )
+    }
+
+    func post(_ change: ContactChange) {
+        // Observed by ContentView to refresh the Spotlight index. Fired
+        // after the save commits so observers see the post-mutation state,
+        // and carries the delta so the refresh stays incremental.
+        NotificationCenter.default.post(
+            name: .contactsDidChange,
+            object: nil,
+            userInfo: [ContactChange.userInfoKey: change]
+        )
     }
 }
 
@@ -358,6 +362,23 @@ struct ContactChange {
 
     /// `userInfo` key the change rides under in `.contactsDidChange`.
     static let userInfoKey = "ContactManager.contactChange"
+}
+
+@MainActor
+struct PendingContactChange {
+    var touched: [any PersistentModel]
+    var survivingFieldOwnerIDs: Set<String>
+    var deletedIDs: Set<String>
+
+    func contactChange() -> ContactChange {
+        // Read updated ids *after* the save: a freshly inserted contact's
+        // pre-save id is temporary and wouldn't match a later fetch-by-id;
+        // the save promotes it to the permanent identifier in place.
+        var updatedIDs = Set(touched.compactMap { ContactStore.affectedContactID(of: $0) })
+        updatedIDs.formUnion(survivingFieldOwnerIDs)
+        updatedIDs.subtract(deletedIDs) // never re-index a contact we just deleted
+        return ContactChange(updatedIDs: updatedIDs, deletedIDs: deletedIDs)
+    }
 }
 
 enum ContactStoreError: LocalizedError {

@@ -34,6 +34,7 @@ struct ContactListView: View {
                     ForEach(section.contacts) { contact in
                         ContactRow(contact: contact)
                             .tag(contact)
+                            .accessibilityIdentifier(contact.accessibilityRowIdentifier)
                             // Drag a row to Finder to write `<Name>.vcf`.
                             .draggable(transfer(for: contact))
                             .contextMenu { rowContextMenu(for: contact) }
@@ -49,6 +50,7 @@ struct ContactListView: View {
         )
         .animation(reduceMotion ? nil : .smooth, value: sortOrder)
         .searchable(text: $searchText, prompt: "Search Contacts")
+        .accessibilityIdentifier("contact-search")
         .searchFocused($searchFocused)
         // The Find menu command (⌘F) routes here to focus the search field.
         .onReceive(NotificationCenter.default.publisher(for: .focusSearchRequested)) { _ in
@@ -87,6 +89,7 @@ struct ContactListView: View {
                     Label("New Contact", systemImage: "plus")
                 }
                 .help("New Contact")
+                .accessibilityIdentifier("new-contact-button")
             }
         }
     }
@@ -133,6 +136,20 @@ struct ContactListView: View {
                 ContentUnavailableView.search(text: searchText)
             }
         }
+    }
+}
+
+private extension Contact {
+    var accessibilityRowIdentifier: String {
+        "contact-row-\((persistentModelID.storedString ?? fullName).normalizedIdentifier)"
+    }
+}
+
+private extension String {
+    var normalizedIdentifier: String {
+        lowercased()
+            .map { $0.isLetter || $0.isNumber ? String($0) : "-" }
+            .joined()
     }
 }
 

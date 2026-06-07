@@ -39,4 +39,4 @@ Optional iCloud sync setup is documented in the [README](README.md#icloud-sync-o
 - **Squash merge** and delete the branch; a successful merge auto-tags and publishes a release.
 
 More detailed conventions (architecture, SwiftData rules, style) live in
-[`CLAUDE.md`](CLAUDE.md).
+[`AGENTS.md`](AGENTS.md).

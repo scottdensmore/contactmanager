@@ -5,8 +5,7 @@
 //  Import handlers (system Contacts, vCard file picker, vCard URL drops)
 //  factored out of `ContentView` so the main view stays focused on
 //  composition and state. Each handler runs the parse off the main
-//  actor and routes inserts through `ContactStore` so they participate
-//  in the existing Undo group.
+//  actor and presents a review step before `ContactStore` writes anything.
 //
 
 import Foundation
@@ -26,7 +25,7 @@ extension ContentView {
             importProgress = ImportProgress()
             defer { importProgress = nil }
             // Permission prompt + fetch + mapping all run off the main actor;
-            // only the final insert hops back here.
+            // only the final review presentation hops back here.
             let parsed: [ParsedContact]
             do {
                 parsed = try await Task.detached(priority: .userInitiated) {
@@ -40,21 +39,24 @@ extension ContentView {
                 errorMessage = "No contacts were found in your system Contacts."
                 return
             }
-            await insert(parsed)
+            presentImportReview(parsed)
         }
     }
 
-    // MARK: - Chunked insert + progress
-
-    /// Inserts parsed contacts a chunk at a time — one save (and undo step) per
-    /// chunk instead of one giant transaction — updating `importProgress` and
-    /// yielding between chunks so the overlay animates rather than freezing.
     @MainActor
-    func insert(_ parsed: [ParsedContact]) async {
-        importProgress = ImportProgress(done: 0, total: parsed.count)
+    func presentImportReview(_ parsed: [ParsedContact]) {
+        importProgress = nil
+        importReviewItems = ImportReview.makeItems(for: parsed, existing: contacts)
+        isReviewingImport = true
+    }
+
+    @MainActor
+    func applyImportReview(_ items: [ImportReviewItem]) async {
+        importProgress = ImportProgress(done: 0, total: items.count)
+        defer { importProgress = nil }
         do {
-            for chunk in parsed.chunked(into: 500) {
-                try store.importContacts(chunk)
+            for chunk in items.chunked(into: 500) {
+                try store.applyImportReview(chunk)
                 importProgress?.done += chunk.count
                 await Task.yield()
             }
@@ -87,7 +89,7 @@ extension ContentView {
                 errorMessage = "No contacts were found in that file."
                 return
             }
-            await insert(parsed)
+            presentImportReview(parsed)
         }
     }
 
@@ -129,7 +131,7 @@ extension ContentView {
                 case .parsed(let contacts) where contacts.isEmpty:
                     errorMessage = "No contacts were found in that file."
                 case .parsed(let contacts):
-                    await insert(contacts)
+                    presentImportReview(contacts)
                 }
             }
         }
@@ -160,7 +162,7 @@ extension ContentView {
                     errorMessage = "No contacts were found in that file."
                     return
                 }
-                await insert(parsed)
+                presentImportReview(parsed)
             }
         }
     }

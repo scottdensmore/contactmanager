@@ -1,0 +1,118 @@
+//
+//  ImportReviewTests.swift
+//  ContactManagerTests
+//
+//  Tests the preflight review that keeps imports from blindly appending
+//  duplicates. The write path still goes through ContactStore, so decisions
+//  are saved, undoable, and indexed like other mutations.
+//
+
+@testable import ContactManager
+import SwiftData
+import Testing
+
+@MainActor
+@Suite(.serialized)
+struct ImportReviewTests {
+    let container: ModelContainer
+    let store: ContactStore
+    var context: ModelContext { container.mainContext }
+
+    init() throws {
+        container = try ModelContainer(
+            for: Contact.self, ContactField.self, ContactGroup.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+        )
+        store = ContactStore(container.mainContext)
+    }
+
+    private func allContacts() throws -> [Contact] {
+        try context.fetch(FetchDescriptor<Contact>())
+    }
+
+    @Test func newContactsDefaultToAdd() throws {
+        let parsed = ParsedContact(firstName: "Ada", lastName: "Lovelace")
+
+        let item = try #require(ImportReview.makeItems(for: [parsed], existing: []).first)
+
+        #expect(item.decision == .add)
+        #expect(item.matchedContact == nil)
+    }
+
+    @Test func exactDuplicatesDefaultToSkip() throws {
+        let existing = try store.createContact()
+        existing.firstName = "Ada"
+        existing.lastName = "Lovelace"
+        try store.addField(.email, value: "ada@example.com", to: existing)
+        try context.save()
+        var parsed = ParsedContact(firstName: "Ada", lastName: "Lovelace")
+        parsed.emails = [(.home, "ADA@example.com")]
+
+        let item = try #require(ImportReview.makeItems(for: [parsed], existing: [existing]).first)
+
+        #expect(item.decision == .skip)
+        #expect(item.matchedContact?.persistentModelID == existing.persistentModelID)
+    }
+
+    @Test func partialMatchesDefaultToUpdateExisting() throws {
+        let existing = try store.createContact()
+        existing.firstName = "Ada"
+        existing.lastName = "Lovelace"
+        try store.addField(.email, value: "ada@example.com", to: existing)
+        try context.save()
+        var parsed = ParsedContact(firstName: "Ada", lastName: "Lovelace", company: "Analytical Engine Co.")
+        parsed.emails = [(.home, "ada@example.com")]
+        parsed.phones = [(.mobile, "+1 555 0100")]
+
+        let item = try #require(ImportReview.makeItems(for: [parsed], existing: [existing]).first)
+
+        #expect(item.decision == .updateExisting)
+    }
+
+    @Test func applyingReviewAddsUpdatesSkipsAndMerges() throws {
+        let exact = try store.createContact()
+        exact.firstName = "Ada"
+        exact.lastName = "Lovelace"
+        try store.addField(.email, value: "ada@example.com", to: exact)
+
+        let partial = try store.createContact()
+        partial.firstName = "Alan"
+        partial.lastName = "Turing"
+        try store.addField(.email, value: "alan@example.com", to: partial)
+
+        let conflicting = try store.createContact()
+        conflicting.firstName = "Grace"
+        conflicting.lastName = "Hopper"
+        conflicting.company = "Navy"
+        try store.addField(.email, value: "grace@example.com", to: conflicting)
+        try context.save()
+
+        var exactParsed = ParsedContact(firstName: "Ada", lastName: "Lovelace")
+        exactParsed.emails = [(.home, "ada@example.com")]
+        var partialParsed = ParsedContact(firstName: "Alan", lastName: "Turing", company: "Bletchley Park")
+        partialParsed.emails = [(.home, "alan@example.com")]
+        partialParsed.phones = [(.mobile, "555-0101")]
+        let newParsed = ParsedContact(firstName: "Katherine", lastName: "Johnson")
+        var conflictingParsed = ParsedContact(firstName: "Grace", lastName: "Hopper", company: "ACM")
+        conflictingParsed.emails = [(.home, "grace@example.com")]
+        conflictingParsed.phones = [(.work, "555-0102")]
+
+        var items = ImportReview.makeItems(
+            for: [exactParsed, partialParsed, newParsed, conflictingParsed],
+            existing: [exact, partial, conflicting]
+        )
+        items[3].decision = .merge
+
+        let applied = try store.applyImportReview(items)
+
+        #expect(applied.added == 1)
+        #expect(applied.updated == 1)
+        #expect(applied.merged == 1)
+        #expect(applied.skipped == 1)
+        #expect(try allContacts().count == 4)
+        #expect(partial.company == "Bletchley Park")
+        #expect(partial.phones.map(\.value) == ["555-0101"])
+        #expect(conflicting.company == "Navy")
+        #expect(conflicting.phones.map(\.value) == ["555-0102"])
+    }
+}

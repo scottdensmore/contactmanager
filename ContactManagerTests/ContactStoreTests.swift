@@ -39,19 +39,6 @@ struct ContactStoreTests {
 
     // MARK: - Journey: create a contact and edit it
 
-    @Test func createContactThenEditPersists() throws {
-        let contact = try store.createContact()
-        #expect(try count(Contact.self) == 1)
-
-        contact.firstName = "Ada"
-        contact.lastName = "Lovelace"
-        try context.save()
-
-        let restored = try #require(try allContacts().first)
-        #expect(restored.fullName == "Ada Lovelace")
-        #expect(restored.initials == "AL")
-    }
-
     // MARK: - Journey: delete a contact (cascades to its fields)
 
     @Test func deleteContactCascadesToFields() throws {

@@ -26,8 +26,13 @@ struct ContactDetailView: View {
     // Not private: the photo handlers in ContactDetailView+Photo.swift read them.
     @State var errorMessage: String?
     @FocusState private var nameFieldFocused: Bool
+    @State var lastSavedFingerprint = ""
 
     var store: ContactStore { ContactStore(context) }
+
+    var editFingerprint: String {
+        ContactEditFingerprint.make(for: contact)
+    }
 
     var body: some View {
         Form {
@@ -38,12 +43,16 @@ struct ContactDetailView: View {
             Section("Name") {
                 TextField("First Name", text: $contact.firstName)
                     .focused($nameFieldFocused)
+                    .accessibilityIdentifier("contact-first-name-field")
                 TextField("Last Name", text: $contact.lastName)
+                    .accessibilityIdentifier("contact-last-name-field")
             }
 
             Section("Work") {
                 TextField("Company", text: $contact.company)
+                    .accessibilityIdentifier("contact-company-field")
                 TextField("Job Title", text: $contact.jobTitle)
+                    .accessibilityIdentifier("contact-job-title-field")
             }
 
             fieldSection("Email", kind: .email, fields: contact.emails)
@@ -51,10 +60,15 @@ struct ContactDetailView: View {
 
             Section("Address") {
                 TextField("Street", text: $contact.street)
+                    .accessibilityIdentifier("contact-street-field")
                 TextField("City", text: $contact.city)
+                    .accessibilityIdentifier("contact-city-field")
                 TextField("State / Province", text: $contact.state)
+                    .accessibilityIdentifier("contact-state-field")
                 TextField("Postal Code", text: $contact.postalCode)
+                    .accessibilityIdentifier("contact-postal-code-field")
                 TextField("Country", text: $contact.country)
+                    .accessibilityIdentifier("contact-country-field")
             }
 
             Section("Birthday") {
@@ -91,6 +105,7 @@ struct ContactDetailView: View {
             Section("Notes") {
                 TextField("Notes", text: $contact.notes, axis: .vertical)
                     .lineLimit(3 ... 10)
+                    .accessibilityIdentifier("contact-notes-field")
             }
         }
         .formStyle(.grouped)
@@ -98,7 +113,20 @@ struct ContactDetailView: View {
         // A freshly created contact opens with the cursor in First Name so you
         // can type a name immediately instead of reaching for the mouse.
         .onAppear {
+            lastSavedFingerprint = editFingerprint
             if focusNameField { nameFieldFocused = true }
+        }
+        .task(id: editFingerprint) {
+            guard editFingerprint != lastSavedFingerprint else { return }
+            do {
+                try await Task.sleep(for: .milliseconds(400))
+                flushPendingEdits()
+            } catch {
+                // A newer edit cancelled this debounce.
+            }
+        }
+        .onDisappear {
+            flushPendingEdits()
         }
         // Clear the parent's one-shot flag only once focus has actually landed,
         // so a missed/late focus application isn't dropped without a retry.
@@ -190,57 +218,6 @@ struct ContactDetailView: View {
         }
     }
 
-    private func quickRow(kind: FieldKind, value: String) -> some View {
-        let label = kind == .email ? "Email" : "Phone"
-        return HStack {
-            // Combined so VoiceOver reads "Email, name@example.com" as a
-            // single element, instead of "Email" and "name@example.com"
-            // separately. The action buttons stay their own focusable elements.
-            HStack {
-                Text(label)
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Text(value)
-                    .textSelection(.enabled)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
-            }
-            .accessibilityElement(children: .combine)
-
-            // Click-to-mail / click-to-call. Only shown when the value yields
-            // a usable URL, so a junk entry doesn't offer a dead action.
-            if let url = actionURL(for: kind, value: value) {
-                Link(destination: url) {
-                    Image(systemName: kind == .email ? "envelope" : "phone")
-                }
-                .buttonStyle(.borderless)
-                .help(kind == .email ? "Send Email" : "Call")
-                .accessibilityLabel(kind == .email ? "Send Email" : "Call")
-            }
-
-            Button {
-                copyToPasteboard(value)
-            } label: {
-                Image(systemName: "doc.on.doc")
-            }
-            .buttonStyle(.borderless)
-            .help("Copy \(label)")
-            .accessibilityLabel("Copy \(label)")
-        }
-    }
-
-    private func actionURL(for kind: FieldKind, value: String) -> URL? {
-        switch kind {
-        case .email: ContactLink.mailto(value)
-        case .phone: ContactLink.tel(value)
-        }
-    }
-
-    private func copyToPasteboard(_ value: String) {
-        NSPasteboard.general.clearContents()
-        NSPasteboard.general.setString(value, forType: .string)
-    }
-
     // MARK: - Repeatable field sections
 
     private func fieldSection(_ title: String, kind: FieldKind, fields: [ContactField]) -> some View {
@@ -330,35 +307,6 @@ private extension ContactDetailView {
             get: { contact.birthday ?? .now },
             set: { contact.birthday = $0 }
         )
-    }
-}
-
-/// A single editable email/phone row: a label picker plus its value.
-private struct ContactFieldRow: View {
-    @Bindable var field: ContactField
-
-    var body: some View {
-        HStack {
-            Picker("", selection: $field.label) {
-                ForEach(FieldLabel.allCases) { label in
-                    Text(label.title).tag(label)
-                }
-            }
-            .labelsHidden()
-            .fixedSize()
-            // labelsHidden strips the picker's visible label, but VoiceOver
-            // then only reads the current selection — confusing without
-            // context. Restore an explicit a11y label per kind.
-            .accessibilityLabel(field.kind == .email ? "Email label" : "Phone label")
-
-            TextField(placeholder, text: $field.value)
-                .textContentType(field.kind == .email ? .emailAddress : .telephoneNumber)
-                .accessibilityLabel(field.kind == .email ? "Email address" : "Phone number")
-        }
-    }
-
-    private var placeholder: String {
-        field.kind == .email ? "name@example.com" : "Phone"
     }
 }
 

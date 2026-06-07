@@ -33,6 +33,7 @@ struct SidebarView: View {
                 Label("All Contacts", systemImage: "person.2.fill")
                     .badge(contactCount)
                     .tag(SidebarItem.allContacts)
+                    .accessibilityIdentifier("sidebar-all-contacts-row")
             }
 
             Section("Groups") {
@@ -45,6 +46,7 @@ struct SidebarView: View {
                         Label(group.displayName, systemImage: "folder")
                             .badge(group.contacts.count)
                             .tag(SidebarItem.group(group.persistentModelID))
+                            .accessibilityIdentifier("sidebar-group-row-\(group.displayName.normalizedIdentifier)")
                             .contextMenu {
                                 Button("Rename…") { beginRename(group) }
                                 Button("Delete", role: .destructive) { deleteGroup(group) }
@@ -77,6 +79,7 @@ struct SidebarView: View {
                     Label("New Group", systemImage: "folder.badge.plus")
                 }
                 .help("New Group")
+                .accessibilityIdentifier("new-group-button")
             }
         }
         .alert("Rename Group", isPresented: Binding(
@@ -95,5 +98,13 @@ struct SidebarView: View {
     private func beginRename(_ group: ContactGroup) {
         renameText = group.name
         renameTarget = group
+    }
+}
+
+private extension String {
+    var normalizedIdentifier: String {
+        lowercased()
+            .map { $0.isLetter || $0.isNumber ? String($0) : "-" }
+            .joined()
     }
 }
