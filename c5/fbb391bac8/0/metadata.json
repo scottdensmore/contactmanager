@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "c5fbb391bac8",
+  "session_id": "5ea1dbe6-8812-489a-b85a-b1b21cf14a47",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-07T06:37:09.746187Z",
+  "branch": "refactor/extract-view-formatting",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "ContactManager/Support/Birthday.swift",
+    "ContactManager/Views/ContactDetailView.swift",
+    "ContactManager/Views/PrintableContactView.swift"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "1bfe53145f29",
+  "token_usage": {
+    "input_tokens": 136208,
+    "cache_creation_tokens": 1570801,
+    "cache_read_tokens": 429727215,
+    "output_tokens": 847751,
+    "api_call_count": 1021
+  },
+  "session_metrics": {
+    "turn_count": 43
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-07T06:37:09.623711Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 66,
+    "human_modified": 25,
+    "human_removed": 0,
+    "total_committed": 66,
+    "total_lines_changed": 91,
+    "agent_percentage": 0,
+    "metric_version": 2
+  }
+}

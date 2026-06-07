@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "c5fbb391bac8",
+  "strategy": "manual-commit",
+  "branch": "refactor/extract-view-formatting",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "ContactManager/Support/Birthday.swift",
+    "ContactManager/Views/ContactDetailView.swift",
+    "ContactManager/Views/PrintableContactView.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/c5/fbb391bac8/0/metadata.json",
+      "transcript": "/c5/fbb391bac8/0/full.jsonl",
+      "content_hash": "/c5/fbb391bac8/0/content_hash.txt",
+      "prompt": "/c5/fbb391bac8/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 136208,
+    "cache_creation_tokens": 1570801,
+    "cache_read_tokens": 429727215,
+    "output_tokens": 847751,
+    "api_call_count": 1021
+  }
+}
