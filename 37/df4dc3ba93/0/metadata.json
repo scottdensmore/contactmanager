@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "37df4dc3ba93",
+  "session_id": "5ea1dbe6-8812-489a-b85a-b1b21cf14a47",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-07T05:17:02.655215Z",
+  "branch": "chore/signing-in-template",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "713e9a92c50f",
+  "token_usage": {
+    "input_tokens": 105345,
+    "cache_creation_tokens": 1302409,
+    "cache_read_tokens": 403537373,
+    "output_tokens": 724259,
+    "api_call_count": 891
+  },
+  "session_metrics": {
+    "turn_count": 32
+  }
+}
