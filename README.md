@@ -98,9 +98,9 @@ make test            # unit + UI tests via xcodebuild
 
 ### iCloud sync (optional)
 
-The app runs **local-only out of the box** — clone, build, and run with no
-account or extra setup (a fresh store is seeded with a few sample contacts).
-It's also **CloudKit-ready**: at launch it checks whether an iCloud container is
+The app runs **local-only by default** — no iCloud account or sync setup is
+required to build and use it (a fresh store is seeded with a few sample
+contacts). It's also **CloudKit-ready**: at launch it checks whether an iCloud container is
 configured in its entitlements and, if so, opens the SwiftData store with
 `cloudKitDatabase: .automatic` to sync across your devices; otherwise it stays
 local. Nothing about CloudKit is committed to the project, so a download is never
@@ -114,8 +114,14 @@ the container without one.
 To turn on sync for your own build:
 
 1. In Xcode, select the **ContactManager** target ▸ **Signing & Capabilities**.
-2. Turn on *Automatically manage signing* and set your **Team**. (The repo ships
-   with an empty `DEVELOPMENT_TEAM` on purpose.)
+2. Make sure signing uses **your Team** (keep *Automatically manage signing*).
+   The team is set in `ContactManager/Config/SharedSettings.xcconfig`
+   (`DEVELOPMENT_TEAM`); if you're not the maintainer, override it without
+   touching that file by creating a local, gitignored
+   `ContactManager/DeveloperSettings.xcconfig` with your own:
+   ```
+   DEVELOPMENT_TEAM = YOURTEAMID
+   ```
 3. Click **+ Capability** ▸ **iCloud**, check **CloudKit**, and add a container
    (the default `iCloud.<your-bundle-id>` is fine — use your own bundle id).
 4. Click **+ Capability** ▸ **Push Notifications** so the store receives CloudKit
@@ -125,7 +131,9 @@ To turn on sync for your own build:
    same account on every device you want to sync.
 6. **Start clean (recommended):** if you've run the app locally before, its store
    already holds the seeded sample contacts, which would upload to your real
-   iCloud on the first sync. Delete the local store first so you start empty:
+   iCloud on the first sync. Delete the local store first so you start empty —
+   the sandbox container path uses the app's bundle id (replace it if you've
+   changed `PRODUCT_BUNDLE_IDENTIFIER`):
    ```shell
    rm -rf ~/Library/Containers/com.scottdensmore.ContactManager/Data/Library/Application\ Support/default.store*
    ```
@@ -144,6 +152,7 @@ Connections (`com.apple.security.network.client`)** to the entitlements. CloudKi
 is normally brokered by a system daemon and works without it, but it's the first
 thing to try.
 
-> Steps 2–4 modify the target's entitlements and signing settings. **Don't commit
-> those changes** — leaving them out is what keeps the project buildable by anyone
-> who clones it without your team or container.
+> Steps 3–4 edit the shared `ContactManager.entitlements` (adding your iCloud
+> container). **Don't commit that change** — it's what would block anyone who
+> clones without your container. Your `DeveloperSettings.xcconfig` from step 2 is
+> already gitignored.
