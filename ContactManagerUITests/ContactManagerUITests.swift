@@ -62,6 +62,18 @@ final class ContactManagerUITests: XCTestCase {
         XCTAssertTrue(app.menuItems["Import vCard…"].exists)
         XCTAssertTrue(app.menuItems["Import CSV…"].exists)
         XCTAssertTrue(app.menuItems["Export vCard…"].exists)
+        XCTAssertTrue(app.menuItems["Export as PDF…"].exists)
+        XCTAssertTrue(app.menuItems["Print…"].exists)
+    }
+
+    /// Verifies the Edit menu wires the search / dedup commands. The behaviors
+    /// (⌘F focus, merge) are covered at the unit/interaction layer; this just
+    /// guards the menu wiring so a dropped command is caught.
+    func test_editMenuExposesFindCommands() {
+        let app = bootSeededApp()
+        app.menuBars.menuBarItems["Edit"].click()
+        XCTAssertTrue(app.menuItems["Find"].exists)
+        XCTAssertTrue(app.menuItems["Find Duplicates…"].exists)
     }
 
     /// Verifies Edit ▸ Find Duplicates… opens the sheet. Sheet content
@@ -74,6 +86,14 @@ final class ContactManagerUITests: XCTestCase {
             "Duplicates sheet's Done button should appear after ⌘⇧D"
         )
     }
+
+    // Row-level and detail-field assertions (seeded contacts rendering, ⌘N
+    // opening the editor) need stable accessibilityIdentifiers to be reliable
+    // on macOS — the rows are single combined a11y elements and TextFields
+    // expose their prompt as a placeholder, not a queryable label. That's a
+    // deliberately deferred step (it'd mean adding identifiers across the
+    // views); these journeys are covered at the data layer by ContactStore /
+    // ContactQuery unit tests.
 
     // MARK: - Helpers
 
