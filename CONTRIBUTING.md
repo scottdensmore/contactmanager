@@ -33,11 +33,10 @@ Optional iCloud sync setup is documented in the [README](README.md#icloud-sync-o
 ## Workflow
 
 - Branch per focused change; keep each PR scoped to one logical feature/fix/chore.
-- Run `make check` before committing.
-- Open a PR against `main`, **wait for the Copilot review**, and address actionable
-  comments before merging.
-- **Squash merge** and delete the branch. CI must be green (Lint & Format +
-  Build & Test); a successful merge auto-tags and publishes a release.
+- Write tests first (TDD) and run `make check` before committing.
+- Open a PR against `main` and **merge once all required checks pass** (Lint & Format +
+  Build & Test). Copilot review isn't a gate — no need to request it or wait on it.
+- **Squash merge** and delete the branch; a successful merge auto-tags and publishes a release.
 
 More detailed conventions (architecture, SwiftData rules, style) live in
 [`CLAUDE.md`](CLAUDE.md).
