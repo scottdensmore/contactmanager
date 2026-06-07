@@ -39,16 +39,20 @@ enum ContactPDF {
         VCardTransfer.suggestedFilename(for: contact.fullName)
     }
 
-    /// Presents the system print sheet for the contact's card.
+    /// Presents the system print panel for the contact's card — as a
+    /// window-attached sheet when there's a key window, otherwise app-modal.
     static func print(_ contact: Contact) -> Bool {
         guard let data = data(for: contact), let document = PDFDocument(data: data) else {
             return false
         }
-        let info = NSPrintInfo.shared
         guard let operation = document.printOperation(
-            for: info, scalingMode: .pageScaleToFit, autoRotate: false
+            for: NSPrintInfo.shared, scalingMode: .pageScaleToFit, autoRotate: false
         ) else { return false }
-        operation.run()
+        if let window = NSApp.keyWindow {
+            operation.runModal(for: window, delegate: nil, didRun: nil, contextInfo: nil)
+        } else {
+            operation.run()
+        }
         return true
     }
 }

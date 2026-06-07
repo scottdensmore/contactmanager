@@ -7,12 +7,14 @@
 //  it renders the same off-screen as it would on-screen.
 //
 
+import AppKit
 import SwiftUI
 
 struct PrintableContactView: View {
     let contact: Contact
 
     private let width: CGFloat = 480
+    private let avatarSize: CGFloat = 64
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -32,7 +34,7 @@ struct PrintableContactView: View {
 
     private var header: some View {
         HStack(spacing: 16) {
-            AvatarView(contact: contact, size: 64)
+            printableAvatar
             VStack(alignment: .leading, spacing: 2) {
                 Text(contact.fullName)
                     .font(.title.weight(.semibold))
@@ -44,6 +46,41 @@ struct PrintableContactView: View {
                 }
             }
         }
+    }
+
+    /// A synchronous avatar: `ImageRenderer` renders off-screen and never runs
+    /// `AvatarView`'s async `.task`, so the photo is decoded inline here (with
+    /// the same initials-over-gradient fallback) to ensure it's in the PDF.
+    private var printableAvatar: some View {
+        Group {
+            if let data = contact.photoData, let image = NSImage(data: data) {
+                Image(nsImage: image).resizable().scaledToFill()
+            } else {
+                Circle()
+                    .fill(avatarGradient)
+                    .overlay {
+                        Text(contact.initials)
+                            .font(.system(size: avatarSize * 0.4, weight: .semibold, design: .rounded))
+                            .foregroundStyle(.white)
+                            .minimumScaleFactor(0.5)
+                    }
+            }
+        }
+        .frame(width: avatarSize, height: avatarSize)
+        .clipShape(Circle())
+    }
+
+    /// Mirrors `AvatarView`'s stable per-contact gradient (kept in sync
+    /// deliberately; the print layout needs a synchronous variant).
+    private var avatarGradient: LinearGradient {
+        let palette: [Color] = [.blue, .indigo, .teal, .pink, .orange, .purple, .green, .red]
+        let index = ((contact.colorSeed % palette.count) + palette.count) % palette.count
+        let base = palette[index]
+        return LinearGradient(
+            colors: [base, base.opacity(0.65)],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
     }
 
     @ViewBuilder
