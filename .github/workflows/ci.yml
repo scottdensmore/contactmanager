@@ -9,12 +9,30 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# Least privilege: CI only reads the repo. (The Release workflow scopes its own
+# contents: write where it actually needs to push the bump/tag.)
+permissions:
+  contents: read
+
 jobs:
   lint:
     name: Lint & Format
     runs-on: macos-latest
+    timeout-minutes: 10
+    env:
+      # Skip Homebrew's slow metadata refresh + post-install cleanup; the cache
+      # below holds the bottles, so tool installs stay fast and deterministic.
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_INSTALL_CLEANUP: "1"
     steps:
       - uses: actions/checkout@v4
+
+      - name: Cache Homebrew downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Caches/Homebrew
+          key: brew-${{ runner.os }}-${{ hashFiles('Brewfile') }}
+          restore-keys: brew-${{ runner.os }}-
 
       - name: Install tooling
         run: brew bundle
@@ -31,6 +49,7 @@ jobs:
     # can only *run* on a 26 runner (macos-latest is still 15 — it can build
     # against the 26 SDK but not launch a 26-target app).
     runs-on: macos-26
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
@@ -38,6 +57,7 @@ jobs:
         run: |
           # Glob the 26.x Xcodes and take the lexically-last (highest patch) —
           # avoids GNU-only `sort -V`. Falls back to the runner default if none.
+          # shellcheck disable=SC2012  # paths are fixed/alphanumeric; ls is fine here
           xcode=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | tail -1)
           if [ -n "$xcode" ]; then sudo xcode-select -s "$xcode/Contents/Developer"; fi
           xcodebuild -version

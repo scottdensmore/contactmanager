@@ -21,6 +21,7 @@ jobs:
     name: Bump, tag, and release
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       # Check out the exact commit CI tested (not a moving `main`), so the
       # release is tied to that commit; if `main` has since advanced, the push
