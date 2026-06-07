@@ -1,0 +1,45 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "b55c9e3a7754",
+  "session_id": "5ea1dbe6-8812-489a-b85a-b1b21cf14a47",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-07T05:25:47.240202Z",
+  "branch": "chore/populate-string-catalog",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "49d1f0772db1",
+  "token_usage": {
+    "input_tokens": 105806,
+    "cache_creation_tokens": 1310078,
+    "cache_read_tokens": 409459930,
+    "output_tokens": 730834,
+    "api_call_count": 897
+  },
+  "session_metrics": {
+    "turn_count": 33
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 597,
+      "user_lines_removed": 2,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/agents/entire-search.md": 25,
+        ".claude/settings.json": 97,
+        ".claude/settings.local.json": 37,
+        ".codex/agents/entire-search.toml": 23,
+        ".codex/config.toml": 3,
+        ".codex/hooks.json": 52,
+        ".github/hooks/entire.json": 61,
+        "ContactManager/Localizable.xcstrings": 299
+      },
+      "user_removed_per_file": {
+        "ContactManager/Localizable.xcstrings": 2
+      }
+    }
+  ]
+}
