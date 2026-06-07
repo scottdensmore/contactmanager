@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "d6ead545135e",
+  "strategy": "manual-commit",
+  "branch": "test/ui-menu-coverage",
+  "checkpoints_count": 1,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/d6/ead545135e/0/metadata.json",
+      "transcript": "/d6/ead545135e/0/full.jsonl",
+      "content_hash": "/d6/ead545135e/0/content_hash.txt",
+      "prompt": "/d6/ead545135e/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 86726,
+    "cache_creation_tokens": 1046546,
+    "cache_read_tokens": 256622158,
+    "output_tokens": 522671,
+    "api_call_count": 720
+  }
+}
