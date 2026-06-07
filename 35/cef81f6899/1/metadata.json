@@ -1,0 +1,56 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "35cef81f6899",
+  "session_id": "b400d7ae-ba0d-4b65-b5d5-ba94f28f0cbc",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-07T00:51:18.710407Z",
+  "branch": "birthday-yearless-editor",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "ContactManager.xcodeproj/project.pbxproj",
+    "ContactManager/Support/Birthday.swift",
+    "ContactManager/Views/ContactDetailView+Birthday.swift",
+    "ContactManager/Views/ContactDetailView.swift",
+    "ContactManagerTests/BirthdayTests.swift"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "5a4ab7509a18",
+  "token_usage": {
+    "input_tokens": 8131,
+    "cache_creation_tokens": 68899,
+    "cache_read_tokens": 1610216,
+    "output_tokens": 19538,
+    "api_call_count": 31
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-07T00:51:18.703403Z",
+    "agent_lines": 223,
+    "agent_removed": 7,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 223,
+    "total_lines_changed": 230,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 298,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/agents/entire-search.md": 25,
+        ".claude/settings.json": 97,
+        ".claude/settings.local.json": 37,
+        ".codex/agents/entire-search.toml": 23,
+        ".codex/config.toml": 3,
+        ".codex/hooks.json": 52,
+        ".github/hooks/entire.json": 61
+      }
+    }
+  ]
+}
