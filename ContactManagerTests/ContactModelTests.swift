@@ -154,6 +154,26 @@ struct ContactModelTests {
         #expect(Contact(street: "  ", city: "Reno").addressLines == ["Reno"])
     }
 
+    @Test func avatarPaletteIndexStaysInRangeForAnySeed() {
+        let count = 8
+        // Negative seeds (a real colorSeed can be negative) and Int.min must
+        // not produce a negative index or trap.
+        for seed in [0, 1, 7, 8, 9, -1, -8, -9, Int.min, Int.max] {
+            #expect((0 ..< count).contains(Contact.avatarPaletteIndex(seed: seed, count: count)))
+        }
+    }
+
+    @Test func avatarPaletteIndexWrapsDeterministically() {
+        #expect(Contact.avatarPaletteIndex(seed: 10, count: 8) == 2)
+        #expect(Contact.avatarPaletteIndex(seed: -1, count: 8) == 7)
+        #expect(Contact.avatarPaletteIndex(seed: Int.min, count: 8) == 0)
+    }
+
+    @Test func avatarPaletteIndexHandlesNonPositiveCount() {
+        #expect(Contact.avatarPaletteIndex(seed: 5, count: 0) == 0)
+        #expect(Contact.avatarPaletteIndex(seed: 5, count: -3) == 0)
+    }
+
     // MARK: - Query helpers
 
     @Test func sortingOrdersByLastNameThenFirstName() {

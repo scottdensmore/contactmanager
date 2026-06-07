@@ -119,6 +119,21 @@ extension Contact {
         Int(truncatingIfNeeded: createdAt.timeIntervalSinceReferenceDate.bitPattern)
     }
 
+    /// Index into an avatar palette of `count` colors for a stable `seed`.
+    /// Normalizes into range without `abs` (which traps on `Int.min`), so any
+    /// seed — including a negative `colorSeed` — yields a valid index. Returns
+    /// 0 for a non-positive `count`. Shared by `AvatarView` and the printable
+    /// card so both pick the same color.
+    static func avatarPaletteIndex(seed: Int, count: Int) -> Int {
+        guard count > 0 else { return 0 }
+        return ((seed % count) + count) % count
+    }
+
+    /// Avatar palette index for this contact's `colorSeed`.
+    func avatarPaletteIndex(count: Int) -> Int {
+        Self.avatarPaletteIndex(seed: colorSeed, count: count)
+    }
+
     /// Primary/secondary keys for a given sort order. The primary key also
     /// drives alphabetical section grouping.
     func sortKeys(for order: ContactSortOrder) -> (primary: String, secondary: String) {

@@ -71,8 +71,7 @@ struct PrintableContactView: View {
     /// deliberately; the print layout needs a synchronous variant).
     private var avatarGradient: LinearGradient {
         let palette: [Color] = [.blue, .indigo, .teal, .pink, .orange, .purple, .green, .red]
-        let index = ((contact.colorSeed % palette.count) + palette.count) % palette.count
-        let base = palette[index]
+        let base = palette[contact.avatarPaletteIndex(count: palette.count)]
         return LinearGradient(
             colors: [base, base.opacity(0.65)],
             startPoint: .topLeading,
