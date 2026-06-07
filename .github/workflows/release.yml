@@ -45,7 +45,7 @@ jobs:
         id: ver
         run: |
           set -euo pipefail
-          gem install xcodeproj --no-document
+          sudo gem install xcodeproj --no-document
           build=$(git rev-list --count HEAD)
           # Patch-bump MARKETING_VERSION and set CURRENT_PROJECT_VERSION on the
           # app target (major/minor stay manual). xcodeproj edits the target
