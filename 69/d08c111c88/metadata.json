@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "69d08c111c88",
+  "strategy": "manual-commit",
+  "branch": "chore/codify-workflow",
+  "checkpoints_count": 1,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/69/d08c111c88/0/metadata.json",
+      "transcript": "/69/d08c111c88/0/full.jsonl",
+      "content_hash": "/69/d08c111c88/0/content_hash.txt",
+      "prompt": "/69/d08c111c88/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 122843,
+    "cache_creation_tokens": 1464998,
+    "cache_read_tokens": 415435189,
+    "output_tokens": 787175,
+    "api_call_count": 942
+  }
+}

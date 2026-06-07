@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "69d08c111c88",
+  "session_id": "5ea1dbe6-8812-489a-b85a-b1b21cf14a47",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-07T06:07:14.405935Z",
+  "branch": "chore/codify-workflow",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "d0f6c823d02e",
+  "token_usage": {
+    "input_tokens": 122843,
+    "cache_creation_tokens": 1464998,
+    "cache_read_tokens": 415435189,
+    "output_tokens": 787175,
+    "api_call_count": 942
+  },
+  "session_metrics": {
+    "turn_count": 39
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
