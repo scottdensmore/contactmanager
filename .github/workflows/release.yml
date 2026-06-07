@@ -1,0 +1,85 @@
+name: Release
+
+# Runs after CI finishes on main. Gated on success below, so only a merge that
+# passes Lint & Format + Build & Test produces a release.
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
+
+# Never let two releases run at once (they'd race on the version bump).
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Bump, tag, and release
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0 # full history for the build number + tag lookups
+
+      - name: Compute next version and build
+        id: ver
+        run: |
+          set -euo pipefail
+          pbx=ContactManager.xcodeproj/project.pbxproj
+          # Highest MARKETING_VERSION currently in the project (major.minor are
+          # yours to bump by hand; the patch auto-increments each merge).
+          current=$(grep -oE 'MARKETING_VERSION = [0-9.]+' "$pbx" | sed 's/.*= //' | sort -V | tail -1)
+          IFS=. read -r major minor patch <<< "$current"
+          patch=${patch:-0}
+          version="${major}.${minor}.$((patch + 1))"
+          build=$(git rev-list --count HEAD)
+          {
+            echo "version=$version"
+            echo "build=$build"
+            echo "tag=v$version"
+          } >> "$GITHUB_OUTPUT"
+          echo "Next release: v$version (build $build)"
+
+      - name: Skip if HEAD is already a release commit
+        id: guard
+        run: |
+          set -euo pipefail
+          if git log -1 --pretty=%s | grep -q '^Release v'; then
+            echo "HEAD is already a release bump — nothing to do."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Stamp version + build into the project
+        if: ${{ steps.guard.outputs.skip == 'false' }}
+        run: |
+          set -euo pipefail
+          pbx=ContactManager.xcodeproj/project.pbxproj
+          sed -i -E "s/MARKETING_VERSION = [^;]+;/MARKETING_VERSION = ${{ steps.ver.outputs.version }};/g" "$pbx"
+          sed -i -E "s/CURRENT_PROJECT_VERSION = [^;]+;/CURRENT_PROJECT_VERSION = ${{ steps.ver.outputs.build }};/g" "$pbx"
+
+      - name: Commit, tag, and create the release
+        if: ${{ steps.guard.outputs.skip == 'false' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="${{ steps.ver.outputs.tag }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Pushing with the default GITHUB_TOKEN does not re-trigger CI, so this
+          # version-bump commit can't kick off another release run.
+          git commit -am "Release $tag (build ${{ steps.ver.outputs.build }}) [skip ci]"
+          git tag -a "$tag" -m "$tag (build ${{ steps.ver.outputs.build }})"
+          git push origin HEAD:main
+          git push origin "$tag"
+          gh release create "$tag" \
+            --title "$tag (build ${{ steps.ver.outputs.build }})" \
+            --generate-notes
