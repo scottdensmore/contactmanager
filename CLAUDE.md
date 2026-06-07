@@ -22,9 +22,9 @@ build for distribution is done from Xcode), so they run identically locally and 
 XCUITest smoke suite (`make test`) is run from Xcode, since it flakes on app activation
 when the foreground is busy and isn't part of CI.
 
-**Build config:** `ContactManager/Config/SharedSettings.xcconfig` holds only shared,
-non-personal settings (signing style, a default `ORGANIZATION_IDENTIFIER = com.example`).
-The **team** and the real **org identifier** are personal and live in a gitignored
+**Build config:** `ContactManager/Config/SharedSettings.xcconfig` holds only a default
+`ORGANIZATION_IDENTIFIER = com.example` + the `#include?`. The personal/signing settings —
+**team, org identifier, and `CODE_SIGN_IDENTITY` / `CODE_SIGN_STYLE`** — live in a gitignored
 `ContactManager/DeveloperSettings.xcconfig` (pulled in via `#include?`, overriding the
 default); create it with `./setup.sh` (tracked template: `DeveloperSettings.template.xcconfig`).
 `ORGANIZATION_IDENTIFIER` drives the bundle id (`$(ORGANIZATION_IDENTIFIER).<target>`), so

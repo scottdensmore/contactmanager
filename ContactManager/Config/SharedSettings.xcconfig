@@ -5,20 +5,18 @@
 //  Created by Scott Densmore on 12/28/20.
 //  Copyright © 2020 Scott Densmore. All rights reserved.
 //
-//  Shared, non-personal build settings only. Your Apple Developer team and
-//  organization identifier are personal — they live in a gitignored
-//  DeveloperSettings.xcconfig (pulled in below via `#include?`). Run
-//  `./setup.sh` from the repo root to create it. The ORGANIZATION_IDENTIFIER
-//  default below keeps a fresh clone / CI building (signing off); your
-//  DeveloperSettings.xcconfig overrides it so you get your own bundle id and
-//  iCloud container. App version + build live in the Xcode project (auto-bumped
-//  by .github/workflows/release.yml).
+//  Shared, non-personal build settings only. Personal/signing settings — your
+//  Apple Developer team, organization identifier, and code-sign identity/style —
+//  live in a gitignored DeveloperSettings.xcconfig (pulled in below via
+//  `#include?`). Run `./setup.sh` from the repo root to create it. The
+//  ORGANIZATION_IDENTIFIER default below keeps a fresh clone / CI building
+//  (signing off); your DeveloperSettings.xcconfig overrides it so you get your
+//  own bundle id and iCloud container. App version + build live in the Xcode
+//  project (auto-bumped by .github/workflows/release.yml).
 //
 //  Configuration settings file format documentation can be found at:
 //  https://help.apple.com/xcode/#/dev745c5c974
 
-CODE_SIGN_IDENTITY = Mac Developer
-CODE_SIGN_STYLE = Automatic
 ORGANIZATION_IDENTIFIER = com.example
 
 #include? "../DeveloperSettings.xcconfig"
