@@ -23,6 +23,7 @@
 		4515C79B40C414630F64BC5D /* PersistentIdentifierEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61587B4E14B400AF1CB16862 /* PersistentIdentifierEncoding.swift */; };
 		465C6AF22F5A45925B879752 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7B150B6DB35B8EF10D2135 /* AvatarView.swift */; };
 		4EC36757044377406665E53B /* ContactListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E2EBA5EFDEE6888B84E10B /* ContactListView.swift */; };
+		4F1E1A097740ECE3D42E55B8 /* GroupDropTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964ACD67CC8CB35694497A10 /* GroupDropTests.swift */; };
 		52F4C28719253736244342F9 /* SpotlightDeltaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604FB090CB5671DB6927238C /* SpotlightDeltaTests.swift */; };
 		552E226D873AE11781A7F97A /* ContactDetailView+Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CB65D95AFA14C691F0D8C4 /* ContactDetailView+Photo.swift */; };
 		61F22EEDEE6075BD602203D5 /* VCardDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D13D7A4D4AF6172FA6E89AB /* VCardDocument.swift */; };
@@ -109,6 +110,7 @@
 		90E3C45DEC115A2BF7DE83DF /* ContactLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactLink.swift; sourceTree = "<group>"; };
 		915AF700C971510D0B642590 /* ContactEntity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactEntity.swift; sourceTree = "<group>"; };
 		93C12246003379D5966F0210 /* ContactEntityTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactEntityTests.swift; sourceTree = "<group>"; };
+		964ACD67CC8CB35694497A10 /* GroupDropTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GroupDropTests.swift; sourceTree = "<group>"; };
 		A7276D515CA167FBF4C47299 /* VCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VCard.swift; sourceTree = "<group>"; };
 		ABDED82FFB4B5F039052FFB5 /* Birthday.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Birthday.swift; sourceTree = "<group>"; };
 		AC2AA1D7BB15FC01B9CBA3B3 /* EntityModelContainer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EntityModelContainer.swift; sourceTree = "<group>"; };
@@ -284,6 +286,7 @@
 				BCAA25CCEE01127AA64D21D6 /* CSVTests.swift */,
 				604FB090CB5671DB6927238C /* SpotlightDeltaTests.swift */,
 				6EE79F02FFFD9820269D3725 /* ContactLinkTests.swift */,
+				964ACD67CC8CB35694497A10 /* GroupDropTests.swift */,
 			);
 			path = ContactManagerTests;
 			sourceTree = "<group>";
@@ -465,6 +468,7 @@
 				623A5F4AE958EAD5C2757F83 /* CSVTests.swift in Sources */,
 				52F4C28719253736244342F9 /* SpotlightDeltaTests.swift in Sources */,
 				21EF2DF533DFA347DCF69BD0 /* ContactLinkTests.swift in Sources */,
+				4F1E1A097740ECE3D42E55B8 /* GroupDropTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

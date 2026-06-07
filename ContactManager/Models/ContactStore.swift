@@ -107,6 +107,26 @@ struct ContactStore {
         }
     }
 
+    /// Adds the contacts named by their encoded `PersistentIdentifier`s to
+    /// `group` — the data path behind dragging contacts onto a sidebar group.
+    /// Ids that don't resolve and contacts already in the group are skipped;
+    /// returns how many were actually added (0 means no save/undo step).
+    @discardableResult
+    func addContacts(withEncodedIDs ids: [String], to group: ContactGroup) throws -> Int {
+        let wanted = Set(ids)
+        guard !wanted.isEmpty else { return 0 }
+        let groupID = group.persistentModelID
+        let toAdd = try context.fetch(FetchDescriptor<Contact>()).filter { contact in
+            wanted.contains(contact.persistentModelID.storedString ?? "")
+                && !contact.groups.contains { $0.persistentModelID == groupID }
+        }
+        guard !toAdd.isEmpty else { return 0 }
+        return try mutate("Add to Group") {
+            toAdd.forEach { $0.groups.append(group) }
+            return toAdd.count
+        }
+    }
+
     // MARK: - Merge duplicates
 
     /// Merges several contacts into one canonical contact (the earliest
