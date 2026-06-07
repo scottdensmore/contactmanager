@@ -51,9 +51,12 @@ struct SidebarView: View {
                             }
                             // Drag contacts from the list onto a group to add
                             // them. The transfer exposes the contact id as text;
-                            // unrelated text drops resolve to nothing and no-op.
+                            // reject drops that carry no valid contact id (e.g.
+                            // unrelated selected text) so they aren't "accepted".
                             .dropDestination(for: String.self) { ids, _ in
-                                addContacts(ids, group)
+                                let valid = ids.filter { PersistentIdentifier.decode(stored: $0) != nil }
+                                guard !valid.isEmpty else { return false }
+                                addContacts(valid, group)
                                 return true
                             }
                     }

@@ -113,11 +113,16 @@ struct ContactStore {
     /// returns how many were actually added (0 means no save/undo step).
     @discardableResult
     func addContacts(withEncodedIDs ids: [String], to group: ContactGroup) throws -> Int {
-        let wanted = Set(ids)
+        // Keep only well-formed encoded ids; unrelated text (an empty string, a
+        // stray drop) decodes to nothing and short-circuits the fetch. We match
+        // on the canonical encoded string rather than `PersistentIdentifier`
+        // equality, which doesn't hold for a decoded-vs-live persisted id.
+        let wanted = Set(ids.filter { PersistentIdentifier.decode(stored: $0) != nil })
         guard !wanted.isEmpty else { return 0 }
         let groupID = group.persistentModelID
         let toAdd = try context.fetch(FetchDescriptor<Contact>()).filter { contact in
-            wanted.contains(contact.persistentModelID.storedString ?? "")
+            guard let encoded = contact.persistentModelID.storedString else { return false }
+            return wanted.contains(encoded)
                 && !contact.groups.contains { $0.persistentModelID == groupID }
         }
         guard !toAdd.isEmpty else { return 0 }
