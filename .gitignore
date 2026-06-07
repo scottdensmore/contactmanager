@@ -200,8 +200,8 @@ DerivedData/
 DeveloperSettings.xcconfig
 
 # Agent / tooling state
-# Shared, Entire-managed agent config is checked in (.claude/, .codex/, and
-# .github/hooks/ — all safe no-ops without the Entire CLI). Only per-user grants
-# and local Entire checkpoint state stay untracked.
+# Shared, Entire-managed agent config is checked in (.claude/, .codex/,
+# .github/hooks/, .entire/). The .entire/ dir carries its own nested .gitignore
+# for local checkpoint state, so only it gets excluded. Per-user Claude grants
+# stay untracked here.
 .claude/settings.local.json
-.entire/
