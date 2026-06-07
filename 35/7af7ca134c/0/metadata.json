@@ -1,0 +1,37 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "357af7ca134c",
+  "session_id": "5ea1dbe6-8812-489a-b85a-b1b21cf14a47",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-07T00:08:26.44516Z",
+  "branch": "feature/drop-contacts-on-group",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "ContactManager/Models/ContactStore.swift"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "aa425f215b4e",
+  "token_usage": {
+    "input_tokens": 43432,
+    "cache_creation_tokens": 691516,
+    "cache_read_tokens": 73044259,
+    "output_tokens": 264468,
+    "api_call_count": 385
+  },
+  "session_metrics": {
+    "turn_count": 16
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-07T00:08:26.400699Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 108,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 108,
+    "total_lines_changed": 109,
+    "agent_percentage": 0,
+    "metric_version": 2
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "357af7ca134c",
+  "strategy": "manual-commit",
+  "branch": "feature/drop-contacts-on-group",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "ContactManager/Models/ContactStore.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/35/7af7ca134c/0/metadata.json",
+      "transcript": "/35/7af7ca134c/0/full.jsonl",
+      "content_hash": "/35/7af7ca134c/0/content_hash.txt",
+      "prompt": "/35/7af7ca134c/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 43432,
+    "cache_creation_tokens": 691516,
+    "cache_read_tokens": 73044259,
+    "output_tokens": 264468,
+    "api_call_count": 385
+  }
+}
