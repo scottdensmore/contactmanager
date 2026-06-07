@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "94afe547db0c",
+  "strategy": "manual-commit",
+  "branch": "chore/track-codex-copilot-hooks",
+  "checkpoints_count": 1,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/94/afe547db0c/0/metadata.json",
+      "transcript": "/94/afe547db0c/0/full.jsonl",
+      "content_hash": "/94/afe547db0c/0/content_hash.txt",
+      "prompt": "/94/afe547db0c/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 125180,
+    "cache_creation_tokens": 1477925,
+    "cache_read_tokens": 417609238,
+    "output_tokens": 794437,
+    "api_call_count": 958
+  }
+}

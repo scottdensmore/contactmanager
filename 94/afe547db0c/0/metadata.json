@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "94afe547db0c",
+  "session_id": "5ea1dbe6-8812-489a-b85a-b1b21cf14a47",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-07T06:13:25.227177Z",
+  "branch": "chore/track-codex-copilot-hooks",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "d7a55be3799e",
+  "token_usage": {
+    "input_tokens": 125180,
+    "cache_creation_tokens": 1477925,
+    "cache_read_tokens": 417609238,
+    "output_tokens": 794437,
+    "api_call_count": 958
+  },
+  "session_metrics": {
+    "turn_count": 41
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
