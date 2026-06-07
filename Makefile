@@ -1,10 +1,14 @@
 PROJECT := ContactManager.xcodeproj
 SCHEME := ContactManager
 DESTINATION := platform=macOS
+# Code signing is off for build/test: these are compile + test gates (CI has no
+# Apple account, and a signed build for distribution is done from Xcode). Keeps
+# the local and CI invocations identical.
+XCODEBUILD := xcodebuild -project $(PROJECT) -scheme $(SCHEME) -destination '$(DESTINATION)' CODE_SIGNING_ALLOWED=NO
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap build test lint lint-fix format format-check check
+.PHONY: help bootstrap build test test-unit lint lint-fix format format-check check
 
 help: ## List available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -14,10 +18,13 @@ bootstrap: ## Install developer tooling (SwiftLint, SwiftFormat) via Homebrew
 	./scripts/bootstrap.sh
 
 build: ## Build the app
-	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -destination '$(DESTINATION)' build
+	$(XCODEBUILD) build
 
-test: ## Run the test suite
-	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -destination '$(DESTINATION)' test
+test: ## Run the full test suite (unit + UI)
+	$(XCODEBUILD) test
+
+test-unit: ## Run the unit tests only (deterministic; used by CI and `check`)
+	$(XCODEBUILD) test -only-testing:ContactManagerTests
 
 lint: ## Lint sources with SwiftLint (strict — matches CI; warnings fail)
 	swiftlint lint --quiet --strict
@@ -31,4 +38,4 @@ format: ## Format sources in place with SwiftFormat
 format-check: ## Verify formatting without modifying files
 	swiftformat --lint .
 
-check: format-check lint test ## Run format check, lint, and tests (CI gate)
+check: format-check lint test-unit ## Run format check, lint, and unit tests (CI gate)

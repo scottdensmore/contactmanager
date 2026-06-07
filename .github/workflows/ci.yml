@@ -24,3 +24,26 @@ jobs:
 
       - name: Lint (SwiftLint)
         run: swiftlint lint --strict
+
+  build-test:
+    name: Build & Test
+    # Must be macOS 26: the app's deployment target is macOS 26, so the tests
+    # can only *run* on a 26 runner (macos-latest is still 15 — it can build
+    # against the 26 SDK but not launch a 26-target app).
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode 26
+        run: |
+          # Glob the 26.x Xcodes and take the lexically-last (highest patch) —
+          # avoids GNU-only `sort -V`. Falls back to the runner default if none.
+          xcode=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | tail -1)
+          if [ -n "$xcode" ]; then sudo xcode-select -s "$xcode/Contents/Developer"; fi
+          xcodebuild -version
+
+      - name: Build
+        run: make build
+
+      - name: Test (unit)
+        run: make test-unit

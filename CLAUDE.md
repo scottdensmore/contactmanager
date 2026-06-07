@@ -9,13 +9,18 @@ agents — keep it readable and idiomatic.
 | Task | Command |
 | --- | --- |
 | Build | `make build` |
-| Test | `make test` |
+| Test | `make test` (unit + UI) / `make test-unit` (unit only) |
 | Lint | `make lint` (autofix: `make lint-fix`) |
 | Format | `make format` (check only: `make format-check`) |
-| Pre-PR gate | `make check` (format-check + lint + test) |
+| Pre-PR gate | `make check` (format-check + lint + unit tests) |
 | Install tooling | `make bootstrap` (runs `brew bundle`) |
 
 Tests use **Swift Testing** (`import Testing`, `@Test`, `#expect`/`#require`) — not XCTest.
+`make build`/`make test` pass `CODE_SIGNING_ALLOWED=NO` (compile + test gates; a signed
+build for distribution is done from Xcode), so they run identically locally and in CI.
+`check` runs the **unit** tests (`ContactManagerTests`) — fast and deterministic; the
+XCUITest smoke suite (`make test`) is run from Xcode, since it flakes on app activation
+when the foreground is busy and isn't part of CI.
 
 ## Layout
 
@@ -33,8 +38,10 @@ Run `make format` and `make lint` before committing; both must pass (or `make ch
 Configs: `.swiftformat`, `.swiftlint.yml`. Linting is intentionally **not** an Xcode
 build phase: the project enables `ENABLE_USER_SCRIPT_SANDBOXING`, which blocks a
 whole-tree SwiftLint run script from reading sources. Instead, CI
-(`.github/workflows/ci.yml`) runs `swiftformat --lint` + `swiftlint --strict` on every
-PR, so enforcement happens with zero local build/commit friction.
+(`.github/workflows/ci.yml`) enforces it on every PR: a **Lint & Format** job
+(`swiftformat --lint` + `swiftlint --strict`) and a **Build & Test** job
+(`make build` + `make test-unit`, code signing disabled), so enforcement happens with
+zero local build/commit friction.
 
 - 4-space indent; opening braces on the same line; trailing commas in multiline
   literals (SwiftFormat owns comma style — SwiftLint's `trailing_comma` is disabled
