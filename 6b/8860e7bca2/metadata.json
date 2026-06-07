@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "6b8860e7bca2",
+  "strategy": "manual-commit",
+  "branch": "refactor/avatar-palette-index",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "ContactManager/Views/AvatarView.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/6b/8860e7bca2/0/metadata.json",
+      "transcript": "/6b/8860e7bca2/0/full.jsonl",
+      "content_hash": "/6b/8860e7bca2/0/content_hash.txt",
+      "prompt": "/6b/8860e7bca2/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 138386,
+    "cache_creation_tokens": 1584720,
+    "cache_read_tokens": 432636855,
+    "output_tokens": 857503,
+    "api_call_count": 1033
+  }
+}

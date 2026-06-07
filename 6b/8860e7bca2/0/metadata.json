@@ -1,0 +1,37 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "6b8860e7bca2",
+  "session_id": "5ea1dbe6-8812-489a-b85a-b1b21cf14a47",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-07T06:40:56.018017Z",
+  "branch": "refactor/avatar-palette-index",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "ContactManager/Views/AvatarView.swift"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "1bfe53145f29",
+  "token_usage": {
+    "input_tokens": 138386,
+    "cache_creation_tokens": 1584720,
+    "cache_read_tokens": 432636855,
+    "output_tokens": 857503,
+    "api_call_count": 1033
+  },
+  "session_metrics": {
+    "turn_count": 43
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-07T06:40:55.897946Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 34,
+    "human_modified": 3,
+    "human_removed": 0,
+    "total_committed": 34,
+    "total_lines_changed": 39,
+    "agent_percentage": 0,
+    "metric_version": 2
+  }
+}
