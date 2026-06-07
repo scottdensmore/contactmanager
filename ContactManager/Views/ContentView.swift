@@ -25,9 +25,11 @@ struct ContentView: View {
     /// The contact just created via ⌘N/＋, so the detail form can open with
     /// the cursor in First Name. Cleared once the field takes focus.
     @State private var contactPendingNameFocus: PersistentIdentifier?
-    // Internal so the import handlers in `ContentView+Import.swift` can
-    // set this when a parse/insert fails.
+    /// Internal so the import handlers in `ContentView+Import.swift` can
+    /// set this when a parse/insert fails.
     @State var errorMessage: String?
+    // Drives the import progress overlay; set by the import handlers.
+    @State var importProgress: ImportProgress?
     @State private var searchText = ""
     /// Trails `searchText` by 150 ms so we don't re-filter the entire contact
     /// list on every keystroke. Cleared instantly when the user clears the
@@ -129,6 +131,11 @@ struct ContentView: View {
             minWidth: LayoutMetrics.windowMinWidth,
             minHeight: LayoutMetrics.windowMinHeight
         )
+        .overlay {
+            if let importProgress {
+                ImportProgressView(progress: importProgress)
+            }
+        }
         .task(id: searchText) {
             // Empty → clear immediately. Otherwise wait 150 ms before
             // committing the new query so a burst of keystrokes only
