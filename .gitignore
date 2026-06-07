@@ -198,3 +198,11 @@ DerivedData/
 # End of https://www.toptal.com/developers/gitignore/api/macos,appcode,xcode,visualstudiocode,carthage,cocoapods
 
 DeveloperSettings.xcconfig
+
+# Agent / tooling state
+# .claude/settings.json + .claude/agents/ are shared (checked in); the rest is
+# per-user or local tool state and stays untracked.
+.claude/settings.local.json
+.codex/
+.entire/
+.github/hooks/
