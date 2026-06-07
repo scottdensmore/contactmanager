@@ -21,20 +21,33 @@ jobs:
     name: Bump, tag, and release
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    env:
+      XCCONFIG: ContactManager/Config/SharedSettings.xcconfig
     steps:
+      # Check out the exact commit CI tested (not a moving `main`), so the
+      # release is tied to that commit; if `main` has since advanced, the push
+      # below fails safely and that newer merge runs its own release.
       - uses: actions/checkout@v4
         with:
-          ref: main
-          fetch-depth: 0 # full history for the build number + tag lookups
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0 # full history for the build number
+
+      - name: Skip if this commit is already a release bump
+        id: guard
+        run: |
+          set -euo pipefail
+          if git log -1 --pretty=%s | grep -q '^Release v'; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Compute next version and build
+        if: ${{ steps.guard.outputs.skip == 'false' }}
         id: ver
         run: |
           set -euo pipefail
-          pbx=ContactManager.xcodeproj/project.pbxproj
-          # Highest MARKETING_VERSION currently in the project (major.minor are
-          # yours to bump by hand; the patch auto-increments each merge).
-          current=$(grep -oE 'MARKETING_VERSION = [0-9.]+' "$pbx" | sed 's/.*= //' | sort -V | tail -1)
+          current=$(grep -E '^MARKETING_VERSION' "$XCCONFIG" | sed -E 's/.*= *//')
           IFS=. read -r major minor patch <<< "$current"
           patch=${patch:-0}
           version="${major}.${minor}.$((patch + 1))"
@@ -46,24 +59,12 @@ jobs:
           } >> "$GITHUB_OUTPUT"
           echo "Next release: v$version (build $build)"
 
-      - name: Skip if HEAD is already a release commit
-        id: guard
-        run: |
-          set -euo pipefail
-          if git log -1 --pretty=%s | grep -q '^Release v'; then
-            echo "HEAD is already a release bump — nothing to do."
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "skip=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Stamp version + build into the project
+      - name: Stamp version + build into the xcconfig
         if: ${{ steps.guard.outputs.skip == 'false' }}
         run: |
           set -euo pipefail
-          pbx=ContactManager.xcodeproj/project.pbxproj
-          sed -i -E "s/MARKETING_VERSION = [^;]+;/MARKETING_VERSION = ${{ steps.ver.outputs.version }};/g" "$pbx"
-          sed -i -E "s/CURRENT_PROJECT_VERSION = [^;]+;/CURRENT_PROJECT_VERSION = ${{ steps.ver.outputs.build }};/g" "$pbx"
+          sed -i -E "s|^MARKETING_VERSION = .*|MARKETING_VERSION = ${{ steps.ver.outputs.version }}|" "$XCCONFIG"
+          sed -i -E "s|^CURRENT_PROJECT_VERSION = .*|CURRENT_PROJECT_VERSION = ${{ steps.ver.outputs.build }}|" "$XCCONFIG"
 
       - name: Commit, tag, and create the release
         if: ${{ steps.guard.outputs.skip == 'false' }}
@@ -75,7 +76,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Pushing with the default GITHUB_TOKEN does not re-trigger CI, so this
-          # version-bump commit can't kick off another release run.
+          # version-bump commit can't kick off another release run. If main has
+          # advanced past the tested commit, this push fails (fail-safe).
           git commit -am "Release $tag (build ${{ steps.ver.outputs.build }}) [skip ci]"
           git tag -a "$tag" -m "$tag (build ${{ steps.ver.outputs.build }})"
           git push origin HEAD:main
