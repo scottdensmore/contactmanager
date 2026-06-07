@@ -24,6 +24,12 @@ struct ContactWindowView: View {
     @Query(sort: [SortDescriptor(\Contact.lastName), SortDescriptor(\Contact.firstName)])
     private var contacts: [Contact]
 
+    @Environment(\.dismiss) private var dismiss
+    /// Whether this window ever showed its contact. Lets us tell "deleted
+    /// while open" (auto-close) from "never resolved" — a stale id at launch /
+    /// window restoration — where we keep the explanatory unavailable view.
+    @State private var hadContact = false
+
     private var contact: Contact? {
         guard let encodedID,
               let id = PersistentIdentifier.decode(stored: encodedID)
@@ -36,6 +42,7 @@ struct ContactWindowView: View {
             if let contact {
                 ContactDetailView(contact: contact)
                     .navigationTitle(contact.fullName)
+                    .onAppear { hadContact = true }
             } else {
                 ContentUnavailableView(
                     "Contact Not Found",
@@ -45,6 +52,9 @@ struct ContactWindowView: View {
                             "Close the window or open another contact from the main window."
                     )
                 )
+                // If we'd previously shown the contact, it was just deleted —
+                // close the now-orphaned window instead of stranding it.
+                .onAppear { if hadContact { dismiss() } }
             }
         }
         .frame(minWidth: 460, minHeight: 520)
