@@ -43,6 +43,9 @@ struct ContentView: View {
     @State private var isExportingVCard = false
     @State private var exportDocument = VCardDocument(text: "")
     @State private var showingDuplicates = false
+    @State private var isExportingPDF = false
+    @State private var pdfDocument = PDFExportDocument(data: Data())
+    @State private var pdfFilename = "Contact"
 
     /// Internal so the import handlers in `ContentView+Import.swift` can
     /// reach the same store the main view uses.
@@ -89,6 +92,37 @@ struct ContentView: View {
     }
 
     var body: some View {
+        let scene = splitView
+            .task(id: searchText) {
+                // Empty → clear immediately. Otherwise wait 150 ms before
+                // committing the new query so a burst of keystrokes only
+                // triggers one filter pass.
+                if searchText.isEmpty {
+                    debouncedSearchText = ""
+                    return
+                }
+                do {
+                    try await Task.sleep(for: .milliseconds(150))
+                    debouncedSearchText = searchText
+                } catch {
+                    // Task cancelled — a newer keystroke superseded this one.
+                }
+            }
+            .onAppear {
+                // Route every ContactStore mutation through the window's undo
+                // manager so Edit ▸ Undo/Redo (⌘Z / ⇧⌘Z) work.
+                context.undoManager = undoManager
+            }
+            .onChange(of: undoManager) { _, new in
+                context.undoManager = new
+            }
+        // Split into helpers so the modifier chain stays within the SwiftUI
+        // type-checker's budget (and the type-body length limit).
+        return handlingFileDialogs(handlingMenuCommands(scene))
+    }
+
+    /// The three-column split view, window frame, and the import overlay.
+    private var splitView: some View {
         NavigationSplitView {
             SidebarView(
                 selection: $sidebarSelection,
@@ -135,95 +169,6 @@ struct ContentView: View {
             if let importProgress {
                 ImportProgressView(progress: importProgress)
             }
-        }
-        .task(id: searchText) {
-            // Empty → clear immediately. Otherwise wait 150 ms before
-            // committing the new query so a burst of keystrokes only
-            // triggers one filter pass.
-            if searchText.isEmpty {
-                debouncedSearchText = ""
-                return
-            }
-            do {
-                try await Task.sleep(for: .milliseconds(150))
-                debouncedSearchText = searchText
-            } catch {
-                // Task cancelled — a newer keystroke superseded this one.
-            }
-        }
-        .onAppear {
-            // Route every ContactStore mutation through the window's undo
-            // manager so Edit ▸ Undo/Redo (⌘Z / ⇧⌘Z) work.
-            context.undoManager = undoManager
-        }
-        .onChange(of: undoManager) { _, new in
-            context.undoManager = new
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .newContactRequested)) { _ in
-            addContact()
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .importVCardRequested)) { _ in
-            isImportingVCard = true
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .importCSVRequested)) { _ in
-            isImportingCSV = true
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .exportVCardRequested)) { _ in
-            exportDocument = VCardDocument(text: store.exportVCards(contacts))
-            isExportingVCard = true
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .findDuplicatesRequested)) { _ in
-            showingDuplicates = true
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .importSystemContactsRequested)) { _ in
-            importSystemContacts()
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .openContactRequested)) { note in
-            selectContact(byEncodedID: note.userInfo?["id"] as? String)
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .contactsDidChange)) { note in
-            // Apply just the mutation's delta — the indexer fetches the
-            // affected contacts fresh by id, since `@Query`'s post-save
-            // refresh is asynchronous and can still reflect pre-save state
-            // when this notification fires. A post without a payload falls
-            // back to a full reindex.
-            if let change = note.userInfo?[ContactChange.userInfoKey] as? ContactChange {
-                Task { await SpotlightIndexer.shared.apply(change) }
-            } else {
-                Task { await SpotlightIndexer.shared.reindex() }
-            }
-        }
-        .onContinueUserActivity(CSSearchableItemActionType) { activity in
-            let id = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String
-            selectContact(byEncodedID: id)
-        }
-        .sheet(isPresented: $showingDuplicates) {
-            DuplicatesView()
-        }
-        .fileImporter(isPresented: $isImportingVCard, allowedContentTypes: [.vCard]) { result in
-            handleImport(result)
-        }
-        .fileImporter(isPresented: $isImportingCSV, allowedContentTypes: [.commaSeparatedText]) { result in
-            handleCSVImport(result)
-        }
-        .fileExporter(
-            isPresented: $isExportingVCard,
-            document: exportDocument,
-            contentType: .vCard,
-            defaultFilename: "Contacts"
-        ) { result in
-            if case .failure(let error) = result {
-                errorMessage = error.localizedDescription
-            }
-        }
-        .alert(
-            "Something Went Wrong",
-            isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } }),
-            presenting: errorMessage
-        ) { _ in
-            Button("OK", role: .cancel) {}
-        } message: { message in
-            Text(message)
         }
     }
 
@@ -298,6 +243,128 @@ struct ContentView: View {
         // narrower group was active.
         if case .group = sidebarSelection { sidebarSelection = .allContacts }
         withAnimation(.snappy) { selectedContact = contact }
+    }
+}
+
+/// Body modifiers and command actions, split out of the main struct to keep
+/// the SwiftUI type-checker (and the type-body length) happy. Same-file, so
+/// these still see ContentView's private state.
+private extension ContentView {
+    /// Menu-command observers (New, imports/exports, Find Duplicates, Print/PDF,
+    /// Spotlight open, and the incremental re-index on every mutation).
+    func handlingMenuCommands(_ content: some View) -> some View {
+        content
+            .onReceive(NotificationCenter.default.publisher(for: .newContactRequested)) { _ in
+                addContact()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .importVCardRequested)) { _ in
+                isImportingVCard = true
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .importCSVRequested)) { _ in
+                isImportingCSV = true
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .exportVCardRequested)) { _ in
+                exportDocument = VCardDocument(text: store.exportVCards(contacts))
+                isExportingVCard = true
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .findDuplicatesRequested)) { _ in
+                showingDuplicates = true
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .exportPDFRequested)) { _ in
+                exportSelectedContactAsPDF()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .printContactRequested)) { _ in
+                printSelectedContact()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .importSystemContactsRequested)) { _ in
+                importSystemContacts()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .openContactRequested)) { note in
+                selectContact(byEncodedID: note.userInfo?["id"] as? String)
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .contactsDidChange)) { note in
+                // The indexer fetches the affected contacts fresh by id, since
+                // `@Query`'s post-save refresh can still reflect pre-save state
+                // here. A post without a payload falls back to a full reindex.
+                if let change = note.userInfo?[ContactChange.userInfoKey] as? ContactChange {
+                    Task { await SpotlightIndexer.shared.apply(change) }
+                } else {
+                    Task { await SpotlightIndexer.shared.reindex() }
+                }
+            }
+            .onContinueUserActivity(CSSearchableItemActionType) { activity in
+                let id = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String
+                selectContact(byEncodedID: id)
+            }
+    }
+
+    /// The sheets, importers, exporters, and the error alert.
+    func handlingFileDialogs(_ content: some View) -> some View {
+        content
+            .sheet(isPresented: $showingDuplicates) {
+                DuplicatesView()
+            }
+            .fileImporter(isPresented: $isImportingVCard, allowedContentTypes: [.vCard]) { result in
+                handleImport(result)
+            }
+            .fileImporter(isPresented: $isImportingCSV, allowedContentTypes: [.commaSeparatedText]) { result in
+                handleCSVImport(result)
+            }
+            .fileExporter(
+                isPresented: $isExportingVCard,
+                document: exportDocument,
+                contentType: .vCard,
+                defaultFilename: "Contacts"
+            ) { result in
+                if case .failure(let error) = result {
+                    errorMessage = error.localizedDescription
+                }
+            }
+            .fileExporter(
+                isPresented: $isExportingPDF,
+                document: pdfDocument,
+                contentType: .pdf,
+                defaultFilename: pdfFilename
+            ) { result in
+                if case .failure(let error) = result {
+                    errorMessage = error.localizedDescription
+                }
+            }
+            .alert(
+                "Something Went Wrong",
+                isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } }),
+                presenting: errorMessage
+            ) { _ in
+                Button("OK", role: .cancel) {}
+            } message: { message in
+                Text(message)
+            }
+    }
+
+    // MARK: - Print / PDF
+
+    func exportSelectedContactAsPDF() {
+        guard let contact = selectedContact else {
+            errorMessage = "Select a contact to export as PDF."
+            return
+        }
+        guard let data = ContactPDF.data(for: contact) else {
+            errorMessage = "Couldn't generate a PDF for that contact."
+            return
+        }
+        pdfDocument = PDFExportDocument(data: data)
+        pdfFilename = ContactPDF.filename(for: contact)
+        isExportingPDF = true
+    }
+
+    func printSelectedContact() {
+        guard let contact = selectedContact else {
+            errorMessage = "Select a contact to print."
+            return
+        }
+        if !ContactPDF.print(contact) {
+            errorMessage = "Couldn't prepare that contact for printing."
+        }
     }
 }
 
