@@ -98,27 +98,61 @@ make test            # unit + UI tests via xcodebuild
 
 ### iCloud sync (optional)
 
-The app runs **local-only out of the box** — clone, build, and run with no
-account or extra setup (a fresh store is seeded with a few sample contacts).
-It's also **CloudKit-ready**: at launch it checks whether an iCloud container is
+The app runs **local-only by default** — no iCloud account or sync setup is
+required to build and use it (a fresh store is seeded with a few sample
+contacts). It's also **CloudKit-ready**: at launch it checks whether an iCloud container is
 configured in its entitlements and, if so, opens the SwiftData store with
 `cloudKitDatabase: .automatic` to sync across your devices; otherwise it stays
 local. Nothing about CloudKit is committed to the project, so a download is never
-blocked by a provisioning profile you don't own.
+blocked by a provisioning profile you don't own, and **no code changes are
+needed** to switch sync on — the app detects the capability at runtime.
+
+**Prerequisite:** a paid **Apple Developer Program** membership. iCloud/CloudKit
+capabilities aren't available to a free "Personal Team" — Xcode won't let you add
+the container without one.
 
 To turn on sync for your own build:
 
 1. In Xcode, select the **ContactManager** target ▸ **Signing & Capabilities**.
-2. Set your **Team** (keep *Automatically manage signing*).
+2. Make sure signing uses **your Team** (keep *Automatically manage signing*).
+   The team is set in `ContactManager/Config/SharedSettings.xcconfig`
+   (`DEVELOPMENT_TEAM`); if you're not the maintainer, override it without
+   touching that file by creating a local, gitignored
+   `ContactManager/DeveloperSettings.xcconfig` with your own:
+   ```
+   DEVELOPMENT_TEAM = YOURTEAMID
+   ```
 3. Click **+ Capability** ▸ **iCloud**, check **CloudKit**, and add a container
    (the default `iCloud.<your-bundle-id>` is fine — use your own bundle id).
-4. Click **+ Capability** ▸ **Push Notifications** so the store receives
-   CloudKit change pushes (this is the macOS capability; there's no
-   "Background Modes ▸ Remote notifications" toggle for a Mac app).
-5. Make sure the Mac is signed in to iCloud, then build and run. The store now
-   syncs; on an empty CloudKit account your existing local contacts upload, and
-   other devices using the same container pull them down.
+4. Click **+ Capability** ▸ **Push Notifications** so the store receives CloudKit
+   change pushes. (This is the macOS capability; a Mac target has no "Background
+   Modes ▸ Remote notifications" toggle.)
+5. Sign the Mac in to **iCloud** (System Settings ▸ your Apple ID), using the
+   same account on every device you want to sync.
+6. **Start clean (recommended):** if you've run the app locally before, its store
+   already holds the seeded sample contacts, which would upload to your real
+   iCloud on the first sync. Delete the local store first so you start empty —
+   the sandbox container path uses the app's bundle id (replace it if you've
+   changed `PRODUCT_BUNDLE_IDENTIFIER`):
+   ```shell
+   rm -rf ~/Library/Containers/com.scottdensmore.ContactManager/Data/Library/Application\ Support/default.store*
+   ```
+   (In CloudKit mode the app skips seeding, so it stays empty until data syncs.)
+7. Build and run. Verify sync via the **CloudKit Console**
+   (developer.apple.com ▸ CloudKit ▸ your container ▸ *Records*, Development
+   environment) or a second Mac signed in to the same account.
 
-> These steps modify the target's entitlements and signing settings. If you
-> contribute back, **don't commit those changes** — leaving them out keeps the
-> project buildable by anyone who clones it without your team or container.
+**Shipping a release build:** SwiftData auto-creates the schema in CloudKit's
+**Development** environment. Before distributing, open the **CloudKit Console ▸
+Deploy Schema Changes** to promote it to **Production**, or a release/TestFlight
+build will see an empty production schema.
+
+**If sync stays silent** after all of the above, add **App Sandbox ▸ Outgoing
+Connections (`com.apple.security.network.client`)** to the entitlements. CloudKit
+is normally brokered by a system daemon and works without it, but it's the first
+thing to try.
+
+> Steps 3–4 edit the shared `ContactManager.entitlements` (adding your iCloud
+> container). **Don't commit that change** — it's what would block anyone who
+> clones without your container. Your `DeveloperSettings.xcconfig` from step 2 is
+> already gitignored.
