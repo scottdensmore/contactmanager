@@ -59,6 +59,33 @@ enum Birthday {
         return Fields(year: year, month: parts.month ?? 1, day: parts.day ?? 1)
     }
 
+    /// Returns a copy of `date` with its year replaced — or cleared to the
+    /// year-less form when `year` is `nil` — keeping month and day. Backs the
+    /// editor's "include year" toggle so flipping it never touches the stored
+    /// month/day or escapes the UTC convention.
+    static func setting(year: Int?, of date: Date) -> Date? {
+        let parts = fields(of: date)
+        return self.date(year: year, month: parts.month, day: clampDay(parts.day, month: parts.month, year: year))
+    }
+
+    /// Number of days in `month`, honoring `year` for February (or the
+    /// omitted-year sentinel — itself a leap year — when `year` is `nil`, so a
+    /// year-less Feb 29 stays selectable). Falls back to 31 if the date can't be
+    /// built. Drives the day picker's range in the year-less birthday editor.
+    static func daysInMonth(_ month: Int, year: Int?) -> Int {
+        guard let anchor = date(year: year, month: month, day: 1),
+              let range = calendar.range(of: .day, in: .month, for: anchor)
+        else { return 31 }
+        return range.count
+    }
+
+    /// Clamps `day` to the valid range for the given month/year, so switching to
+    /// a shorter month (e.g. Jan 31 → Feb) lands on the last valid day instead
+    /// of rolling into the next month.
+    static func clampDay(_ day: Int, month: Int, year: Int?) -> Int {
+        min(max(day, 1), daysInMonth(month, year: year))
+    }
+
     /// Parses a date-only birthday string into a UTC-anchored `Date`. Accepts
     /// the year-less `--MMDD` / `--MM-DD` forms (storing the sentinel year) as
     /// well as `YYYY-MM-DD` / `YYYYMMDD`, ignoring any `T` time suffix.

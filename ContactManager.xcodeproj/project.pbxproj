@@ -43,6 +43,7 @@
 		8108F2C0C987CDC1258A3E7C /* ContactLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E3C45DEC115A2BF7DE83DF /* ContactLink.swift */; };
 		81F488BB8E6D53268C607C68 /* DuplicatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C373BD237429970D6A7C86 /* DuplicatesView.swift */; };
 		827CF451F0B38B89C4469595 /* DuplicateFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E788AA97AF3C5715FA19FE5B /* DuplicateFinder.swift */; };
+		8397B67D483997505B17269E /* ContactDetailView+Birthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F825494F8D293928784C7 /* ContactDetailView+Birthday.swift */; };
 		8C6AC6410FA2258ADB2BF640 /* ContactManagerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001F8DF120EBA372663EC888 /* ContactManagerUITests.swift */; };
 		8DF0A36CE542853FF12BEF1A /* Chunking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436B4115937E4350EB9A7EF7 /* Chunking.swift */; };
 		9506DFC07D9490AEDFB096EC /* ImageProcessingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5588D3AA3B4B31F1094D954F /* ImageProcessingTests.swift */; };
@@ -54,6 +55,7 @@
 		AF36C8E991E2B6C96634FBA0 /* ChunkingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30CD9D085E7424A79159879 /* ChunkingTests.swift */; };
 		B1393B1344A7D64B52C4B3D4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9795992CBF553603FD37928 /* SettingsView.swift */; };
 		BBD79E7FD90E021417B527A9 /* FindContactIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F6260FE20C27094AFB327A /* FindContactIntent.swift */; };
+		BC3D0CE8272648D0ACEF0C46 /* BirthdayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B040B21B7E2002E00885A9BA /* BirthdayTests.swift */; };
 		C2A11D686722C70868435ACE /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6303A7F66E428BF3662142C0 /* SidebarView.swift */; };
 		CD70772ECD6A854C66159FFD /* OpenContactIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B27494A51645ACA6BED8EA8 /* OpenContactIntent.swift */; };
 		CE55AD882E6631A9541B6106 /* ContactsBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2489676BE6C77E41DDC56F60 /* ContactsBridge.swift */; };
@@ -102,6 +104,7 @@
 		4E2F2242E59F2C42DDD0736B /* CSV.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CSV.swift; sourceTree = "<group>"; };
 		54C373BD237429970D6A7C86 /* DuplicatesView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DuplicatesView.swift; sourceTree = "<group>"; };
 		5588D3AA3B4B31F1094D954F /* ImageProcessingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ImageProcessingTests.swift; sourceTree = "<group>"; };
+		570F825494F8D293928784C7 /* ContactDetailView+Birthday.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "ContactDetailView+Birthday.swift"; sourceTree = "<group>"; };
 		604FB090CB5671DB6927238C /* SpotlightDeltaTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SpotlightDeltaTests.swift; sourceTree = "<group>"; };
 		61587B4E14B400AF1CB16862 /* PersistentIdentifierEncoding.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PersistentIdentifierEncoding.swift; sourceTree = "<group>"; };
 		617D7B082A403094284FBD38 /* ContactStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactStore.swift; sourceTree = "<group>"; };
@@ -126,6 +129,7 @@
 		ABDED82FFB4B5F039052FFB5 /* Birthday.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Birthday.swift; sourceTree = "<group>"; };
 		AC2AA1D7BB15FC01B9CBA3B3 /* EntityModelContainer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EntityModelContainer.swift; sourceTree = "<group>"; };
 		B033A5B8DABE71E4CCF6A8E9 /* VCardTransfer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VCardTransfer.swift; sourceTree = "<group>"; };
+		B040B21B7E2002E00885A9BA /* BirthdayTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BirthdayTests.swift; sourceTree = "<group>"; };
 		B25751DDEC1515E341AF67F5 /* ContactField.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactField.swift; sourceTree = "<group>"; };
 		B75D02267D3BC6C014143329 /* ContactModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactModelTests.swift; sourceTree = "<group>"; };
 		BCAA25CCEE01127AA64D21D6 /* CSVTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CSVTests.swift; sourceTree = "<group>"; };
@@ -251,6 +255,7 @@
 				05CB65D95AFA14C691F0D8C4 /* ContactDetailView+Photo.swift */,
 				29335D93B2E97B9038F1481A /* ImportProgressView.swift */,
 				A37DB6CC43A76261CFF3987D /* PrintableContactView.swift */,
+				570F825494F8D293928784C7 /* ContactDetailView+Birthday.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -308,6 +313,7 @@
 				964ACD67CC8CB35694497A10 /* GroupDropTests.swift */,
 				A30CD9D085E7424A79159879 /* ChunkingTests.swift */,
 				C0F303B7AE5B9202CDA6D9DA /* ContactPDFTests.swift */,
+				B040B21B7E2002E00885A9BA /* BirthdayTests.swift */,
 			);
 			path = ContactManagerTests;
 			sourceTree = "<group>";
@@ -475,6 +481,7 @@
 				6BD515E7E488C1261839AC60 /* ContactPDF.swift in Sources */,
 				6DF39989CF5CF55F228DA933 /* PDFExportDocument.swift in Sources */,
 				488CA0C339AD3218073A02E8 /* PrintableContactView.swift in Sources */,
+				8397B67D483997505B17269E /* ContactDetailView+Birthday.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,6 +504,7 @@
 				4F1E1A097740ECE3D42E55B8 /* GroupDropTests.swift in Sources */,
 				AF36C8E991E2B6C96634FBA0 /* ChunkingTests.swift in Sources */,
 				65E6B33886CF04648BEDF442 /* ContactPDFTests.swift in Sources */,
+				BC3D0CE8272648D0ACEF0C46 /* BirthdayTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -59,13 +59,21 @@ struct ContactDetailView: View {
 
             Section("Birthday") {
                 Toggle("Has Birthday", isOn: birthdayEnabled)
-                if contact.birthday != nil {
-                    DatePicker("Date", selection: birthdayValue, displayedComponents: .date)
-                        // Birthdays are stored anchored to UTC; show/edit them
-                        // in the same calendar (its time zone is UTC) so the
-                        // picked day matches what's saved and what other devices
-                        // see, regardless of the local time zone.
-                        .environment(\.calendar, Birthday.calendar)
+                if let birthday = contact.birthday {
+                    Toggle("Include Year", isOn: birthdayIncludesYear)
+                    if Birthday.fields(of: birthday).year == nil {
+                        // Year unknown (a vCard `--MMDD` or a yearless Contacts
+                        // card): edit month/day only so the sentinel year never
+                        // shows and can't be accidentally "confirmed".
+                        MonthDayPicker(month: birthdayMonth, day: birthdayDay)
+                    } else {
+                        DatePicker("Date", selection: birthdayValue, displayedComponents: .date)
+                            // Birthdays are stored anchored to UTC; show/edit them
+                            // in the same calendar (its time zone is UTC) so the
+                            // picked day matches what's saved and what other devices
+                            // see, regardless of the local time zone.
+                            .environment(\.calendar, Birthday.calendar)
+                    }
                 }
             }
 
