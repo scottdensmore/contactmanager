@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "ed05f4ca5f39",
+  "session_id": "5ea1dbe6-8812-489a-b85a-b1b21cf14a47",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-07T02:22:34.022354Z",
+  "branch": "docs/cloudkit-setup",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "ba53f5a6223b",
+  "token_usage": {
+    "input_tokens": 83678,
+    "cache_creation_tokens": 1014728,
+    "cache_read_tokens": 235159853,
+    "output_tokens": 498718,
+    "api_call_count": 690
+  },
+  "session_metrics": {
+    "turn_count": 21
+  }
+}
