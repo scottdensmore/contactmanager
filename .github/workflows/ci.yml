@@ -24,3 +24,21 @@ jobs:
 
       - name: Lint (SwiftLint)
         run: swiftlint lint --strict
+
+  build-test:
+    name: Build & Test
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select latest Xcode
+        run: |
+          latest=$(ls -d /Applications/Xcode_*.app 2>/dev/null | sort -V | tail -1)
+          if [ -n "$latest" ]; then sudo xcode-select -s "$latest/Contents/Developer"; fi
+          xcodebuild -version
+
+      - name: Build
+        run: make build
+
+      - name: Test (unit)
+        run: make test-unit
