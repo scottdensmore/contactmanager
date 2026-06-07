@@ -50,6 +50,7 @@
 		8397B67D483997505B17269E /* ContactDetailView+Birthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F825494F8D293928784C7 /* ContactDetailView+Birthday.swift */; };
 		8C6AC6410FA2258ADB2BF640 /* ContactManagerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001F8DF120EBA372663EC888 /* ContactManagerUITests.swift */; };
 		8DF0A36CE542853FF12BEF1A /* Chunking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436B4115937E4350EB9A7EF7 /* Chunking.swift */; };
+		91DA07BB24CEA1941C5AFA6E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 76F68BAD5C3290EE7ABF787B /* Localizable.xcstrings */; };
 		9506DFC07D9490AEDFB096EC /* ImageProcessingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5588D3AA3B4B31F1094D954F /* ImageProcessingTests.swift */; };
 		97E98BCB6784672DCB8C1625 /* VCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7276D515CA167FBF4C47299 /* VCard.swift */; };
 		A486AAFFBF01C05775A7BB38 /* ContactEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915AF700C971510D0B642590 /* ContactEntity.swift */; };
@@ -120,6 +121,7 @@
 		6EE79F02FFFD9820269D3725 /* ContactLinkTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactLinkTests.swift; sourceTree = "<group>"; };
 		734D363DD0CB0BAA7AE9460B /* LayoutMetrics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LayoutMetrics.swift; sourceTree = "<group>"; };
 		73D22E8B17D14280F44AB0B2 /* ContactDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactDetailView.swift; sourceTree = "<group>"; };
+		76F68BAD5C3290EE7ABF787B /* Localizable.xcstrings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		7B17AADA860AEDB87017DF0B /* ContactWindowView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactWindowView.swift; sourceTree = "<group>"; };
 		7B27494A51645ACA6BED8EA8 /* OpenContactIntent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OpenContactIntent.swift; sourceTree = "<group>"; };
 		7D8EC17CBADAAAFFF77E9FDF /* ContactsBridgeTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactsBridgeTests.swift; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 				C876089F42640D0818FE333F /* Views */,
 				C80F354FEBD80D33AEC2F590 /* Intents */,
 				10E14CB9E9A2442DFE7B0E0B /* ContactManager.entitlements */,
+				76F68BAD5C3290EE7ABF787B /* Localizable.xcstrings */,
 			);
 			path = ContactManager;
 			sourceTree = "<group>";
@@ -440,6 +443,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F3D3F509379FD171AEC3606 /* Images.xcassets in Resources */,
+				91DA07BB24CEA1941C5AFA6E /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
