@@ -75,4 +75,27 @@ struct BirthdayTests {
         #expect(fields.month == 2)
         #expect(fields.day == 28)
     }
+
+    // MARK: - formatted
+
+    @Test func formattedIncludesYearWhenPresent() throws {
+        // Derive the localized month name from the same calendar so the
+        // expectation holds regardless of the runner's locale.
+        let march = Birthday.calendar.monthSymbols[2]
+        let date = try #require(Birthday.date(year: 1990, month: 3, day: 4))
+        #expect(Birthday.formatted(date) == "\(march) 4, 1990")
+    }
+
+    @Test func formattedOmitsYearForYearlessBirthday() throws {
+        let december = Birthday.calendar.monthSymbols[11]
+        let date = try #require(Birthday.date(year: nil, month: 12, day: 25))
+        #expect(Birthday.formatted(date) == "\(december) 25")
+    }
+
+    @Test func formattedReadsBackTheStoredUTCDay() throws {
+        // The day shown must match the stored UTC day, not shift by time zone.
+        let leapDay = try #require(Birthday.date(year: nil, month: 2, day: 29))
+        let february = Birthday.calendar.monthSymbols[1]
+        #expect(Birthday.formatted(leapDay) == "\(february) 29")
+    }
 }

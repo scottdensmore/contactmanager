@@ -38,10 +38,7 @@ struct PrintableContactView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(contact.fullName)
                     .font(.title.weight(.semibold))
-                let role = [contact.jobTitle, contact.company]
-                    .filter { !$0.isEmpty }
-                    .joined(separator: " · ")
-                if !role.isEmpty {
+                if let role = contact.roleLine {
                     Text(role).font(.headline).foregroundStyle(.secondary)
                 }
             }
@@ -97,12 +94,7 @@ struct PrintableContactView: View {
 
     @ViewBuilder
     private var address: some View {
-        let lines = [
-            contact.street,
-            [contact.city, contact.state, contact.postalCode]
-                .filter { !$0.isEmpty }.joined(separator: " "),
-            contact.country,
-        ].filter { !$0.isEmpty }
+        let lines = contact.addressLines
         if !lines.isEmpty {
             section("Address") {
                 ForEach(lines, id: \.self) { Text($0) }
@@ -114,7 +106,7 @@ struct PrintableContactView: View {
     private var birthday: some View {
         if let date = contact.birthday {
             section("Birthday") {
-                Text(formattedBirthday(date))
+                Text(Birthday.formatted(date))
             }
         }
     }
@@ -143,15 +135,5 @@ struct PrintableContactView: View {
             Text(label).foregroundStyle(.secondary).frame(width: 64, alignment: .leading)
             Text(value)
         }
-    }
-
-    private func formattedBirthday(_ date: Date) -> String {
-        let fields = Birthday.fields(of: date)
-        let months = Calendar(identifier: .gregorian).monthSymbols
-        let month = (1 ... 12).contains(fields.month) ? months[fields.month - 1] : ""
-        if let year = fields.year {
-            return "\(month) \(fields.day), \(year)"
-        }
-        return "\(month) \(fields.day)"
     }
 }

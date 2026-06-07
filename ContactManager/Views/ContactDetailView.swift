@@ -131,10 +131,7 @@ struct ContactDetailView: View {
                 Text(contact.fullName)
                     .font(.title2.weight(.semibold))
                     .accessibilityAddTraits(.isHeader)
-                let role = [contact.jobTitle, contact.company]
-                    .filter { !$0.isEmpty }
-                    .joined(separator: " · ")
-                if !role.isEmpty {
+                if let role = contact.roleLine {
                     Text(role).foregroundStyle(.secondary)
                 }
             }

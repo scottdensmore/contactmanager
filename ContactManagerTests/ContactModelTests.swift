@@ -130,6 +130,30 @@ struct ContactModelTests {
         #expect(companyOnly.subtitle == "Globex")
     }
 
+    @Test func roleLineJoinsTitleAndCompanyAndDropsBlanks() {
+        #expect(Contact(company: "Acme", jobTitle: "CEO").roleLine == "CEO · Acme")
+        #expect(Contact(jobTitle: "CEO").roleLine == "CEO")
+        #expect(Contact(company: "Acme").roleLine == "Acme")
+        #expect(Contact().roleLine == nil)
+        // A whitespace-only field is dropped rather than leaving a stray separator.
+        #expect(Contact(company: "  ", jobTitle: "CTO").roleLine == "CTO")
+    }
+
+    @Test func addressLinesDropEmptyComponents() {
+        let full = Contact(
+            street: "1 Infinite Loop", city: "Cupertino",
+            state: "CA", postalCode: "95014", country: "USA"
+        )
+        #expect(full.addressLines == ["1 Infinite Loop", "Cupertino CA 95014", "USA"])
+
+        // City/state/postal collapse to one line; missing pieces are skipped.
+        let partial = Contact(city: "Portland", state: "OR")
+        #expect(partial.addressLines == ["Portland OR"])
+
+        #expect(Contact().addressLines.isEmpty)
+        #expect(Contact(street: "  ", city: "Reno").addressLines == ["Reno"])
+    }
+
     // MARK: - Query helpers
 
     @Test func sortingOrdersByLastNameThenFirstName() {
