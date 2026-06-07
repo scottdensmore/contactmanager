@@ -8,7 +8,7 @@ XCODEBUILD := xcodebuild -project $(PROJECT) -scheme $(SCHEME) -destination '$(D
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap build test test-unit lint lint-fix format format-check check
+.PHONY: help bootstrap setup build test test-unit lint lint-fix format format-check check
 
 help: ## List available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -16,6 +16,9 @@ help: ## List available targets
 
 bootstrap: ## Install developer tooling (SwiftLint, SwiftFormat) via Homebrew
 	./scripts/bootstrap.sh
+
+setup: ## Scaffold the local DeveloperSettings.xcconfig (signing team). Args: TEAM=XXXX
+	./scripts/setup.sh $(TEAM)
 
 build: ## Build the app
 	$(XCODEBUILD) build

@@ -5,18 +5,16 @@
 //  Created by Scott Densmore on 12/28/20.
 //  Copyright © 2020 Scott Densmore. All rights reserved.
 //
+//  Shared, non-personal build settings only. Your Apple Developer team is
+//  personal — it lives in a gitignored DeveloperSettings.xcconfig; run
+//  `./scripts/setup.sh <TEAM_ID>` to create it. App version + build live in
+//  the Xcode project (auto-bumped by .github/workflows/release.yml).
+//
+//  Configuration settings file format documentation can be found at:
+//  https://help.apple.com/xcode/#/dev745c5c974
 
-// Configuration settings file format documentation can be found at:
-// https://help.apple.com/xcode/#/dev745c5c974
-
-DEVELOPMENT_TEAM = 27ZDER873F
 CODE_SIGN_IDENTITY = Mac Developer
 CODE_SIGN_STYLE = Automatic
 ORGANIZATION_IDENTIFIER = com.scottdensmore
 
 #include? "../DeveloperSettings.xcconfig"
-
-// App version + build. The patch and build auto-increment on each successful
-// merge (see .github/workflows/release.yml); bump major/minor by hand.
-MARKETING_VERSION = 2.0.1
-CURRENT_PROJECT_VERSION = 134
