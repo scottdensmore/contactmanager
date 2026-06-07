@@ -17,8 +17,8 @@ help: ## List available targets
 bootstrap: ## Install developer tooling (SwiftLint, SwiftFormat) via Homebrew
 	./scripts/bootstrap.sh
 
-setup: ## Scaffold the local DeveloperSettings.xcconfig (signing team). Args: TEAM=XXXX
-	./scripts/setup.sh $(TEAM)
+setup: ## Create the local DeveloperSettings.xcconfig (signing). Optional: TEAM=… ORG=…
+	./setup.sh $(if $(TEAM),--dev-team-id $(TEAM)) $(if $(ORG),--org-identifier $(ORG))
 
 build: ## Build the app
 	$(XCODEBUILD) build
