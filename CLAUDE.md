@@ -67,11 +67,16 @@ pattern), then build to confirm it compiles.
   (e.g. `var city: String = ""`), or in-place migration fails (`NSCocoaError 134110`).
   Optional attributes and relationships migrate cleanly. Verify by launching against an
   existing store.
-- **CloudKit-ready:** the container is built with `ModelConfiguration(cloudKitDatabase:
-  .automatic)` and falls back to `.none` (local-only) on failure, so the app runs with or
-  without an iCloud entitlement. To keep the schema sync-compatible, every non-optional
-  attribute needs an inline default (already covered by the migration rule), every to-many
-  relationship needs `= []`, and we avoid `@Attribute(.unique)` and `.deny` delete rules.
+- **CloudKit (opt-in, non-blocking):** `loadContainer` checks the running binary's
+  entitlements (`hasCloudKitEntitlement()` via `SecTask`) for an iCloud container. If one
+  is configured it opens the store with `cloudKitDatabase: .automatic` (sync); otherwise
+  `.none` (local) and it seeds sample data. A try/catch falls back to local on failure.
+  **Do not commit an iCloud entitlement / container** — it would break signing for anyone
+  who clones without that team/container; enabling iCloud is a documented local opt-in
+  (README ▸ "iCloud sync"). Seed only when local-only, so samples never sync into a real
+  iCloud account. To keep the schema sync-compatible, every non-optional attribute needs an
+  inline default (already covered by the migration rule), every to-many relationship needs
+  `= []`, and we avoid `@Attribute(.unique)` and `.deny` delete rules.
 - **Tests:** use an in-memory `ModelContainer`; the suite is `@MainActor @Suite(.serialized)`
   and holds the container as a stored property. The app skips creating its own container
   under tests (`XCTestConfigurationFilePath`) so the test owns the only one — keep that guard.

@@ -95,3 +95,29 @@ Open `ContactManager.xcodeproj` in Xcode (26 or later, macOS 26 SDK), select the
 ```shell
 make test            # unit + UI tests via xcodebuild
 ```
+
+### iCloud sync (optional)
+
+The app runs **local-only out of the box** — clone, build, and run with no
+account or extra setup (a fresh store is seeded with a few sample contacts).
+It's also **CloudKit-ready**: at launch it checks whether an iCloud container is
+configured in its entitlements and, if so, opens the SwiftData store with
+`cloudKitDatabase: .automatic` to sync across your devices; otherwise it stays
+local. Nothing about CloudKit is committed to the project, so a download is never
+blocked by a provisioning profile you don't own.
+
+To turn on sync for your own build:
+
+1. In Xcode, select the **ContactManager** target ▸ **Signing & Capabilities**.
+2. Set your **Team** (keep *Automatically manage signing*).
+3. Click **+ Capability** ▸ **iCloud**, check **CloudKit**, and add a container
+   (the default `iCloud.<your-bundle-id>` is fine — use your own bundle id).
+4. Click **+ Capability** ▸ **Background Modes** and enable **Remote
+   notifications** so the store receives sync pushes.
+5. Make sure the Mac is signed in to iCloud, then build and run. The store now
+   syncs; on an empty CloudKit account your existing local contacts upload, and
+   other devices using the same container pull them down.
+
+> These steps modify the target's entitlements and signing settings. If you
+> contribute back, **don't commit those changes** — leaving them out keeps the
+> project buildable by anyone who clones it without your team or container.

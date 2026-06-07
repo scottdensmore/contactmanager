@@ -6,6 +6,7 @@
 //  AppKit launch path.
 //
 
+import Security
 import SwiftData
 import SwiftUI
 
@@ -145,33 +146,38 @@ struct ContactManagerApp: App {
             return loadUITestContainer(schema: schema)
         }
 
-        // Build a CloudKit-backed container when the iCloud capability is
-        // present, and fall back to a local-only container otherwise so the
-        // app still runs without iCloud.
+        // Use CloudKit only when the iCloud capability is actually configured
+        // (an iCloud container in the entitlements). A fresh clone has none, so
+        // it runs fully local and works out of the box; enabling iCloud in
+        // Signing & Capabilities (see README) switches on sync with no code
+        // change — `.automatic` then resolves the configured container.
+        let cloudKitEnabled = hasCloudKitEntitlement()
         let container: ModelContainer
-        var isLocalOnlyFallback = false
+        var didFallBackToLocal = false
         do {
-            // `.automatic` uses the project's iCloud container when an iCloud
-            // entitlement is present; without one it still loads successfully
-            // and behaves as a local-only store.
-            let cloudConfiguration = ModelConfiguration(schema: schema, cloudKitDatabase: .automatic)
-            container = try ModelContainer(for: schema, configurations: cloudConfiguration)
+            let configuration = ModelConfiguration(
+                schema: schema,
+                cloudKitDatabase: cloudKitEnabled ? .automatic : .none
+            )
+            container = try ModelContainer(for: schema, configurations: configuration)
         } catch {
-            print("ContactManager: CloudKit container failed (\(error.localizedDescription)); using local.")
+            let mode = cloudKitEnabled ? "CloudKit" : "local"
+            print("ContactManager: \(mode) container failed (\(error.localizedDescription)); retrying local-only.")
             do {
                 let localConfiguration = ModelConfiguration(schema: schema, cloudKitDatabase: .none)
                 container = try ModelContainer(for: schema, configurations: localConfiguration)
-                isLocalOnlyFallback = true
+                didFallBackToLocal = true
             } catch {
                 return .failed(error.localizedDescription)
             }
         }
 
-        // Only seed sample data on the confirmed local-only fallback. On a
-        // CloudKit-capable container the user's real contacts might be about
-        // to sync down (a fresh install on a second device); seeding then
-        // would race the sync and propagate the samples to every device.
-        if isLocalOnlyFallback {
+        // Seed sample data only for a genuinely local store. A CloudKit-backed
+        // store may be about to sync the user's real contacts down (a fresh
+        // install on a second device); seeding then would push the samples into
+        // their iCloud and propagate to every device.
+        let isLocalOnly = !cloudKitEnabled || didFallBackToLocal
+        if isLocalOnly {
             do {
                 try SampleData.seedIfNeeded(container.mainContext)
             } catch {
@@ -183,6 +189,20 @@ struct ContactManagerApp: App {
         EntityModelContainer.shared = container
         Task.detached { await SpotlightIndexer.shared.reindex() }
         return .ready(container)
+    }
+
+    /// Whether the app was built with an iCloud container in its entitlements
+    /// (i.e. someone enabled iCloud ▸ CloudKit in Signing & Capabilities). Read
+    /// from the running binary's own entitlements, so we can choose CloudKit vs
+    /// local without any build-time flag — a plain clone has none and runs
+    /// local-only.
+    private static func hasCloudKitEntitlement() -> Bool {
+        guard let task = SecTaskCreateFromSelf(nil),
+              let containers = SecTaskCopyValueForEntitlement(
+                  task, "com.apple.developer.icloud-container-identifiers" as CFString, nil
+              ) as? [String]
+        else { return false }
+        return !containers.isEmpty
     }
 
     private static func loadUITestContainer(schema: Schema) -> ContainerLoadState {
