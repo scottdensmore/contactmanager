@@ -63,6 +63,8 @@ final class ContactManagerUITests: XCTestCase {
         XCTAssertTrue(app.menuItems["Import vCard…"].exists)
         XCTAssertTrue(app.menuItems["Import CSV…"].exists)
         XCTAssertTrue(app.menuItems["Export vCard…"].exists)
+        XCTAssertTrue(app.menuItems["Export Backup…"].exists)
+        XCTAssertTrue(app.menuItems["Restore Backup…"].exists)
         XCTAssertTrue(app.menuItems["Export as PDF…"].exists)
         XCTAssertTrue(app.menuItems["Print…"].exists)
     }
