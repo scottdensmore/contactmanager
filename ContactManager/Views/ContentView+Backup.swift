@@ -23,9 +23,31 @@ extension ContentView {
 
             let data = try Data(contentsOf: url)
             let backup = try ContactBackupDocument.decode(data)
-            restoreSummary = try store.restoreBackup(backup)
+            pendingRestoreBackup = backup
+            restorePreview = ContactBackupPreview(backup: backup)
+            isReviewingRestore = true
         } catch {
             errorMessage = error.localizedDescription
         }
+    }
+
+    func confirmRestoreBackup() {
+        guard let backup = pendingRestoreBackup else {
+            errorMessage = "Choose a backup before restoring."
+            return
+        }
+
+        do {
+            restoreSummary = try store.restoreBackup(backup)
+            clearPendingRestore()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    func clearPendingRestore() {
+        pendingRestoreBackup = nil
+        restorePreview = nil
+        isReviewingRestore = false
     }
 }

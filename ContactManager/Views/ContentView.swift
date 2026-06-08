@@ -42,6 +42,9 @@ struct ContentView: View {
     @State var isExportingBackup = false
     @State var isRestoringBackup = false
     @State var backupDocument = ContactBackupDocument()
+    @State var pendingRestoreBackup: ContactBackup?
+    @State var restorePreview: ContactBackupPreview?
+    @State var isReviewingRestore = false
     @State var importReviewItems: [ImportReviewItem] = []
     @State var isReviewingImport = false
     @State var importSummary: ImportReviewResult?
