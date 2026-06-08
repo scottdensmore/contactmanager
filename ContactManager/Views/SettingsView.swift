@@ -11,6 +11,8 @@ import SwiftData
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(\.cloudSyncStatus) private var cloudSyncStatus
+
     @AppStorage("contactSortOrder") private var sortOrder: ContactSortOrder = .lastName
     /// JSON-encoded `PersistentIdentifier` of the default group, or "" for
     /// "no group". Storing the PID (not the group's name) means renaming the
@@ -42,6 +44,20 @@ struct SettingsView: View {
                 .help("When the sidebar is on All Contacts, new contacts join this group.")
             }
 
+            Section("Sync") {
+                Label {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(cloudSyncStatus.title)
+                        Text(cloudSyncStatus.detailMessage)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                } icon: {
+                    Image(systemName: cloudSyncStatus.systemImage)
+                }
+                .accessibilityIdentifier("settings-sync-status")
+            }
+
             Section {
                 Button("Restore Defaults", role: .destructive) {
                     sortOrder = .lastName
@@ -50,7 +66,7 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 440, height: 240)
+        .frame(width: 440, height: 320)
         // Prune the preference if its target group was renamed (the encoded
         // PID stays valid) or deleted (the lookup now misses) — keeps the
         // picker's selection consistent with what's actually on disk.

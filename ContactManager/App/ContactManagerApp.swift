@@ -22,9 +22,10 @@ struct ContactManagerApp: App {
     var body: some Scene {
         WindowGroup {
             switch loadState {
-            case .ready(let container):
+            case .ready(let container, let syncStatus):
                 ContentView()
                     .modelContainer(container)
+                    .environment(\.cloudSyncStatus, syncStatus)
             case .testing:
                 EmptyView()
             case .failed(let message):
@@ -39,9 +40,10 @@ struct ContactManagerApp: App {
         // `OpenWindowAction` and SwiftUI's window-restoration store.
         WindowGroup(id: "contact", for: String.self) { $encodedID in
             switch loadState {
-            case .ready(let container):
+            case .ready(let container, let syncStatus):
                 ContactWindowView(encodedID: encodedID)
                     .modelContainer(container)
+                    .environment(\.cloudSyncStatus, syncStatus)
             case .testing, .failed:
                 EmptyView()
             }
@@ -49,9 +51,10 @@ struct ContactManagerApp: App {
         .defaultSize(width: 520, height: 640)
         WindowGroup(id: "quickCapture") {
             switch loadState {
-            case .ready(let container):
+            case .ready(let container, let syncStatus):
                 QuickCaptureView()
                     .modelContainer(container)
+                    .environment(\.cloudSyncStatus, syncStatus)
             case .testing, .failed:
                 EmptyView()
             }
@@ -63,9 +66,10 @@ struct ContactManagerApp: App {
             // hasn't loaded we point the user back to the main window
             // instead of showing an empty preferences pane.
             switch loadState {
-            case .ready(let container):
+            case .ready(let container, let syncStatus):
                 SettingsView()
                     .modelContainer(container)
+                    .environment(\.cloudSyncStatus, syncStatus)
             case .testing, .failed:
                 Text("Open ContactManager to manage preferences.")
                     .padding()
@@ -214,7 +218,11 @@ struct ContactManagerApp: App {
         // and kick off an initial Spotlight reindex.
         EntityModelContainer.shared = container
         Task.detached { await SpotlightIndexer.shared.reindex() }
-        return .ready(container)
+        let syncStatus = CloudSyncStatus.resolved(
+            hasCloudKitEntitlement: cloudKitEnabled,
+            didFallBackToLocal: didFallBackToLocal
+        )
+        return .ready(container, syncStatus)
     }
 
     /// Whether the app was built with an iCloud container in its entitlements
@@ -245,7 +253,11 @@ struct ContactManagerApp: App {
                 print("ContactManager: sample data seeding skipped — \(error)")
             }
             EntityModelContainer.shared = container
-            return .ready(container)
+            return .ready(container, .resolved(
+                hasCloudKitEntitlement: false,
+                didFallBackToLocal: false,
+                isUITestMode: true
+            ))
         } catch {
             return .failed(error.localizedDescription)
         }
@@ -267,7 +279,7 @@ struct ContactManagerApp: App {
 }
 
 private enum ContainerLoadState {
-    case ready(ModelContainer)
+    case ready(ModelContainer, CloudSyncStatus)
     case testing
     case failed(String)
 }

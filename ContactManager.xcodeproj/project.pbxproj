@@ -44,6 +44,7 @@
 		509C184B6FC5C331FCC6FD11 /* ImportReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB522F18FE21A503D7C480AB /* ImportReview.swift */; };
 		52F4C28719253736244342F9 /* SpotlightDeltaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604FB090CB5671DB6927238C /* SpotlightDeltaTests.swift */; };
 		552E226D873AE11781A7F97A /* ContactDetailView+Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CB65D95AFA14C691F0D8C4 /* ContactDetailView+Photo.swift */; };
+		5FCE54BC89E39D68DE29B360 /* CloudSyncStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE92D38DACB5637AF0E693F /* CloudSyncStatusTests.swift */; };
 		61F22EEDEE6075BD602203D5 /* VCardDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D13D7A4D4AF6172FA6E89AB /* VCardDocument.swift */; };
 		623A5F4AE958EAD5C2757F83 /* CSVTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCAA25CCEE01127AA64D21D6 /* CSVTests.swift */; };
 		63274FB1580421240D8EB57B /* ContactEntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C12246003379D5966F0210 /* ContactEntityTests.swift */; };
@@ -65,6 +66,7 @@
 		8397B67D483997505B17269E /* ContactDetailView+Birthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F825494F8D293928784C7 /* ContactDetailView+Birthday.swift */; };
 		847D0CD5B12E83CD53951DA2 /* ContactFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E63AB996E12C5978B4A8F1 /* ContactFieldRow.swift */; };
 		84EC52BD6CC2F06EFFFF0758 /* ContactDetailView+History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784AEA3986875E3472052482 /* ContactDetailView+History.swift */; };
+		8B360EB3A21E4CCADDA865BD /* CloudSyncStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F125D04F06D9B25A250A47B /* CloudSyncStatus.swift */; };
 		8C03F04FC7178FCE2929E507 /* RestoreBackupPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2FF6326B588F81435F358 /* RestoreBackupPreviewView.swift */; };
 		8C6AC6410FA2258ADB2BF640 /* ContactManagerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001F8DF120EBA372663EC888 /* ContactManagerUITests.swift */; };
 		8DF0A36CE542853FF12BEF1A /* Chunking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436B4115937E4350EB9A7EF7 /* Chunking.swift */; };
@@ -129,6 +131,7 @@
 		08E2EBA5EFDEE6888B84E10B /* ContactListView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactListView.swift; sourceTree = "<group>"; };
 		0B27567532AC1A51FF4CC13A /* ContactQuery.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactQuery.swift; sourceTree = "<group>"; };
 		0CFA2237DBD182839EAF04F1 /* ImportReviewView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ImportReviewView.swift; sourceTree = "<group>"; };
+		0F125D04F06D9B25A250A47B /* CloudSyncStatus.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CloudSyncStatus.swift; path = Support/CloudSyncStatus.swift; sourceTree = "<group>"; };
 		0F82C8A388E97CC4F1106176 /* SampleData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
 		10E14CB9E9A2442DFE7B0E0B /* ContactManager.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = ContactManager.entitlements; sourceTree = "<group>"; };
 		10E7338673D65A6FAB4F9AF3 /* ContactManagerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContactManagerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -178,6 +181,7 @@
 		833F1AF82CACF7B9E89BADCA /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		83E63AB996E12C5978B4A8F1 /* ContactFieldRow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactFieldRow.swift; sourceTree = "<group>"; };
 		874742D7DC5E9C20D3A88459 /* ContactEntityQuery.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactEntityQuery.swift; sourceTree = "<group>"; };
+		8CE92D38DACB5637AF0E693F /* CloudSyncStatusTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CloudSyncStatusTests.swift; sourceTree = "<group>"; };
 		90E3C45DEC115A2BF7DE83DF /* ContactLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactLink.swift; sourceTree = "<group>"; };
 		9116FC0A7E009E9A806FD48F /* ContactInteraction.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactInteraction.swift; sourceTree = "<group>"; };
 		915AF700C971510D0B642590 /* ContactEntity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactEntity.swift; sourceTree = "<group>"; };
@@ -391,6 +395,7 @@
 				10E14CB9E9A2442DFE7B0E0B /* ContactManager.entitlements */,
 				76F68BAD5C3290EE7ABF787B /* Localizable.xcstrings */,
 				3AAEF99A1E41370C57D675A5 /* PrivacyInfo.xcprivacy */,
+				0F125D04F06D9B25A250A47B /* CloudSyncStatus.swift */,
 			);
 			path = ContactManager;
 			sourceTree = "<group>";
@@ -422,6 +427,7 @@
 				438C2B20E1C302676594ECCA /* ContactStorePendingEditTests.swift */,
 				764B3FB47DAFF8CE837BDE9D /* ContactHistoryTests.swift */,
 				4A10D26E6D853A5EB462682B /* ContactBackupTests.swift */,
+				8CE92D38DACB5637AF0E693F /* CloudSyncStatusTests.swift */,
 			);
 			path = ContactManagerTests;
 			sourceTree = "<group>";
@@ -617,6 +623,7 @@
 				8C03F04FC7178FCE2929E507 /* RestoreBackupPreviewView.swift in Sources */,
 				3DC4EF7EB2977C7CE6492A2E /* EncryptedContactBackupDocument.swift in Sources */,
 				381FB5EAC1346691AA0349BE /* BackupPasswordPromptView.swift in Sources */,
+				8B360EB3A21E4CCADDA865BD /* CloudSyncStatus.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -649,6 +656,7 @@
 				39D33CDF2E0495FCCA8D7E13 /* QuickCaptureTests.swift in Sources */,
 				337B23E02F63EB1A294A5A41 /* ContactHistoryTests.swift in Sources */,
 				012DFE934E6F0E77278DA1B1 /* ContactBackupTests.swift in Sources */,
+				5FCE54BC89E39D68DE29B360 /* CloudSyncStatusTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

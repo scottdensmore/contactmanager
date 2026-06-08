@@ -50,6 +50,10 @@ final class ContactManagerUITests: XCTestCase {
             app.searchFields.firstMatch.waitForExistence(timeout: 3),
             "Contact-list search field should render"
         )
+        XCTAssertTrue(
+            app.descendants(matching: .any)["sidebar-sync-status"].waitForExistence(timeout: 3),
+            "Sidebar sync status should render"
+        )
     }
 
     /// Verifies the File menu wires the Import / Export commands the
