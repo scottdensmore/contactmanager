@@ -18,10 +18,12 @@ import Testing
 @Suite(.serialized)
 final class ContactEntityQueryTests {
     let container: ModelContainer
+    var context: ModelContext { container.mainContext }
 
     init() throws {
         container = try ModelContainer(
             for: Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self,
+            ContactSavedSmartList.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
         // The query reads contacts from this process-wide handle.
@@ -118,5 +120,62 @@ final class ContactEntityQueryTests {
         intent.query = "hopper"
         let result = try await intent.perform()
         #expect(result.value?.map(\.displayName) == ["Grace Hopper"])
+    }
+
+    @Test func quickCaptureContactIntentCreatesParsedContact() async throws {
+        let intent = QuickCaptureContactIntent()
+        intent.text = "Ada Lovelace, ada@example.com, mobile 555-0100, notes Met at WWDC"
+
+        let result = try await intent.perform()
+
+        let contacts = try context.fetch(FetchDescriptor<Contact>())
+        let contact = try #require(contacts.first)
+        #expect(result.value?.displayName == "Ada Lovelace")
+        #expect(contact.fullName == "Ada Lovelace")
+        #expect(contact.primaryEmail == "ada@example.com")
+        #expect(contact.primaryPhone == "555-0100")
+        #expect(contact.notes == "Met at WWDC")
+    }
+
+    @Test func createContactIntentCreatesStructuredContact() async throws {
+        let intent = CreateContactIntent()
+        intent.firstName = "  Grace  "
+        intent.lastName = "  Hopper  "
+        intent.company = "  US Navy  "
+        intent.jobTitle = "  Rear Admiral  "
+        intent.email = " grace@example.com "
+        intent.phone = " 555-0101 "
+        intent.notes = "  COBOL pioneer.  "
+
+        let result = try await intent.perform()
+
+        let contacts = try context.fetch(FetchDescriptor<Contact>())
+        let contact = try #require(contacts.first)
+        #expect(result.value?.displayName == "Grace Hopper")
+        #expect(contact.fullName == "Grace Hopper")
+        #expect(contact.company == "US Navy")
+        #expect(contact.jobTitle == "Rear Admiral")
+        #expect(contact.primaryEmail == "grace@example.com")
+        #expect(contact.primaryPhone == "555-0101")
+        #expect(contact.notes == "COBOL pioneer.")
+    }
+
+    @Test func addContactHistoryNoteIntentPersistsInteraction() async throws {
+        let contactedAt = try #require(Birthday.calendar.date(from: DateComponents(
+            year: 2026, month: 6, day: 7, hour: 12
+        )))
+        let contact = try #require(try seed(contact("Ada", "Lovelace")).first)
+        let intent = AddContactHistoryNoteIntent()
+        intent.contact = ContactEntity(contact: contact)
+        intent.kind = .call
+        intent.summary = "  Called about conference follow-up.  "
+        intent.date = contactedAt
+
+        let result = try await intent.perform()
+
+        #expect(result.value?.displayName == "Ada Lovelace")
+        #expect(contact.sortedInteractions.map(\.kind) == [.call])
+        #expect(contact.sortedInteractions.map(\.summary) == ["Called about conference follow-up."])
+        #expect(contact.lastContactedAt == contactedAt)
     }
 }
