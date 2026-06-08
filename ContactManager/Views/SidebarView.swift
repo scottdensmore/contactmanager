@@ -16,6 +16,8 @@ enum SidebarItem: Hashable {
 }
 
 struct SidebarView: View {
+    @Environment(\.cloudSyncStatus) private var cloudSyncStatus
+
     @Binding var selection: SidebarItem?
     let contactCount: Int
     let smartListCounts: [ContactSmartList: Int]
@@ -74,6 +76,20 @@ struct SidebarView: View {
                             }
                     }
                 }
+            }
+
+            Section("Sync") {
+                Label {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(cloudSyncStatus.title)
+                        Text(cloudSyncStatus.shortMessage)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                } icon: {
+                    Image(systemName: cloudSyncStatus.systemImage)
+                }
+                .accessibilityIdentifier("sidebar-sync-status")
             }
         }
         .navigationTitle("Groups")
