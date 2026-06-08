@@ -115,8 +115,9 @@ final class ContactManagerUITests: XCTestCase {
     }
 
     /// Verifies the relationship-intelligence affordances render in the live
-    /// app: smart-list sidebar rows and the selected contact's mark-contacted
-    /// action. Filtering behavior stays in the deterministic unit tests.
+    /// app: smart-list sidebar rows, mark-contacted, and contact-history
+    /// controls. Filtering and persistence behavior stay in deterministic unit
+    /// tests.
     func test_smartListsAndMarkContactedControlsRender() {
         let app = bootSeededApp()
 
@@ -128,6 +129,9 @@ final class ContactManagerUITests: XCTestCase {
         app.typeKey("n", modifierFlags: .command)
 
         XCTAssertTrue(app.buttons["mark-contacted-button"].waitForExistence(timeout: 3))
+        let historyNote = app.descendants(matching: .any)["interaction-summary-field"]
+        XCTAssertTrue(historyNote.waitForExistence(timeout: 3))
+        XCTAssertTrue(app.buttons["add-interaction-button"].exists)
     }
 
     /// Verifies the quick-capture command opens a focused capture window and

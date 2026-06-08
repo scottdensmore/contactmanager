@@ -39,6 +39,10 @@ final class Contact {
     @Relationship(deleteRule: .cascade, inverse: \ContactField.contact)
     var fields: [ContactField] = []
 
+    /// Relationship-history entries such as calls, meetings, and notes.
+    @Relationship(deleteRule: .cascade, inverse: \ContactInteraction.contact)
+    var interactions: [ContactInteraction] = []
+
     /// Groups this contact belongs to (many-to-many; inverse on ContactGroup).
     var groups: [ContactGroup] = []
 
@@ -71,6 +75,7 @@ final class Contact {
         self.notes = notes
         self.createdAt = createdAt
         fields = []
+        interactions = []
     }
 }
 
@@ -163,6 +168,14 @@ extension Contact {
     /// The first non-empty email, used as the list subtitle.
     var primaryEmail: String? {
         emails.first { !$0.value.trimmingCharacters(in: .whitespaces).isEmpty }?.value
+    }
+
+    var sortedInteractions: [ContactInteraction] {
+        interactions.sorted { lhs, rhs in
+            if lhs.date != rhs.date { return lhs.date > rhs.date }
+            if lhs.kind.rawValue != rhs.kind.rawValue { return lhs.kind.rawValue < rhs.kind.rawValue }
+            return lhs.summary < rhs.summary
+        }
     }
 
     /// The first non-empty phone number.

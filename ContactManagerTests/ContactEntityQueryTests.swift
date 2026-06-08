@@ -21,7 +21,7 @@ final class ContactEntityQueryTests {
 
     init() throws {
         container = try ModelContainer(
-            for: Contact.self, ContactField.self, ContactGroup.self,
+            for: Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
         // The query reads contacts from this process-wide handle.

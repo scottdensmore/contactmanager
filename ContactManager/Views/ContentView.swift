@@ -367,8 +367,6 @@ private extension ContentView {
             })
     }
 
-    // MARK: - Print / PDF
-
     func exportSelectedContactAsPDF() {
         guard let contact = selectedContact else {
             errorMessage = "Select a contact to export as PDF."
@@ -396,5 +394,7 @@ private extension ContentView {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Contact.self, inMemory: true)
+        .modelContainer(for: [
+            Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self,
+        ], inMemory: true)
 }

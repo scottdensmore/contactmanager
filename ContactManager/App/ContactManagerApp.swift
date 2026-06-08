@@ -152,7 +152,7 @@ struct ContactManagerApp: App {
             deleteDefaultStore()
         }
 
-        let schema = Schema([Contact.self, ContactField.self, ContactGroup.self])
+        let schema = Schema([Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self])
 
         // UI-test mode uses an in-memory, CloudKit-disabled container so
         // tests are deterministic and can't sync sample contacts to a
