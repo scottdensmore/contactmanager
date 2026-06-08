@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "161f3c27910d",
+  "strategy": "manual-commit",
+  "branch": "scottdensmore/feat/quick-capture",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "ContactManager/App/ContactManagerApp.swift"
+  ],
+  "sessions": [
+    {
+      "metadata": "/16/1f3c27910d/0/metadata.json",
+      "transcript": "/16/1f3c27910d/0/full.jsonl",
+      "content_hash": "/16/1f3c27910d/0/content_hash.txt",
+      "prompt": "/16/1f3c27910d/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 142457,
+    "cache_creation_tokens": 1862305,
+    "cache_read_tokens": 437375167,
+    "output_tokens": 873701,
+    "api_call_count": 1052
+  }
+}
