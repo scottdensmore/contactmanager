@@ -99,6 +99,38 @@ struct ContactBackupTests {
         #expect(decoded == backup)
     }
 
+    @Test func encryptedBackupDocumentRoundTripsWithPassword() throws {
+        let contact = try makePopulatedContact()
+        let groups = try allGroups()
+        let backup = ContactBackup.make(
+            contacts: [contact],
+            groups: groups,
+            exportedAt: Date(timeIntervalSinceReferenceDate: 42)
+        )
+
+        let data = try EncryptedContactBackupDocument.encode(backup, password: "correct horse battery staple")
+        let decoded = try EncryptedContactBackupDocument.decode(data, password: "correct horse battery staple")
+
+        #expect(EncryptedContactBackupDocument.isEncrypted(data))
+        #expect(!data.contains(Data("Ada".utf8)))
+        #expect(decoded == backup)
+        #expect(try ContactBackupDocument.decode(ContactBackupDocument.encode(backup)) == backup)
+    }
+
+    @Test func encryptedBackupDocumentRejectsWrongPassword() throws {
+        let contact = try makePopulatedContact()
+        let groups = try allGroups()
+        let backup = ContactBackup.make(contacts: [contact], groups: groups)
+        let data = try EncryptedContactBackupDocument.encode(backup, password: "correct")
+
+        do {
+            _ = try EncryptedContactBackupDocument.decode(data, password: "wrong")
+            Issue.record("Expected encrypted backup decode to reject the wrong password.")
+        } catch let error as ContactBackupEncryptionError {
+            #expect(error == .invalidPassword)
+        }
+    }
+
     @Test func emptyRestoreSummaryExplainsNothingWasRestored() throws {
         let result = try store.restoreBackup(ContactBackup())
 

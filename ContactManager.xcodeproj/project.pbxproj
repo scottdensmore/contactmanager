@@ -25,7 +25,9 @@
 		3076738411F8C3FA073D1BE0 /* ContactsBridgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8EC17CBADAAAFFF77E9FDF /* ContactsBridgeTests.swift */; };
 		322103E6FBEAD59C6A2405E6 /* Birthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDED82FFB4B5F039052FFB5 /* Birthday.swift */; };
 		337B23E02F63EB1A294A5A41 /* ContactHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764B3FB47DAFF8CE837BDE9D /* ContactHistoryTests.swift */; };
+		381FB5EAC1346691AA0349BE /* BackupPasswordPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FA55EA1466B6711EE517B4 /* BackupPasswordPromptView.swift */; };
 		39D33CDF2E0495FCCA8D7E13 /* QuickCaptureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C76A783B91BD2AA6D3F70B /* QuickCaptureTests.swift */; };
+		3DC4EF7EB2977C7CE6492A2E /* EncryptedContactBackupDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D5EEA2101A9DE782A0F000 /* EncryptedContactBackupDocument.swift */; };
 		3EDDAA184C377D9C16AAF08A /* ContactStore+PendingEdits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A0DA8645E9D2AA36D9D28E /* ContactStore+PendingEdits.swift */; };
 		3FA1770FF1649CC78510AF10 /* ContentView+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0401F25DFDF91CE847706D08 /* ContentView+Alerts.swift */; };
 		42F87AE7D82D2D802D7B670E /* ContactBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E45011FDD9D571FF1834F5 /* ContactBackup.swift */; };
@@ -143,9 +145,11 @@
 		3628F70C39D4CE2FAA596291 /* DuplicateFinderTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DuplicateFinderTests.swift; sourceTree = "<group>"; };
 		399A72E1BB6BEC0B54D356E7 /* ContactEntityQueryTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactEntityQueryTests.swift; sourceTree = "<group>"; };
 		3AAEF99A1E41370C57D675A5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		40FA55EA1466B6711EE517B4 /* BackupPasswordPromptView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BackupPasswordPromptView.swift; sourceTree = "<group>"; };
 		436B4115937E4350EB9A7EF7 /* Chunking.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Chunking.swift; sourceTree = "<group>"; };
 		438C2B20E1C302676594ECCA /* ContactStorePendingEditTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactStorePendingEditTests.swift; sourceTree = "<group>"; };
 		45A0DA8645E9D2AA36D9D28E /* ContactStore+PendingEdits.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "ContactStore+PendingEdits.swift"; sourceTree = "<group>"; };
+		47D5EEA2101A9DE782A0F000 /* EncryptedContactBackupDocument.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EncryptedContactBackupDocument.swift; sourceTree = "<group>"; };
 		4A10D26E6D853A5EB462682B /* ContactBackupTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactBackupTests.swift; sourceTree = "<group>"; };
 		4E2F2242E59F2C42DDD0736B /* CSV.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CSV.swift; sourceTree = "<group>"; };
 		54C373BD237429970D6A7C86 /* DuplicatesView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DuplicatesView.swift; sourceTree = "<group>"; };
@@ -301,6 +305,7 @@
 				66E45011FDD9D571FF1834F5 /* ContactBackup.swift */,
 				937EFD55691DF4EA887DF2CA /* ContactBackupDocument.swift */,
 				25B2B9B4E62C9BAA67FB718B /* ContactBackupPreview.swift */,
+				47D5EEA2101A9DE782A0F000 /* EncryptedContactBackupDocument.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -343,6 +348,7 @@
 				2C83A331432D80A054D0AE94 /* ContentView+FileDialogs.swift */,
 				61C8E57A2BB1F32050119C06 /* ContentView+Backup.swift */,
 				A4B2FF6326B588F81435F358 /* RestoreBackupPreviewView.swift */,
+				40FA55EA1466B6711EE517B4 /* BackupPasswordPromptView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -609,6 +615,8 @@
 				E11A07680CCF44C864B95662 /* ContentView+Backup.swift in Sources */,
 				164F9364D1D551BB99D50F13 /* ContactBackupPreview.swift in Sources */,
 				8C03F04FC7178FCE2929E507 /* RestoreBackupPreviewView.swift in Sources */,
+				3DC4EF7EB2977C7CE6492A2E /* EncryptedContactBackupDocument.swift in Sources */,
+				381FB5EAC1346691AA0349BE /* BackupPasswordPromptView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

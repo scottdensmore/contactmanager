@@ -40,11 +40,16 @@ struct ContentView: View {
     @State var pdfDocument = PDFExportDocument(data: Data())
     @State var pdfFilename = "Contact"
     @State var isExportingBackup = false
+    @State var isPreparingEncryptedBackup = false
+    @State var isExportingEncryptedBackup = false
     @State var isRestoringBackup = false
     @State var backupDocument = ContactBackupDocument()
+    @State var encryptedBackupDocument = EncryptedContactBackupDocument()
     @State var pendingRestoreBackup: ContactBackup?
     @State var restorePreview: ContactBackupPreview?
     @State var isReviewingRestore = false
+    @State var pendingEncryptedBackupData: Data?
+    @State var isUnlockingEncryptedBackup = false
     @State var importReviewItems: [ImportReviewItem] = []
     @State var isReviewingImport = false
     @State var importSummary: ImportReviewResult?
@@ -288,6 +293,9 @@ private extension ContentView {
             }
             .onReceive(NotificationCenter.default.publisher(for: .exportBackupRequested)) { _ in
                 exportBackup()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .exportEncryptedBackupRequested)) { _ in
+                isPreparingEncryptedBackup = true
             }
             .onReceive(NotificationCenter.default.publisher(for: .restoreBackupRequested)) { _ in
                 isRestoringBackup = true

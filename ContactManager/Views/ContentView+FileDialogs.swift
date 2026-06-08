@@ -24,6 +24,11 @@ extension ContentView {
             .fileImporter(isPresented: $isRestoringBackup, allowedContentTypes: [.json]) { result in
                 restoreBackup(result)
             }
+        return handlingImportAlerts(handlingReviewSheets(handlingExporters(dialogContent)))
+    }
+
+    func handlingExporters(_ content: some View) -> some View {
+        content
             .fileExporter(
                 isPresented: $isExportingVCard,
                 document: exportDocument,
@@ -45,6 +50,16 @@ extension ContentView {
                 }
             }
             .fileExporter(
+                isPresented: $isExportingEncryptedBackup,
+                document: encryptedBackupDocument,
+                contentType: .json,
+                defaultFilename: "ContactManager Encrypted Backup"
+            ) { result in
+                if case .failure(let error) = result {
+                    errorMessage = error.localizedDescription
+                }
+            }
+            .fileExporter(
                 isPresented: $isExportingPDF,
                 document: pdfDocument,
                 contentType: .pdf,
@@ -54,7 +69,6 @@ extension ContentView {
                     errorMessage = error.localizedDescription
                 }
             }
-        return handlingImportAlerts(handlingReviewSheets(dialogContent))
     }
 
     func handlingReviewSheets(_ content: some View) -> some View {
@@ -62,6 +76,16 @@ extension ContentView {
             .sheet(isPresented: $isReviewingImport) {
                 ImportReviewView(items: $importReviewItems) { items in
                     Task { await applyImportReview(items) }
+                }
+            }
+            .sheet(isPresented: $isPreparingEncryptedBackup) {
+                BackupPasswordPromptView(mode: .export) { password in
+                    exportEncryptedBackup(password: password)
+                }
+            }
+            .sheet(isPresented: $isUnlockingEncryptedBackup, onDismiss: clearPendingEncryptedBackup) {
+                BackupPasswordPromptView(mode: .unlock) { password in
+                    unlockEncryptedBackup(password: password)
                 }
             }
             .sheet(isPresented: $isReviewingRestore, onDismiss: clearPendingRestore) {
