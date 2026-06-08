@@ -111,6 +111,16 @@ extension ContentView {
         isExportingPDF = true
     }
 
+    func exportSelectedContactsAsVCard() {
+        let selected = selectedContacts
+        guard !selected.isEmpty else {
+            errorMessage = "Select one or more contacts to export."
+            return
+        }
+        exportDocument = VCardDocument(text: store.exportVCards(selected))
+        isExportingVCard = true
+    }
+
     func printSelectedContact() {
         guard let contact = selectedContact else {
             errorMessage = "Select a contact to print."
