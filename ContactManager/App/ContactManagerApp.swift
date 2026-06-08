@@ -111,6 +111,12 @@ struct ContactManagerApp: App {
                     NotificationCenter.default.post(name: .exportVCardRequested, object: nil)
                 }
                 .keyboardShortcut("e", modifiers: [.command, .shift])
+                Button("Export Backup…") {
+                    NotificationCenter.default.post(name: .exportBackupRequested, object: nil)
+                }
+                Button("Restore Backup…") {
+                    NotificationCenter.default.post(name: .restoreBackupRequested, object: nil)
+                }
                 Button("Export as PDF…") {
                     NotificationCenter.default.post(name: .exportPDFRequested, object: nil)
                 }
@@ -291,6 +297,8 @@ extension Notification.Name {
     static let importCSVRequested = Notification.Name("ContactManager.importCSVRequested")
     static let importSystemContactsRequested = Notification.Name("ContactManager.importSystemContactsRequested")
     static let exportVCardRequested = Notification.Name("ContactManager.exportVCardRequested")
+    static let exportBackupRequested = Notification.Name("ContactManager.exportBackupRequested")
+    static let restoreBackupRequested = Notification.Name("ContactManager.restoreBackupRequested")
     /// Posted by the Export as PDF / Print commands; handled by `ContentView`
     /// for the selected contact.
     static let exportPDFRequested = Notification.Name("ContactManager.exportPDFRequested")

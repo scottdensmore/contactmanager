@@ -28,5 +28,14 @@ extension ContentView {
             } message: { summary in
                 Text(summary.message)
             }
+            .alert(
+                restoreSummary?.title ?? "Restore Complete",
+                isPresented: Binding(get: { restoreSummary != nil }, set: { if !$0 { restoreSummary = nil } }),
+                presenting: restoreSummary
+            ) { _ in
+                Button("OK", role: .cancel) {}
+            } message: { summary in
+                Text(summary.message)
+            }
     }
 }

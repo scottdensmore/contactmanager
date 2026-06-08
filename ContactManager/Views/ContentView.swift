@@ -19,10 +19,10 @@ struct ContentView: View {
     @Query(sort: [SortDescriptor(\Contact.lastName), SortDescriptor(\Contact.firstName)])
     var contacts: [Contact]
 
-    @Query(sort: \ContactGroup.name) private var groups: [ContactGroup]
+    @Query(sort: \ContactGroup.name) var groups: [ContactGroup]
 
     @State private var sidebarSelection: SidebarItem? = .allContacts
-    @State private var selectedContact: Contact?
+    @State var selectedContact: Contact?
     @State private var contactPendingNameFocus: PersistentIdentifier?
     @State var errorMessage: String?
     @State var importProgress: ImportProgress?
@@ -31,17 +31,21 @@ struct ContentView: View {
     @AppStorage("contactSortOrder") private var sortOrder: ContactSortOrder = .lastName
     @AppStorage("defaultGroupID") private var defaultGroupID: String = ""
 
-    @State private var isImportingVCard = false
-    @State private var isImportingCSV = false
-    @State private var isExportingVCard = false
-    @State private var exportDocument = VCardDocument(text: "")
-    @State private var showingDuplicates = false
-    @State private var isExportingPDF = false
-    @State private var pdfDocument = PDFExportDocument(data: Data())
-    @State private var pdfFilename = "Contact"
+    @State var isImportingVCard = false
+    @State var isImportingCSV = false
+    @State var isExportingVCard = false
+    @State var exportDocument = VCardDocument(text: "")
+    @State var showingDuplicates = false
+    @State var isExportingPDF = false
+    @State var pdfDocument = PDFExportDocument(data: Data())
+    @State var pdfFilename = "Contact"
+    @State var isExportingBackup = false
+    @State var isRestoringBackup = false
+    @State var backupDocument = ContactBackupDocument()
     @State var importReviewItems: [ImportReviewItem] = []
     @State var isReviewingImport = false
     @State var importSummary: ImportReviewResult?
+    @State var restoreSummary: BackupRestoreResult?
 
     var store: ContactStore { ContactStore(context) }
 
@@ -279,6 +283,12 @@ private extension ContentView {
                 exportDocument = VCardDocument(text: store.exportVCards(contacts))
                 isExportingVCard = true
             }
+            .onReceive(NotificationCenter.default.publisher(for: .exportBackupRequested)) { _ in
+                exportBackup()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .restoreBackupRequested)) { _ in
+                isRestoringBackup = true
+            }
             .onReceive(NotificationCenter.default.publisher(for: .findDuplicatesRequested)) { _ in
                 showingDuplicates = true
             }
@@ -326,69 +336,6 @@ private extension ContentView {
             .onContinueUserActivity(ContactActivity.viewContactType) { activity in
                 selectContact(byEncodedID: ContactActivity.contactID(from: activity))
             }
-    }
-
-    /// The sheets, importers, exporters, and the error alert.
-    func handlingFileDialogs(_ content: some View) -> some View {
-        handlingImportAlerts(content
-            .sheet(isPresented: $showingDuplicates) {
-                DuplicatesView()
-            }
-            .fileImporter(isPresented: $isImportingVCard, allowedContentTypes: [.vCard]) { result in
-                handleImport(result)
-            }
-            .fileImporter(isPresented: $isImportingCSV, allowedContentTypes: [.commaSeparatedText]) { result in
-                handleCSVImport(result)
-            }
-            .fileExporter(
-                isPresented: $isExportingVCard,
-                document: exportDocument,
-                contentType: .vCard,
-                defaultFilename: "Contacts"
-            ) { result in
-                if case .failure(let error) = result {
-                    errorMessage = error.localizedDescription
-                }
-            }
-            .fileExporter(
-                isPresented: $isExportingPDF,
-                document: pdfDocument,
-                contentType: .pdf,
-                defaultFilename: pdfFilename
-            ) { result in
-                if case .failure(let error) = result {
-                    errorMessage = error.localizedDescription
-                }
-            }
-            .sheet(isPresented: $isReviewingImport) {
-                ImportReviewView(items: $importReviewItems) { items in
-                    Task { await applyImportReview(items) }
-                }
-            })
-    }
-
-    func exportSelectedContactAsPDF() {
-        guard let contact = selectedContact else {
-            errorMessage = "Select a contact to export as PDF."
-            return
-        }
-        guard let data = ContactPDF.data(for: contact) else {
-            errorMessage = "Couldn't generate a PDF for that contact."
-            return
-        }
-        pdfDocument = PDFExportDocument(data: data)
-        pdfFilename = ContactPDF.filename(for: contact)
-        isExportingPDF = true
-    }
-
-    func printSelectedContact() {
-        guard let contact = selectedContact else {
-            errorMessage = "Select a contact to print."
-            return
-        }
-        if !ContactPDF.print(contact) {
-            errorMessage = "Couldn't prepare that contact for printing."
-        }
     }
 }
 
