@@ -129,6 +129,19 @@ struct ContactStoreTests {
         #expect(contact.photoData == nil)
     }
 
+    // MARK: - Journey: track relationship activity
+
+    @Test func markContactedStoresTheContactDate() throws {
+        let contactedAt = try #require(Birthday.calendar.date(from: DateComponents(
+            year: 2026, month: 6, day: 7, hour: 12
+        )))
+        let contact = try store.createContact()
+
+        try store.markContacted(contact, at: contactedAt)
+
+        #expect(contact.lastContactedAt == contactedAt)
+    }
+
     // MARK: - Journey: import contacts from a vCard
 
     @Test func importVCardCreatesContactsWithFields() throws {

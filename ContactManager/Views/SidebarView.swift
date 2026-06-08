@@ -11,12 +11,14 @@ import SwiftUI
 
 enum SidebarItem: Hashable {
     case allContacts
+    case smartList(ContactSmartList)
     case group(PersistentIdentifier)
 }
 
 struct SidebarView: View {
     @Binding var selection: SidebarItem?
     let contactCount: Int
+    let smartListCounts: [ContactSmartList: Int]
     let groups: [ContactGroup]
     var addGroup: () -> Void
     var renameGroup: (ContactGroup, String) -> Void
@@ -34,6 +36,15 @@ struct SidebarView: View {
                     .badge(contactCount)
                     .tag(SidebarItem.allContacts)
                     .accessibilityIdentifier("sidebar-all-contacts-row")
+            }
+
+            Section("Smart Lists") {
+                ForEach(ContactSmartList.allCases) { smartList in
+                    Label(smartList.title, systemImage: smartList.systemImage)
+                        .badge(smartListCounts[smartList] ?? 0)
+                        .tag(SidebarItem.smartList(smartList))
+                        .accessibilityIdentifier("sidebar-smart-list-row-\(smartList.rawValue)")
+                }
             }
 
             Section("Groups") {

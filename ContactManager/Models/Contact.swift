@@ -27,6 +27,7 @@ final class Contact {
 
     // Misc
     var birthday: Date?
+    var lastContactedAt: Date?
     var notes: String = ""
     var createdAt: Date = Date.now
 
@@ -52,6 +53,7 @@ final class Contact {
         postalCode: String = "",
         country: String = "",
         birthday: Date? = nil,
+        lastContactedAt: Date? = nil,
         notes: String = "",
         createdAt: Date = .now
     ) {
@@ -65,6 +67,7 @@ final class Contact {
         self.postalCode = postalCode
         self.country = country
         self.birthday = birthday
+        self.lastContactedAt = lastContactedAt
         self.notes = notes
         self.createdAt = createdAt
         fields = []

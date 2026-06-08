@@ -47,6 +47,12 @@ struct ContactStore {
         }
     }
 
+    func markContacted(_ contact: Contact, at date: Date = .now) throws {
+        try mutate("Mark Contacted") {
+            contact.lastContactedAt = date
+        }
+    }
+
     // MARK: - Fields (emails / phones)
 
     /// Adds a labeled field, keeping `sortIndex` strictly increasing so order

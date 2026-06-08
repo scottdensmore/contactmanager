@@ -21,6 +21,7 @@ struct ContactDetailView: View {
     /// First Name; the view clears it via `onNameFieldFocused` after focusing.
     var focusNameField = false
     var onNameFieldFocused: () -> Void = {}
+    var markContacted: (Contact) -> Void = { _ in }
     @Query(sort: \ContactGroup.name) private var allGroups: [ContactGroup]
     @State private var isImportingPhoto = false
     // Not private: the photo handlers in ContactDetailView+Photo.swift read them.
@@ -53,6 +54,23 @@ struct ContactDetailView: View {
                     .accessibilityIdentifier("contact-company-field")
                 TextField("Job Title", text: $contact.jobTitle)
                     .accessibilityIdentifier("contact-job-title-field")
+            }
+
+            Section("Relationship") {
+                LabeledContent("Last Contacted") {
+                    if let lastContactedAt = contact.lastContactedAt {
+                        Text(lastContactedAt, format: .dateTime.month().day().year())
+                    } else {
+                        Text("Never")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Button {
+                    markContacted(contact)
+                } label: {
+                    Label("Mark Contacted Today", systemImage: "checkmark.circle")
+                }
+                .accessibilityIdentifier("mark-contacted-button")
             }
 
             fieldSection("Email", kind: .email, fields: contact.emails)
@@ -134,6 +152,15 @@ struct ContactDetailView: View {
             if focused { onNameFieldFocused() }
         }
         .toolbar {
+            ToolbarItem {
+                Button {
+                    markContacted(contact)
+                } label: {
+                    Label("Mark Contacted Today", systemImage: "checkmark.circle")
+                }
+                .help("Mark Contacted Today")
+                .accessibilityIdentifier("mark-contacted-toolbar-button")
+            }
             ToolbarItem {
                 ShareLink(item: vcardTransfer, preview: SharePreview(shareTitle))
                     .help("Share this contact as a vCard")

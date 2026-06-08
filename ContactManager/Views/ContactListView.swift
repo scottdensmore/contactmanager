@@ -9,8 +9,10 @@
 import SwiftUI
 
 struct ContactListView: View {
+    let title: String
     let sections: [ContactSection]
     let totalCount: Int
+    let emptyTitle: String
     @Binding var searchText: String
     @Binding var sortOrder: ContactSortOrder
     @Binding var selection: Contact?
@@ -42,7 +44,7 @@ struct ContactListView: View {
                 }
             }
         }
-        .navigationTitle("Contacts")
+        .navigationTitle(title)
         .navigationSplitViewColumnWidth(
             min: LayoutMetrics.listMinWidth,
             ideal: LayoutMetrics.listIdealWidth,
@@ -125,7 +127,7 @@ struct ContactListView: View {
             if totalCount == 0 {
                 // An empty store always reads as "No Contacts", even mid-search.
                 ContentUnavailableView {
-                    Label("No Contacts", systemImage: "person.crop.circle.badge.plus")
+                    Label(emptyTitle, systemImage: "person.crop.circle.badge.plus")
                 } description: {
                     Text("Add a contact to get started.")
                 } actions: {
