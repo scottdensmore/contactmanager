@@ -60,6 +60,11 @@ final class ContactManagerUITests: XCTestCase {
             app.menuButtons["batch-actions-menu"].waitForExistence(timeout: 3),
             "Batch actions menu should render"
         )
+        app.typeKey("k", modifierFlags: .command)
+        XCTAssertTrue(
+            app.textFields["command-palette-search-field"].waitForExistence(timeout: 3),
+            "Command palette should open from ⌘K"
+        )
     }
 
     /// Verifies the File menu wires the Import / Export commands the
