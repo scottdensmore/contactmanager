@@ -13,6 +13,20 @@ extension ContentView {
         isExportingBackup = true
     }
 
+    func exportEncryptedBackup(password: String) -> Bool {
+        do {
+            let backup = ContactBackup.make(contacts: contacts, groups: groups)
+            let data = try EncryptedContactBackupDocument.encode(backup, password: password)
+            encryptedBackupDocument = EncryptedContactBackupDocument(data: data)
+            isPreparingEncryptedBackup = false
+            isExportingEncryptedBackup = true
+            return true
+        } catch {
+            errorMessage = error.localizedDescription
+            return false
+        }
+    }
+
     func restoreBackup(_ result: Result<URL, Error>) {
         do {
             let url = try result.get()
@@ -22,12 +36,33 @@ extension ContentView {
             }
 
             let data = try Data(contentsOf: url)
+            if EncryptedContactBackupDocument.isEncrypted(data) {
+                pendingEncryptedBackupData = data
+                isUnlockingEncryptedBackup = true
+                return
+            }
             let backup = try ContactBackupDocument.decode(data)
-            pendingRestoreBackup = backup
-            restorePreview = ContactBackupPreview(backup: backup)
-            isReviewingRestore = true
+            reviewBackup(backup)
         } catch {
             errorMessage = error.localizedDescription
+        }
+    }
+
+    func unlockEncryptedBackup(password: String) -> Bool {
+        guard let data = pendingEncryptedBackupData else {
+            errorMessage = "Choose an encrypted backup before unlocking."
+            return false
+        }
+
+        do {
+            let backup = try EncryptedContactBackupDocument.decode(data, password: password)
+            pendingEncryptedBackupData = nil
+            isUnlockingEncryptedBackup = false
+            reviewBackup(backup)
+            return true
+        } catch {
+            errorMessage = error.localizedDescription
+            return false
         }
     }
 
@@ -49,5 +84,16 @@ extension ContentView {
         pendingRestoreBackup = nil
         restorePreview = nil
         isReviewingRestore = false
+    }
+
+    func clearPendingEncryptedBackup() {
+        pendingEncryptedBackupData = nil
+        isUnlockingEncryptedBackup = false
+    }
+
+    private func reviewBackup(_ backup: ContactBackup) {
+        pendingRestoreBackup = backup
+        restorePreview = ContactBackupPreview(backup: backup)
+        isReviewingRestore = true
     }
 }

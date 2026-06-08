@@ -114,6 +114,9 @@ struct ContactManagerApp: App {
                 Button("Export Backup…") {
                     NotificationCenter.default.post(name: .exportBackupRequested, object: nil)
                 }
+                Button("Export Encrypted Backup…") {
+                    NotificationCenter.default.post(name: .exportEncryptedBackupRequested, object: nil)
+                }
                 Button("Restore Backup…") {
                     NotificationCenter.default.post(name: .restoreBackupRequested, object: nil)
                 }
@@ -298,6 +301,7 @@ extension Notification.Name {
     static let importSystemContactsRequested = Notification.Name("ContactManager.importSystemContactsRequested")
     static let exportVCardRequested = Notification.Name("ContactManager.exportVCardRequested")
     static let exportBackupRequested = Notification.Name("ContactManager.exportBackupRequested")
+    static let exportEncryptedBackupRequested = Notification.Name("ContactManager.exportEncryptedBackupRequested")
     static let restoreBackupRequested = Notification.Name("ContactManager.restoreBackupRequested")
     /// Posted by the Export as PDF / Print commands; handled by `ContentView`
     /// for the selected contact.
