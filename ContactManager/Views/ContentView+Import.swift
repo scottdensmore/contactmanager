@@ -55,11 +55,13 @@ extension ContentView {
         importProgress = ImportProgress(done: 0, total: items.count)
         defer { importProgress = nil }
         do {
+            var summary = ImportReviewResult()
             for chunk in items.chunked(into: 500) {
-                try store.applyImportReview(chunk)
+                try summary.add(store.applyImportReview(chunk))
                 importProgress?.done += chunk.count
                 await Task.yield()
             }
+            importSummary = summary
         } catch {
             errorMessage = error.localizedDescription
         }
