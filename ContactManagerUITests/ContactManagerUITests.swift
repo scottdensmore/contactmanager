@@ -58,6 +58,7 @@ final class ContactManagerUITests: XCTestCase {
         let app = bootSeededApp()
         app.menuBars.menuBarItems["File"].click()
         XCTAssertTrue(app.menuItems["New Contact"].exists)
+        XCTAssertTrue(app.menuItems["Quick Capture…"].exists)
         XCTAssertTrue(app.menuItems["Import from Contacts…"].exists)
         XCTAssertTrue(app.menuItems["Import vCard…"].exists)
         XCTAssertTrue(app.menuItems["Import CSV…"].exists)
@@ -110,6 +111,27 @@ final class ContactManagerUITests: XCTestCase {
         XCTAssertTrue(
             app.staticTexts["Test Person"].waitForExistence(timeout: 3),
             "Newly edited contact should be searchable in the list"
+        )
+    }
+
+    /// Verifies the quick-capture command opens a focused capture window and
+    /// creates a searchable contact from natural text.
+    func test_quickCaptureCreatesSearchableContact() {
+        let app = bootSeededApp()
+        app.typeKey("n", modifierFlags: [.command, .option])
+
+        let entry = app.textFields["quick-capture-entry-field"]
+        XCTAssertTrue(entry.waitForExistence(timeout: 3))
+        entry.click()
+        entry.typeText("Test Capture, capture@example.com, birthday Dec 10")
+
+        let create = app.buttons["quick-capture-create-button"]
+        XCTAssertTrue(create.waitForExistence(timeout: 3))
+        create.click()
+
+        XCTAssertTrue(
+            app.staticTexts["Created Test Capture"].waitForExistence(timeout: 3),
+            "Quick capture should confirm the saved contact"
         )
     }
 

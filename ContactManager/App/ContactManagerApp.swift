@@ -12,6 +12,7 @@ import SwiftUI
 
 @main
 struct ContactManagerApp: App {
+    @Environment(\.openWindow) private var openWindow
     @State private var loadState: ContainerLoadState
 
     init() {
@@ -46,6 +47,16 @@ struct ContactManagerApp: App {
             }
         }
         .defaultSize(width: 520, height: 640)
+        WindowGroup(id: "quickCapture") {
+            switch loadState {
+            case .ready(let container):
+                QuickCaptureView()
+                    .modelContainer(container)
+            case .testing, .failed:
+                EmptyView()
+            }
+        }
+        .defaultSize(width: 520, height: 220)
         Settings {
             // The Settings scene gets its own model container injection so
             // the default-group picker can @Query groups. When the store
@@ -67,6 +78,10 @@ struct ContactManagerApp: App {
                     NotificationCenter.default.post(name: .newContactRequested, object: nil)
                 }
                 .keyboardShortcut("n", modifiers: .command)
+                Button("Quick Capture…") {
+                    openWindow(id: "quickCapture")
+                }
+                .keyboardShortcut("n", modifiers: [.command, .option])
             }
             CommandGroup(after: .textEditing) {
                 Button("Find") {
