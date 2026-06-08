@@ -15,18 +15,22 @@ struct ContentView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.undoManager) private var undoManager
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.openWindow) var openWindow
 
     @Query(sort: [SortDescriptor(\Contact.lastName), SortDescriptor(\Contact.firstName)])
     var contacts: [Contact]
 
     @Query(sort: \ContactGroup.name) var groups: [ContactGroup]
 
-    @State private var sidebarSelection: SidebarItem? = .allContacts
+    @State var sidebarSelection: SidebarItem? = .allContacts
     @State var selectedContact: Contact?
     @State var selectedContactIDs: Set<PersistentIdentifier> = []
     @State private var contactPendingNameFocus: PersistentIdentifier?
     @State var errorMessage: String?
     @State var isConfirmingBatchDelete = false
+    @State var isShowingCommandPalette = false
+    @State var commandPaletteQuery = ""
+    @State var pendingCommandPaletteAction: (() -> Void)?
     @State var importProgress: ImportProgress?
     @State private var searchText = ""
     @State private var debouncedSearchText = ""
@@ -135,7 +139,7 @@ struct ContentView: View {
             .onChange(of: undoManager) { _, new in
                 context.undoManager = new
             }
-        return handlingFileDialogs(handlingHandoff(handlingMenuCommands(scene)))
+        return handlingCommandPalette(handlingFileDialogs(handlingHandoff(handlingMenuCommands(scene))))
     }
 
     /// The three-column split view, window frame, and the import overlay.
@@ -200,7 +204,7 @@ struct ContentView: View {
 
     // MARK: - Contact actions
 
-    private func addContact() {
+    func addContact() {
         do {
             let contact = try store.createContact(in: groupForNewContact)
             if selectedSmartList != nil { sidebarSelection = .allContacts }
@@ -223,7 +227,7 @@ struct ContentView: View {
         }
     }
 
-    private func markContacted(_ contact: Contact) {
+    func markContacted(_ contact: Contact) {
         do {
             try store.markContacted(contact)
         } catch {

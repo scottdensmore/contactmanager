@@ -88,6 +88,10 @@ struct ContactManagerApp: App {
                 .keyboardShortcut("n", modifiers: [.command, .option])
             }
             CommandGroup(after: .textEditing) {
+                Button("Command Palette…") {
+                    NotificationCenter.default.post(name: .commandPaletteRequested, object: nil)
+                }
+                .keyboardShortcut("k", modifiers: .command)
                 Button("Find") {
                     NotificationCenter.default.post(name: .focusSearchRequested, object: nil)
                 }
@@ -320,6 +324,7 @@ extension Notification.Name {
     static let exportPDFRequested = Notification.Name("ContactManager.exportPDFRequested")
     static let printContactRequested = Notification.Name("ContactManager.printContactRequested")
     static let findDuplicatesRequested = Notification.Name("ContactManager.findDuplicatesRequested")
+    static let commandPaletteRequested = Notification.Name("ContactManager.commandPaletteRequested")
     /// Posted by the Find menu command (⌘F); focuses the contact search field.
     static let focusSearchRequested = Notification.Name("ContactManager.focusSearchRequested")
     /// Posted by App Intents (and `Spotlight` taps via `ContentView`'s
