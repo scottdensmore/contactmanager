@@ -21,6 +21,7 @@ struct ContactListView: View {
     let groups: [ContactGroup]
     var addContact: () -> Void
     var deleteContact: (Contact) -> Void
+    var saveCurrentSearch: () -> Void
     var exportSelectedContacts: () -> Void
     var addSelectedContactsToGroup: (ContactGroup) -> Void
     var deleteSelectedContacts: () -> Void
@@ -103,6 +104,13 @@ struct ContactListView: View {
                     Label("Sort", systemImage: "arrow.up.arrow.down")
                 }
                 .help("Sort Order")
+
+                Button(action: saveCurrentSearch) {
+                    Label("Save Search", systemImage: "line.3.horizontal.decrease.circle")
+                }
+                .disabled(searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                .help("Save Search")
+                .accessibilityIdentifier("save-search-button")
 
                 Menu {
                     Button("Export vCard…", action: exportSelectedContacts)

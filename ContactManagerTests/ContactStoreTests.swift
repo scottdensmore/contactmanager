@@ -24,6 +24,7 @@ struct ContactStoreTests {
     init() throws {
         container = try ModelContainer(
             for: Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self,
+            ContactSavedSmartList.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
         store = ContactStore(container.mainContext)
@@ -116,6 +117,20 @@ struct ContactStoreTests {
         let group = try store.createGroup(named: "Work")
         try store.rename(group, to: "   ")
         #expect(group.name == "Work")
+    }
+
+    @Test func savedSmartListLifecycleTrimsQueryAndName() throws {
+        let savedList = try store.createSavedSmartList(named: "  Engine People  ", query: "  engine  ")
+
+        #expect(savedList.displayName == "Engine People")
+        #expect(savedList.query == "engine")
+        #expect(try count(ContactSavedSmartList.self) == 1)
+
+        try store.rename(savedList, to: "  Machines  ")
+        #expect(savedList.displayName == "Machines")
+
+        try store.delete(savedList)
+        #expect(try count(ContactSavedSmartList.self) == 0)
     }
 
     // MARK: - Journey: set and clear a contact photo

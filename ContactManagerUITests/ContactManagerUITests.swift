@@ -150,6 +150,18 @@ final class ContactManagerUITests: XCTestCase {
         let historyNote = app.descendants(matching: .any)["interaction-summary-field"]
         XCTAssertTrue(historyNote.waitForExistence(timeout: 3))
         XCTAssertTrue(app.buttons["add-interaction-button"].exists)
+
+        app.typeKey("f", modifierFlags: .command)
+        let search = app.searchFields.firstMatch
+        XCTAssertTrue(search.waitForExistence(timeout: 3))
+        search.typeText("Ada")
+        let saveSearch = app.buttons["save-search-button"]
+        XCTAssertTrue(saveSearch.waitForExistence(timeout: 3))
+        saveSearch.click()
+        XCTAssertTrue(
+            app.descendants(matching: .any)["sidebar-saved-smart-list-row-ada"].waitForExistence(timeout: 3),
+            "Saving a search should add a saved smart-list row"
+        )
     }
 
     /// Verifies the quick-capture command opens a focused capture window and

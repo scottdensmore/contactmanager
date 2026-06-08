@@ -20,6 +20,7 @@ struct ContactBackupTests {
     init() throws {
         container = try ModelContainer(
             for: Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self,
+            ContactSavedSmartList.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
         store = ContactStore(container.mainContext)
@@ -33,14 +34,20 @@ struct ContactBackupTests {
         try context.fetch(FetchDescriptor<ContactGroup>())
     }
 
+    private func allSavedSmartLists() throws -> [ContactSavedSmartList] {
+        try context.fetch(FetchDescriptor<ContactSavedSmartList>())
+    }
+
     @Test func backupCapturesContactsGroupsFieldsAndHistory() throws {
         let contact = try makePopulatedContact()
+        let savedList = try store.createSavedSmartList(named: "Engine People", query: "engine")
         let contacts = try allContacts()
         let groups = try allGroups()
 
         let backup = ContactBackup.make(
             contacts: contacts,
             groups: groups,
+            savedSmartLists: [savedList],
             exportedAt: Date(timeIntervalSinceReferenceDate: 42)
         )
 
@@ -52,36 +59,47 @@ struct ContactBackupTests {
         #expect(record.interactions.map(\.summary) == ["Met at WWDC."])
         #expect(record.lastContactedAt == contact.lastContactedAt)
         #expect(backup.groups.map(\.name) == ["Work"])
+        #expect(backup.savedSmartLists.map(\.name) == ["Engine People"])
+        #expect(backup.savedSmartLists.map(\.query) == ["engine"])
     }
 
     @Test func restoreBackupRecreatesContactsGroupsFieldsAndHistory() throws {
         let contact = try makePopulatedContact()
+        let savedList = try store.createSavedSmartList(named: "Engine People", query: "engine")
         let groups = try allGroups()
         let original = ContactBackup.make(
             contacts: [contact],
             groups: groups,
+            savedSmartLists: [savedList],
             exportedAt: Date(timeIntervalSinceReferenceDate: 42)
         )
 
         let contactsBeforeRestore = try allContacts()
         let groupsBeforeRestore = try allGroups()
+        let savedListsBeforeRestore = try allSavedSmartLists()
         let contactBeforeRestore = try #require(contactsBeforeRestore.first)
         let groupBeforeRestore = try #require(groupsBeforeRestore.first)
+        let savedListBeforeRestore = try #require(savedListsBeforeRestore.first)
         try store.delete(contactBeforeRestore)
         try store.delete(groupBeforeRestore)
+        try store.delete(savedListBeforeRestore)
 
         let result = try store.restoreBackup(original)
 
         let restoredContacts = try allContacts()
+        let restoredSavedLists = try allSavedSmartLists()
         let restored = try #require(restoredContacts.first)
         #expect(result.contactsRestored == 1)
         #expect(result.groupsRestored == 1)
+        #expect(result.savedSmartListsRestored == 1)
         #expect(result.interactionsRestored == 1)
         #expect(restored.fullName == "Ada Lovelace")
         #expect(restored.lastContactedAt == Date(timeIntervalSinceReferenceDate: 200))
         #expect(restored.emails.map(\.value) == ["ada@example.com"])
         #expect(restored.groups.map(\.displayName) == ["Work"])
         #expect(restored.sortedInteractions.map(\.summary) == ["Met at WWDC."])
+        #expect(restoredSavedLists.map(\.displayName) == ["Engine People"])
+        #expect(restoredSavedLists.map(\.query) == ["engine"])
     }
 
     @Test func backupDocumentRoundTripsJSON() throws {
@@ -97,6 +115,22 @@ struct ContactBackupTests {
         let decoded = try ContactBackupDocument.decode(data)
 
         #expect(decoded == backup)
+    }
+
+    @Test func backupDocumentDecodesLegacyBackupsWithoutSavedSmartLists() throws {
+        let legacyJSON = """
+        {
+          "contacts" : [],
+          "exportedAt" : 42,
+          "groups" : [],
+          "version" : 1
+        }
+        """
+
+        let decoded = try ContactBackupDocument.decode(Data(legacyJSON.utf8))
+
+        #expect(decoded.version == 1)
+        #expect(decoded.savedSmartLists.isEmpty)
     }
 
     @Test func encryptedBackupDocumentRoundTripsWithPassword() throws {
@@ -136,15 +170,17 @@ struct ContactBackupTests {
 
         #expect(result.contactsRestored == 0)
         #expect(result.title == "Restored 0 Contacts")
-        #expect(result.message == "No contacts, groups, or history notes restored.")
+        #expect(result.message == "No contacts, groups, smart lists, or history notes restored.")
     }
 
     @Test func backupPreviewSummarizesContentsBeforeRestore() throws {
         let contact = try makePopulatedContact()
+        let savedList = try store.createSavedSmartList(named: "Engine People", query: "engine")
         let groups = try allGroups()
         let backup = ContactBackup.make(
             contacts: [contact],
             groups: groups,
+            savedSmartLists: [savedList],
             exportedAt: Date(timeIntervalSinceReferenceDate: 42)
         )
 
@@ -153,12 +189,13 @@ struct ContactBackupTests {
         #expect(preview.exportedAt == Date(timeIntervalSinceReferenceDate: 42))
         #expect(preview.contactCount == 1)
         #expect(preview.groupCount == 1)
+        #expect(preview.savedSmartListCount == 1)
         #expect(preview.emailCount == 1)
         #expect(preview.phoneCount == 0)
         #expect(preview.historyNoteCount == 1)
         #expect(preview.photoCount == 1)
         #expect(preview.sampleContactNames == ["Ada Lovelace"])
-        #expect(preview.summary == "1 contact, 1 group, 1 email, 1 history note, 1 photo")
+        #expect(preview.summary == "1 contact, 1 group, 1 smart list, 1 email, 1 history note, 1 photo")
     }
 
     @Test func emptyBackupPreviewHasAPlainSummary() {
@@ -166,6 +203,7 @@ struct ContactBackupTests {
 
         #expect(preview.contactCount == 0)
         #expect(preview.groupCount == 0)
+        #expect(preview.savedSmartListCount == 0)
         #expect(preview.isEmpty)
         #expect(preview.sampleContactNames.isEmpty)
         #expect(preview.summary == "0 contacts")

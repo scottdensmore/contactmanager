@@ -14,6 +14,13 @@ import SwiftUI
 struct ContactManagerApp: App {
     @Environment(\.openWindow) private var openWindow
     @State private var loadState: ContainerLoadState
+    private static let modelTypes: [any PersistentModel.Type] = [
+        Contact.self,
+        ContactField.self,
+        ContactGroup.self,
+        ContactInteraction.self,
+        ContactSavedSmartList.self,
+    ]
 
     init() {
         _loadState = State(initialValue: Self.loadContainer())
@@ -169,7 +176,7 @@ struct ContactManagerApp: App {
             deleteDefaultStore()
         }
 
-        let schema = Schema([Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self])
+        let schema = Schema(modelTypes)
 
         // UI-test mode uses an in-memory, CloudKit-disabled container so
         // tests are deterministic and can't sync sample contacts to a

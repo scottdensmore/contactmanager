@@ -21,6 +21,16 @@ extension ContactStore {
                 result.groupsRestored += 1
             }
 
+            for record in backup.savedSmartLists {
+                let savedList = ContactSavedSmartList(
+                    name: record.name,
+                    query: record.query,
+                    createdAt: record.createdAt
+                )
+                context.insert(savedList)
+                result.savedSmartListsRestored += 1
+            }
+
             for record in backup.contacts {
                 let contact = Contact(record)
                 contact.photoData = record.photoData
@@ -81,6 +91,7 @@ private extension Contact {
 struct BackupRestoreResult {
     var contactsRestored = 0
     var groupsRestored = 0
+    var savedSmartListsRestored = 0
     var interactionsRestored = 0
 
     var title: String {
@@ -92,10 +103,11 @@ struct BackupRestoreResult {
         let parts = [
             count(contactsRestored, label: "contacts"),
             count(groupsRestored, label: "groups"),
+            count(savedSmartListsRestored, label: "smart lists"),
             count(interactionsRestored, label: "history notes"),
         ].compactMap(\.self)
         if parts.isEmpty {
-            return "No contacts, groups, or history notes restored."
+            return "No contacts, groups, smart lists, or history notes restored."
         }
         return parts.joined(separator: ", ").capitalizedIfFirst + "."
     }

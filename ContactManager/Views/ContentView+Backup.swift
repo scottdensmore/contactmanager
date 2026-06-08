@@ -9,13 +9,17 @@ import Foundation
 
 extension ContentView {
     func exportBackup() {
-        backupDocument = ContactBackupDocument(backup: ContactBackup.make(contacts: contacts, groups: groups))
+        backupDocument = ContactBackupDocument(backup: ContactBackup.make(
+            contacts: contacts,
+            groups: groups,
+            savedSmartLists: savedSmartLists
+        ))
         isExportingBackup = true
     }
 
     func exportEncryptedBackup(password: String) -> Bool {
         do {
-            let backup = ContactBackup.make(contacts: contacts, groups: groups)
+            let backup = ContactBackup.make(contacts: contacts, groups: groups, savedSmartLists: savedSmartLists)
             let data = try EncryptedContactBackupDocument.encode(backup, password: password)
             encryptedBackupDocument = EncryptedContactBackupDocument(data: data)
             isPreparingEncryptedBackup = false
