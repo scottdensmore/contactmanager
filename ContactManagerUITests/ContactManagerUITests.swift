@@ -114,6 +114,22 @@ final class ContactManagerUITests: XCTestCase {
         )
     }
 
+    /// Verifies the relationship-intelligence affordances render in the live
+    /// app: smart-list sidebar rows and the selected contact's mark-contacted
+    /// action. Filtering behavior stays in the deterministic unit tests.
+    func test_smartListsAndMarkContactedControlsRender() {
+        let app = bootSeededApp()
+
+        XCTAssertTrue(app.staticTexts["Recently Contacted"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["Needs Follow-up"].exists)
+        XCTAssertTrue(app.staticTexts["No Email"].exists)
+        XCTAssertTrue(app.staticTexts["Birthdays Soon"].exists)
+
+        app.typeKey("n", modifierFlags: .command)
+
+        XCTAssertTrue(app.buttons["mark-contacted-button"].waitForExistence(timeout: 3))
+    }
+
     /// Verifies the quick-capture command opens a focused capture window and
     /// creates a searchable contact from natural text.
     func test_quickCaptureCreatesSearchableContact() {

@@ -23,18 +23,10 @@ struct ContentView: View {
 
     @State private var sidebarSelection: SidebarItem? = .allContacts
     @State private var selectedContact: Contact?
-    /// The contact just created via ⌘N/＋, so the detail form can open with
-    /// the cursor in First Name. Cleared once the field takes focus.
     @State private var contactPendingNameFocus: PersistentIdentifier?
-    /// Internal so the import handlers in `ContentView+Import.swift` can
-    /// set this when a parse/insert fails.
     @State var errorMessage: String?
-    // Drives the import progress overlay; set by the import handlers.
     @State var importProgress: ImportProgress?
     @State private var searchText = ""
-    /// Trails `searchText` by 150 ms so we don't re-filter the entire contact
-    /// list on every keystroke. Cleared instantly when the user clears the
-    /// search field — only typing-into-non-empty pays the debounce delay.
     @State private var debouncedSearchText = ""
     @AppStorage("contactSortOrder") private var sortOrder: ContactSortOrder = .lastName
     @AppStorage("defaultGroupID") private var defaultGroupID: String = ""
@@ -51,40 +43,51 @@ struct ContentView: View {
     @State var isReviewingImport = false
     @State var importSummary: ImportReviewResult?
 
-    /// Internal so the import handlers in `ContentView+Import.swift` can
-    /// reach the same store the main view uses.
     var store: ContactStore { ContactStore(context) }
 
-    /// The group backing the current sidebar selection, if any.
     private var selectedGroup: ContactGroup? {
         guard case .group(let id) = sidebarSelection else { return nil }
         return groups.first { $0.persistentModelID == id }
     }
 
-    /// User-configured default group for new contacts when the sidebar is
-    /// on All Contacts. Resolved by encoded `PersistentIdentifier` so it
-    /// survives a rename; if the target group was deleted the lookup
-    /// returns nil and SettingsView prunes the preference on next view.
+    private var selectedSmartList: ContactSmartList? {
+        guard case .smartList(let smartList) = sidebarSelection else { return nil }
+        return smartList
+    }
+
+    private var smartListCounts: [ContactSmartList: Int] {
+        Dictionary(uniqueKeysWithValues: ContactSmartList.allCases.map { smartList in
+            (smartList, ContactQuery.filtered(contacts, by: smartList).count)
+        })
+    }
+
     private var defaultGroup: ContactGroup? {
         DefaultGroupPreference.group(stored: defaultGroupID, in: groups)
     }
 
-    /// Where a new contact should land. The default group is only used when
-    /// the sidebar is explicitly on All Contacts — never as a silent rescue
-    /// from a `.group(...)` selection whose target was deleted, which would
-    /// surprise the user by adding their contact to an unrelated group.
     private var groupForNewContact: ContactGroup? {
         switch sidebarSelection {
         case .group: selectedGroup
-        case .allContacts, .none: defaultGroup
+        case .allContacts, .smartList, .none: defaultGroup
         }
     }
 
-    /// Contacts shown for the current sidebar selection, before search.
-    /// Reads a group's members from the relationship rather than scanning
-    /// every contact's groups.
     private var scopedContacts: [Contact] {
-        selectedGroup?.contacts ?? contacts
+        if let selectedGroup { return selectedGroup.contacts }
+        if let selectedSmartList { return ContactQuery.filtered(contacts, by: selectedSmartList) }
+        return contacts
+    }
+
+    private var listTitle: String {
+        if let selectedGroup { return selectedGroup.displayName }
+        if let selectedSmartList { return selectedSmartList.title }
+        return "Contacts"
+    }
+
+    private var emptyListTitle: String {
+        if selectedGroup != nil { return "No Contacts in Group" }
+        if selectedSmartList != nil { return "No Contacts Match" }
+        return "No Contacts"
     }
 
     private var sections: [ContactSection] {
@@ -97,9 +100,6 @@ struct ContentView: View {
     var body: some View {
         let scene = splitView
             .task(id: searchText) {
-                // Empty → clear immediately. Otherwise wait 150 ms before
-                // committing the new query so a burst of keystrokes only
-                // triggers one filter pass.
                 if searchText.isEmpty {
                     debouncedSearchText = ""
                     return
@@ -112,15 +112,11 @@ struct ContentView: View {
                 }
             }
             .onAppear {
-                // Route every ContactStore mutation through the window's undo
-                // manager so Edit ▸ Undo/Redo (⌘Z / ⇧⌘Z) work.
                 context.undoManager = undoManager
             }
             .onChange(of: undoManager) { _, new in
                 context.undoManager = new
             }
-        // Split into helpers so the modifier chain stays within the SwiftUI
-        // type-checker's budget (and the type-body length limit).
         return handlingFileDialogs(handlingHandoff(handlingMenuCommands(scene)))
     }
 
@@ -130,6 +126,7 @@ struct ContentView: View {
             SidebarView(
                 selection: $sidebarSelection,
                 contactCount: contacts.count,
+                smartListCounts: smartListCounts,
                 groups: groups,
                 addGroup: addGroup,
                 renameGroup: renameGroup,
@@ -138,8 +135,10 @@ struct ContentView: View {
             )
         } content: {
             ContactListView(
+                title: listTitle,
                 sections: sections,
                 totalCount: scopedContacts.count,
+                emptyTitle: emptyListTitle,
                 searchText: $searchText,
                 sortOrder: $sortOrder,
                 selection: $selectedContact,
@@ -153,7 +152,8 @@ struct ContentView: View {
                     ContactDetailView(
                         contact: selectedContact,
                         focusNameField: selectedContact.persistentModelID == contactPendingNameFocus,
-                        onNameFieldFocused: { contactPendingNameFocus = nil }
+                        onNameFieldFocused: { contactPendingNameFocus = nil },
+                        markContacted: markContacted
                     )
                     .id(selectedContact.persistentModelID)
                 } else {
@@ -180,6 +180,7 @@ struct ContentView: View {
     private func addContact() {
         do {
             let contact = try store.createContact(in: groupForNewContact)
+            if selectedSmartList != nil { sidebarSelection = .allContacts }
             contactPendingNameFocus = contact.persistentModelID
             withAnimation(reduceMotion ? nil : .snappy) { selectedContact = contact }
         } catch {
@@ -192,6 +193,14 @@ struct ContentView: View {
         do {
             try store.delete(contact)
             if wasSelected { selectedContact = nil }
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    private func markContacted(_ contact: Contact) {
+        do {
+            try store.markContacted(contact)
         } catch {
             errorMessage = error.localizedDescription
         }

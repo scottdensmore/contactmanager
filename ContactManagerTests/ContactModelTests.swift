@@ -7,6 +7,7 @@
 //
 
 @testable import ContactManager
+import Foundation
 import SwiftData
 import Testing
 
@@ -233,5 +234,52 @@ struct ContactModelTests {
         #expect(ContactQuery.filtered(all, matching: "7555").first?.firstName == "Alan") // phone field
         #expect(ContactQuery.filtered(all, matching: "").count == 2)
         #expect(ContactQuery.filtered(all, matching: "nobody").isEmpty)
+    }
+
+    @Test func smartListsFilterRelationshipSignals() throws {
+        let reference = try #require(Birthday.calendar.date(from: DateComponents(
+            year: 2026, month: 6, day: 7
+        )))
+        let recent = Contact(firstName: "Recent")
+        recent.lastContactedAt = reference.addingTimeInterval(-7 * 24 * 60 * 60)
+        recent.fields = [ContactField(kind: .email, value: "recent@example.com")]
+        let old = Contact(firstName: "Old")
+        old.lastContactedAt = reference.addingTimeInterval(-45 * 24 * 60 * 60)
+        old.fields = [ContactField(kind: .email, value: "old@example.com")]
+        let missingEmail = Contact(firstName: "No Email")
+
+        let contacts = [recent, old, missingEmail]
+
+        let recentNames = ContactQuery.filtered(contacts, by: .recentlyContacted, now: reference).map(\.firstName)
+        let followUpNames = ContactQuery.filtered(contacts, by: .needsFollowUp, now: reference).map(\.firstName)
+        let noEmailNames = ContactQuery.filtered(contacts, by: .noEmail, now: reference).map(\.firstName)
+
+        #expect(recentNames == ["Recent"])
+        #expect(followUpNames == ["Old", "No Email"])
+        #expect(noEmailNames == ["No Email"])
+    }
+
+    @Test func birthdaysSoonIgnoresStoredYearAndWrapsAcrossYearEnd() throws {
+        let reference = try #require(Birthday.calendar.date(from: DateComponents(
+            year: 2026, month: 12, day: 20
+        )))
+        let soon = Contact(firstName: "Soon", birthday: Birthday.date(year: 1980, month: 1, day: 5))
+        let later = Contact(firstName: "Later", birthday: Birthday.date(year: 1980, month: 2, day: 15))
+        let none = Contact(firstName: "None")
+
+        let birthdays = ContactQuery.filtered([soon, later, none], by: .birthdaysSoon, now: reference)
+
+        #expect(birthdays.map(\.firstName) == ["Soon"])
+    }
+
+    @Test func pastLeapDayBirthdayIsNotSoonInANonLeapYear() throws {
+        let reference = try #require(Birthday.calendar.date(from: DateComponents(
+            year: 2026, month: 3, day: 1
+        )))
+        let leapDay = Contact(firstName: "Leap", birthday: Birthday.date(year: 1980, month: 2, day: 29))
+
+        let birthdays = ContactQuery.filtered([leapDay], by: .birthdaysSoon, now: reference)
+
+        #expect(birthdays.isEmpty)
     }
 }
