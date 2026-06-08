@@ -6,6 +6,7 @@
 //  plus the sort and add/delete toolbar affordances.
 //
 
+import SwiftData
 import SwiftUI
 
 struct ContactListView: View {
@@ -16,8 +17,13 @@ struct ContactListView: View {
     @Binding var searchText: String
     @Binding var sortOrder: ContactSortOrder
     @Binding var selection: Contact?
+    @Binding var selectionIDs: Set<PersistentIdentifier>
+    let groups: [ContactGroup]
     var addContact: () -> Void
     var deleteContact: (Contact) -> Void
+    var exportSelectedContacts: () -> Void
+    var addSelectedContactsToGroup: (ContactGroup) -> Void
+    var deleteSelectedContacts: () -> Void
     /// Called when a `.vcf` file is dropped onto the list from Finder.
     var importVCardURLs: ([URL]) -> Void
 
@@ -30,12 +36,12 @@ struct ContactListView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        List(selection: $selection) {
+        List(selection: $selectionIDs) {
             ForEach(sections) { section in
                 Section(section.title) {
                     ForEach(section.contacts) { contact in
                         ContactRow(contact: contact)
-                            .tag(contact)
+                            .tag(contact.persistentModelID)
                             .accessibilityIdentifier(contact.accessibilityRowIdentifier)
                             // Drag a row to Finder to write `<Name>.vcf`.
                             .draggable(transfer(for: contact))
@@ -58,6 +64,13 @@ struct ContactListView: View {
         .onReceive(NotificationCenter.default.publisher(for: .focusSearchRequested)) { _ in
             searchFocused = true
         }
+        .onChange(of: selectionIDs) { _, newValue in
+            selection = contacts(in: newValue).first
+        }
+        .onChange(of: selection?.persistentModelID) { _, newValue in
+            guard let newValue, !selectionIDs.contains(newValue) else { return }
+            selectionIDs = [newValue]
+        }
         .overlay { emptyState }
         // Accept `.vcf` drops from Finder. Filtering on extension keeps
         // arbitrary file drops from triggering a no-op import.
@@ -68,7 +81,11 @@ struct ContactListView: View {
             return true
         }
         .onDeleteCommand {
-            if let selection { deleteContact(selection) }
+            if selectionIDs.count > 1 {
+                deleteSelectedContacts()
+            } else if let selection {
+                deleteContact(selection)
+            }
         }
         .toolbar {
             // One cohesive trailing group so sort and add render as a single
@@ -87,6 +104,30 @@ struct ContactListView: View {
                 }
                 .help("Sort Order")
 
+                Menu {
+                    Button("Export vCard…", action: exportSelectedContacts)
+                    Menu("Add to Group") {
+                        if groups.isEmpty {
+                            Text("No Groups")
+                        } else {
+                            ForEach(groups) { group in
+                                Button(group.displayName) {
+                                    addSelectedContactsToGroup(group)
+                                }
+                            }
+                        }
+                    }
+                    .accessibilityIdentifier("batch-add-to-group-menu")
+                    Divider()
+                    Button("Delete", role: .destructive, action: deleteSelectedContacts)
+                        .accessibilityIdentifier("batch-delete-button")
+                } label: {
+                    Label("Batch Actions", systemImage: "checklist")
+                        .accessibilityIdentifier("batch-actions-menu")
+                }
+                .disabled(selectionIDs.isEmpty)
+                .help("Batch Actions")
+
                 Button(action: addContact) {
                     Label("New Contact", systemImage: "plus")
                 }
@@ -94,6 +135,10 @@ struct ContactListView: View {
                 .accessibilityIdentifier("new-contact-button")
             }
         }
+    }
+
+    private func contacts(in ids: Set<PersistentIdentifier>) -> [Contact] {
+        sections.flatMap(\.contacts).filter { ids.contains($0.persistentModelID) }
     }
 
     private func transfer(for contact: Contact) -> VCardTransfer {

@@ -37,5 +37,13 @@ extension ContentView {
             } message: { summary in
                 Text(summary.message)
             }
+            .alert("Delete Selected Contacts?", isPresented: $isConfirmingBatchDelete) {
+                Button("Cancel", role: .cancel) {}
+                Button("Delete", role: .destructive) {
+                    confirmDeleteSelectedContacts()
+                }
+            } message: {
+                Text("This will delete \(selectedContacts.count) contacts.")
+            }
     }
 }

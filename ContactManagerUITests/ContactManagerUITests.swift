@@ -54,6 +54,12 @@ final class ContactManagerUITests: XCTestCase {
             app.descendants(matching: .any)["sidebar-sync-status"].waitForExistence(timeout: 3),
             "Sidebar sync status should render"
         )
+        app.typeKey("n", modifierFlags: .command)
+        XCTAssertTrue(app.textFields["contact-first-name-field"].waitForExistence(timeout: 3))
+        XCTAssertTrue(
+            app.menuButtons["batch-actions-menu"].waitForExistence(timeout: 3),
+            "Batch actions menu should render"
+        )
     }
 
     /// Verifies the File menu wires the Import / Export commands the

@@ -23,8 +23,10 @@ struct ContentView: View {
 
     @State private var sidebarSelection: SidebarItem? = .allContacts
     @State var selectedContact: Contact?
+    @State var selectedContactIDs: Set<PersistentIdentifier> = []
     @State private var contactPendingNameFocus: PersistentIdentifier?
     @State var errorMessage: String?
+    @State var isConfirmingBatchDelete = false
     @State var importProgress: ImportProgress?
     @State private var searchText = ""
     @State private var debouncedSearchText = ""
@@ -75,6 +77,10 @@ struct ContentView: View {
 
     private var defaultGroup: ContactGroup? {
         DefaultGroupPreference.group(stored: defaultGroupID, in: groups)
+    }
+
+    var selectedContacts: [Contact] {
+        contacts.filter { selectedContactIDs.contains($0.persistentModelID) }
     }
 
     private var groupForNewContact: ContactGroup? {
@@ -154,8 +160,13 @@ struct ContentView: View {
                 searchText: $searchText,
                 sortOrder: $sortOrder,
                 selection: $selectedContact,
+                selectionIDs: $selectedContactIDs,
+                groups: groups,
                 addContact: addContact,
                 deleteContact: deleteContact,
+                exportSelectedContacts: exportSelectedContactsAsVCard,
+                addSelectedContactsToGroup: addSelectedContacts(to:),
+                deleteSelectedContacts: requestDeleteSelectedContacts,
                 importVCardURLs: importVCardURLs
             )
         } detail: {
@@ -194,16 +205,18 @@ struct ContentView: View {
             let contact = try store.createContact(in: groupForNewContact)
             if selectedSmartList != nil { sidebarSelection = .allContacts }
             contactPendingNameFocus = contact.persistentModelID
+            selectedContactIDs = [contact.persistentModelID]
             withAnimation(reduceMotion ? nil : .snappy) { selectedContact = contact }
         } catch {
             errorMessage = error.localizedDescription
         }
     }
 
-    private func deleteContact(_ contact: Contact) {
+    func deleteContact(_ contact: Contact) {
         let wasSelected = selectedContact?.persistentModelID == contact.persistentModelID
         do {
             try store.delete(contact)
+            selectedContactIDs.remove(contact.persistentModelID)
             if wasSelected { selectedContact = nil }
         } catch {
             errorMessage = error.localizedDescription
