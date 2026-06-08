@@ -5,10 +5,11 @@
 //  Relationship-history entries attached to a contact.
 //
 
+import AppIntents
 import Foundation
 import SwiftData
 
-enum ContactInteractionKind: String, Codable, CaseIterable, Identifiable {
+enum ContactInteractionKind: String, AppEnum, Codable, CaseIterable, Identifiable {
     case note
     case call
     case email
@@ -17,6 +18,17 @@ enum ContactInteractionKind: String, Codable, CaseIterable, Identifiable {
     case other
 
     var id: String { rawValue }
+
+    static let typeDisplayRepresentation = TypeDisplayRepresentation(name: "History Note Kind")
+
+    static let caseDisplayRepresentations: [ContactInteractionKind: DisplayRepresentation] = [
+        .note: "Note",
+        .call: "Call",
+        .email: "Email",
+        .meeting: "Meeting",
+        .message: "Message",
+        .other: "Other",
+    ]
 
     var title: String {
         switch self {
