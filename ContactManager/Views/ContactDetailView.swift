@@ -28,6 +28,8 @@ struct ContactDetailView: View {
     @State var errorMessage: String?
     @FocusState private var nameFieldFocused: Bool
     @State var lastSavedFingerprint = ""
+    @State var interactionKind: ContactInteractionKind = .note
+    @State var interactionSummary = ""
 
     var store: ContactStore { ContactStore(context) }
 
@@ -72,6 +74,8 @@ struct ContactDetailView: View {
                 }
                 .accessibilityIdentifier("mark-contacted-button")
             }
+
+            historySection
 
             fieldSection("Email", kind: .email, fields: contact.emails)
             fieldSection("Phone", kind: .phone, fields: contact.phones)

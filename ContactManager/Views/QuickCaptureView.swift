@@ -121,5 +121,8 @@ private struct QuickCapturePreview: View {
 
 #Preview {
     QuickCaptureView()
-        .modelContainer(for: [Contact.self, ContactField.self, ContactGroup.self], inMemory: true)
+        .modelContainer(
+            for: [Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self],
+            inMemory: true
+        )
 }
