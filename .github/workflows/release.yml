@@ -26,7 +26,7 @@ jobs:
       # Check out the exact commit CI tested (not a moving `main`), so the
       # release is tied to that commit; if `main` has since advanced, the push
       # below fails safely and that newer merge runs its own release.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0 # full history for the build number
