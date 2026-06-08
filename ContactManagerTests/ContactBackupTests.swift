@@ -107,6 +107,52 @@ struct ContactBackupTests {
         #expect(result.message == "No contacts, groups, or history notes restored.")
     }
 
+    @Test func backupPreviewSummarizesContentsBeforeRestore() throws {
+        let contact = try makePopulatedContact()
+        let groups = try allGroups()
+        let backup = ContactBackup.make(
+            contacts: [contact],
+            groups: groups,
+            exportedAt: Date(timeIntervalSinceReferenceDate: 42)
+        )
+
+        let preview = ContactBackupPreview(backup: backup)
+
+        #expect(preview.exportedAt == Date(timeIntervalSinceReferenceDate: 42))
+        #expect(preview.contactCount == 1)
+        #expect(preview.groupCount == 1)
+        #expect(preview.emailCount == 1)
+        #expect(preview.phoneCount == 0)
+        #expect(preview.historyNoteCount == 1)
+        #expect(preview.photoCount == 1)
+        #expect(preview.sampleContactNames == ["Ada Lovelace"])
+        #expect(preview.summary == "1 contact, 1 group, 1 email, 1 history note, 1 photo")
+    }
+
+    @Test func emptyBackupPreviewHasAPlainSummary() {
+        let preview = ContactBackupPreview(backup: ContactBackup())
+
+        #expect(preview.contactCount == 0)
+        #expect(preview.groupCount == 0)
+        #expect(preview.isEmpty)
+        #expect(preview.sampleContactNames.isEmpty)
+        #expect(preview.summary == "0 contacts")
+    }
+
+    @Test func groupsOnlyBackupPreviewCanStillRestore() {
+        let group = ContactBackup.GroupRecord(
+            id: "group-1",
+            name: "Friends",
+            createdAt: Date(timeIntervalSinceReferenceDate: 10)
+        )
+        let preview = ContactBackupPreview(backup: ContactBackup(groups: [group]))
+
+        #expect(preview.contactCount == 0)
+        #expect(preview.groupCount == 1)
+        #expect(!preview.isEmpty)
+        #expect(preview.summary == "1 group")
+    }
+
     @discardableResult
     private func makePopulatedContact() throws -> Contact {
         let group = try store.createGroup(named: "Work")

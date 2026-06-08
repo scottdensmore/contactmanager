@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 extension ContentView {
     /// The sheets, importers, exporters, and the error alert.
     func handlingFileDialogs(_ content: some View) -> some View {
-        handlingImportAlerts(content
+        let dialogContent = content
             .sheet(isPresented: $showingDuplicates) {
                 DuplicatesView()
             }
@@ -54,11 +54,23 @@ extension ContentView {
                     errorMessage = error.localizedDescription
                 }
             }
+        return handlingImportAlerts(handlingReviewSheets(dialogContent))
+    }
+
+    func handlingReviewSheets(_ content: some View) -> some View {
+        content
             .sheet(isPresented: $isReviewingImport) {
                 ImportReviewView(items: $importReviewItems) { items in
                     Task { await applyImportReview(items) }
                 }
-            })
+            }
+            .sheet(isPresented: $isReviewingRestore, onDismiss: clearPendingRestore) {
+                if let preview = restorePreview {
+                    RestoreBackupPreviewView(preview: preview) {
+                        confirmRestoreBackup()
+                    }
+                }
+            }
     }
 
     func exportSelectedContactAsPDF() {
