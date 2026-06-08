@@ -20,6 +20,7 @@ struct RestoreBackupPreviewView: View {
                     labeledRow("Summary", value: preview.summary)
                     labeledRow("Contacts", value: "\(preview.contactCount)")
                     labeledRow("Groups", value: "\(preview.groupCount)")
+                    labeledRow("Smart Lists", value: "\(preview.savedSmartListCount)")
                     labeledRow("Emails", value: "\(preview.emailCount)")
                     labeledRow("Phones", value: "\(preview.phoneCount)")
                     labeledRow("History Notes", value: "\(preview.historyNoteCount)")

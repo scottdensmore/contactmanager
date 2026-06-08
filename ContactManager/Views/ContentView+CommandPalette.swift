@@ -168,6 +168,18 @@ extension ContentView {
             }
         })
 
+        entries.append(contentsOf: savedSmartLists.map { savedList in
+            command(
+                id: "nav-saved-smart-\(savedList.persistentModelID.storedString ?? savedList.displayName)",
+                title: savedList.displayName,
+                subtitle: "Open saved smart list",
+                keywords: ["navigate", "filter", savedList.query],
+                systemImage: "line.3.horizontal.decrease.circle"
+            ) {
+                sidebarSelection = .savedSmartList(savedList.persistentModelID)
+            }
+        })
+
         entries.append(contentsOf: groups.map { group in
             command(
                 id: "nav-group-\(group.persistentModelID.storedString ?? group.displayName)",

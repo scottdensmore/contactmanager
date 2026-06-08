@@ -387,13 +387,3 @@ struct PendingContactChange {
         return ContactChange(updatedIDs: updatedIDs, deletedIDs: deletedIDs)
     }
 }
-
-enum ContactStoreError: LocalizedError {
-    case nothingToMerge
-
-    var errorDescription: String? {
-        switch self {
-        case .nothingToMerge: "There were no contacts to merge."
-        }
-    }
-}

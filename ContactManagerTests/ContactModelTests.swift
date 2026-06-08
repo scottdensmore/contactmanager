@@ -22,6 +22,7 @@ struct ContactModelTests {
     init() throws {
         container = try ModelContainer(
             for: Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self,
+            ContactSavedSmartList.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
     }
@@ -257,6 +258,17 @@ struct ContactModelTests {
         #expect(recentNames == ["Recent"])
         #expect(followUpNames == ["Old", "No Email"])
         #expect(noEmailNames == ["No Email"])
+    }
+
+    @Test func savedSmartListsFilterBySavedQuery() {
+        let savedList = ContactSavedSmartList(name: "Engine People", query: "engine")
+        let ada = Contact(firstName: "Ada", lastName: "Lovelace", company: "Analytical Engine")
+        let alan = Contact(firstName: "Alan", lastName: "Turing", notes: "Enigma")
+        let contacts = [ada, alan]
+
+        let matches = ContactQuery.filtered(contacts, by: savedList)
+
+        #expect(matches.map(\.firstName) == ["Ada"])
     }
 
     @Test func birthdaysSoonIgnoresStoredYearAndWrapsAcrossYearEnd() throws {

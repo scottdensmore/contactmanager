@@ -9,28 +9,32 @@ import Foundation
 import SwiftData
 
 struct ContactBackup: Codable, Equatable {
-    static let currentVersion = 1
+    static let currentVersion = 2
 
     var version: Int
     var exportedAt: Date
     var groups: [GroupRecord]
+    var savedSmartLists: [SavedSmartListRecord]
     var contacts: [ContactRecord]
 
     init(
         version: Int = Self.currentVersion,
         exportedAt: Date = .now,
         groups: [GroupRecord] = [],
+        savedSmartLists: [SavedSmartListRecord] = [],
         contacts: [ContactRecord] = []
     ) {
         self.version = version
         self.exportedAt = exportedAt
         self.groups = groups
+        self.savedSmartLists = savedSmartLists
         self.contacts = contacts
     }
 
     static func make(
         contacts: [Contact],
         groups: [ContactGroup],
+        savedSmartLists: [ContactSavedSmartList] = [],
         exportedAt: Date = .now
     ) -> ContactBackup {
         let groupIDs = Dictionary(uniqueKeysWithValues: groups.map { group in
@@ -44,6 +48,12 @@ struct ContactBackup: Codable, Equatable {
                     return lhs.createdAt < rhs.createdAt
                 }
                 .map { GroupRecord(id: backupID(for: $0), name: $0.name, createdAt: $0.createdAt) },
+            savedSmartLists: savedSmartLists
+                .sorted { lhs, rhs in
+                    if lhs.displayName != rhs.displayName { return lhs.displayName < rhs.displayName }
+                    return lhs.createdAt < rhs.createdAt
+                }
+                .map { SavedSmartListRecord(name: $0.name, query: $0.query, createdAt: $0.createdAt) },
             contacts: ContactQuery.sorted(contacts).map { contact in
                 ContactRecord(contact: contact, groupIDs: groupIDs)
             }
@@ -53,12 +63,35 @@ struct ContactBackup: Codable, Equatable {
     private static func backupID(for group: ContactGroup) -> String {
         group.persistentModelID.storedString ?? String(describing: group.persistentModelID)
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case version
+        case exportedAt
+        case groups
+        case savedSmartLists
+        case contacts
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        version = try container.decode(Int.self, forKey: .version)
+        exportedAt = try container.decode(Date.self, forKey: .exportedAt)
+        groups = try container.decode([GroupRecord].self, forKey: .groups)
+        savedSmartLists = try container.decodeIfPresent([SavedSmartListRecord].self, forKey: .savedSmartLists) ?? []
+        contacts = try container.decode([ContactRecord].self, forKey: .contacts)
+    }
 }
 
 extension ContactBackup {
     struct GroupRecord: Codable, Equatable, Identifiable {
         var id: String
         var name: String
+        var createdAt: Date
+    }
+
+    struct SavedSmartListRecord: Codable, Equatable {
+        var name: String
+        var query: String
         var createdAt: Date
     }
 

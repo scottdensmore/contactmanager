@@ -11,6 +11,7 @@ struct ContactBackupPreview: Equatable {
     var exportedAt: Date
     var contactCount: Int
     var groupCount: Int
+    var savedSmartListCount: Int
     var emailCount: Int
     var phoneCount: Int
     var historyNoteCount: Int
@@ -18,13 +19,14 @@ struct ContactBackupPreview: Equatable {
     var sampleContactNames: [String]
 
     var isEmpty: Bool {
-        contactCount == 0 && groupCount == 0 && historyNoteCount == 0
+        contactCount == 0 && groupCount == 0 && savedSmartListCount == 0 && historyNoteCount == 0
     }
 
     init(backup: ContactBackup) {
         exportedAt = backup.exportedAt
         contactCount = backup.contacts.count
         groupCount = backup.groups.count
+        savedSmartListCount = backup.savedSmartLists.count
         emailCount = backup.contacts.flatMap(\.fields).filter { $0.kind == .email }.count
         phoneCount = backup.contacts.flatMap(\.fields).filter { $0.kind == .phone }.count
         historyNoteCount = backup.contacts.flatMap(\.interactions).count
@@ -39,6 +41,7 @@ struct ContactBackupPreview: Equatable {
         let parts = [
             count(contactCount, singular: "contact"),
             count(groupCount, singular: "group"),
+            count(savedSmartListCount, singular: "smart list"),
             count(emailCount, singular: "email"),
             count(phoneCount, singular: "phone"),
             count(historyNoteCount, singular: "history note"),

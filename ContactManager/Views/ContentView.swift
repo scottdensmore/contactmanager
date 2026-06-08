@@ -14,13 +14,15 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.undoManager) private var undoManager
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
     @Environment(\.openWindow) var openWindow
 
     @Query(sort: [SortDescriptor(\Contact.lastName), SortDescriptor(\Contact.firstName)])
     var contacts: [Contact]
 
     @Query(sort: \ContactGroup.name) var groups: [ContactGroup]
+
+    @Query(sort: \ContactSavedSmartList.createdAt) var savedSmartLists: [ContactSavedSmartList]
 
     @State var sidebarSelection: SidebarItem? = .allContacts
     @State var selectedContact: Contact?
@@ -32,7 +34,7 @@ struct ContentView: View {
     @State var commandPaletteQuery = ""
     @State var pendingCommandPaletteAction: (() -> Void)?
     @State var importProgress: ImportProgress?
-    @State private var searchText = ""
+    @State var searchText = ""
     @State private var debouncedSearchText = ""
     @AppStorage("contactSortOrder") private var sortOrder: ContactSortOrder = .lastName
     @AppStorage("defaultGroupID") private var defaultGroupID: String = ""
@@ -90,25 +92,27 @@ struct ContentView: View {
     private var groupForNewContact: ContactGroup? {
         switch sidebarSelection {
         case .group: selectedGroup
-        case .allContacts, .smartList, .none: defaultGroup
+        case .allContacts, .smartList, .savedSmartList, .none: defaultGroup
         }
     }
 
     private var scopedContacts: [Contact] {
         if let selectedGroup { return selectedGroup.contacts }
         if let selectedSmartList { return ContactQuery.filtered(contacts, by: selectedSmartList) }
+        if let selectedSavedSmartList { return ContactQuery.filtered(contacts, by: selectedSavedSmartList) }
         return contacts
     }
 
     private var listTitle: String {
         if let selectedGroup { return selectedGroup.displayName }
         if let selectedSmartList { return selectedSmartList.title }
+        if let selectedSavedSmartList { return selectedSavedSmartList.displayName }
         return "Contacts"
     }
 
     private var emptyListTitle: String {
         if selectedGroup != nil { return "No Contacts in Group" }
-        if selectedSmartList != nil { return "No Contacts Match" }
+        if selectedSmartList != nil || selectedSavedSmartList != nil { return "No Contacts Match" }
         return "No Contacts"
     }
 
@@ -149,8 +153,12 @@ struct ContentView: View {
                 selection: $sidebarSelection,
                 contactCount: contacts.count,
                 smartListCounts: smartListCounts,
+                savedSmartLists: savedSmartLists,
+                savedSmartListCounts: savedSmartListCounts,
                 groups: groups,
                 addGroup: addGroup,
+                renameSavedSmartList: renameSavedSmartList,
+                deleteSavedSmartList: deleteSavedSmartList,
                 renameGroup: renameGroup,
                 deleteGroup: deleteGroup,
                 addContacts: addContacts(encodedIDs:to:)
@@ -168,6 +176,7 @@ struct ContentView: View {
                 groups: groups,
                 addContact: addContact,
                 deleteContact: deleteContact,
+                saveCurrentSearch: saveCurrentSearchAsSmartList,
                 exportSelectedContacts: exportSelectedContactsAsVCard,
                 addSelectedContactsToGroup: addSelectedContacts(to:),
                 deleteSelectedContacts: requestDeleteSelectedContacts,
@@ -207,7 +216,7 @@ struct ContentView: View {
     func addContact() {
         do {
             let contact = try store.createContact(in: groupForNewContact)
-            if selectedSmartList != nil { sidebarSelection = .allContacts }
+            if selectedSmartList != nil || selectedSavedSmartList != nil { sidebarSelection = .allContacts }
             contactPendingNameFocus = contact.persistentModelID
             selectedContactIDs = [contact.persistentModelID]
             withAnimation(reduceMotion ? nil : .snappy) { selectedContact = contact }
@@ -370,6 +379,6 @@ private extension ContentView {
 #Preview {
     ContentView()
         .modelContainer(for: [
-            Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self,
+            Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self, ContactSavedSmartList.self,
         ], inMemory: true)
 }

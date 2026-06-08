@@ -120,6 +120,10 @@ enum ContactQuery {
         }
     }
 
+    static func filtered(_ contacts: [Contact], by savedSmartList: ContactSavedSmartList) -> [Contact] {
+        filtered(contacts, matching: savedSmartList.query)
+    }
+
     /// Groups contacts into alphabetical sections by their initial, sorted
     /// within each section. Names that don't start with a letter land in a
     /// trailing "#" section.

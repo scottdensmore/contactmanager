@@ -12,6 +12,7 @@ import SwiftUI
 enum SidebarItem: Hashable {
     case allContacts
     case smartList(ContactSmartList)
+    case savedSmartList(PersistentIdentifier)
     case group(PersistentIdentifier)
 }
 
@@ -21,14 +22,19 @@ struct SidebarView: View {
     @Binding var selection: SidebarItem?
     let contactCount: Int
     let smartListCounts: [ContactSmartList: Int]
+    let savedSmartLists: [ContactSavedSmartList]
+    let savedSmartListCounts: [PersistentIdentifier: Int]
     let groups: [ContactGroup]
     var addGroup: () -> Void
+    var renameSavedSmartList: (ContactSavedSmartList, String) -> Void
+    var deleteSavedSmartList: (ContactSavedSmartList) -> Void
     var renameGroup: (ContactGroup, String) -> Void
     var deleteGroup: (ContactGroup) -> Void
     /// Adds the dropped contacts (by encoded id) to a group — sidebar drag target.
     var addContacts: ([String], ContactGroup) -> Void
 
     @State private var renameTarget: ContactGroup?
+    @State private var renameSavedSmartListTarget: ContactSavedSmartList?
     @State private var renameText = ""
 
     var body: some View {
@@ -46,6 +52,19 @@ struct SidebarView: View {
                         .badge(smartListCounts[smartList] ?? 0)
                         .tag(SidebarItem.smartList(smartList))
                         .accessibilityIdentifier("sidebar-smart-list-row-\(smartList.rawValue)")
+                }
+
+                ForEach(savedSmartLists) { savedList in
+                    Label(savedList.displayName, systemImage: "line.3.horizontal.decrease.circle")
+                        .badge(savedSmartListCounts[savedList.persistentModelID] ?? 0)
+                        .tag(SidebarItem.savedSmartList(savedList.persistentModelID))
+                        .accessibilityIdentifier(
+                            "sidebar-saved-smart-list-row-\(savedList.displayName.normalizedIdentifier)"
+                        )
+                        .contextMenu {
+                            Button("Rename…") { beginRename(savedList) }
+                            Button("Delete", role: .destructive) { deleteSavedSmartList(savedList) }
+                        }
                 }
             }
 
@@ -120,11 +139,29 @@ struct SidebarView: View {
                 renameTarget = nil
             }
         }
+        .alert("Rename Smart List", isPresented: Binding(
+            get: { renameSavedSmartListTarget != nil },
+            set: { if !$0 { renameSavedSmartListTarget = nil } }
+        )) {
+            TextField("Name", text: $renameText)
+            Button("Cancel", role: .cancel) { renameSavedSmartListTarget = nil }
+            Button("Rename") {
+                if let target = renameSavedSmartListTarget {
+                    renameSavedSmartList(target, renameText)
+                }
+                renameSavedSmartListTarget = nil
+            }
+        }
     }
 
     private func beginRename(_ group: ContactGroup) {
         renameText = group.name
         renameTarget = group
+    }
+
+    private func beginRename(_ savedList: ContactSavedSmartList) {
+        renameText = savedList.displayName
+        renameSavedSmartListTarget = savedList
     }
 }
 
