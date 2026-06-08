@@ -27,11 +27,27 @@ enum ImportDecision: String, CaseIterable, Identifiable {
     }
 }
 
+enum ImportMatchConfidence: String {
+    case exact
+    case likely
+    case possible
+
+    var title: String {
+        switch self {
+        case .exact: "Exact match"
+        case .likely: "Likely match"
+        case .possible: "Possible match"
+        }
+    }
+}
+
 struct ImportReviewItem: Identifiable {
     let id = UUID()
     var parsed: ParsedContact
     var matchedContact: Contact?
     var decision: ImportDecision
+    var confidence: ImportMatchConfidence?
+    var matchReason: String?
 
     var displayName: String {
         let name = [parsed.firstName, parsed.lastName]
@@ -58,22 +74,36 @@ enum ImportReview {
     static func makeItems(for parsed: [ParsedContact], existing contacts: [Contact]) -> [ImportReviewItem] {
         parsed.map { parsedContact in
             guard let match = bestMatch(for: parsedContact, in: contacts) else {
-                return ImportReviewItem(parsed: parsedContact, matchedContact: nil, decision: .add)
+                return ImportReviewItem(
+                    parsed: parsedContact,
+                    matchedContact: nil,
+                    decision: .add,
+                    confidence: nil,
+                    matchReason: nil
+                )
             }
+            let decision = defaultDecision(for: parsedContact, matchedContact: match.contact)
             return ImportReviewItem(
                 parsed: parsedContact,
-                matchedContact: match,
-                decision: defaultDecision(for: parsedContact, matchedContact: match)
+                matchedContact: match.contact,
+                decision: decision,
+                confidence: confidence(for: decision, sharedKeys: match.sharedKeys),
+                matchReason: reason(for: match.sharedKeys)
             )
         }
     }
 
-    private static func bestMatch(for parsed: ParsedContact, in contacts: [Contact]) -> Contact? {
+    private static func bestMatch(
+        for parsed: ParsedContact,
+        in contacts: [Contact]
+    ) -> (contact: Contact, sharedKeys: Set<ContactMatchKey>)? {
         let keys = ContactMatchKey.keys(for: parsed)
         guard !keys.isEmpty else { return nil }
-        return ContactQuery.sorted(contacts).first { contact in
-            !DuplicateFinder.matchKeys(for: contact).isDisjoint(with: keys)
+        for contact in ContactQuery.sorted(contacts) {
+            let shared = DuplicateFinder.matchKeys(for: contact).intersection(keys)
+            if !shared.isEmpty { return (contact, shared) }
         }
+        return nil
     }
 
     private static func defaultDecision(
@@ -83,6 +113,22 @@ enum ImportReview {
         if parsed.hasNoNewData(comparedWith: contact) { return .skip }
         if parsed.canFill(contact) { return .updateExisting }
         return .merge
+    }
+
+    private static func confidence(
+        for decision: ImportDecision,
+        sharedKeys: Set<ContactMatchKey>
+    ) -> ImportMatchConfidence {
+        if decision == .skip { return .exact }
+        if sharedKeys.contains(where: \.isStrongMatch) { return .likely }
+        return .possible
+    }
+
+    private static func reason(for sharedKeys: Set<ContactMatchKey>) -> String? {
+        if sharedKeys.contains(where: \.isEmail) { return "same email" }
+        if sharedKeys.contains(where: \.isPhone) { return "same phone" }
+        if sharedKeys.contains(where: \.isName) { return "same full name" }
+        return nil
     }
 }
 
@@ -97,9 +143,32 @@ extension ContactMatchKey {
     }
 }
 
+private extension ContactMatchKey {
+    var isStrongMatch: Bool {
+        isEmail || isPhone
+    }
+
+    var isEmail: Bool {
+        if case .email = self { return true }
+        return false
+    }
+
+    var isPhone: Bool {
+        if case .phone = self { return true }
+        return false
+    }
+
+    var isName: Bool {
+        if case .name = self { return true }
+        return false
+    }
+}
+
 private extension ParsedContact {
     func hasNoNewData(comparedWith contact: Contact) -> Bool {
-        canFill(contact)
+        scalarsAlreadyPresent(comparedWith: contact)
+            && birthdayAlreadyPresent(in: contact)
+            && photoAlreadyPresent(in: contact)
             && emailValues.allSatisfy { existingEmailValues(in: contact).contains($0) }
             && phoneValues.allSatisfy { existingPhoneValues(in: contact).contains($0) }
     }
@@ -113,6 +182,12 @@ private extension ParsedContact {
     private func scalarsAreSameOrFillBlank(comparedWith contact: Contact) -> Bool {
         scalarPairs(comparedWith: contact).allSatisfy { incoming, existing in
             incoming.isBlank || existing.isBlank || incoming.normalizedText == existing.normalizedText
+        }
+    }
+
+    private func scalarsAlreadyPresent(comparedWith contact: Contact) -> Bool {
+        scalarPairs(comparedWith: contact).allSatisfy { incoming, existing in
+            incoming.isBlank || incoming.normalizedText == existing.normalizedText
         }
     }
 
@@ -137,6 +212,14 @@ private extension ParsedContact {
 
     private func photoCanFill(_ contact: Contact) -> Bool {
         photoData == nil || contact.photoData == nil || photoData == contact.photoData
+    }
+
+    private func birthdayAlreadyPresent(in contact: Contact) -> Bool {
+        birthday == nil || birthday == contact.birthday
+    }
+
+    private func photoAlreadyPresent(in contact: Contact) -> Bool {
+        photoData == nil || photoData == contact.photoData
     }
 
     private var emailValues: Set<String> {

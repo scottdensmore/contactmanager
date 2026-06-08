@@ -63,7 +63,7 @@ private struct ImportReviewRow: View {
                         .lineLimit(1)
                 }
                 if let matched = item.matchedContact {
-                    Text("Matches \(matched.fullName)")
+                    Text(matchDescription(matched))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 } else {
@@ -85,6 +85,14 @@ private struct ImportReviewRow: View {
         .padding(.vertical, 4)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("import-review-row-\(item.displayName.normalizedIdentifier)")
+    }
+
+    private func matchDescription(_ matched: Contact) -> String {
+        let confidence = item.confidence?.title ?? "Possible match"
+        if let reason = item.matchReason {
+            return "\(confidence) · \(reason) · \(matched.fullName)"
+        }
+        return "\(confidence) · \(matched.fullName)"
     }
 }
 

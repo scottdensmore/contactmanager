@@ -49,6 +49,7 @@ struct ContentView: View {
     @State private var pdfFilename = "Contact"
     @State var importReviewItems: [ImportReviewItem] = []
     @State var isReviewingImport = false
+    @State var importSummary: ImportReviewResult?
 
     /// Internal so the import handlers in `ContentView+Import.swift` can
     /// reach the same store the main view uses.
@@ -320,7 +321,7 @@ private extension ContentView {
 
     /// The sheets, importers, exporters, and the error alert.
     func handlingFileDialogs(_ content: some View) -> some View {
-        content
+        handlingImportAlerts(content
             .sheet(isPresented: $showingDuplicates) {
                 DuplicatesView()
             }
@@ -354,16 +355,7 @@ private extension ContentView {
                 ImportReviewView(items: $importReviewItems) { items in
                     Task { await applyImportReview(items) }
                 }
-            }
-            .alert(
-                "Something Went Wrong",
-                isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } }),
-                presenting: errorMessage
-            ) { _ in
-                Button("OK", role: .cancel) {}
-            } message: { message in
-                Text(message)
-            }
+            })
     }
 
     // MARK: - Print / PDF

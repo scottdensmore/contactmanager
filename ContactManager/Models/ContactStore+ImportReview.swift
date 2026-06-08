@@ -11,13 +11,20 @@ import Foundation
 extension ContactStore {
     @discardableResult
     func applyImportReview(_ items: [ImportReviewItem]) throws -> ImportReviewResult {
-        try mutate("Import Contacts") {
+        try mutate(importActionName(for: items)) {
             var result = ImportReviewResult()
             for item in items {
                 apply(item, result: &result)
             }
             return result
         }
+    }
+
+    private func importActionName(for items: [ImportReviewItem]) -> String {
+        let count = items.filter { $0.decision != .skip }.count
+        if count == 1 { return "Import 1 Contact" }
+        if count > 1 { return "Import \(count) Contacts" }
+        return "Import Contacts"
     }
 
     private func apply(_ item: ImportReviewItem, result: inout ImportReviewResult) {
@@ -140,4 +147,37 @@ struct ImportReviewResult {
     var skipped = 0
 
     var totalWritten: Int { added + updated + merged }
+
+    var title: String {
+        if totalWritten == 1 { return "Imported 1 Contact" }
+        return "Imported \(totalWritten) Contacts"
+    }
+
+    var message: String {
+        let parts = [
+            count(added, label: "added"),
+            count(updated, label: "updated"),
+            count(merged, label: "merged"),
+            count(skipped, label: "skipped"),
+        ].compactMap(\.self)
+        return parts.joined(separator: ", ").capitalizedIfFirst + "."
+    }
+
+    mutating func add(_ other: ImportReviewResult) {
+        added += other.added
+        updated += other.updated
+        merged += other.merged
+        skipped += other.skipped
+    }
+
+    private func count(_ value: Int, label: String) -> String? {
+        value == 0 ? nil : "\(label) \(value)"
+    }
+}
+
+private extension String {
+    var capitalizedIfFirst: String {
+        guard let first else { return self }
+        return first.uppercased() + dropFirst()
+    }
 }
