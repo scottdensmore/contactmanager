@@ -144,34 +144,38 @@ private struct QuickCapturePreview: View {
     var draft: QuickCaptureDraft
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(draft.displayName)
-                .font(.headline)
-                .lineLimit(1)
-                .accessibilityIdentifier("quick-capture-preview-name")
-            VStack(alignment: .leading, spacing: 4) {
-                ForEach(visiblePreviewItems, id: \.id) { item in
-                    QuickCapturePreviewRow(item: item)
-                }
-                if overflowCount > 0 {
-                    HStack(spacing: 6) {
-                        Image(systemName: "ellipsis.circle")
-                            .accessibilityHidden(true)
-                        Text("+\(overflowCount) more")
-                            .lineLimit(1)
+        HStack(alignment: .top, spacing: 12) {
+            QuickCaptureAvatar(title: draft.displayName)
+            VStack(alignment: .leading, spacing: 8) {
+                Text(draft.displayName)
+                    .font(.headline)
+                    .lineLimit(1)
+                    .accessibilityIdentifier("quick-capture-preview-name")
+                VStack(alignment: .leading, spacing: 5) {
+                    ForEach(visiblePreviewItems, id: \.id) { item in
+                        QuickCapturePreviewRow(item: item)
                     }
-                    .accessibilityLabel("+\(overflowCount) more")
-                    .accessibilityIdentifier("quick-capture-preview-overflow")
+                    if overflowCount > 0 {
+                        HStack(spacing: 6) {
+                            Image(systemName: "ellipsis.circle")
+                                .accessibilityHidden(true)
+                            Text("+\(overflowCount) more")
+                                .lineLimit(1)
+                        }
+                        .accessibilityLabel("+\(overflowCount) more")
+                        .accessibilityIdentifier("quick-capture-preview-overflow")
+                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .accessibilityElement(children: .contain)
+                .accessibilityIdentifier("quick-capture-preview-details")
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .font(.subheadline)
-            .foregroundStyle(.secondary)
-            .accessibilityElement(children: .contain)
-            .accessibilityIdentifier("quick-capture-preview-details")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.vertical, 4)
+        .padding(10)
+        .background(.background.secondary.opacity(0.6), in: RoundedRectangle(cornerRadius: 8))
     }
 
     private var visiblePreviewItems: [QuickCapturePreviewItem] {
@@ -184,7 +188,14 @@ private struct QuickCapturePreview: View {
 
     private var previewItems: [QuickCapturePreviewItem] {
         var items: [QuickCapturePreviewItem] = []
-        if !draft.company.isBlank {
+        if let roleLine {
+            items.append(.init(
+                id: "role",
+                title: roleLine,
+                systemImage: "briefcase",
+                accessibilityIdentifier: "quick-capture-preview-role"
+            ))
+        } else if !draft.company.isBlank {
             items.append(.init(
                 id: "company",
                 title: draft.company,
@@ -233,6 +244,42 @@ private struct QuickCapturePreview: View {
             )
         })
         return items
+    }
+
+    private var roleLine: String? {
+        let jobTitle = draft.jobTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !jobTitle.isEmpty else { return nil }
+        let line = [draft.jobTitle, draft.company]
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+            .joined(separator: " · ")
+        return line.isEmpty ? nil : line
+    }
+}
+
+private struct QuickCaptureAvatar: View {
+    var title: String
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(.tint.opacity(0.16))
+            Text(initials)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.tint)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+        }
+        .frame(width: 34, height: 34)
+        .accessibilityHidden(true)
+    }
+
+    private var initials: String {
+        let words = title.split(separator: " ")
+        let first = words.first?.first.map(String.init) ?? ""
+        let second = words.dropFirst().first?.first.map(String.init) ?? ""
+        let value = (first + second).uppercased()
+        return value.isEmpty ? "#" : value
     }
 }
 

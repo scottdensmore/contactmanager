@@ -227,18 +227,17 @@ final class ContactManagerUITests: XCTestCase {
         XCTAssertTrue(entry.waitForExistence(timeout: 3))
         entry.click()
         entry.typeText(
-            "Preview Person, home email home@example.com, work email work@example.com, " +
-                "mobile 555-0101, home phone 555-0102, tag VIP, group Friends"
+            "Preview Person at Preview Labs, title Designer, " +
+                "home email home@example.com, mobile 555-0101, tag VIP, group Friends"
         )
 
         let details = app.descendants(matching: .any)["quick-capture-preview-details"]
         XCTAssertTrue(details.waitForExistence(timeout: 3))
 
         let expectedRows = [
+            ("quick-capture-preview-role", "Designer · Preview Labs"),
             ("quick-capture-preview-email-0", "Home: home@example.com"),
-            ("quick-capture-preview-email-1", "Work: work@example.com"),
             ("quick-capture-preview-phone-0", "Mobile: 555-0101"),
-            ("quick-capture-preview-phone-1", "Home: 555-0102"),
             ("quick-capture-preview-tag-0", "VIP"),
             ("quick-capture-preview-group-0", "Friends"),
         ]
