@@ -41,6 +41,14 @@ extension ContentView {
         }
     }
 
+    func addSelectedContacts(to tag: ContactTag) {
+        do {
+            _ = try store.addContacts(selectedContacts, to: tag)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
     private func shouldClearDetail(afterDeleting deleted: [Contact]) -> Bool {
         guard let selectedContact else { return false }
         return deleted.contains { contact in

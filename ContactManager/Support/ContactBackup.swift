@@ -9,11 +9,12 @@ import Foundation
 import SwiftData
 
 struct ContactBackup: Codable, Equatable {
-    static let currentVersion = 2
+    static let currentVersion = 3
 
     var version: Int
     var exportedAt: Date
     var groups: [GroupRecord]
+    var tags: [TagRecord]
     var savedSmartLists: [SavedSmartListRecord]
     var contacts: [ContactRecord]
 
@@ -21,12 +22,14 @@ struct ContactBackup: Codable, Equatable {
         version: Int = Self.currentVersion,
         exportedAt: Date = .now,
         groups: [GroupRecord] = [],
+        tags: [TagRecord] = [],
         savedSmartLists: [SavedSmartListRecord] = [],
         contacts: [ContactRecord] = []
     ) {
         self.version = version
         self.exportedAt = exportedAt
         self.groups = groups
+        self.tags = tags
         self.savedSmartLists = savedSmartLists
         self.contacts = contacts
     }
@@ -34,11 +37,15 @@ struct ContactBackup: Codable, Equatable {
     static func make(
         contacts: [Contact],
         groups: [ContactGroup],
+        tags: [ContactTag] = [],
         savedSmartLists: [ContactSavedSmartList] = [],
         exportedAt: Date = .now
     ) -> ContactBackup {
         let groupIDs = Dictionary(uniqueKeysWithValues: groups.map { group in
             (group.persistentModelID, backupID(for: group))
+        })
+        let tagIDs = Dictionary(uniqueKeysWithValues: tags.map { tag in
+            (tag.persistentModelID, backupID(for: tag))
         })
         return ContactBackup(
             exportedAt: exportedAt,
@@ -48,6 +55,12 @@ struct ContactBackup: Codable, Equatable {
                     return lhs.createdAt < rhs.createdAt
                 }
                 .map { GroupRecord(id: backupID(for: $0), name: $0.name, createdAt: $0.createdAt) },
+            tags: tags
+                .sorted { lhs, rhs in
+                    if lhs.displayName != rhs.displayName { return lhs.displayName < rhs.displayName }
+                    return lhs.createdAt < rhs.createdAt
+                }
+                .map { TagRecord(id: backupID(for: $0), name: $0.name, createdAt: $0.createdAt) },
             savedSmartLists: savedSmartLists
                 .sorted { lhs, rhs in
                     if lhs.displayName != rhs.displayName { return lhs.displayName < rhs.displayName }
@@ -55,7 +68,7 @@ struct ContactBackup: Codable, Equatable {
                 }
                 .map { SavedSmartListRecord(name: $0.name, query: $0.query, createdAt: $0.createdAt) },
             contacts: ContactQuery.sorted(contacts).map { contact in
-                ContactRecord(contact: contact, groupIDs: groupIDs)
+                ContactRecord(contact: contact, groupIDs: groupIDs, tagIDs: tagIDs)
             }
         )
     }
@@ -64,10 +77,15 @@ struct ContactBackup: Codable, Equatable {
         group.persistentModelID.storedString ?? String(describing: group.persistentModelID)
     }
 
+    private static func backupID(for tag: ContactTag) -> String {
+        tag.persistentModelID.storedString ?? String(describing: tag.persistentModelID)
+    }
+
     private enum CodingKeys: String, CodingKey {
         case version
         case exportedAt
         case groups
+        case tags
         case savedSmartLists
         case contacts
     }
@@ -77,6 +95,7 @@ struct ContactBackup: Codable, Equatable {
         version = try container.decode(Int.self, forKey: .version)
         exportedAt = try container.decode(Date.self, forKey: .exportedAt)
         groups = try container.decode([GroupRecord].self, forKey: .groups)
+        tags = try container.decodeIfPresent([TagRecord].self, forKey: .tags) ?? []
         savedSmartLists = try container.decodeIfPresent([SavedSmartListRecord].self, forKey: .savedSmartLists) ?? []
         contacts = try container.decode([ContactRecord].self, forKey: .contacts)
     }
@@ -84,6 +103,12 @@ struct ContactBackup: Codable, Equatable {
 
 extension ContactBackup {
     struct GroupRecord: Codable, Equatable, Identifiable {
+        var id: String
+        var name: String
+        var createdAt: Date
+    }
+
+    struct TagRecord: Codable, Equatable, Identifiable {
         var id: String
         var name: String
         var createdAt: Date
@@ -113,9 +138,14 @@ extension ContactBackup {
         var photoData: Data?
         var fields: [FieldRecord]
         var groupIDs: [String]
+        var tagIDs: [String]
         var interactions: [InteractionRecord]
 
-        init(contact: Contact, groupIDs: [PersistentIdentifier: String]) {
+        init(
+            contact: Contact,
+            groupIDs: [PersistentIdentifier: String],
+            tagIDs: [PersistentIdentifier: String]
+        ) {
             id = contact.persistentModelID.storedString ?? String(describing: contact.persistentModelID)
             firstName = contact.firstName
             lastName = contact.lastName
@@ -138,7 +168,54 @@ extension ContactBackup {
                 }
                 .map(FieldRecord.init(field:))
             self.groupIDs = contact.groups.compactMap { groupIDs[$0.persistentModelID] }.sorted()
+            self.tagIDs = contact.tags.compactMap { tagIDs[$0.persistentModelID] }.sorted()
             interactions = contact.sortedInteractions.map(InteractionRecord.init(interaction:))
+        }
+
+        // swiftlint:disable:next nesting
+        private enum CodingKeys: String, CodingKey {
+            case id
+            case firstName
+            case lastName
+            case company
+            case jobTitle
+            case street
+            case city
+            case state
+            case postalCode
+            case country
+            case birthday
+            case lastContactedAt
+            case notes
+            case createdAt
+            case photoData
+            case fields
+            case groupIDs
+            case tagIDs
+            case interactions
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            id = try container.decode(String.self, forKey: .id)
+            firstName = try container.decode(String.self, forKey: .firstName)
+            lastName = try container.decode(String.self, forKey: .lastName)
+            company = try container.decode(String.self, forKey: .company)
+            jobTitle = try container.decode(String.self, forKey: .jobTitle)
+            street = try container.decode(String.self, forKey: .street)
+            city = try container.decode(String.self, forKey: .city)
+            state = try container.decode(String.self, forKey: .state)
+            postalCode = try container.decode(String.self, forKey: .postalCode)
+            country = try container.decode(String.self, forKey: .country)
+            birthday = try container.decodeIfPresent(Date.self, forKey: .birthday)
+            lastContactedAt = try container.decodeIfPresent(Date.self, forKey: .lastContactedAt)
+            notes = try container.decode(String.self, forKey: .notes)
+            createdAt = try container.decode(Date.self, forKey: .createdAt)
+            photoData = try container.decodeIfPresent(Data.self, forKey: .photoData)
+            fields = try container.decode([FieldRecord].self, forKey: .fields)
+            groupIDs = try container.decode([String].self, forKey: .groupIDs)
+            tagIDs = try container.decodeIfPresent([String].self, forKey: .tagIDs) ?? []
+            interactions = try container.decode([InteractionRecord].self, forKey: .interactions)
         }
     }
 

@@ -23,6 +23,7 @@ struct ContactDetailView: View {
     var onNameFieldFocused: () -> Void = {}
     var markContacted: (Contact) -> Void = { _ in }
     @Query(sort: \ContactGroup.name) private var allGroups: [ContactGroup]
+    @Query(sort: \ContactTag.name) private var allTags: [ContactTag]
     @State private var isImportingPhoto = false
     // Not private: the photo handlers in ContactDetailView+Photo.swift read them.
     @State var errorMessage: String?
@@ -120,6 +121,18 @@ struct ContactDetailView: View {
                 } else {
                     ForEach(allGroups) { group in
                         Toggle(group.displayName, isOn: membership(in: group))
+                    }
+                }
+            }
+
+            Section("Tags") {
+                if allTags.isEmpty {
+                    Text("No tags yet. Create one in the sidebar.")
+                        .foregroundStyle(.secondary)
+                } else {
+                    ForEach(allTags) { tag in
+                        Toggle(tag.displayName, isOn: tagMembership(in: tag))
+                            .accessibilityIdentifier("contact-tag-toggle-\(tag.displayName.normalizedIdentifier)")
                     }
                 }
             }
@@ -287,15 +300,30 @@ struct ContactDetailView: View {
             errorMessage = error.localizedDescription
         }
     }
+}
 
-    // MARK: - Group membership
+private extension ContactDetailView {
+    // MARK: - Organization membership
 
-    private func membership(in group: ContactGroup) -> Binding<Bool> {
+    func membership(in group: ContactGroup) -> Binding<Bool> {
         Binding(
             get: { contact.groups.contains { $0.persistentModelID == group.persistentModelID } },
             set: { isMember in
                 do {
                     try store.setMembership(of: contact, in: group, isMember: isMember)
+                } catch {
+                    errorMessage = error.localizedDescription
+                }
+            }
+        )
+    }
+
+    func tagMembership(in tag: ContactTag) -> Binding<Bool> {
+        Binding(
+            get: { contact.tags.contains { $0.persistentModelID == tag.persistentModelID } },
+            set: { isMember in
+                do {
+                    try store.setMembership(of: contact, in: tag, isMember: isMember)
                 } catch {
                     errorMessage = error.localizedDescription
                 }
@@ -338,6 +366,14 @@ private extension ContactDetailView {
             get: { contact.birthday ?? .now },
             set: { contact.birthday = $0 }
         )
+    }
+}
+
+private extension String {
+    var normalizedIdentifier: String {
+        lowercased()
+            .map { $0.isLetter || $0.isNumber ? String($0) : "-" }
+            .joined()
     }
 }
 

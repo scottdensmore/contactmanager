@@ -19,11 +19,13 @@ struct ContactListView: View {
     @Binding var selection: Contact?
     @Binding var selectionIDs: Set<PersistentIdentifier>
     let groups: [ContactGroup]
+    let tags: [ContactTag]
     var addContact: () -> Void
     var deleteContact: (Contact) -> Void
     var saveCurrentSearch: () -> Void
     var exportSelectedContacts: () -> Void
     var addSelectedContactsToGroup: (ContactGroup) -> Void
+    var addSelectedContactsToTag: (ContactTag) -> Void
     var deleteSelectedContacts: () -> Void
     /// Called when a `.vcf` file is dropped onto the list from Finder.
     var importVCardURLs: ([URL]) -> Void
@@ -126,6 +128,18 @@ struct ContactListView: View {
                         }
                     }
                     .accessibilityIdentifier("batch-add-to-group-menu")
+                    Menu("Add to Tag") {
+                        if tags.isEmpty {
+                            Text("No Tags")
+                        } else {
+                            ForEach(tags) { tag in
+                                Button(tag.displayName) {
+                                    addSelectedContactsToTag(tag)
+                                }
+                            }
+                        }
+                    }
+                    .accessibilityIdentifier("batch-add-to-tag-menu")
                     Divider()
                     Button("Delete", role: .destructive, action: deleteSelectedContacts)
                         .accessibilityIdentifier("batch-delete-button")

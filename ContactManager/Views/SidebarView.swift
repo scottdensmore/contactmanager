@@ -14,6 +14,7 @@ enum SidebarItem: Hashable {
     case smartList(ContactSmartList)
     case savedSmartList(PersistentIdentifier)
     case group(PersistentIdentifier)
+    case tag(PersistentIdentifier)
 }
 
 struct SidebarView: View {
@@ -25,15 +26,22 @@ struct SidebarView: View {
     let savedSmartLists: [ContactSavedSmartList]
     let savedSmartListCounts: [PersistentIdentifier: Int]
     let groups: [ContactGroup]
+    let tags: [ContactTag]
     var addGroup: () -> Void
+    var addTag: () -> Void
     var renameSavedSmartList: (ContactSavedSmartList, String) -> Void
     var deleteSavedSmartList: (ContactSavedSmartList) -> Void
     var renameGroup: (ContactGroup, String) -> Void
     var deleteGroup: (ContactGroup) -> Void
+    var renameTag: (ContactTag, String) -> Void
+    var deleteTag: (ContactTag) -> Void
     /// Adds the dropped contacts (by encoded id) to a group — sidebar drag target.
-    var addContacts: ([String], ContactGroup) -> Void
+    var addContactsToGroup: ([String], ContactGroup) -> Void
+    /// Adds the dropped contacts (by encoded id) to a tag — sidebar drag target.
+    var addContactsToTag: ([String], ContactTag) -> Void
 
     @State private var renameTarget: ContactGroup?
+    @State private var renameTagTarget: ContactTag?
     @State private var renameSavedSmartListTarget: ContactSavedSmartList?
     @State private var renameText = ""
 
@@ -90,7 +98,32 @@ struct SidebarView: View {
                             .dropDestination(for: String.self) { ids, _ in
                                 let valid = ids.filter { PersistentIdentifier.decode(stored: $0) != nil }
                                 guard !valid.isEmpty else { return false }
-                                addContacts(valid, group)
+                                addContactsToGroup(valid, group)
+                                return true
+                            }
+                    }
+                }
+            }
+
+            Section("Tags") {
+                if tags.isEmpty {
+                    Text("Use the tag button above to add one.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                } else {
+                    ForEach(tags) { tag in
+                        Label(tag.displayName, systemImage: "tag")
+                            .badge(tag.contacts.count)
+                            .tag(SidebarItem.tag(tag.persistentModelID))
+                            .accessibilityIdentifier("sidebar-tag-row-\(tag.displayName.normalizedIdentifier)")
+                            .contextMenu {
+                                Button("Rename…") { beginRename(tag) }
+                                Button("Delete", role: .destructive) { deleteTag(tag) }
+                            }
+                            .dropDestination(for: String.self) { ids, _ in
+                                let valid = ids.filter { PersistentIdentifier.decode(stored: $0) != nil }
+                                guard !valid.isEmpty else { return false }
+                                addContactsToTag(valid, tag)
                                 return true
                             }
                     }
@@ -111,7 +144,7 @@ struct SidebarView: View {
                 .accessibilityIdentifier("sidebar-sync-status")
             }
         }
-        .navigationTitle("Groups")
+        .navigationTitle("Contacts")
         .navigationSplitViewColumnWidth(
             min: LayoutMetrics.sidebarMinWidth,
             ideal: LayoutMetrics.sidebarIdealWidth,
@@ -121,11 +154,19 @@ struct SidebarView: View {
             // `.primaryAction` keeps + visible at every window width;
             // the default `.automatic` placement lets the chevron eat it.
             ToolbarItem(placement: .primaryAction) {
-                Button(action: addGroup) {
-                    Label("New Group", systemImage: "folder.badge.plus")
+                HStack(spacing: 8) {
+                    Button(action: addGroup) {
+                        Label("New Group", systemImage: "folder.badge.plus")
+                    }
+                    .help("New Group")
+                    .accessibilityIdentifier("new-group-button")
+
+                    Button(action: addTag) {
+                        Label("New Tag", systemImage: "tag")
+                    }
+                    .help("New Tag")
+                    .accessibilityIdentifier("new-tag-button")
                 }
-                .help("New Group")
-                .accessibilityIdentifier("new-group-button")
             }
         }
         .alert("Rename Group", isPresented: Binding(
@@ -152,11 +193,27 @@ struct SidebarView: View {
                 renameSavedSmartListTarget = nil
             }
         }
+        .alert("Rename Tag", isPresented: Binding(
+            get: { renameTagTarget != nil },
+            set: { if !$0 { renameTagTarget = nil } }
+        )) {
+            TextField("Name", text: $renameText)
+            Button("Cancel", role: .cancel) { renameTagTarget = nil }
+            Button("Rename") {
+                if let target = renameTagTarget { renameTag(target, renameText) }
+                renameTagTarget = nil
+            }
+        }
     }
 
     private func beginRename(_ group: ContactGroup) {
         renameText = group.name
         renameTarget = group
+    }
+
+    private func beginRename(_ tag: ContactTag) {
+        renameText = tag.name
+        renameTagTarget = tag
     }
 
     private func beginRename(_ savedList: ContactSavedSmartList) {

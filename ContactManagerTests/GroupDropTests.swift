@@ -3,7 +3,7 @@
 //  ContactManagerTests
 //
 //  Covers `ContactStore.addContacts(withEncodedIDs:to:)` — the data path
-//  behind dragging contacts from the list onto a sidebar group.
+//  behind dragging contacts from the list onto a sidebar group or tag.
 //
 
 @testable import ContactManager
@@ -20,6 +20,7 @@ struct GroupDropTests {
     init() throws {
         container = try ModelContainer(
             for: Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self,
+            ContactTag.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
         store = ContactStore(container.mainContext)
@@ -52,5 +53,16 @@ struct GroupDropTests {
     @Test func isANoOpForEmptyInput() throws {
         let group = try store.createGroup(named: "Work")
         #expect(try store.addContacts(withEncodedIDs: [], to: group) == 0)
+    }
+
+    @Test func addsDroppedContactsToTheTag() throws {
+        let tag = try store.createTag(named: "VIP")
+        let ada = try store.createContact()
+        let alan = try store.createContact()
+        let ids = try [ada, alan].map { try #require($0.persistentModelID.storedString) }
+
+        let added = try store.addContacts(withEncodedIDs: ids, to: tag)
+        #expect(added == 2)
+        #expect(Set(tag.contacts.map(\.persistentModelID)) == [ada.persistentModelID, alan.persistentModelID])
     }
 }

@@ -22,7 +22,7 @@ struct ContactModelTests {
     init() throws {
         container = try ModelContainer(
             for: Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self,
-            ContactSavedSmartList.self,
+            ContactSavedSmartList.self, ContactTag.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
     }
@@ -75,6 +75,34 @@ struct ContactModelTests {
         #expect(try context.fetchCount(FetchDescriptor<Contact>()) == 1)
         #expect(try context.fetchCount(FetchDescriptor<ContactGroup>()) == 0)
         #expect(contact.groups.isEmpty)
+    }
+
+    @Test func contactTagMembershipIsTracked() throws {
+        let tag = ContactTag(name: "VIP")
+        let contact = Contact(firstName: "Ada", lastName: "Lovelace")
+        contact.tags = [tag]
+        context.insert(tag)
+        context.insert(contact)
+        try context.save()
+
+        #expect(tag.contacts.count == 1)
+        #expect(contact.tags.first?.name == "VIP")
+    }
+
+    @Test func deletingTagKeepsContactsButClearsMembership() throws {
+        let tag = ContactTag(name: "VIP")
+        let contact = Contact(firstName: "Ada", lastName: "Lovelace")
+        contact.tags = [tag]
+        context.insert(tag)
+        context.insert(contact)
+        try context.save()
+
+        context.delete(tag)
+        try context.save()
+
+        #expect(try context.fetchCount(FetchDescriptor<Contact>()) == 1)
+        #expect(try context.fetchCount(FetchDescriptor<ContactTag>()) == 0)
+        #expect(contact.tags.isEmpty)
     }
 
     @Test func deletingContactCascadesToItsFields() throws {

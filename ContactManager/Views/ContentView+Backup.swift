@@ -12,6 +12,7 @@ extension ContentView {
         backupDocument = ContactBackupDocument(backup: ContactBackup.make(
             contacts: contacts,
             groups: groups,
+            tags: tags,
             savedSmartLists: savedSmartLists
         ))
         isExportingBackup = true
@@ -19,7 +20,12 @@ extension ContentView {
 
     func exportEncryptedBackup(password: String) -> Bool {
         do {
-            let backup = ContactBackup.make(contacts: contacts, groups: groups, savedSmartLists: savedSmartLists)
+            let backup = ContactBackup.make(
+                contacts: contacts,
+                groups: groups,
+                tags: tags,
+                savedSmartLists: savedSmartLists
+            )
             let data = try EncryptedContactBackupDocument.encode(backup, password: password)
             encryptedBackupDocument = EncryptedContactBackupDocument(data: data)
             isPreparingEncryptedBackup = false
