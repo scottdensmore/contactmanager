@@ -13,12 +13,20 @@ extension ContactStore {
         try mutate("Restore Backup") {
             var result = BackupRestoreResult()
             var restoredGroups: [String: ContactGroup] = [:]
+            var restoredTags: [String: ContactTag] = [:]
 
             for record in backup.groups {
                 let group = ContactGroup(name: record.name, createdAt: record.createdAt)
                 context.insert(group)
                 restoredGroups[record.id] = group
                 result.groupsRestored += 1
+            }
+
+            for record in backup.tags {
+                let tag = ContactTag(name: record.name, createdAt: record.createdAt)
+                context.insert(tag)
+                restoredTags[record.id] = tag
+                result.tagsRestored += 1
             }
 
             for record in backup.savedSmartLists {
@@ -35,6 +43,7 @@ extension ContactStore {
                 let contact = Contact(record)
                 contact.photoData = record.photoData
                 contact.groups = record.groupIDs.compactMap { restoredGroups[$0] }
+                contact.tags = record.tagIDs.compactMap { restoredTags[$0] }
                 context.insert(contact)
                 restoreFields(record.fields, to: contact)
                 restoreInteractions(record.interactions, to: contact)
@@ -91,6 +100,7 @@ private extension Contact {
 struct BackupRestoreResult {
     var contactsRestored = 0
     var groupsRestored = 0
+    var tagsRestored = 0
     var savedSmartListsRestored = 0
     var interactionsRestored = 0
 
@@ -103,11 +113,12 @@ struct BackupRestoreResult {
         let parts = [
             count(contactsRestored, label: "contacts"),
             count(groupsRestored, label: "groups"),
+            count(tagsRestored, label: "tags"),
             count(savedSmartListsRestored, label: "smart lists"),
             count(interactionsRestored, label: "history notes"),
         ].compactMap(\.self)
         if parts.isEmpty {
-            return "No contacts, groups, smart lists, or history notes restored."
+            return "No contacts, groups, tags, smart lists, or history notes restored."
         }
         return parts.joined(separator: ", ").capitalizedIfFirst + "."
     }

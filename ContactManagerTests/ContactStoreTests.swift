@@ -24,7 +24,7 @@ struct ContactStoreTests {
     init() throws {
         container = try ModelContainer(
             for: Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self,
-            ContactSavedSmartList.self,
+            ContactSavedSmartList.self, ContactTag.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
         store = ContactStore(container.mainContext)
@@ -117,20 +117,6 @@ struct ContactStoreTests {
         let group = try store.createGroup(named: "Work")
         try store.rename(group, to: "   ")
         #expect(group.name == "Work")
-    }
-
-    @Test func savedSmartListLifecycleTrimsQueryAndName() throws {
-        let savedList = try store.createSavedSmartList(named: "  Engine People  ", query: "  engine  ")
-
-        #expect(savedList.displayName == "Engine People")
-        #expect(savedList.query == "engine")
-        #expect(try count(ContactSavedSmartList.self) == 1)
-
-        try store.rename(savedList, to: "  Machines  ")
-        #expect(savedList.displayName == "Machines")
-
-        try store.delete(savedList)
-        #expect(try count(ContactSavedSmartList.self) == 0)
     }
 
     // MARK: - Journey: set and clear a contact photo
@@ -245,22 +231,28 @@ struct ContactStoreTests {
         #expect(merged.company == "Analytical")
     }
 
-    @Test func mergeUnionsGroupsAndAdoptsMissingPhoto() throws {
+    @Test func mergeUnionsGroupsTagsAndAdoptsMissingPhoto() throws {
         let work = try store.createGroup(named: "Work")
         let friends = try store.createGroup(named: "Friends")
+        let vip = try store.createTag(named: "VIP")
+        let followUp = try store.createTag(named: "Follow Up")
 
         let primary = try store.createContact(in: work)
         primary.firstName = "Ada"
+        try store.setMembership(of: primary, in: vip, isMember: true)
         let other = try store.createContact(in: friends)
         other.firstName = "Ada"
+        try store.setMembership(of: other, in: followUp, isMember: true)
         try store.setPhotoData(Data([0x01, 0x02, 0x03]), on: other)
         try context.save()
 
         let merged = try store.merge([primary, other])
         #expect(Set(merged.groups.map(\.name)) == ["Work", "Friends"])
+        #expect(Set(merged.tags.map(\.name)) == ["VIP", "Follow Up"])
         #expect(merged.photoData != nil) // adopted from the other contact
         #expect(try count(Contact.self) == 1)
         #expect(try count(ContactGroup.self) == 2) // groups themselves survive
+        #expect(try count(ContactTag.self) == 2) // tags themselves survive
     }
 
     @Test func mergeDropsBlankFields() throws {

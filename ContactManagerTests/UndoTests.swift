@@ -22,6 +22,7 @@ struct UndoTests {
     init() throws {
         container = try ModelContainer(
             for: Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self,
+            ContactTag.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
         undoManager = UndoManager()

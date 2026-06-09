@@ -20,6 +20,7 @@ struct ContactManagerApp: App {
         ContactGroup.self,
         ContactInteraction.self,
         ContactSavedSmartList.self,
+        ContactTag.self,
     ]
 
     init() {

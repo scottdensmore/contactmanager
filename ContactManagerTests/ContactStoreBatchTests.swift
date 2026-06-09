@@ -19,6 +19,7 @@ struct ContactStoreBatchTests {
     init() throws {
         container = try ModelContainer(
             for: Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self,
+            ContactTag.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
         store = ContactStore(container.mainContext)
@@ -57,6 +58,23 @@ struct ContactStoreBatchTests {
 
         #expect(added == 2)
         #expect(Set(group.contacts.map(\.persistentModelID)) == [
+            ada.persistentModelID,
+            alan.persistentModelID,
+            grace.persistentModelID,
+        ])
+    }
+
+    @Test func batchAssignAddsSelectedContactsToTag() throws {
+        let tag = try store.createTag(named: "VIP")
+        let ada = try store.createContact()
+        let alan = try store.createContact()
+        let grace = try store.createContact()
+        try store.setMembership(of: alan, in: tag, isMember: true)
+
+        let added = try store.addContacts([ada, alan, grace], to: tag)
+
+        #expect(added == 2)
+        #expect(Set(tag.contacts.map(\.persistentModelID)) == [
             ada.persistentModelID,
             alan.persistentModelID,
             grace.persistentModelID,

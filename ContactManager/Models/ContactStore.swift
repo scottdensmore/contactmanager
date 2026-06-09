@@ -162,6 +162,7 @@ struct ContactStore {
             for other in others {
                 fillEmptyFields(of: primary, from: other)
                 adoptGroups(into: primary, from: other)
+                adoptTags(into: primary, from: other)
                 adoptInteractions(into: primary, from: other)
             }
             mergeFields(into: primary, from: Array(others))

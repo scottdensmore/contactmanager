@@ -22,6 +22,8 @@ struct ContentView: View {
 
     @Query(sort: \ContactGroup.name) var groups: [ContactGroup]
 
+    @Query(sort: \ContactTag.name) var tags: [ContactTag]
+
     @Query(sort: \ContactSavedSmartList.createdAt) var savedSmartLists: [ContactSavedSmartList]
 
     @State var sidebarSelection: SidebarItem? = .allContacts
@@ -70,6 +72,11 @@ struct ContentView: View {
         return groups.first { $0.persistentModelID == id }
     }
 
+    private var selectedTag: ContactTag? {
+        guard case .tag(let id) = sidebarSelection else { return nil }
+        return tags.first { $0.persistentModelID == id }
+    }
+
     private var selectedSmartList: ContactSmartList? {
         guard case .smartList(let smartList) = sidebarSelection else { return nil }
         return smartList
@@ -92,12 +99,13 @@ struct ContentView: View {
     private var groupForNewContact: ContactGroup? {
         switch sidebarSelection {
         case .group: selectedGroup
-        case .allContacts, .smartList, .savedSmartList, .none: defaultGroup
+        case .allContacts, .smartList, .savedSmartList, .tag, .none: defaultGroup
         }
     }
 
     private var scopedContacts: [Contact] {
         if let selectedGroup { return selectedGroup.contacts }
+        if let selectedTag { return selectedTag.contacts }
         if let selectedSmartList { return ContactQuery.filtered(contacts, by: selectedSmartList) }
         if let selectedSavedSmartList { return ContactQuery.filtered(contacts, by: selectedSavedSmartList) }
         return contacts
@@ -105,6 +113,7 @@ struct ContentView: View {
 
     private var listTitle: String {
         if let selectedGroup { return selectedGroup.displayName }
+        if let selectedTag { return selectedTag.displayName }
         if let selectedSmartList { return selectedSmartList.title }
         if let selectedSavedSmartList { return selectedSavedSmartList.displayName }
         return "Contacts"
@@ -112,6 +121,7 @@ struct ContentView: View {
 
     private var emptyListTitle: String {
         if selectedGroup != nil { return "No Contacts in Group" }
+        if selectedTag != nil { return "No Contacts with Tag" }
         if selectedSmartList != nil || selectedSavedSmartList != nil { return "No Contacts Match" }
         return "No Contacts"
     }
@@ -156,12 +166,17 @@ struct ContentView: View {
                 savedSmartLists: savedSmartLists,
                 savedSmartListCounts: savedSmartListCounts,
                 groups: groups,
+                tags: tags,
                 addGroup: addGroup,
+                addTag: addTag,
                 renameSavedSmartList: renameSavedSmartList,
                 deleteSavedSmartList: deleteSavedSmartList,
                 renameGroup: renameGroup,
                 deleteGroup: deleteGroup,
-                addContacts: addContacts(encodedIDs:to:)
+                renameTag: renameTag,
+                deleteTag: deleteTag,
+                addContactsToGroup: addContacts(encodedIDs:to:),
+                addContactsToTag: addContacts(encodedIDs:to:)
             )
         } content: {
             ContactListView(
@@ -174,11 +189,13 @@ struct ContentView: View {
                 selection: $selectedContact,
                 selectionIDs: $selectedContactIDs,
                 groups: groups,
+                tags: tags,
                 addContact: addContact,
                 deleteContact: deleteContact,
                 saveCurrentSearch: saveCurrentSearchAsSmartList,
                 exportSelectedContacts: exportSelectedContactsAsVCard,
                 addSelectedContactsToGroup: addSelectedContacts(to:),
+                addSelectedContactsToTag: addSelectedContacts(to:),
                 deleteSelectedContacts: requestDeleteSelectedContacts,
                 importVCardURLs: importVCardURLs
             )
@@ -216,6 +233,9 @@ struct ContentView: View {
     func addContact() {
         do {
             let contact = try store.createContact(in: groupForNewContact)
+            if let selectedTag {
+                try store.setMembership(of: contact, in: selectedTag, isMember: true)
+            }
             if selectedSmartList != nil || selectedSavedSmartList != nil { sidebarSelection = .allContacts }
             contactPendingNameFocus = contact.persistentModelID
             selectedContactIDs = [contact.persistentModelID]
@@ -244,43 +264,6 @@ struct ContentView: View {
         }
     }
 
-    // MARK: - Group actions
-
-    private func addGroup() {
-        do {
-            let group = try store.createGroup()
-            withAnimation(reduceMotion ? nil : .snappy) { sidebarSelection = .group(group.persistentModelID) }
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-    }
-
-    private func addContacts(encodedIDs ids: [String], to group: ContactGroup) {
-        do {
-            try store.addContacts(withEncodedIDs: ids, to: group)
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-    }
-
-    private func renameGroup(_ group: ContactGroup, to name: String) {
-        do {
-            try store.rename(group, to: name)
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-    }
-
-    private func deleteGroup(_ group: ContactGroup) {
-        let wasSelected = sidebarSelection == .group(group.persistentModelID)
-        do {
-            try store.delete(group)
-            if wasSelected { sidebarSelection = .allContacts }
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-    }
-
     // MARK: - Open by ID (Spotlight + App Intents)
 
     private func selectContact(byEncodedID encoded: String?) {
@@ -292,6 +275,7 @@ struct ContentView: View {
         // middle column even if the user arrived via Spotlight while a
         // narrower group was active.
         if case .group = sidebarSelection { sidebarSelection = .allContacts }
+        if case .tag = sidebarSelection { sidebarSelection = .allContacts }
         withAnimation(reduceMotion ? nil : .snappy) { selectedContact = contact }
     }
 }
@@ -380,5 +364,6 @@ private extension ContentView {
     ContentView()
         .modelContainer(for: [
             Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self, ContactSavedSmartList.self,
+            ContactTag.self,
         ], inMemory: true)
 }

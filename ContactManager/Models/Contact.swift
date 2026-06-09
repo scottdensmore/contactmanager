@@ -46,6 +46,9 @@ final class Contact {
     /// Groups this contact belongs to (many-to-many; inverse on ContactGroup).
     var groups: [ContactGroup] = []
 
+    /// Lightweight labels this contact carries (many-to-many; inverse on ContactTag).
+    var tags: [ContactTag] = []
+
     init(
         firstName: String = "",
         lastName: String = "",
@@ -76,6 +79,7 @@ final class Contact {
         self.createdAt = createdAt
         fields = []
         interactions = []
+        tags = []
     }
 }
 

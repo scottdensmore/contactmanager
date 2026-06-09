@@ -53,6 +53,14 @@ extension ContentView {
                 openWindow(id: "quickCapture")
             },
             command(
+                id: "new-tag",
+                title: "New Tag",
+                subtitle: "Create a contact label",
+                keywords: ["label"],
+                systemImage: "tag",
+                action: addTag
+            ),
+            command(
                 id: "find-contacts",
                 title: "Find Contacts",
                 subtitle: "Focus the contact search field",
@@ -189,6 +197,18 @@ extension ContentView {
                 systemImage: "folder"
             ) {
                 sidebarSelection = .group(group.persistentModelID)
+            }
+        })
+
+        entries.append(contentsOf: tags.map { tag in
+            command(
+                id: "nav-tag-\(tag.persistentModelID.storedString ?? tag.displayName)",
+                title: tag.displayName,
+                subtitle: "Open tag",
+                keywords: ["navigate", "tag", "label"],
+                systemImage: "tag"
+            ) {
+                sidebarSelection = .tag(tag.persistentModelID)
             }
         })
 

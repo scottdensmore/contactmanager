@@ -20,7 +20,7 @@ struct ContactBackupTests {
     init() throws {
         container = try ModelContainer(
             for: Contact.self, ContactField.self, ContactGroup.self, ContactInteraction.self,
-            ContactSavedSmartList.self,
+            ContactSavedSmartList.self, ContactTag.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
         store = ContactStore(container.mainContext)
@@ -38,15 +38,23 @@ struct ContactBackupTests {
         try context.fetch(FetchDescriptor<ContactSavedSmartList>())
     }
 
+    private func allTags() throws -> [ContactTag] {
+        try context.fetch(FetchDescriptor<ContactTag>())
+    }
+
     @Test func backupCapturesContactsGroupsFieldsAndHistory() throws {
         let contact = try makePopulatedContact()
         let savedList = try store.createSavedSmartList(named: "Engine People", query: "engine")
+        let tag = try store.createTag(named: "VIP")
+        try store.setMembership(of: contact, in: tag, isMember: true)
         let contacts = try allContacts()
         let groups = try allGroups()
+        let tags = try allTags()
 
         let backup = ContactBackup.make(
             contacts: contacts,
             groups: groups,
+            tags: tags,
             savedSmartLists: [savedList],
             exportedAt: Date(timeIntervalSinceReferenceDate: 42)
         )
@@ -56,9 +64,11 @@ struct ContactBackupTests {
         #expect(record.firstName == "Ada")
         #expect(record.fields.map(\.value) == ["ada@example.com"])
         #expect(record.groupIDs.count == 1)
+        #expect(record.tagIDs.count == 1)
         #expect(record.interactions.map(\.summary) == ["Met at WWDC."])
         #expect(record.lastContactedAt == contact.lastContactedAt)
         #expect(backup.groups.map(\.name) == ["Work"])
+        #expect(backup.tags.map(\.name) == ["VIP"])
         #expect(backup.savedSmartLists.map(\.name) == ["Engine People"])
         #expect(backup.savedSmartLists.map(\.query) == ["engine"])
     }
@@ -66,10 +76,14 @@ struct ContactBackupTests {
     @Test func restoreBackupRecreatesContactsGroupsFieldsAndHistory() throws {
         let contact = try makePopulatedContact()
         let savedList = try store.createSavedSmartList(named: "Engine People", query: "engine")
+        let tag = try store.createTag(named: "VIP")
+        try store.setMembership(of: contact, in: tag, isMember: true)
         let groups = try allGroups()
+        let tags = try allTags()
         let original = ContactBackup.make(
             contacts: [contact],
             groups: groups,
+            tags: tags,
             savedSmartLists: [savedList],
             exportedAt: Date(timeIntervalSinceReferenceDate: 42)
         )
@@ -77,27 +91,34 @@ struct ContactBackupTests {
         let contactsBeforeRestore = try allContacts()
         let groupsBeforeRestore = try allGroups()
         let savedListsBeforeRestore = try allSavedSmartLists()
+        let tagsBeforeRestore = try allTags()
         let contactBeforeRestore = try #require(contactsBeforeRestore.first)
         let groupBeforeRestore = try #require(groupsBeforeRestore.first)
         let savedListBeforeRestore = try #require(savedListsBeforeRestore.first)
+        let tagBeforeRestore = try #require(tagsBeforeRestore.first)
         try store.delete(contactBeforeRestore)
         try store.delete(groupBeforeRestore)
         try store.delete(savedListBeforeRestore)
+        try store.delete(tagBeforeRestore)
 
         let result = try store.restoreBackup(original)
 
         let restoredContacts = try allContacts()
         let restoredSavedLists = try allSavedSmartLists()
+        let restoredTags = try allTags()
         let restored = try #require(restoredContacts.first)
         #expect(result.contactsRestored == 1)
         #expect(result.groupsRestored == 1)
+        #expect(result.tagsRestored == 1)
         #expect(result.savedSmartListsRestored == 1)
         #expect(result.interactionsRestored == 1)
         #expect(restored.fullName == "Ada Lovelace")
         #expect(restored.lastContactedAt == Date(timeIntervalSinceReferenceDate: 200))
         #expect(restored.emails.map(\.value) == ["ada@example.com"])
         #expect(restored.groups.map(\.displayName) == ["Work"])
+        #expect(restored.tags.map(\.displayName) == ["VIP"])
         #expect(restored.sortedInteractions.map(\.summary) == ["Met at WWDC."])
+        #expect(restoredTags.map(\.displayName) == ["VIP"])
         #expect(restoredSavedLists.map(\.displayName) == ["Engine People"])
         #expect(restoredSavedLists.map(\.query) == ["engine"])
     }
@@ -130,6 +151,7 @@ struct ContactBackupTests {
         let decoded = try ContactBackupDocument.decode(Data(legacyJSON.utf8))
 
         #expect(decoded.version == 1)
+        #expect(decoded.tags.isEmpty)
         #expect(decoded.savedSmartLists.isEmpty)
     }
 
@@ -170,16 +192,20 @@ struct ContactBackupTests {
 
         #expect(result.contactsRestored == 0)
         #expect(result.title == "Restored 0 Contacts")
-        #expect(result.message == "No contacts, groups, smart lists, or history notes restored.")
+        #expect(result.message == "No contacts, groups, tags, smart lists, or history notes restored.")
     }
 
     @Test func backupPreviewSummarizesContentsBeforeRestore() throws {
         let contact = try makePopulatedContact()
         let savedList = try store.createSavedSmartList(named: "Engine People", query: "engine")
+        let tag = try store.createTag(named: "VIP")
+        try store.setMembership(of: contact, in: tag, isMember: true)
         let groups = try allGroups()
+        let tags = try allTags()
         let backup = ContactBackup.make(
             contacts: [contact],
             groups: groups,
+            tags: tags,
             savedSmartLists: [savedList],
             exportedAt: Date(timeIntervalSinceReferenceDate: 42)
         )
@@ -189,13 +215,14 @@ struct ContactBackupTests {
         #expect(preview.exportedAt == Date(timeIntervalSinceReferenceDate: 42))
         #expect(preview.contactCount == 1)
         #expect(preview.groupCount == 1)
+        #expect(preview.tagCount == 1)
         #expect(preview.savedSmartListCount == 1)
         #expect(preview.emailCount == 1)
         #expect(preview.phoneCount == 0)
         #expect(preview.historyNoteCount == 1)
         #expect(preview.photoCount == 1)
         #expect(preview.sampleContactNames == ["Ada Lovelace"])
-        #expect(preview.summary == "1 contact, 1 group, 1 smart list, 1 email, 1 history note, 1 photo")
+        #expect(preview.summary == "1 contact, 1 group, 1 tag, 1 smart list, 1 email, 1 history note, 1 photo")
     }
 
     @Test func emptyBackupPreviewHasAPlainSummary() {
@@ -203,6 +230,7 @@ struct ContactBackupTests {
 
         #expect(preview.contactCount == 0)
         #expect(preview.groupCount == 0)
+        #expect(preview.tagCount == 0)
         #expect(preview.savedSmartListCount == 0)
         #expect(preview.isEmpty)
         #expect(preview.sampleContactNames.isEmpty)
