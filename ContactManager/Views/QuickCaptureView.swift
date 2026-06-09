@@ -34,6 +34,7 @@ struct QuickCaptureView: View {
                 .onSubmit(createContact)
 
             QuickCapturePreview(draft: draft)
+            QuickCaptureWarnings(warnings: draft.parseWarnings)
 
             HStack {
                 if let createdMessage {
@@ -87,6 +88,8 @@ struct QuickCaptureView: View {
 }
 
 private struct QuickCapturePreview: View {
+    private let maxVisiblePreviewItems = 6
+
     var draft: QuickCaptureDraft
 
     var body: some View {
@@ -95,28 +98,37 @@ private struct QuickCapturePreview: View {
                 .font(.headline)
                 .lineLimit(1)
                 .accessibilityIdentifier("quick-capture-preview-name")
-            ScrollView {
-                VStack(alignment: .leading, spacing: 4) {
-                    ForEach(previewItems, id: \.id) { item in
-                        HStack(spacing: 6) {
-                            Image(systemName: item.systemImage)
-                                .accessibilityHidden(true)
-                            Text(item.title)
-                                .lineLimit(1)
-                                .accessibilityIdentifier(item.accessibilityIdentifier)
-                        }
-                    }
+            VStack(alignment: .leading, spacing: 4) {
+                ForEach(visiblePreviewItems, id: \.id) { item in
+                    QuickCapturePreviewRow(item: item)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                if overflowCount > 0 {
+                    HStack(spacing: 6) {
+                        Image(systemName: "ellipsis.circle")
+                            .accessibilityHidden(true)
+                        Text("+\(overflowCount) more")
+                            .lineLimit(1)
+                    }
+                    .accessibilityLabel("+\(overflowCount) more")
+                    .accessibilityIdentifier("quick-capture-preview-overflow")
+                }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .font(.subheadline)
             .foregroundStyle(.secondary)
-            .frame(maxHeight: 120, alignment: .top)
-            .accessibilityLabel("Quick capture preview details")
+            .accessibilityElement(children: .contain)
             .accessibilityIdentifier("quick-capture-preview-details")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 4)
+    }
+
+    private var visiblePreviewItems: [QuickCapturePreviewItem] {
+        Array(previewItems.prefix(maxVisiblePreviewItems))
+    }
+
+    private var overflowCount: Int {
+        max(0, previewItems.count - maxVisiblePreviewItems)
     }
 
     private var previewItems: [QuickCapturePreviewItem] {
@@ -178,6 +190,67 @@ private struct QuickCapturePreviewItem {
     var title: String
     var systemImage: String
     var accessibilityIdentifier: String
+}
+
+private struct QuickCapturePreviewRow: View {
+    var item: QuickCapturePreviewItem
+
+    var body: some View {
+        HStack(spacing: 6) {
+            Image(systemName: item.systemImage)
+                .accessibilityHidden(true)
+            Text(item.title)
+                .lineLimit(1)
+        }
+        .accessibilityLabel(item.title)
+        .accessibilityIdentifier(item.accessibilityIdentifier)
+    }
+}
+
+private struct QuickCaptureWarnings: View {
+    private let maxVisibleWarnings = 3
+
+    var warnings: [String]
+
+    var body: some View {
+        if !warnings.isEmpty {
+            VStack(alignment: .leading, spacing: 4) {
+                ForEach(Array(visibleWarnings.enumerated()), id: \.offset) { index, warning in
+                    HStack(spacing: 6) {
+                        Image(systemName: "exclamationmark.triangle")
+                            .accessibilityHidden(true)
+                        Text(warning)
+                            .lineLimit(1)
+                    }
+                    .accessibilityLabel(warning)
+                    .accessibilityIdentifier("quick-capture-warning-\(index)")
+                }
+                if overflowCount > 0 {
+                    HStack(spacing: 6) {
+                        Image(systemName: "ellipsis.circle")
+                            .accessibilityHidden(true)
+                        Text("+\(overflowCount) more warnings")
+                            .lineLimit(1)
+                    }
+                    .accessibilityLabel("+\(overflowCount) more warnings")
+                    .accessibilityIdentifier("quick-capture-warning-overflow")
+                }
+            }
+            .font(.caption)
+            .foregroundStyle(.orange)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier("quick-capture-warnings")
+        }
+    }
+
+    private var visibleWarnings: [String] {
+        Array(warnings.prefix(maxVisibleWarnings))
+    }
+
+    private var overflowCount: Int {
+        max(0, warnings.count - maxVisibleWarnings)
+    }
 }
 
 #Preview {

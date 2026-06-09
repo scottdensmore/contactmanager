@@ -223,6 +223,36 @@ final class ContactManagerUITests: XCTestCase {
         }
     }
 
+    /// Verifies long quick-capture input stays compact and surfaces
+    /// parse feedback before saving.
+    func test_quickCapturePreviewShowsWarningsAndOverflow() {
+        let app = bootSeededApp()
+        app.typeKey("n", modifierFlags: [.command, .option])
+
+        let entry = app.textFields["quick-capture-entry-field"]
+        XCTAssertTrue(entry.waitForExistence(timeout: 3))
+        entry.click()
+        entry.typeText(
+            "Overflow Person, home email one@example.com, work email two@example.com, " +
+                "mobile 555-0101, home phone 555-0102, tag VIP, tag Team, " +
+                "group Friends, group Family, email nope"
+        )
+
+        let warning = app.descendants(matching: .any)["quick-capture-warning-0"]
+        XCTAssertTrue(warning.waitForExistence(timeout: 3))
+        let warningText = [warning.label, warning.value as? String ?? ""]
+            .filter { !$0.isEmpty }
+            .joined(separator: " ")
+        XCTAssertTrue(warningText.contains("Ignored email: nope"))
+
+        let overflow = app.descendants(matching: .any)["quick-capture-preview-overflow"]
+        XCTAssertTrue(overflow.waitForExistence(timeout: 3))
+        let overflowText = [overflow.label, overflow.value as? String ?? ""]
+            .filter { !$0.isEmpty }
+            .joined(separator: " ")
+        XCTAssertTrue(overflowText.contains("+2 more"))
+    }
+
     // MARK: - Helpers
 
     /// Launches a fresh app instance with the seeded UI-test container.
