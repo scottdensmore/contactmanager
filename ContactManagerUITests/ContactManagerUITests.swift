@@ -185,6 +185,44 @@ final class ContactManagerUITests: XCTestCase {
         )
     }
 
+    /// Verifies the quick-capture preview renders all parsed detail kinds
+    /// before saving, so users can trust what the one-line parser understood.
+    func test_quickCapturePreviewShowsParsedDetails() {
+        let app = bootSeededApp()
+        app.typeKey("n", modifierFlags: [.command, .option])
+
+        let entry = app.textFields["quick-capture-entry-field"]
+        XCTAssertTrue(entry.waitForExistence(timeout: 3))
+        entry.click()
+        entry.typeText(
+            "Preview Person, home email home@example.com, work email work@example.com, " +
+                "mobile 555-0101, home phone 555-0102, tag VIP, group Friends"
+        )
+
+        let details = app.descendants(matching: .any)["quick-capture-preview-details"]
+        XCTAssertTrue(details.waitForExistence(timeout: 3))
+
+        let expectedRows = [
+            ("quick-capture-preview-email-0", "Home: home@example.com"),
+            ("quick-capture-preview-email-1", "Work: work@example.com"),
+            ("quick-capture-preview-phone-0", "Mobile: 555-0101"),
+            ("quick-capture-preview-phone-1", "Home: 555-0102"),
+            ("quick-capture-preview-tag-0", "VIP"),
+            ("quick-capture-preview-group-0", "Friends"),
+        ]
+        for (identifier, expectedText) in expectedRows {
+            let row = app.descendants(matching: .any)[identifier]
+            XCTAssertTrue(row.waitForExistence(timeout: 3), "\(identifier) should render")
+            let accessibleText = [row.label, row.value as? String ?? ""]
+                .filter { !$0.isEmpty }
+                .joined(separator: " ")
+            XCTAssertTrue(
+                accessibleText.contains(expectedText),
+                "\(identifier) should contain \(expectedText); got \(accessibleText)"
+            )
+        }
+    }
+
     // MARK: - Helpers
 
     /// Launches a fresh app instance with the seeded UI-test container.
