@@ -5,7 +5,7 @@
 //  Pure parsing for the quick-entry window. It intentionally accepts a small,
 //  memorable grammar instead of trying to be a chatbot: comma/semicolon/newline
 //  fragments, obvious emails/phones, `birthday ...`, `at ...`, `title ...`,
-//  and `notes ...`.
+//  `tag ...`, `group ...`, and `notes ...`.
 //
 
 import Foundation
@@ -19,6 +19,8 @@ struct QuickCaptureDraft {
     var notes = ""
     var emails: [(label: FieldLabel, value: String)] = []
     var phones: [(label: FieldLabel, value: String)] = []
+    var tags: [String] = []
+    var groups: [String] = []
 
     var isEmpty: Bool {
         firstName.isBlank
@@ -29,6 +31,8 @@ struct QuickCaptureDraft {
             && notes.isBlank
             && emails.isEmpty
             && phones.isEmpty
+            && tags.isEmpty
+            && groups.isEmpty
     }
 
     var displayName: String {
@@ -79,6 +83,16 @@ enum QuickCaptureParser {
 
         if let value = value(in: fragment, after: ["company"]) {
             draft.company = value
+            return
+        }
+
+        if let value = value(in: fragment, after: ["tag", "tags"]) {
+            appendUnique(value, to: &draft.tags)
+            return
+        }
+
+        if let value = value(in: fragment, after: ["group", "groups"]) {
+            appendUnique(value, to: &draft.groups)
             return
         }
 
@@ -247,6 +261,14 @@ enum QuickCaptureParser {
         if existing.isBlank { return value }
         if value.isBlank { return existing }
         return "\(existing)\n\(value)"
+    }
+
+    private static func appendUnique(_ value: String, to values: inout [String]) {
+        let trimmed = clean(value)
+        guard !trimmed.isBlank else { return }
+        let normalized = trimmed.lowercased()
+        guard !values.contains(where: { $0.lowercased() == normalized }) else { return }
+        values.append(trimmed)
     }
 
     private static func clean(_ value: String) -> String {
