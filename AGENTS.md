@@ -12,7 +12,7 @@ agents — keep it readable and idiomatic.
 | Test | `make test` (unit + UI) / `make test-unit` (unit only) |
 | Lint | `make lint` (autofix: `make lint-fix`) |
 | Format | `make format` (check only: `make format-check`) |
-| Pre-PR gate | `make check` (format-check + lint + unit tests) |
+| Pre-PR gate | `make check` + `code-review` subagent |
 | Install tooling | `make bootstrap` (runs `brew bundle`) |
 
 Tests use **Swift Testing** (`import Testing`, `@Test`, `#expect`/`#require`) — not XCTest.
@@ -88,7 +88,8 @@ pattern), then build to confirm it compiles.
 ## SwiftData
 
 - Top-level models are listed in the `Schema` built in `ContactManagerApp.loadContainer`:
-  `Contact`, `ContactField`, `ContactGroup`.
+  `Contact`, `ContactField`, `ContactGroup`, `ContactInteraction`, `ContactSavedSmartList`,
+  and `ContactTag`.
 - **Migration:** every new *non-optional scalar* attribute MUST have an inline default
   (e.g. `var city: String = ""`), or in-place migration fails (`NSCocoaError 134110`).
   Optional attributes and relationships migrate cleanly. Verify by launching against an
@@ -123,6 +124,12 @@ pattern), then build to confirm it compiles.
   without the UI (see "Code style").
 - **Review before every commit.** Run a code review over the staged diff and fix what it
   finds *before* committing — don't commit unreviewed code.
+- **Run the `code-review` subagent before every PR.** After the change is committed and
+  `make check` passes, spawn the repo-local `.codex/agents/code-review.toml` subagent
+  against the branch diff before `gh pr create`. If it reports any actionable finding
+  (`P0`-`P3`), fix it, rerun the relevant tests/checks, and run the subagent again.
+  Do not open the PR until the subagent returns `No actionable findings.` Record that
+  result in the PR checklist.
 - Ship focused, single-purpose PRs via the GitHub CLI (`gh`). Open the PR, let CI run, and
   **merge once all required checks pass.** Copilot review is no longer a gate — you don't
   need to request it or wait on it before merging.

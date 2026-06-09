@@ -24,7 +24,7 @@
    ```shell
    make build       # unsigned compile gate
    make test        # unit + UI tests (Xcode)
-   make check       # format-check + lint + unit tests (pre-PR gate)
+   make check       # format-check + lint + unit tests
    ```
    Or open `ContactManager.xcodeproj` and press `Cmd + R`.
 
@@ -34,6 +34,9 @@ Optional iCloud sync setup is documented in the [README](README.md#icloud-sync-o
 
 - Branch per focused change; keep each PR scoped to one logical feature/fix/chore.
 - Write tests first (TDD) and run `make check` before committing.
+- Before opening a PR, run the repo-local `code-review` subagent on the branch
+  diff. Fix every actionable finding and rerun the subagent until it reports
+  `No actionable findings.`
 - Open a PR against `main` and **merge once all required checks pass** (Lint & Format +
   Build & Test). Copilot review isn't a gate — no need to request it or wait on it.
 - **Squash merge** and delete the branch; a successful merge auto-tags and publishes a release.
