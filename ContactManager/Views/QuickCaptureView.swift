@@ -95,28 +95,89 @@ private struct QuickCapturePreview: View {
                 .font(.headline)
                 .lineLimit(1)
                 .accessibilityIdentifier("quick-capture-preview-name")
-            HStack(spacing: 10) {
-                if let email = draft.emails.first?.value {
-                    Label(email, systemImage: "envelope")
+            ScrollView {
+                VStack(alignment: .leading, spacing: 4) {
+                    ForEach(previewItems, id: \.id) { item in
+                        HStack(spacing: 6) {
+                            Image(systemName: item.systemImage)
+                                .accessibilityHidden(true)
+                            Text(item.title)
+                                .lineLimit(1)
+                                .accessibilityIdentifier(item.accessibilityIdentifier)
+                        }
+                    }
                 }
-                if let phone = draft.phones.first?.value {
-                    Label(phone, systemImage: "phone")
-                }
-                if !draft.company.isBlank {
-                    Label(draft.company, systemImage: "building.2")
-                }
-                if let birthday = draft.birthday {
-                    Label(Birthday.formatted(birthday), systemImage: "gift")
-                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .font(.subheadline)
             .foregroundStyle(.secondary)
-            .lineLimit(1)
+            .frame(maxHeight: 120, alignment: .top)
+            .accessibilityLabel("Quick capture preview details")
             .accessibilityIdentifier("quick-capture-preview-details")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 4)
     }
+
+    private var previewItems: [QuickCapturePreviewItem] {
+        var items: [QuickCapturePreviewItem] = []
+        if !draft.company.isBlank {
+            items.append(.init(
+                id: "company",
+                title: draft.company,
+                systemImage: "building.2",
+                accessibilityIdentifier: "quick-capture-preview-company"
+            ))
+        }
+        if let birthday = draft.birthday {
+            items.append(.init(
+                id: "birthday",
+                title: Birthday.formatted(birthday),
+                systemImage: "gift",
+                accessibilityIdentifier: "quick-capture-preview-birthday"
+            ))
+        }
+        items.append(contentsOf: draft.emails.enumerated().map { index, field in
+            .init(
+                id: "email-\(index)",
+                title: "\(field.label.title): \(field.value)",
+                systemImage: "envelope",
+                accessibilityIdentifier: "quick-capture-preview-email-\(index)"
+            )
+        })
+        items.append(contentsOf: draft.phones.enumerated().map { index, field in
+            .init(
+                id: "phone-\(index)",
+                title: "\(field.label.title): \(field.value)",
+                systemImage: "phone",
+                accessibilityIdentifier: "quick-capture-preview-phone-\(index)"
+            )
+        })
+        items.append(contentsOf: draft.tags.enumerated().map { index, tag in
+            .init(
+                id: "tag-\(index)",
+                title: tag,
+                systemImage: "tag",
+                accessibilityIdentifier: "quick-capture-preview-tag-\(index)"
+            )
+        })
+        items.append(contentsOf: draft.groups.enumerated().map { index, group in
+            .init(
+                id: "group-\(index)",
+                title: group,
+                systemImage: "folder",
+                accessibilityIdentifier: "quick-capture-preview-group-\(index)"
+            )
+        })
+        return items
+    }
+}
+
+private struct QuickCapturePreviewItem {
+    var id: String
+    var title: String
+    var systemImage: String
+    var accessibilityIdentifier: String
 }
 
 #Preview {

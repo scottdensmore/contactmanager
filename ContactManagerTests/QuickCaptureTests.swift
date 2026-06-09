@@ -66,6 +66,20 @@ struct QuickCaptureTests {
         #expect(draft.phones.first?.label == .home)
     }
 
+    @Test func parsesMultiplePreviewDetailKinds() {
+        let draft = QuickCaptureParser.parse(
+            "Ada Lovelace, home email ada@example.com, work email ada@work.example, " +
+                "mobile 555-0101, home phone 555-0102, tag VIP, group Work"
+        )
+
+        #expect(draft.emails.map(\.value) == ["ada@example.com", "ada@work.example"])
+        #expect(draft.emails.map(\.label) == [.home, .work])
+        #expect(draft.phones.map(\.value) == ["555-0101", "555-0102"])
+        #expect(draft.phones.map(\.label) == [.mobile, .home])
+        #expect(draft.tags == ["VIP"])
+        #expect(draft.groups == ["Work"])
+    }
+
     @Test func parsesTagsAndGroups() {
         let draft = QuickCaptureParser.parse(
             "Ada Lovelace, ada@example.com, tag VIP, group Work"
