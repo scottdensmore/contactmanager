@@ -13,12 +13,22 @@ struct QuickCaptureView: View {
     @Environment(\.modelContext) private var context
     @FocusState private var entryFocused: Bool
 
+    @Query private var contacts: [Contact]
+
     @State private var entry = ""
     @State private var errorMessage: String?
     @State private var createdMessage: String?
 
     private var draft: QuickCaptureDraft {
         QuickCaptureParser.parse(entry)
+    }
+
+    private var match: QuickCaptureMatch? {
+        QuickCaptureMatcher.bestMatch(for: draft, in: contacts)
+    }
+
+    private var canUpdateWithReturn: Bool {
+        match?.confidence == .likely || match?.confidence == .exact
     }
 
     private var store: ContactStore {
@@ -31,10 +41,13 @@ struct QuickCaptureView: View {
                 .textFieldStyle(.roundedBorder)
                 .focused($entryFocused)
                 .accessibilityIdentifier("quick-capture-entry-field")
-                .onSubmit(createContact)
+                .onSubmit(submitPrimaryAction)
 
             QuickCapturePreview(draft: draft)
             QuickCaptureWarnings(warnings: draft.parseWarnings)
+            if let match {
+                QuickCaptureMatchView(match: match)
+            }
 
             HStack {
                 if let createdMessage {
@@ -47,22 +60,40 @@ struct QuickCaptureView: View {
                     dismiss()
                 }
                 .accessibilityIdentifier("quick-capture-done-button")
-                Button("Create", action: createContact)
-                    .buttonStyle(.glassProminent)
-                    .disabled(draft.isEmpty)
-                    .accessibilityIdentifier("quick-capture-create-button")
+                if match != nil {
+                    Button("Create New", action: createContact)
+                        .disabled(draft.isEmpty)
+                        .accessibilityIdentifier("quick-capture-create-button")
+                    Button("Update Existing", action: updateExistingContact)
+                        .buttonStyle(.glassProminent)
+                        .disabled(draft.isEmpty)
+                        .accessibilityIdentifier("quick-capture-update-existing-button")
+                } else {
+                    Button("Create", action: createContact)
+                        .buttonStyle(.glassProminent)
+                        .disabled(draft.isEmpty)
+                        .accessibilityIdentifier("quick-capture-create-button")
+                }
             }
         }
         .padding(20)
-        .frame(minWidth: 420, idealWidth: 520, minHeight: 180)
+        .frame(minWidth: 420, idealWidth: 520, minHeight: 210)
         .onAppear { entryFocused = true }
-        .alert("Couldn't Create Contact", isPresented: Binding(
+        .alert("Couldn't Save Contact", isPresented: Binding(
             get: { errorMessage != nil },
             set: { if !$0 { errorMessage = nil } }
         )) {
             Button("OK", role: .cancel) {}
         } message: {
             Text(errorMessage ?? "")
+        }
+    }
+
+    private func submitPrimaryAction() {
+        if canUpdateWithReturn {
+            updateExistingContact()
+        } else {
+            createContact()
         }
     }
 
@@ -79,6 +110,26 @@ struct QuickCaptureView: View {
                 )
             }
             createdMessage = "Created \(contact.fullName)"
+            entry = ""
+            entryFocused = true
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    private func updateExistingContact() {
+        let parsed = draft
+        guard !parsed.isEmpty, let match else { return }
+        do {
+            try store.updateContact(match.contact, from: parsed)
+            if let encoded = match.contact.persistentModelID.storedString {
+                NotificationCenter.default.post(
+                    name: .openContactRequested,
+                    object: nil,
+                    userInfo: ["id": encoded]
+                )
+            }
+            createdMessage = "Updated \(match.contact.fullName)"
             entry = ""
             entryFocused = true
         } catch {
@@ -204,6 +255,36 @@ private struct QuickCapturePreviewRow: View {
         }
         .accessibilityLabel(item.title)
         .accessibilityIdentifier(item.accessibilityIdentifier)
+    }
+}
+
+private struct QuickCaptureMatchView: View {
+    var match: QuickCaptureMatch
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 8) {
+            Image(systemName: "person.crop.circle.badge.exclamationmark")
+                .foregroundStyle(.orange)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(match.confidence.title)
+                    .font(.caption.weight(.semibold))
+                    .accessibilityIdentifier("quick-capture-match-confidence")
+                Text(match.contact.fullName)
+                    .font(.subheadline)
+                    .lineLimit(1)
+                    .accessibilityIdentifier("quick-capture-match-name")
+                Text(match.reason)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .accessibilityIdentifier("quick-capture-match-reason")
+            }
+        }
+        .padding(.vertical, 2)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(match.confidence.title), \(match.contact.fullName), \(match.reason)")
+        .accessibilityIdentifier("quick-capture-match-row")
     }
 }
 

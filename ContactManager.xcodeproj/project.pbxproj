@@ -120,6 +120,7 @@
 		E11A07680CCF44C864B95662 /* ContentView+Backup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C8E57A2BB1F32050119C06 /* ContentView+Backup.swift */; };
 		E25066845A3200CDD0F2979E /* ContactIntentResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114AC8779AF104227C34C18C /* ContactIntentResolver.swift */; };
 		E5EB465B5CE3964197D29ADF /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F82C8A388E97CC4F1106176 /* SampleData.swift */; };
+		EBB44EB6D2563E1407989522 /* QuickCaptureMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE23F835008276E4DEDC486B /* QuickCaptureMatcher.swift */; };
 		ECB7FDD8D0C3091EA0D42917 /* UndoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DCAF444714BC3726B212C4 /* UndoTests.swift */; };
 		ECDA4BC68D3FAE4CCF428675 /* ContactDetailView+Saving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92613887B145F037F1E3AB58 /* ContactDetailView+Saving.swift */; };
 		F6F24513C06A755D761B5008 /* ContactStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355894A3A1D1AA4B8E238E64 /* ContactStoreError.swift */; };
@@ -234,6 +235,7 @@
 		A7276D515CA167FBF4C47299 /* VCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VCard.swift; sourceTree = "<group>"; };
 		ABDED82FFB4B5F039052FFB5 /* Birthday.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Birthday.swift; sourceTree = "<group>"; };
 		AC2AA1D7BB15FC01B9CBA3B3 /* EntityModelContainer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EntityModelContainer.swift; sourceTree = "<group>"; };
+		AE23F835008276E4DEDC486B /* QuickCaptureMatcher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = QuickCaptureMatcher.swift; path = ContactManager/Models/QuickCaptureMatcher.swift; sourceTree = "<group>"; };
 		B033A5B8DABE71E4CCF6A8E9 /* VCardTransfer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VCardTransfer.swift; sourceTree = "<group>"; };
 		B040B21B7E2002E00885A9BA /* BirthdayTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BirthdayTests.swift; sourceTree = "<group>"; };
 		B0CF4C47C670B0A8C3B6B384 /* ContactActivity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContactActivity.swift; sourceTree = "<group>"; };
@@ -425,6 +427,7 @@
 				5951D4D8D52B6CDB782FE37D /* QuickCaptureView.swift */,
 				A2C76A783B91BD2AA6D3F70B /* QuickCaptureTests.swift */,
 				0401F25DFDF91CE847706D08 /* ContentView+Alerts.swift */,
+				AE23F835008276E4DEDC486B /* QuickCaptureMatcher.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -712,6 +715,7 @@
 				B7BFE97538D99B970A512F5D /* ContactStore+Tags.swift in Sources */,
 				49951835ECDD188314B2D263 /* ContentView+Groups.swift in Sources */,
 				0DDC7707A54114378AB0E1E0 /* ContentView+Tags.swift in Sources */,
+				EBB44EB6D2563E1407989522 /* QuickCaptureMatcher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
