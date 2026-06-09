@@ -21,6 +21,7 @@ struct QuickCaptureDraft {
     var phones: [(label: FieldLabel, value: String)] = []
     var tags: [String] = []
     var groups: [String] = []
+    var parseWarnings: [String] = []
 
     var isEmpty: Bool {
         firstName.isBlank
@@ -61,38 +62,20 @@ enum QuickCaptureParser {
     }
 
     private static func apply(_ fragment: String, to draft: inout QuickCaptureDraft) {
+        if applyEmailFragment(fragment, to: &draft) {
+            return
+        }
+
+        if applyPrefixedFragment(fragment, to: &draft) {
+            return
+        }
+
+        if applyPhoneFragment(fragment, to: &draft) {
+            return
+        }
+
         if let email = email(in: fragment) {
             draft.emails.append(email)
-            return
-        }
-
-        if let birthday = birthday(in: fragment) {
-            draft.birthday = birthday
-            return
-        }
-
-        if let value = value(in: fragment, after: ["notes", "note"]) {
-            draft.notes = append(draft.notes, value)
-            return
-        }
-
-        if let value = value(in: fragment, after: ["title", "role"]) {
-            draft.jobTitle = value
-            return
-        }
-
-        if let value = value(in: fragment, after: ["company"]) {
-            draft.company = value
-            return
-        }
-
-        if let value = value(in: fragment, after: ["tag", "tags"]) {
-            appendUnique(value, to: &draft.tags)
-            return
-        }
-
-        if let value = value(in: fragment, after: ["group", "groups"]) {
-            appendUnique(value, to: &draft.groups)
             return
         }
 
@@ -104,6 +87,82 @@ enum QuickCaptureParser {
         applyNameAndCompany(fragment, to: &draft)
     }
 
+    private static func applyEmailFragment(_ fragment: String, to draft: inout QuickCaptureDraft) -> Bool {
+        guard hasKindWord(in: fragment, kindWords: ["email", "mail"], defaultLabel: .home) else {
+            return false
+        }
+        if let email = email(in: fragment) {
+            draft.emails.append(email)
+        } else if let warning = invalidFieldWarning(
+            in: fragment,
+            kindWords: ["email", "mail"],
+            fieldName: "email",
+            defaultLabel: .home
+        ) {
+            draft.parseWarnings.append(warning)
+        }
+        return true
+    }
+
+    private static func applyPrefixedFragment(_ fragment: String, to draft: inout QuickCaptureDraft) -> Bool {
+        if let value = value(in: fragment, after: ["birthday", "bday", "born"]) {
+            applyBirthday(value, fallback: fragment, to: &draft)
+            return true
+        }
+        if let value = value(in: fragment, after: ["notes", "note"]) {
+            if let value = nonBlank(value, emptyWarning: "Ignored empty note", warnings: &draft.parseWarnings) {
+                draft.notes = append(draft.notes, value)
+            }
+            return true
+        }
+        if let value = value(in: fragment, after: ["title", "role"]) {
+            if let value = nonBlank(value, emptyWarning: "Ignored empty title", warnings: &draft.parseWarnings) {
+                draft.jobTitle = value
+            }
+            return true
+        }
+        if let value = value(in: fragment, after: ["company"]) {
+            if let value = nonBlank(value, emptyWarning: "Ignored empty company", warnings: &draft.parseWarnings) {
+                draft.company = value
+            }
+            return true
+        }
+        if let value = value(in: fragment, after: ["tag", "tags"]) {
+            let tag = nonBlank(value, emptyWarning: "Ignored empty tag", warnings: &draft.parseWarnings)
+            appendUnique(tag, to: &draft.tags)
+            return true
+        }
+        if let value = value(in: fragment, after: ["group", "groups"]) {
+            let group = nonBlank(value, emptyWarning: "Ignored empty group", warnings: &draft.parseWarnings)
+            appendUnique(group, to: &draft.groups)
+            return true
+        }
+        return false
+    }
+
+    private static func applyPhoneFragment(_ fragment: String, to draft: inout QuickCaptureDraft) -> Bool {
+        guard hasKindWord(
+            in: fragment,
+            kindWords: ["phone", "tel", "telephone", "number"],
+            defaultLabel: .mobile
+        ) else {
+            return false
+        }
+        if let phone = phone(in: fragment) {
+            draft.phones.append(phone)
+        } else if let warning = invalidFieldWarning(
+            in: fragment,
+            kindWords: ["phone", "tel", "telephone", "number"],
+            fieldName: "phone",
+            defaultLabel: .mobile
+        ) {
+            draft.parseWarnings.append(warning)
+        }
+        return true
+    }
+}
+
+private extension QuickCaptureParser {
     private static func applyNameAndCompany(_ fragment: String, to draft: inout QuickCaptureDraft) {
         let pieces = fragment.components(separatedBy: " at ")
         let name = pieces[0].trimmingCharacters(in: .whitespacesAndNewlines)
@@ -155,8 +214,9 @@ enum QuickCaptureParser {
         in fragment: String,
         kindWords: Set<String>,
         defaultLabel: FieldLabel
-    ) -> (label: FieldLabel, value: String) {
+    ) -> LabeledValue {
         var label = defaultLabel
+        var hasKindWord = false
         var pieces = fragment.split(separator: " ").map(String.init)
         while let first = pieces.first {
             let token = clean(first).lowercased()
@@ -164,12 +224,17 @@ enum QuickCaptureParser {
                 label = parsed
                 pieces.removeFirst()
             } else if kindWords.contains(token) {
+                hasKindWord = true
                 pieces.removeFirst()
             } else {
                 break
             }
         }
-        return (label: label, value: pieces.joined(separator: " "))
+        return LabeledValue(
+            label: label,
+            value: pieces.joined(separator: " "),
+            hasKindWord: hasKindWord
+        )
     }
 
     private static func fieldLabel(_ token: String) -> FieldLabel? {
@@ -187,13 +252,6 @@ enum QuickCaptureParser {
         default:
             nil
         }
-    }
-
-    private static func birthday(in fragment: String) -> Date? {
-        guard let value = value(in: fragment, after: ["birthday", "bday", "born"]) else {
-            return nil
-        }
-        return parseBirthday(value)
     }
 
     private static func parseBirthday(_ value: String) -> Date? {
@@ -229,6 +287,26 @@ enum QuickCaptureParser {
         else { return nil }
         let year = tokens.count >= 3 ? Int(tokens[2].filter(\.isNumber)) : nil
         return Birthday.date(year: year, month: month, day: day)
+    }
+
+    private static func invalidFieldWarning(
+        in fragment: String,
+        kindWords: Set<String>,
+        fieldName: String,
+        defaultLabel: FieldLabel
+    ) -> String? {
+        let field = labeledValue(in: fragment, kindWords: kindWords, defaultLabel: defaultLabel)
+        guard field.hasKindWord else { return nil }
+        if field.value.isBlank { return "Ignored empty \(fieldName)" }
+        return "Ignored \(fieldName): \(field.value)"
+    }
+
+    private static func hasKindWord(
+        in fragment: String,
+        kindWords: Set<String>,
+        defaultLabel: FieldLabel
+    ) -> Bool {
+        labeledValue(in: fragment, kindWords: kindWords, defaultLabel: defaultLabel).hasKindWord
     }
 
     private static func monthNumber(_ token: String) -> Int? {
@@ -271,7 +349,39 @@ enum QuickCaptureParser {
         values.append(trimmed)
     }
 
+    private static func appendUnique(_ value: String?, to values: inout [String]) {
+        guard let value else { return }
+        appendUnique(value, to: &values)
+    }
+
+    private static func applyBirthday(_ value: String, fallback: String, to draft: inout QuickCaptureDraft) {
+        if let birthday = parseBirthday(value) {
+            draft.birthday = birthday
+        } else {
+            draft.parseWarnings.append("Couldn't parse birthday: \(warningValue(value, fallback: fallback))")
+        }
+    }
+
+    private static func nonBlank(_ value: String, emptyWarning: String, warnings: inout [String]) -> String? {
+        if value.isBlank {
+            warnings.append(emptyWarning)
+            return nil
+        }
+        return value
+    }
+
+    private static func warningValue(_ value: String, fallback: String) -> String {
+        let trimmed = clean(value)
+        return trimmed.isBlank ? clean(fallback) : trimmed
+    }
+
     private static func clean(_ value: String) -> String {
         value.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines.union(.punctuationCharacters))
     }
+}
+
+private struct LabeledValue {
+    var label: FieldLabel
+    var value: String
+    var hasKindWord: Bool
 }

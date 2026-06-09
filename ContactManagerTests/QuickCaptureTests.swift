@@ -89,6 +89,36 @@ struct QuickCaptureTests {
         #expect(draft.groups == ["Work"])
     }
 
+    @Test func warnsAboutInvalidPrefixedFragments() {
+        let draft = QuickCaptureParser.parse(
+            "Ada Lovelace, birthday someday, email nope, phone 12, tag"
+        )
+
+        #expect(draft.birthday == nil)
+        #expect(draft.emails.isEmpty)
+        #expect(draft.phones.isEmpty)
+        #expect(draft.tags.isEmpty)
+        #expect(draft.parseWarnings == [
+            "Couldn't parse birthday: someday",
+            "Ignored email: nope",
+            "Ignored phone: 12",
+            "Ignored empty tag",
+        ])
+    }
+
+    @Test func explicitFieldKindsDoNotFallThroughToOtherParsers() {
+        let draft = QuickCaptureParser.parse(
+            "Ada Lovelace, email 555-0101, phone ada@example.com"
+        )
+
+        #expect(draft.emails.isEmpty)
+        #expect(draft.phones.isEmpty)
+        #expect(draft.parseWarnings == [
+            "Ignored email: 555-0101",
+            "Ignored phone: ada@example.com",
+        ])
+    }
+
     @Test func parsesNumericBirthdayWithYear() throws {
         let draft = QuickCaptureParser.parse("Katherine Johnson, birthday 1918-08-26")
 
