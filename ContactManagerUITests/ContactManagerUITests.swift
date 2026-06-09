@@ -185,6 +185,38 @@ final class ContactManagerUITests: XCTestCase {
         )
     }
 
+    /// Verifies Quick Capture warns before creating an obvious duplicate and
+    /// can update the existing contact instead.
+    func test_quickCaptureShowsDuplicateMatchAndUpdatesExisting() {
+        let app = bootSeededApp()
+        app.typeKey("n", modifierFlags: [.command, .option])
+
+        let entry = app.textFields["quick-capture-entry-field"]
+        XCTAssertTrue(entry.waitForExistence(timeout: 3))
+        entry.click()
+        entry.typeText("Ada Lovelace, ada@analytical.engine, mobile 555-0200, tag VIP")
+
+        let matchRow = app.descendants(matching: .any)["quick-capture-match-row"]
+        XCTAssertTrue(
+            matchRow.waitForExistence(timeout: 3),
+            "Quick capture should show a duplicate match before saving"
+        )
+        let matchText = [matchRow.label, matchRow.value as? String ?? ""]
+            .filter { !$0.isEmpty }
+            .joined(separator: " ")
+        XCTAssertTrue(matchText.contains("Ada Lovelace"), "Match row text was: \(matchText)")
+        XCTAssertTrue(matchText.contains("same email"), "Match row text was: \(matchText)")
+
+        let update = app.buttons["quick-capture-update-existing-button"]
+        XCTAssertTrue(update.waitForExistence(timeout: 3))
+        update.click()
+
+        XCTAssertTrue(
+            app.staticTexts["Updated Ada Lovelace"].waitForExistence(timeout: 3),
+            "Quick capture should confirm the existing contact was updated"
+        )
+    }
+
     /// Verifies the quick-capture preview renders all parsed detail kinds
     /// before saving, so users can trust what the one-line parser understood.
     func test_quickCapturePreviewShowsParsedDetails() {

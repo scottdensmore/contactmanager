@@ -143,7 +143,7 @@ extension ContactMatchKey {
     }
 }
 
-private extension ContactMatchKey {
+extension ContactMatchKey {
     var isStrongMatch: Bool {
         isEmail || isPhone
     }

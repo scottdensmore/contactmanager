@@ -32,6 +32,25 @@ extension ContactStore {
         }
     }
 
+    func updateContact(_ contact: Contact, from draft: QuickCaptureDraft) throws {
+        try mutate("Quick Capture Update") {
+            fillEmptyScalars(of: contact, from: draft)
+            try adoptGroups(named: draft.groups, into: contact)
+            try adoptTags(named: draft.tags, into: contact)
+            insertMissing(draft.emails, kind: .email, into: contact)
+            insertMissing(draft.phones, kind: .phone, into: contact)
+        }
+    }
+
+    private func fillEmptyScalars(of contact: Contact, from draft: QuickCaptureDraft) {
+        if contact.firstName.isBlank { contact.firstName = draft.firstName }
+        if contact.lastName.isBlank { contact.lastName = draft.lastName }
+        if contact.company.isBlank { contact.company = draft.company }
+        if contact.jobTitle.isBlank { contact.jobTitle = draft.jobTitle }
+        if contact.notes.isBlank { contact.notes = draft.notes }
+        if contact.birthday == nil { contact.birthday = draft.birthday }
+    }
+
     private func insert(
         _ fields: [(label: FieldLabel, value: String)],
         kind: FieldKind,
@@ -46,6 +65,53 @@ extension ContactStore {
             )
             model.contact = contact
             context.insert(model)
+        }
+    }
+
+    private func insertMissing(
+        _ fields: [(label: FieldLabel, value: String)],
+        kind: FieldKind,
+        into contact: Contact
+    ) {
+        var existing = Set(contact.fields(of: kind).map { normalized($0.value, kind: kind) })
+        var nextIndex = (contact.fields(of: kind).map(\.sortIndex).max() ?? -1) + 1
+
+        for field in fields where !field.value.isBlank {
+            let normalizedValue = normalized(field.value, kind: kind)
+            guard !normalizedValue.isEmpty, existing.insert(normalizedValue).inserted else { continue }
+
+            let model = ContactField(
+                kind: kind,
+                label: field.label,
+                value: field.value,
+                sortIndex: nextIndex
+            )
+            nextIndex += 1
+            model.contact = contact
+            context.insert(model)
+        }
+    }
+
+    private func adoptGroups(named names: [String], into contact: Contact) throws {
+        var existingIDs = Set(contact.groups.map(\.persistentModelID))
+        for group in try groups(named: names) where existingIDs.insert(group.persistentModelID).inserted {
+            contact.groups.append(group)
+        }
+    }
+
+    private func adoptTags(named names: [String], into contact: Contact) throws {
+        var existingIDs = Set(contact.tags.map(\.persistentModelID))
+        for tag in try tags(named: names) where existingIDs.insert(tag.persistentModelID).inserted {
+            contact.tags.append(tag)
+        }
+    }
+
+    private func normalized(_ value: String, kind: FieldKind) -> String {
+        switch kind {
+        case .email:
+            value.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        case .phone:
+            String(value.filter(\.isNumber))
         }
     }
 

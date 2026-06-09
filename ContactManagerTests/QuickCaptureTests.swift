@@ -119,6 +119,56 @@ struct QuickCaptureTests {
         ])
     }
 
+    @Test func duplicateMatchFindsExactEmail() {
+        let ada = Contact(firstName: "Ada", lastName: "Lovelace")
+        ada.fields = [
+            ContactField(kind: .email, label: .home, value: "ada@example.com"),
+        ]
+        let draft = QuickCaptureParser.parse("Ada Byron, ADA@example.com")
+
+        let match = QuickCaptureMatcher.bestMatch(for: draft, in: [ada])
+
+        #expect(match?.contact === ada)
+        #expect(match?.confidence == .likely)
+        #expect(match?.reason == "same email")
+    }
+
+    @Test func duplicateMatchFindsExactPhone() {
+        let ada = Contact(firstName: "Ada", lastName: "Lovelace")
+        ada.fields = [
+            ContactField(kind: .phone, label: .mobile, value: "(555) 010-1000"),
+        ]
+        let draft = QuickCaptureParser.parse("Ada Byron, phone 5550101000")
+
+        let match = QuickCaptureMatcher.bestMatch(for: draft, in: [ada])
+
+        #expect(match?.contact === ada)
+        #expect(match?.confidence == .likely)
+        #expect(match?.reason == "same phone")
+    }
+
+    @Test func duplicateMatchFindsPartialName() {
+        let ada = Contact(firstName: "Ada", lastName: "Lovelace")
+        let alan = Contact(firstName: "Alan", lastName: "Turing")
+        let draft = QuickCaptureParser.parse("Ada")
+
+        let match = QuickCaptureMatcher.bestMatch(for: draft, in: [alan, ada])
+
+        #expect(match?.contact === ada)
+        #expect(match?.confidence == .possible)
+        #expect(match?.reason == "similar name")
+    }
+
+    @Test func duplicateMatchIgnoresUnrelatedContacts() {
+        let alan = Contact(firstName: "Alan", lastName: "Turing")
+        alan.fields = [
+            ContactField(kind: .email, label: .home, value: "alan@example.com"),
+        ]
+        let draft = QuickCaptureParser.parse("Grace Hopper, grace@example.com")
+
+        #expect(QuickCaptureMatcher.bestMatch(for: draft, in: [alan]) == nil)
+    }
+
     @Test func parsesNumericBirthdayWithYear() throws {
         let draft = QuickCaptureParser.parse("Katherine Johnson, birthday 1918-08-26")
 
@@ -194,5 +244,26 @@ struct QuickCaptureTests {
         #expect(contact.tags.map(\.displayName) == ["VIP"])
         #expect(try context.fetchCount(FetchDescriptor<ContactGroup>()) == 1)
         #expect(try context.fetchCount(FetchDescriptor<ContactTag>()) == 1)
+    }
+
+    @Test func updateContactFromQuickCaptureDraftAddsMissingData() throws {
+        let contact = Contact(firstName: "Ada", lastName: "Lovelace")
+        contact.fields = [
+            ContactField(kind: .email, label: .home, value: "ada@example.com"),
+        ]
+        context.insert(contact)
+        try context.save()
+
+        let draft = QuickCaptureParser.parse(
+            "Ada Lovelace, ada@example.com, work ada@analytical.example, phone 555-0101, tag VIP"
+        )
+
+        try store.updateContact(contact, from: draft)
+
+        #expect(contact.emails.map(\.value) == ["ada@example.com", "ada@analytical.example"])
+        #expect(contact.phones.map(\.value) == ["555-0101"])
+        #expect(contact.tags.map(\.displayName) == ["VIP"])
+        #expect(try context.fetchCount(FetchDescriptor<Contact>()) == 1)
+        #expect(try context.fetchCount(FetchDescriptor<ContactField>()) == 3)
     }
 }
