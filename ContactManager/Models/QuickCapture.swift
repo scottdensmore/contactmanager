@@ -58,7 +58,7 @@ enum QuickCaptureParser {
 
     private static func apply(_ fragment: String, to draft: inout QuickCaptureDraft) {
         if let email = email(in: fragment) {
-            draft.emails.append((label: .home, value: email))
+            draft.emails.append(email)
             return
         }
 
@@ -113,39 +113,66 @@ enum QuickCaptureParser {
         }
     }
 
-    private static func email(in fragment: String) -> String? {
-        let tokens = fragment.split(separator: " ").map(String.init)
-        return tokens
+    private static func email(in fragment: String) -> (label: FieldLabel, value: String)? {
+        let field = labeledValue(in: fragment, kindWords: ["email", "mail"], defaultLabel: .home)
+        let tokens = field.value.split(separator: " ").map(String.init)
+        guard let value = (tokens
             .map { clean($0) }
             .first { token in
                 token.contains("@") && token.contains(".")
-            }
+            })
+        else { return nil }
+        return (label: field.label, value: value)
     }
 
     private static func phone(in fragment: String) -> (label: FieldLabel, value: String)? {
-        var value = fragment
-        let label = phoneLabel(in: fragment, value: &value)
-        value = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        let field = labeledValue(
+            in: fragment,
+            kindWords: ["phone", "tel", "telephone", "number"],
+            defaultLabel: .mobile
+        )
+        let value = field.value.trimmingCharacters(in: .whitespacesAndNewlines)
         let digits = value.filter(\.isNumber)
         guard digits.count >= 7 else { return nil }
-        return (label: label, value: value)
+        return (label: field.label, value: value)
     }
 
-    private static func phoneLabel(in fragment: String, value: inout String) -> FieldLabel {
-        let prefixes: [(String, FieldLabel)] = [
-            ("mobile", .mobile),
-            ("cell", .mobile),
-            ("work", .work),
-            ("home", .home),
-            ("phone", .mobile),
-            ("tel", .mobile),
-        ]
-        let lower = fragment.lowercased()
-        for (prefix, label) in prefixes where lower.hasPrefix(prefix + " ") || lower == prefix {
-            value = String(fragment.dropFirst(prefix.count)).trimmingCharacters(in: .whitespacesAndNewlines)
-            return label
+    private static func labeledValue(
+        in fragment: String,
+        kindWords: Set<String>,
+        defaultLabel: FieldLabel
+    ) -> (label: FieldLabel, value: String) {
+        var label = defaultLabel
+        var pieces = fragment.split(separator: " ").map(String.init)
+        while let first = pieces.first {
+            let token = clean(first).lowercased()
+            if let parsed = fieldLabel(token) {
+                label = parsed
+                pieces.removeFirst()
+            } else if kindWords.contains(token) {
+                pieces.removeFirst()
+            } else {
+                break
+            }
         }
-        return .mobile
+        return (label: label, value: pieces.joined(separator: " "))
+    }
+
+    private static func fieldLabel(_ token: String) -> FieldLabel? {
+        switch token {
+        case "home":
+            .home
+        case "work", "office":
+            .work
+        case "mobile", "cell", "cellular":
+            .mobile
+        case "main":
+            .main
+        case "other":
+            .other
+        default:
+            nil
+        }
     }
 
     private static func birthday(in fragment: String) -> Date? {

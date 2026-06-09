@@ -55,6 +55,17 @@ struct QuickCaptureTests {
         #expect(draft.notes == "COBOL pioneer")
     }
 
+    @Test func parsesLabeledEmailAndPhoneFields() {
+        let draft = QuickCaptureParser.parse(
+            "Ada Lovelace, work email ada@example.com, home phone 555-0100"
+        )
+
+        #expect(draft.emails.map(\.value) == ["ada@example.com"])
+        #expect(draft.emails.first?.label == .work)
+        #expect(draft.phones.map(\.value) == ["555-0100"])
+        #expect(draft.phones.first?.label == .home)
+    }
+
     @Test func parsesNumericBirthdayWithYear() throws {
         let draft = QuickCaptureParser.parse("Katherine Johnson, birthday 1918-08-26")
 
@@ -80,5 +91,21 @@ struct QuickCaptureTests {
         #expect(contact.notes == "Enigma")
         #expect(try context.fetchCount(FetchDescriptor<Contact>()) == 1)
         #expect(try context.fetchCount(FetchDescriptor<ContactField>()) == 2)
+    }
+
+    @Test func createContactFromQuickCaptureDraftPreservesFieldLabels() throws {
+        let draft = QuickCaptureParser.parse(
+            "Katherine Johnson, work email katherine@example.com, home phone 555-0102"
+        )
+
+        let contact = try store.createContact(from: draft)
+
+        let email = try #require(contact.emails.first)
+        #expect(email.label == .work)
+        #expect(email.value == "katherine@example.com")
+
+        let phone = try #require(contact.phones.first)
+        #expect(phone.label == .home)
+        #expect(phone.value == "555-0102")
     }
 }
