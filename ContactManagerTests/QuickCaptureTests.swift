@@ -66,6 +66,15 @@ struct QuickCaptureTests {
         #expect(draft.phones.first?.label == .home)
     }
 
+    @Test func parsesTagsAndGroups() {
+        let draft = QuickCaptureParser.parse(
+            "Ada Lovelace, ada@example.com, tag VIP, group Work"
+        )
+
+        #expect(draft.tags == ["VIP"])
+        #expect(draft.groups == ["Work"])
+    }
+
     @Test func parsesNumericBirthdayWithYear() throws {
         let draft = QuickCaptureParser.parse("Katherine Johnson, birthday 1918-08-26")
 
@@ -107,5 +116,39 @@ struct QuickCaptureTests {
         let phone = try #require(contact.phones.first)
         #expect(phone.label == .home)
         #expect(phone.value == "555-0102")
+    }
+
+    @Test func createContactFromQuickCaptureDraftAssignsGroupsAndTags() throws {
+        let existingGroup = ContactGroup(name: "Work")
+        let existingTag = ContactTag(name: "VIP")
+        context.insert(existingGroup)
+        context.insert(existingTag)
+        try context.save()
+
+        let draft = QuickCaptureParser.parse(
+            "Hedy Lamarr, hedy@example.com, tag vip, group work"
+        )
+
+        let contact = try store.createContact(from: draft)
+
+        #expect(contact.groups.map(\.displayName) == ["Work"])
+        #expect(contact.tags.map(\.displayName) == ["VIP"])
+        #expect(existingGroup.contacts.map(\.fullName) == ["Hedy Lamarr"])
+        #expect(existingTag.contacts.map(\.fullName) == ["Hedy Lamarr"])
+        #expect(try context.fetchCount(FetchDescriptor<ContactGroup>()) == 1)
+        #expect(try context.fetchCount(FetchDescriptor<ContactTag>()) == 1)
+    }
+
+    @Test func createContactFromQuickCaptureDraftCreatesMissingGroupsAndTags() throws {
+        let draft = QuickCaptureParser.parse(
+            "Dorothy Vaughan, dorothy@example.com, tag VIP, group Work"
+        )
+
+        let contact = try store.createContact(from: draft)
+
+        #expect(contact.groups.map(\.displayName) == ["Work"])
+        #expect(contact.tags.map(\.displayName) == ["VIP"])
+        #expect(try context.fetchCount(FetchDescriptor<ContactGroup>()) == 1)
+        #expect(try context.fetchCount(FetchDescriptor<ContactTag>()) == 1)
     }
 }
