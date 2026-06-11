@@ -13,15 +13,21 @@ struct ImportReviewView: View {
     @Binding var items: [ImportReviewItem]
     var importAction: ([ImportReviewItem]) -> Void
 
-    private var importCount: Int {
-        items.filter { $0.decision != .skip }.count
+    private var summary: ImportReviewPendingSummary {
+        ImportReviewPendingSummary(items: items)
     }
 
     var body: some View {
         NavigationStack {
-            List {
-                ForEach($items) { $item in
-                    ImportReviewRow(item: $item)
+            VStack(spacing: 0) {
+                reviewSummary
+                    .padding(.horizontal)
+                    .padding(.vertical, 10)
+                Divider()
+                List {
+                    ForEach($items) { $item in
+                        ImportReviewRow(item: $item)
+                    }
                 }
             }
             .navigationTitle("Review Import")
@@ -35,7 +41,7 @@ struct ImportReviewView: View {
                         dismiss()
                         importAction(reviewed)
                     }
-                    .disabled(importCount == 0)
+                    .disabled(summary.totalToWrite == 0)
                     .accessibilityIdentifier("confirm-reviewed-import-button")
                 }
             }
@@ -43,8 +49,41 @@ struct ImportReviewView: View {
         .frame(minWidth: 560, minHeight: 420)
     }
 
+    private var reviewSummary: some View {
+        HStack(alignment: .center, spacing: 12) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(summary.reviewText)
+                    .font(.headline)
+                    .lineLimit(1)
+                    .accessibilityLabel(summary.reviewText)
+                    .accessibilityIdentifier("import-review-summary")
+                Text(parsedContactCountText)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .accessibilityIdentifier("import-review-total-count")
+            }
+            Spacer()
+            Menu {
+                ForEach(ImportDecision.allCases) { decision in
+                    Button("Set All to \(decision.title)") {
+                        ImportReview.apply(decision, to: &items)
+                    }
+                    .disabled(!items.contains { $0.availableDecisions.contains(decision) })
+                    .accessibilityIdentifier("import-review-batch-\(decision.rawValue)")
+                }
+            } label: {
+                Label("Batch Actions", systemImage: "checklist")
+            }
+            .accessibilityIdentifier("import-review-batch-menu")
+        }
+    }
+
     private var importButtonTitle: String {
-        importCount == 1 ? "Import 1 Contact" : "Import \(importCount) Contacts"
+        summary.importButtonTitle
+    }
+
+    private var parsedContactCountText: String {
+        items.count == 1 ? "1 parsed contact" : "\(items.count) parsed contacts"
     }
 }
 
@@ -52,7 +91,7 @@ private struct ImportReviewRow: View {
     @Binding var item: ImportReviewItem
 
     var body: some View {
-        HStack(alignment: .center, spacing: 12) {
+        HStack(alignment: .top, spacing: 12) {
             VStack(alignment: .leading, spacing: 3) {
                 Text(item.displayName)
                     .font(.headline)
@@ -73,18 +112,51 @@ private struct ImportReviewRow: View {
                 }
             }
             Spacer()
-            Picker("Import Action", selection: $item.decision) {
-                ForEach(item.availableDecisions) { decision in
-                    Text(decision.title).tag(decision)
+            VStack(alignment: .trailing, spacing: 6) {
+                matchBadge
+                Picker("Import Action", selection: $item.decision) {
+                    ForEach(item.availableDecisions) { decision in
+                        Text(decision.title).tag(decision)
+                    }
                 }
+                .labelsHidden()
+                .frame(width: 160)
+                .accessibilityIdentifier("import-review-action-picker")
             }
-            .labelsHidden()
-            .frame(width: 160)
-            .accessibilityIdentifier("import-review-action-picker")
         }
         .padding(.vertical, 4)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("import-review-row-\(item.displayName.normalizedIdentifier)")
+    }
+
+    private var matchBadge: some View {
+        Label(badgeTitle, systemImage: badgeImage)
+            .font(.caption.weight(.medium))
+            .foregroundStyle(badgeColor)
+            .lineLimit(1)
+            .accessibilityIdentifier("import-review-confidence-badge")
+    }
+
+    private var badgeTitle: String {
+        item.confidence?.title ?? "New"
+    }
+
+    private var badgeImage: String {
+        switch item.confidence {
+        case .exact: "checkmark.seal"
+        case .likely: "person.crop.circle.badge.checkmark"
+        case .possible: "questionmark.circle"
+        case nil: "plus.circle"
+        }
+    }
+
+    private var badgeColor: Color {
+        switch item.confidence {
+        case .exact: .green
+        case .likely: .blue
+        case .possible: .orange
+        case nil: .secondary
+        }
     }
 
     private func matchDescription(_ matched: Contact) -> String {

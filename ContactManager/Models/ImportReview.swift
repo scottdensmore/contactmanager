@@ -70,6 +70,46 @@ struct ImportReviewItem: Identifiable {
     }
 }
 
+struct ImportReviewPendingSummary {
+    var add = 0
+    var merge = 0
+    var updateExisting = 0
+    var skip = 0
+
+    init(items: [ImportReviewItem]) {
+        for item in items {
+            switch item.decision {
+            case .add: add += 1
+            case .merge: merge += 1
+            case .updateExisting: updateExisting += 1
+            case .skip: skip += 1
+            }
+        }
+    }
+
+    var totalToWrite: Int {
+        add + merge + updateExisting
+    }
+
+    var reviewText: String {
+        let parts = [
+            formatted("Add", count: add),
+            formatted("Merge", count: merge),
+            formatted("Update Existing", count: updateExisting),
+            formatted("Skip", count: skip),
+        ].compactMap { $0 }
+        return parts.isEmpty ? "No contacts to review" : parts.joined(separator: ", ")
+    }
+
+    var importButtonTitle: String {
+        totalToWrite == 1 ? "Import 1 Contact" : "Import \(totalToWrite) Contacts"
+    }
+
+    private func formatted(_ label: String, count: Int) -> String? {
+        count == 0 ? nil : "\(label) \(count)"
+    }
+}
+
 enum ImportReview {
     static func makeItems(for parsed: [ParsedContact], existing contacts: [Contact]) -> [ImportReviewItem] {
         parsed.map { parsedContact in
@@ -90,6 +130,12 @@ enum ImportReview {
                 confidence: confidence(for: decision, sharedKeys: match.sharedKeys),
                 matchReason: reason(for: match.sharedKeys)
             )
+        }
+    }
+
+    static func apply(_ decision: ImportDecision, to items: inout [ImportReviewItem]) {
+        for index in items.indices where items[index].availableDecisions.contains(decision) {
+            items[index].decision = decision
         }
     }
 

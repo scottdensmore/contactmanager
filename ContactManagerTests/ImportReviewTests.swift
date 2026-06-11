@@ -153,4 +153,53 @@ struct ImportReviewTests {
         #expect(result.skipped == 4)
         #expect(result.totalWritten == 4)
     }
+
+    @Test func pendingSummaryCountsDecisionsAndFormatsThemForReview() throws {
+        let existing = try store.createContact()
+        existing.firstName = "Ada"
+        existing.lastName = "Lovelace"
+        try store.addField(.email, value: "ada@example.com", to: existing)
+        try context.save()
+
+        var matchedParsed = ParsedContact(firstName: "Ada", lastName: "Lovelace", company: "Analytical Engine Co.")
+        matchedParsed.emails = [(.home, "ada@example.com")]
+        let newParsed = ParsedContact(firstName: "Katherine", lastName: "Johnson")
+
+        var items = ImportReview.makeItems(for: [matchedParsed, newParsed], existing: [existing])
+        items[0].decision = .updateExisting
+        items[1].decision = .skip
+
+        let summary = ImportReviewPendingSummary(items: items)
+
+        #expect(summary.add == 0)
+        #expect(summary.updateExisting == 1)
+        #expect(summary.merge == 0)
+        #expect(summary.skip == 1)
+        #expect(summary.totalToWrite == 1)
+        #expect(summary.reviewText == "Update Existing 1, Skip 1")
+        #expect(summary.importButtonTitle == "Import 1 Contact")
+    }
+
+    @Test func applyingBatchDecisionOnlyChangesEligibleRows() throws {
+        let existing = try store.createContact()
+        existing.firstName = "Ada"
+        existing.lastName = "Lovelace"
+        try store.addField(.email, value: "ada@example.com", to: existing)
+        try context.save()
+
+        var matchedParsed = ParsedContact(firstName: "Ada", lastName: "Lovelace", company: "Analytical Engine Co.")
+        matchedParsed.emails = [(.home, "ada@example.com")]
+        let newParsed = ParsedContact(firstName: "Katherine", lastName: "Johnson")
+
+        var items = ImportReview.makeItems(for: [matchedParsed, newParsed], existing: [existing])
+
+        ImportReview.apply(.merge, to: &items)
+
+        #expect(items[0].decision == .merge)
+        #expect(items[1].decision == .add)
+
+        ImportReview.apply(.skip, to: &items)
+
+        #expect(items.map(\.decision) == [.skip, .skip])
+    }
 }
