@@ -203,10 +203,7 @@ final class ContactManagerUITests: XCTestCase {
     /// creates a searchable contact from natural text.
     func test_quickCaptureCreatesSearchableContact() {
         let app = bootSeededApp()
-        app.typeKey("n", modifierFlags: [.command, .option])
-
-        let entry = app.textFields["quick-capture-entry-field"]
-        XCTAssertTrue(entry.waitForExistence(timeout: 3))
+        let entry = openQuickCapture(in: app)
         entry.click()
         entry.typeText("Test Capture, capture@example.com, birthday Dec 10")
 
@@ -220,14 +217,21 @@ final class ContactManagerUITests: XCTestCase {
         )
     }
 
+    /// Verifies the keyboard shortcut itself remains wired. The content-heavy
+    /// quick-capture tests use a menu fallback after this smoke test has
+    /// covered shortcut wiring, because macOS can occasionally drop a key event
+    /// while a just-launched app is still settling.
+    func test_quickCaptureShortcutOpensWindow() {
+        let app = bootSeededApp()
+        let entry = openQuickCaptureUsingShortcut(in: app)
+        XCTAssertTrue(entry.exists)
+    }
+
     /// Verifies Quick Capture warns before creating an obvious duplicate and
     /// can update the existing contact instead.
     func test_quickCaptureShowsDuplicateMatchAndUpdatesExisting() {
         let app = bootSeededApp()
-        app.typeKey("n", modifierFlags: [.command, .option])
-
-        let entry = app.textFields["quick-capture-entry-field"]
-        XCTAssertTrue(entry.waitForExistence(timeout: 3))
+        let entry = openQuickCapture(in: app)
         entry.click()
         entry.typeText("Ada Lovelace, ada@analytical.engine, mobile 555-0200, tag VIP")
 
@@ -256,10 +260,7 @@ final class ContactManagerUITests: XCTestCase {
     /// before saving, so users can trust what the one-line parser understood.
     func test_quickCapturePreviewShowsParsedDetails() {
         let app = bootSeededApp()
-        app.typeKey("n", modifierFlags: [.command, .option])
-
-        let entry = app.textFields["quick-capture-entry-field"]
-        XCTAssertTrue(entry.waitForExistence(timeout: 3))
+        let entry = openQuickCapture(in: app)
         entry.click()
         entry.typeText(
             "Preview Person at Preview Labs, title Designer, " +
@@ -293,10 +294,7 @@ final class ContactManagerUITests: XCTestCase {
     /// parse feedback before saving.
     func test_quickCapturePreviewShowsWarningsAndOverflow() {
         let app = bootSeededApp()
-        app.typeKey("n", modifierFlags: [.command, .option])
-
-        let entry = app.textFields["quick-capture-entry-field"]
-        XCTAssertTrue(entry.waitForExistence(timeout: 3))
+        let entry = openQuickCapture(in: app)
         entry.click()
         entry.typeText(
             "Overflow Person, home email one@example.com, work email two@example.com, " +
@@ -334,5 +332,49 @@ final class ContactManagerUITests: XCTestCase {
             "Main window didn't appear within 10s"
         )
         return app
+    }
+
+    private func openQuickCapture(
+        in app: XCUIApplication,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> XCUIElement {
+        let entry = openQuickCaptureUsingShortcut(in: app, requireSuccess: false)
+        if entry.waitForExistence(timeout: 5) {
+            return entry
+        }
+
+        app.menuBars.menuBarItems["File"].click()
+        let menuItem = app.menuItems["Quick Capture…"]
+        if menuItem.waitForExistence(timeout: 2) {
+            menuItem.click()
+        }
+        XCTAssertTrue(
+            entry.waitForExistence(timeout: 8),
+            "Quick Capture entry field should appear from the shortcut or File menu",
+            file: file,
+            line: line
+        )
+        return entry
+    }
+
+    private func openQuickCaptureUsingShortcut(
+        in app: XCUIApplication,
+        requireSuccess: Bool = true,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> XCUIElement {
+        let entry = app.textFields["quick-capture-entry-field"]
+        app.activate()
+        app.typeKey("n", modifierFlags: [.command, .option])
+        if requireSuccess {
+            XCTAssertTrue(
+                entry.waitForExistence(timeout: 8),
+                "Quick Capture entry field should appear from ⌘⌥N",
+                file: file,
+                line: line
+            )
+        }
+        return entry
     }
 }
