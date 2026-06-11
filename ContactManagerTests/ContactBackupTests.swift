@@ -164,13 +164,23 @@ struct ContactBackupTests {
             exportedAt: Date(timeIntervalSinceReferenceDate: 42)
         )
 
+        let plaintext = try ContactBackupDocument.encode(backup)
         let data = try EncryptedContactBackupDocument.encode(backup, password: "correct horse battery staple")
+        let envelope = try JSONDecoder().decode(EncryptedBackupEnvelopeSnapshot.self, from: data)
         let decoded = try EncryptedContactBackupDocument.decode(data, password: "correct horse battery staple")
 
         #expect(EncryptedContactBackupDocument.isEncrypted(data))
-        #expect(!data.contains(Data("Ada".utf8)))
+        #expect(data != plaintext)
+        #expect(envelope.magic == "ContactManagerEncryptedBackup")
+        #expect(envelope.version == 1)
+        #expect(envelope.algorithm == "AES.GCM")
+        #expect(envelope.kdf == "PBKDF2-HMAC-SHA256")
+        #expect(envelope.iterations == 210_000)
+        #expect(envelope.salt.count == 16)
+        #expect(envelope.sealedData.count == plaintext.count + 28)
+        #expect(envelope.sealedData != plaintext)
         #expect(decoded == backup)
-        #expect(try ContactBackupDocument.decode(ContactBackupDocument.encode(backup)) == backup)
+        #expect(try ContactBackupDocument.decode(plaintext) == backup)
     }
 
     @Test func encryptedBackupDocumentRejectsWrongPassword() throws {
@@ -270,4 +280,14 @@ struct ContactBackupTests {
         )
         return contact
     }
+}
+
+private struct EncryptedBackupEnvelopeSnapshot: Decodable {
+    var magic: String
+    var version: Int
+    var algorithm: String
+    var kdf: String
+    var iterations: Int
+    var salt: Data
+    var sealedData: Data
 }
