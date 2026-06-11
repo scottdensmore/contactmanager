@@ -64,6 +64,7 @@ struct ContentView: View {
     @State var isReviewingImport = false
     @State var importSummary: ImportReviewResult?
     @State var restoreSummary: BackupRestoreResult?
+    @State private var didPresentUITestImportReview = false
 
     var store: ContactStore { ContactStore(context) }
 
@@ -149,6 +150,7 @@ struct ContentView: View {
             }
             .onAppear {
                 context.undoManager = undoManager
+                presentUITestImportReviewIfNeeded()
             }
             .onChange(of: undoManager) { _, new in
                 context.undoManager = new
@@ -284,6 +286,21 @@ struct ContentView: View {
 /// the SwiftUI type-checker (and the type-body length) happy. Same-file, so
 /// these still see ContentView's private state.
 private extension ContentView {
+    func presentUITestImportReviewIfNeeded() {
+        guard !didPresentUITestImportReview,
+              ProcessInfo.processInfo.environment["CONTACTMANAGER_UI_TEST_MODE"] != nil,
+              ProcessInfo.processInfo.environment["CONTACTMANAGER_UI_TEST_IMPORT_REVIEW"] != nil
+        else { return }
+
+        didPresentUITestImportReview = true
+        var ada = ParsedContact(firstName: "Ada", lastName: "Lovelace")
+        ada.emails = [(.work, "ada@analytical.engine")]
+        ada.phones = [(.mobile, "555-0200")]
+        let katherine = ParsedContact(firstName: "Katherine", lastName: "Johnson")
+        importReviewItems = ImportReview.makeItems(for: [ada, katherine], existing: contacts)
+        isReviewingImport = true
+    }
+
     /// Menu-command observers (New, imports/exports, Find Duplicates, Print/PDF,
     /// Spotlight open, and the incremental re-index on every mutation).
     func handlingMenuCommands(_ content: some View) -> some View {

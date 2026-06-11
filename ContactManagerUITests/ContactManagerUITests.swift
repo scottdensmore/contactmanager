@@ -164,6 +164,41 @@ final class ContactManagerUITests: XCTestCase {
         )
     }
 
+    /// Verifies the import-review sheet exposes the high-signal review
+    /// affordances before writing anything: summary, batch actions, confidence,
+    /// row action picker, and disabled/enabled import confirmation.
+    func test_importReviewPolishControlsRender() {
+        app = XCUIApplication()
+        app.launchEnvironment["CONTACTMANAGER_UI_TEST_MODE"] = "1"
+        app.launchEnvironment["CONTACTMANAGER_UI_TEST_IMPORT_REVIEW"] = "1"
+        app.launchArguments = ["-ApplePersistenceIgnoreState", "YES"]
+        app.launch()
+
+        XCTAssertTrue(app.windows.firstMatch.waitForExistence(timeout: 10))
+        let summary = app.descendants(matching: .any)["import-review-summary"]
+        XCTAssertTrue(summary.waitForExistence(timeout: 3))
+        let summaryText = [
+            summary.label,
+            summary.value as? String ?? "",
+        ]
+        .filter { !$0.isEmpty }
+        .joined(separator: " ")
+        XCTAssertTrue(summaryText.contains("Add 1"), "Summary text was: \(summaryText)")
+        XCTAssertTrue(summaryText.contains("Update Existing 1"), "Summary text was: \(summaryText)")
+
+        XCTAssertTrue(app.menuButtons["import-review-batch-menu"].waitForExistence(timeout: 3))
+        XCTAssertTrue(
+            app.descendants(matching: .any)["import-review-confidence-badge"].waitForExistence(timeout: 3)
+        )
+        XCTAssertTrue(
+            app.descendants(matching: .any)["import-review-row-ada-lovelace"].waitForExistence(timeout: 3)
+        )
+        XCTAssertTrue(
+            app.descendants(matching: .any)["import-review-action-picker"].waitForExistence(timeout: 3)
+        )
+        XCTAssertTrue(app.buttons["confirm-reviewed-import-button"].isEnabled)
+    }
+
     /// Verifies the quick-capture command opens a focused capture window and
     /// creates a searchable contact from natural text.
     func test_quickCaptureCreatesSearchableContact() {
