@@ -34,7 +34,7 @@ extension ContentView {
     }
 
     private var coreCommandPaletteEntries: [CommandPaletteAction] {
-        [
+        var entries = [
             command(
                 id: "new-contact",
                 title: "New Contact",
@@ -69,6 +69,14 @@ extension ContentView {
             ) {
                 NotificationCenter.default.post(name: .focusSearchRequested, object: nil)
             },
+            command(
+                id: "save-search",
+                title: "Save Search",
+                subtitle: "Save the current contact search",
+                keywords: ["smart list", "filter"],
+                systemImage: "line.3.horizontal.decrease.circle",
+                action: saveCurrentSearchAsSmartList
+            ),
             command(
                 id: "find-duplicates",
                 title: "Find Duplicates",
@@ -149,6 +157,12 @@ extension ContentView {
                 action: openSettings
             ),
         ]
+
+        if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            entries.removeAll { $0.id == "save-search" }
+        }
+
+        return entries
     }
 
     private var navigationCommandPaletteEntries: [CommandPaletteAction] {
@@ -250,6 +264,56 @@ extension ContentView {
                 },
                 at: 0
             )
+            entries.insert(
+                command(
+                    id: "selected-add-phone",
+                    title: "Add Phone",
+                    subtitle: selectedContact.fullName,
+                    keywords: ["field", "number", "editor"],
+                    systemImage: "phone.badge.plus"
+                ) {
+                    addField(.phone, to: selectedContact)
+                },
+                at: 1
+            )
+            entries.insert(
+                command(
+                    id: "selected-add-email",
+                    title: "Add Email",
+                    subtitle: selectedContact.fullName,
+                    keywords: ["field", "mail", "editor"],
+                    systemImage: "envelope.badge"
+                ) {
+                    addField(.email, to: selectedContact)
+                },
+                at: 1
+            )
+            if let email = selectedContact.primaryEmail {
+                entries.append(
+                    command(
+                        id: "selected-copy-email",
+                        title: "Copy Email",
+                        subtitle: email,
+                        keywords: ["clipboard", "mail"],
+                        systemImage: "doc.on.doc"
+                    ) {
+                        copyToPasteboard(email)
+                    }
+                )
+            }
+            if let phone = selectedContact.primaryPhone {
+                entries.append(
+                    command(
+                        id: "selected-copy-phone",
+                        title: "Copy Phone",
+                        subtitle: phone,
+                        keywords: ["clipboard", "number"],
+                        systemImage: "doc.on.doc"
+                    ) {
+                        copyToPasteboard(phone)
+                    }
+                )
+            }
             entries.append(
                 command(
                     id: "selected-export-pdf",
@@ -300,5 +364,21 @@ extension ContentView {
 
     private func openSettings() {
         NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+    }
+
+    private func addField(_ kind: FieldKind, to contact: Contact) {
+        do {
+            let field = try store.addField(kind, to: contact)
+            selectedContact = contact
+            selectedContactIDs = [contact.persistentModelID]
+            contactPendingFieldFocus = field.persistentModelID
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    private func copyToPasteboard(_ value: String) {
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(value, forType: .string)
     }
 }

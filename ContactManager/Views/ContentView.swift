@@ -30,6 +30,7 @@ struct ContentView: View {
     @State var selectedContact: Contact?
     @State var selectedContactIDs: Set<PersistentIdentifier> = []
     @State private var contactPendingNameFocus: PersistentIdentifier?
+    @State var contactPendingFieldFocus: PersistentIdentifier?
     @State var errorMessage: String?
     @State var isConfirmingBatchDelete = false
     @State var isShowingCommandPalette = false
@@ -207,7 +208,9 @@ struct ContentView: View {
                     ContactDetailView(
                         contact: selectedContact,
                         focusNameField: selectedContact.persistentModelID == contactPendingNameFocus,
+                        focusFieldID: contactPendingFieldFocus,
                         onNameFieldFocused: { contactPendingNameFocus = nil },
+                        onFieldFocused: { contactPendingFieldFocus = nil },
                         markContacted: markContacted
                     )
                     .id(selectedContact.persistentModelID)
