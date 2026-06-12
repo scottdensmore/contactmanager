@@ -309,6 +309,28 @@ final class ContactManagerUITests: XCTestCase {
         )
     }
 
+    /// Verifies free-form editors render as contained surfaces instead of
+    /// oversized fields that can sprawl across or escape the detail content.
+    func test_freeformEditorsStayContainedInDetailPane() {
+        let app = bootSeededApp()
+        app.typeKey("n", modifierFlags: .command)
+
+        let window = app.windows.firstMatch
+        XCTAssertTrue(window.waitForExistence(timeout: 3))
+
+        let historyEditor = app.descendants(matching: .any)
+            .matching(identifier: "interaction-summary-editor")
+            .firstMatch
+        XCTAssertTrue(historyEditor.waitForExistence(timeout: 3))
+        assertContainedEditor(historyEditor, in: window)
+
+        let notesEditor = app.descendants(matching: .any)
+            .matching(identifier: "contact-notes-editor")
+            .firstMatch
+        XCTAssertTrue(notesEditor.waitForExistence(timeout: 3))
+        assertContainedEditor(notesEditor, in: window)
+    }
+
     /// Verifies the import-review sheet exposes the high-signal review
     /// affordances before writing anything: summary, batch actions, confidence,
     /// row action picker, and disabled/enabled import confirmation.
@@ -477,6 +499,35 @@ final class ContactManagerUITests: XCTestCase {
             "Main window didn't appear within 10s"
         )
         return app
+    }
+
+    private func assertContainedEditor(
+        _ editor: XCUIElement,
+        in window: XCUIElement,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        XCTAssertLessThanOrEqual(
+            editor.frame.width,
+            window.frame.width * 0.72,
+            "Free-form editor should stay visually contained",
+            file: file,
+            line: line
+        )
+        XCTAssertGreaterThanOrEqual(
+            editor.frame.height,
+            60,
+            "Free-form editor should remain large enough to type comfortably",
+            file: file,
+            line: line
+        )
+        XCTAssertLessThanOrEqual(
+            editor.frame.height,
+            120,
+            "Free-form editor should not grow tall enough to push form content around",
+            file: file,
+            line: line
+        )
     }
 
     private func openQuickCapture(

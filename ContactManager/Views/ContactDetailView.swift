@@ -155,9 +155,7 @@ struct ContactDetailView: View {
                     emptyDetailHint("No notes saved", systemImage: "note.text")
                         .accessibilityIdentifier("contact-notes-empty-hint")
                 }
-                TextField("Notes", text: $contact.notes, axis: .vertical)
-                    .lineLimit(3 ... 10)
-                    .accessibilityIdentifier("contact-notes-field")
+                freeformEditor(text: $contact.notes, configuration: .notes)
             }
         }
         .formStyle(.grouped)
