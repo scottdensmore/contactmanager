@@ -28,6 +28,7 @@ struct ContactDetailView: View {
     // Not private: the photo handlers in ContactDetailView+Photo.swift read them.
     @State var errorMessage: String?
     @FocusState private var nameFieldFocused: Bool
+    @FocusState var focusedFieldID: PersistentIdentifier?
     @State var lastSavedFingerprint = ""
     @State var interactionKind: ContactInteractionKind = .note
     @State var interactionSummary = ""
@@ -88,6 +89,10 @@ struct ContactDetailView: View {
             fieldSection("Phone", kind: .phone, fields: contact.phones)
 
             Section("Address") {
+                if contact.addressLines.isEmpty {
+                    emptyDetailHint("No address saved", systemImage: "mappin.and.ellipse")
+                        .accessibilityIdentifier("contact-address-empty-hint")
+                }
                 TextField("Street", text: $contact.street)
                     .accessibilityIdentifier("contact-street-field")
                 TextField("City", text: $contact.city)
@@ -144,6 +149,10 @@ struct ContactDetailView: View {
             }
 
             Section("Notes") {
+                if contact.notes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    emptyDetailHint("No notes saved", systemImage: "note.text")
+                        .accessibilityIdentifier("contact-notes-empty-hint")
+                }
                 TextField("Notes", text: $contact.notes, axis: .vertical)
                     .lineLimit(3 ... 10)
                     .accessibilityIdentifier("contact-notes-field")
@@ -250,43 +259,11 @@ struct ContactDetailView: View {
         }
     }
 
-    // MARK: - Repeatable field sections
-
-    private func fieldSection(_ title: String, kind: FieldKind, fields: [ContactField]) -> some View {
-        Section(title) {
-            ForEach(fields) { field in
-                ContactFieldRow(field: field)
-            }
-            .onDelete { offsets in
-                delete(offsets, from: fields)
-            }
-
-            Button {
-                addField(kind: kind)
-            } label: {
-                Label("Add \(title)", systemImage: "plus.circle.fill")
-                    .foregroundStyle(.green)
-            }
-            .buttonStyle(.plain)
-        }
-    }
-
-    // MARK: - Field actions
-
-    private func addField(kind: FieldKind) {
-        do {
-            try store.addField(kind, to: contact)
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-    }
-
-    private func delete(_ offsets: IndexSet, from fields: [ContactField]) {
-        do {
-            try store.delete(offsets.map { fields[$0] })
-        } catch {
-            errorMessage = error.localizedDescription
-        }
+    func emptyDetailHint(_ text: String, systemImage: String) -> some View {
+        Label(text, systemImage: systemImage)
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .labelStyle(.titleAndIcon)
     }
 }
 

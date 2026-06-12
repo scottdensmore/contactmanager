@@ -140,6 +140,51 @@ final class ContactManagerUITests: XCTestCase {
         )
     }
 
+    /// Verifies a blank contact editor has clear empty states and direct add
+    /// affordances for the fields users commonly fill in first.
+    func test_blankContactEditorShowsErgonomicAddAffordances() {
+        let app = bootSeededApp()
+        app.typeKey("n", modifierFlags: .command)
+
+        XCTAssertTrue(app.textFields["contact-first-name-field"].waitForExistence(timeout: 3))
+        XCTAssertTrue(
+            app.descendants(matching: .any)["contact-empty-email-hint"].waitForExistence(timeout: 3),
+            "Blank contact should explain that no email is saved yet"
+        )
+        XCTAssertTrue(
+            app.descendants(matching: .any)["contact-empty-phone-hint"].waitForExistence(timeout: 3),
+            "Blank contact should explain that no phone is saved yet"
+        )
+        XCTAssertTrue(
+            app.buttons["contact-add-email-button"].waitForExistence(timeout: 3),
+            "Blank contact should expose an anchored add-email action"
+        )
+        XCTAssertTrue(
+            app.buttons["contact-add-phone-button"].waitForExistence(timeout: 3),
+            "Blank contact should expose an anchored add-phone action"
+        )
+        XCTAssertTrue(
+            app.descendants(matching: .any)["contact-address-empty-hint"].waitForExistence(timeout: 3),
+            "Blank contact should summarize the empty address section"
+        )
+        XCTAssertTrue(
+            app.descendants(matching: .any)["contact-notes-empty-hint"].waitForExistence(timeout: 3),
+            "Blank contact should summarize the empty notes section"
+        )
+
+        app.buttons["contact-add-email-button"].click()
+        XCTAssertTrue(
+            app.textFields["contact-email-value-field"].waitForExistence(timeout: 3),
+            "Adding an email should reveal an editable email value field"
+        )
+        app.buttons["contact-add-email-button"].click()
+        XCTAssertGreaterThanOrEqual(
+            app.textFields.matching(identifier: "contact-email-value-field").count,
+            2,
+            "Adding a second email should create another editable email value field"
+        )
+    }
+
     /// Verifies the polished list/detail anchors render against seeded data:
     /// richer rows, a stronger no-selection placeholder, and the detail
     /// identity/action cluster.
