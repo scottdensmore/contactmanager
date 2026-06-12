@@ -40,7 +40,13 @@ struct ContactDetailView: View {
 
     var body: some View {
         Form {
-            Section { identityHeader }
+            Section {
+                identityHeader
+                if !summaryChips.isEmpty {
+                    summaryChipRow
+                }
+                primaryActionRow
+            }
 
             quickInfoSection
 
@@ -194,26 +200,8 @@ struct ContactDetailView: View {
         }
     }
 
-    // MARK: - Identity header
-
-    private var identityHeader: some View {
-        HStack(spacing: 16) {
-            photoWell
-            VStack(alignment: .leading, spacing: 2) {
-                Text(contact.fullName)
-                    .font(.title2.weight(.semibold))
-                    .accessibilityAddTraits(.isHeader)
-                if let role = contact.roleLine {
-                    Text(role).foregroundStyle(.secondary)
-                }
-            }
-            Spacer()
-        }
-        .padding(.vertical, 4)
-    }
-
     /// Tappable avatar offering Choose / Remove Photo.
-    private var photoWell: some View {
+    var photoWell: some View {
         Menu {
             Button("Choose Photo…") { isImportingPhoto = true }
             if contact.photoData != nil {
@@ -384,5 +372,6 @@ struct ContactPlaceholderView: View {
             systemImage: "person.crop.circle",
             description: Text("Select a contact to view and edit their details.")
         )
+        .accessibilityIdentifier("contact-placeholder")
     }
 }
