@@ -210,7 +210,9 @@ struct ContactListView: View {
 
 private extension Contact {
     var accessibilityRowIdentifier: String {
-        "contact-row-\((persistentModelID.storedString ?? fullName).normalizedIdentifier)"
+        let name = fullName.normalizedIdentifier
+        let persistentToken = persistentModelID.storedString ?? String(describing: persistentModelID)
+        return "contact-row-\(name)-\(persistentToken.stableIdentifierHash)"
     }
 }
 
@@ -220,28 +222,67 @@ private extension String {
             .map { $0.isLetter || $0.isNumber ? String($0) : "-" }
             .joined()
     }
+
+    var stableIdentifierHash: String {
+        var hash: UInt64 = 14_695_981_039_346_656_037
+        for byte in utf8 {
+            hash ^= UInt64(byte)
+            hash = hash &* 1_099_511_628_211
+        }
+        return String(hash, radix: 16)
+    }
 }
 
 struct ContactRow: View {
     let contact: Contact
 
     var body: some View {
-        HStack(spacing: 10) {
-            AvatarView(contact: contact, size: 30)
-            VStack(alignment: .leading, spacing: 1) {
+        HStack(alignment: .top, spacing: 10) {
+            AvatarView(contact: contact, size: 36)
+                .padding(.top, 1)
+            VStack(alignment: .leading, spacing: 3) {
                 Text(contact.fullName)
+                    .font(.body.weight(.medium))
                     .lineLimit(1)
-                if let subtitle = contact.subtitle {
-                    Text(subtitle)
+                    .accessibilityIdentifier("contact-row-title-\(displayIdentifier)")
+                if let role = contact.roleLine {
+                    Text(role)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
+                        .accessibilityIdentifier("contact-row-role-\(displayIdentifier)")
+                }
+                if let metaLine = contact.listMetaLine {
+                    Text(metaLine)
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                        .accessibilityIdentifier("contact-row-meta-\(displayIdentifier)")
                 }
             }
+            Spacer(minLength: 0)
         }
-        .padding(.vertical, 2)
+        .padding(.vertical, 4)
         // Read the row as a single VoiceOver element ("John Smith, name@example.com")
         // rather than three (avatar + name + subtitle).
         .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("contact-row-summary-\(displayIdentifier)")
+    }
+
+    private var displayIdentifier: String {
+        contact.fullName.normalizedIdentifier
+    }
+}
+
+private extension Contact {
+    var listMetaLine: String? {
+        let values = [primaryEmail, primaryPhone]
+            .compactMap { $0?.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+        if !values.isEmpty { return values.joined(separator: " · ") }
+
+        let trimmedCompany = company.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmedCompany.isEmpty ? nil : trimmedCompany
     }
 }

@@ -54,8 +54,16 @@ final class ContactManagerUITests: XCTestCase {
             app.descendants(matching: .any)["sidebar-sync-status"].waitForExistence(timeout: 3),
             "Sidebar sync status should render"
         )
+        XCTAssertTrue(
+            app.descendants(matching: .any)["contact-placeholder"].waitForExistence(timeout: 3),
+            "No-selection placeholder should render before a contact is selected"
+        )
         app.typeKey("n", modifierFlags: .command)
         XCTAssertTrue(app.textFields["contact-first-name-field"].waitForExistence(timeout: 3))
+        XCTAssertTrue(
+            app.descendants(matching: .any)["contact-detail-identity-header"].waitForExistence(timeout: 3),
+            "Detail identity header should render for a selected contact"
+        )
         XCTAssertTrue(
             app.menuButtons["batch-actions-menu"].waitForExistence(timeout: 3),
             "Batch actions menu should render"
@@ -129,6 +137,46 @@ final class ContactManagerUITests: XCTestCase {
         XCTAssertTrue(
             app.staticTexts["Test Person"].waitForExistence(timeout: 3),
             "Newly edited contact should be searchable in the list"
+        )
+    }
+
+    /// Verifies the polished list/detail anchors render against seeded data:
+    /// richer rows, a stronger no-selection placeholder, and the detail
+    /// identity/action cluster.
+    func test_contactListAndDetailPolishAnchorsRender() {
+        let app = bootSeededApp()
+
+        XCTAssertTrue(
+            app.descendants(matching: .any)["contact-placeholder"].waitForExistence(timeout: 3),
+            "No-selection placeholder should have a stable accessibility anchor"
+        )
+        let adaRow = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "identifier BEGINSWITH %@", "contact-row-ada-lovelace-"))
+            .firstMatch
+        XCTAssertTrue(
+            adaRow.waitForExistence(timeout: 3),
+            "Ada row should render with a stable accessibility anchor"
+        )
+        let adaRowText = [adaRow.label, adaRow.value as? String ?? ""]
+            .filter { !$0.isEmpty }
+            .joined(separator: " ")
+        XCTAssertTrue(adaRowText.contains("Ada Lovelace"), "Ada row text was: \(adaRowText)")
+        XCTAssertTrue(adaRowText.contains("Mathematician"), "Ada row text was: \(adaRowText)")
+        XCTAssertTrue(adaRowText.contains("ada@analytical.engine"), "Ada row text was: \(adaRowText)")
+
+        adaRow.click()
+
+        XCTAssertTrue(
+            app.descendants(matching: .any)["contact-detail-identity-header"].waitForExistence(timeout: 3),
+            "Selected contact should show the polished identity header"
+        )
+        XCTAssertTrue(
+            app.descendants(matching: .any)["contact-detail-summary-chips"].waitForExistence(timeout: 3),
+            "Selected contact should show compact summary chips"
+        )
+        XCTAssertTrue(
+            app.descendants(matching: .any)["contact-detail-primary-actions"].waitForExistence(timeout: 3),
+            "Selected contact should show primary action controls"
         )
     }
 
