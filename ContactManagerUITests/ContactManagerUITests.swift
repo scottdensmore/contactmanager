@@ -185,6 +185,58 @@ final class ContactManagerUITests: XCTestCase {
         )
     }
 
+    /// Verifies the command palette can perform contact-specific editor
+    /// actions, not just navigate to existing screens.
+    func test_commandPaletteAddsEmailToSelectedContact() {
+        let app = bootSeededApp()
+        app.typeKey("n", modifierFlags: .command)
+        XCTAssertTrue(app.textFields["contact-first-name-field"].waitForExistence(timeout: 3))
+
+        app.typeKey("k", modifierFlags: .command)
+        let paletteSearch = app.textFields["command-palette-search-field"]
+        XCTAssertTrue(paletteSearch.waitForExistence(timeout: 3))
+        paletteSearch.typeText("add email")
+
+        let addEmail = app.buttons["command-palette-row-selected-add-email"]
+        XCTAssertTrue(
+            addEmail.waitForExistence(timeout: 3),
+            "Selected-contact Add Email command should render in the palette"
+        )
+        addEmail.click()
+
+        XCTAssertTrue(
+            app.textFields["contact-email-value-field"].waitForExistence(timeout: 3),
+            "Palette Add Email should reveal an editable email value field"
+        )
+    }
+
+    /// Verifies a non-empty list search can be saved directly from the command
+    /// palette, matching the toolbar affordance.
+    func test_commandPaletteSavesCurrentSearch() {
+        let app = bootSeededApp()
+        app.typeKey("f", modifierFlags: .command)
+        let search = app.searchFields.firstMatch
+        XCTAssertTrue(search.waitForExistence(timeout: 3))
+        search.typeText("Ada")
+
+        app.typeKey("k", modifierFlags: .command)
+        let paletteSearch = app.textFields["command-palette-search-field"]
+        XCTAssertTrue(paletteSearch.waitForExistence(timeout: 3))
+        paletteSearch.typeText("save search")
+
+        let saveSearch = app.buttons["command-palette-row-save-search"]
+        XCTAssertTrue(
+            saveSearch.waitForExistence(timeout: 3),
+            "Save Search command should render when the current search is non-empty"
+        )
+        saveSearch.click()
+
+        XCTAssertTrue(
+            app.descendants(matching: .any)["sidebar-saved-smart-list-row-ada"].waitForExistence(timeout: 3),
+            "Palette Save Search should create and select a saved smart list"
+        )
+    }
+
     /// Verifies the polished list/detail anchors render against seeded data:
     /// richer rows, a stronger no-selection placeholder, and the detail
     /// identity/action cluster.

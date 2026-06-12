@@ -20,7 +20,9 @@ struct ContactDetailView: View {
     /// Set for a just-created contact so the form opens with the cursor in
     /// First Name; the view clears it via `onNameFieldFocused` after focusing.
     var focusNameField = false
+    var focusFieldID: PersistentIdentifier?
     var onNameFieldFocused: () -> Void = {}
+    var onFieldFocused: () -> Void = {}
     var markContacted: (Contact) -> Void = { _ in }
     @Query(sort: \ContactGroup.name) private var allGroups: [ContactGroup]
     @Query(sort: \ContactTag.name) private var allTags: [ContactTag]
@@ -165,6 +167,7 @@ struct ContactDetailView: View {
         .onAppear {
             lastSavedFingerprint = editFingerprint
             if focusNameField { nameFieldFocused = true }
+            if let focusFieldID { focusedFieldID = focusFieldID }
         }
         .task(id: editFingerprint) {
             guard editFingerprint != lastSavedFingerprint else { return }
@@ -182,6 +185,15 @@ struct ContactDetailView: View {
         // so a missed/late focus application isn't dropped without a retry.
         .onChange(of: nameFieldFocused) { _, focused in
             if focused { onNameFieldFocused() }
+        }
+        .onChange(of: focusFieldID) { _, newValue in
+            guard let newValue else { return }
+            focusedFieldID = newValue
+        }
+        .onChange(of: focusedFieldID) { _, newValue in
+            if let newValue, newValue == focusFieldID {
+                onFieldFocused()
+            }
         }
         .toolbar {
             ToolbarItem {
