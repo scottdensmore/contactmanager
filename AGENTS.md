@@ -12,7 +12,7 @@ agents — keep it readable and idiomatic.
 | Test | `make test` (unit + UI) / `make test-unit` (unit only) |
 | Lint | `make lint` (autofix: `make lint-fix`) |
 | Format | `make format` (check only: `make format-check`) |
-| Pre-PR gate | `make check` + `code-review` subagent |
+| Pre-PR gate | `ui-review` -> `verifier` -> `code-review` subagents |
 | Install tooling | `make bootstrap` (runs `brew bundle`) |
 
 Tests use **Swift Testing** (`import Testing`, `@Test`, `#expect`/`#require`) — not XCTest.
@@ -119,18 +119,43 @@ pattern), then build to confirm it compiles.
 
 ## Workflow
 
-- **Write code TDD-style.** Add the failing Swift Testing test first, then the code to
-  make it pass, then refactor. Keep logic in `Models/`/`Support/` so it's unit-testable
-  without the UI (see "Code style").
-- **Review before every commit.** Run a code review over the staged diff and fix what it
-  finds *before* committing — don't commit unreviewed code.
-- **Run the `code-review` subagent before every PR.** After the change is committed and
-  `make check` passes, spawn the repo-local `.codex/agents/code-review.toml` subagent
-  against the branch diff before `gh pr create`. If it reports any actionable finding
-  (`P0`-`P3`), fix it, rerun the relevant tests/checks, and run the subagent again.
-  Do not open the PR until the subagent returns `No actionable findings.` Record that
-  result in the PR checklist.
-- Ship focused, single-purpose PRs via the GitHub CLI (`gh`). Open the PR, let CI run, and
-  **merge once all required checks pass.** Copilot review is no longer a gate — you don't
-  need to request it or wait on it before merging.
-- Keep the README and this file in sync.
+Follow this sequence for every change. The repo-local subagent definitions are in
+`.codex/agents/`.
+
+1. Inspect the repository, current Git state, and all applicable instructions before
+   making changes. Preserve unrelated staged, unstaged, and untracked work.
+2. Create a focused branch before making code changes.
+3. Work TDD-style whenever behavior or structure is testable:
+   - Add or update a focused Swift Testing test before implementation.
+   - Run it and confirm that it fails for the expected reason.
+   - Implement the smallest appropriate change.
+   - Run focused tests while iterating, then refactor if needed.
+   Keep logic in `Models/` or `Support/` so it can be tested without the UI.
+4. Inspect the complete branch diff plus staged, unstaged, and untracked files. Remove
+   accidental or unrelated changes without disturbing work that predates the task.
+5. After the main implementation pass, run the repo-local `ui-review` subagent before
+   verification. It reviews the project and branch diff as an expert Apple UI developer,
+   covering design, interaction, accessibility, Human Interface Guidelines alignment,
+   SwiftUI/AppKit structure (and UIKit where relevant), visual consistency, and user
+   experience. Address every actionable finding before continuing.
+6. Run the repo-local `verifier` subagent to select and perform the appropriate builds,
+   tests, lint, and format checks. Resolve every actionable failure, flake, missing-coverage
+   report, or environment issue before code review. If resolving a verifier finding changes
+   code, rerun the verifier.
+7. Before every commit, run the repo-local `code-review` subagent against the current branch
+   diff and all staged, unstaged, and untracked files. Address every actionable `P0`-`P3`
+   finding before committing.
+8. Commit only after verification and code review are complete. Use Conventional Commits:
+   `<type>(<scope>): <imperative summary>`.
+9. When creating a pull request:
+   - Confirm that local verification remains valid.
+   - Rerun `code-review` only if the reviewed state changed after the pre-commit review.
+     Changed state includes code, tests, documentation, generated files, conflict
+     resolution, or any staged, unstaged, or untracked content.
+   - Do not repeat code review when the already-reviewed diff and worktree are unchanged.
+   - Push and create a focused pull request only after local verification and any required
+     code review are complete. Record the review and verification results in the PR.
+10. Merge only after GitHub reports a clean merge state and all configured checks pass.
+    Self-merges are allowed when those conditions are met. Copilot review is not a gate.
+
+Keep the README and this file in sync when a change affects their shared guidance.

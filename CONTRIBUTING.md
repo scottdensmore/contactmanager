@@ -33,12 +33,19 @@ Optional iCloud sync setup is documented in the [README](README.md#icloud-sync-o
 ## Workflow
 
 - Branch per focused change; keep each PR scoped to one logical feature/fix/chore.
-- Write tests first (TDD) and run `make check` before committing.
-- Before opening a PR, run the repo-local `code-review` subagent on the branch
-  diff. Fix every actionable finding and rerun the subagent until it reports
-  `No actionable findings.`
+- Write tests first (TDD) whenever the change is testable.
+- After implementation, inspect the complete diff, then run the repo-local
+  `ui-review` and address every actionable UI or accessibility finding.
+- Run the repo-local `verifier` and resolve every build, test, lint, format,
+  coverage, flake, or environment finding. Rerun it after code fixes.
+- Before every commit, run the repo-local `code-review` against the branch diff
+  and all staged, unstaged, and untracked files. Fix every actionable finding.
+- Before opening a PR, confirm verification remains valid. Rerun `code-review`
+  only if the reviewed state changed; do not repeat it for an unchanged diff and
+  worktree.
 - Open a PR against `main` and **merge once all required checks pass** (Lint & Format +
-  Build & Test). Copilot review isn't a gate — no need to request it or wait on it.
+  Build & Test) and GitHub reports a clean merge state. Self-merges are allowed;
+  Copilot review isn't a gate.
 - **Squash merge** and delete the branch; a successful merge auto-tags and publishes a release.
 
 More detailed conventions (architecture, SwiftData rules, style) live in
