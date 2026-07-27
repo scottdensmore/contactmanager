@@ -1,0 +1,169 @@
+{
+  "cli_version": "0.8.42",
+  "checkpoint_id": "6d975d5fae93",
+  "session_id": "59209012-7fda-4081-b229-29d2bab800aa",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-27T04:29:51.458866Z",
+  "branch": "chore/claude-md-include-drift-guard",
+  "checkpoints_count": 2,
+  "save_step_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "d8c55e9a0380",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 240,
+    "cache_creation_tokens": 558126,
+    "cache_read_tokens": 19136726,
+    "output_tokens": 98928,
+    "api_call_count": 133
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-claude-md-management:claude-md-improver-2026-07-27T03:19:57.786145Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "claude-md-management:claude-md-improver"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "9cf72d336b96",
+      "timestamp": "2026-07-27T03:19:57.786145Z",
+      "native": {
+        "command": "/claude-md-management:claude-md-improver"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/claude-md-management:claude-md-improver",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-claude-code-claude-md-management:claude-md-improver-2026-07-27T03:51:43.883852Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "claude-md-management:claude-md-improver"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "0e0496eca8f6",
+      "timestamp": "2026-07-27T03:51:43.883852Z",
+      "native": {
+        "command": "/claude-md-management:claude-md-improver"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/claude-md-management:claude-md-improver",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-claude-code-claude-md-management:claude-md-improver-2026-07-27T03:57:04.52467Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "claude-md-management:claude-md-improver"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "329ae244c3a5",
+      "timestamp": "2026-07-27T03:57:04.52467Z",
+      "native": {
+        "command": "/claude-md-management:claude-md-improver"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/claude-md-management:claude-md-improver",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-claude-code-claude-security:scan-2026-07-27T03:58:35.153192Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "claude-security:scan"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "bdf71ec8ad09",
+      "timestamp": "2026-07-27T03:58:35.153192Z",
+      "native": {
+        "command": "/claude-security:scan"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/claude-security:scan",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-claude-code-claude-security:claude-security-2026-07-27T03:58:49.447163Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "claude-security:claude-security"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "1dcb3570a712",
+      "timestamp": "2026-07-27T03:58:49.447163Z",
+      "native": {
+        "command": "/claude-security:claude-security"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/claude-security:claude-security",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "prompt-skill-claude-code-frontend-design:frontend-design-2026-07-27T04:07:49.938508Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "frontend-design:frontend-design"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "c70521c3f408",
+      "timestamp": "2026-07-27T04:07:49.938508Z",
+      "native": {
+        "command": "/frontend-design:frontend-design"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/frontend-design:frontend-design",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 26
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
