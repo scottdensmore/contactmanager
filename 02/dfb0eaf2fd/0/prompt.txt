@@ -13,3 +13,7 @@ Ok create a PR and when all checks pass squash merge
 ---
 
 What is the trade off of loosening thresholds? What is ab etter default?
+
+---
+
+Ok disable the wrapIfStatementBodies
