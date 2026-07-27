@@ -1,0 +1,13 @@
+/doctor
+
+---
+
+/claude-md-management:claude-md-improver
+
+---
+
+Yes. The one thing to also note is that we should be using an AGENTS.md file so that all coding agents work. We can link in the CLAUDE.md file
+
+---
+
+lets reconcile
