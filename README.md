@@ -82,7 +82,7 @@ A `Makefile` wraps the common tasks (install tooling once with `make bootstrap`,
 | Test | `make test` (unit + UI) · `make test-unit` (unit only) |
 | Lint | `make lint` (autofix: `make lint-fix`) |
 | Format | `make format` (check only: `make format-check`) |
-| Pre-PR gate | `ui-review` -> `verifier` -> `code-review` subagents |
+| Pre-PR gate | `make check` (format-check + lint + unit tests) |
 
 Tests use **Swift Testing** (`import Testing`, `@Test`, `#expect`/`#require`); `make build`/`make test` disable code signing (compile + test gates — a signed build for distribution is done from Xcode), so they run identically locally and in CI. Linting and formatting are **SwiftLint** + **SwiftFormat**. After implementation, run the repo-local subagents in order: `ui-review`, `verifier`, then pre-commit `code-review`; fix every actionable finding before continuing. At PR time, rerun `code-review` only if the reviewed state changed, and confirm local verification is still valid. CI (`.github/workflows/ci.yml`) runs two jobs on every PR: **Lint & Format** (`swiftformat --lint` + `swiftlint --strict`) and **Build & Test** (`make build` + `make test-unit` on a macOS 26 runner). The XCUITest smoke suite (`make test`) is run from Xcode, not CI. After CI passes on `main`, a **Release** workflow auto-bumps the version patch + build number, tags `v{version}`, and publishes a GitHub release with generated notes (bump the major/minor by hand when it's warranted). Contributor and agent conventions live in `AGENTS.md`.
 
