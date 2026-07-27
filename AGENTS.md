@@ -1,7 +1,11 @@
 # ContactManager — Contributor & Agent Guide
 
-> `CLAUDE.md` is a symlink to this file, so Claude Code and every other coding agent
-> read the same guidance. Edit **`AGENTS.md`**; don't replace the symlink with a separate file.
+> `CLAUDE.md` is a thin pointer that imports this file (`@AGENTS.md`) — a plain file, not a
+> symlink, so it works on Windows too. Claude Code and every other coding agent read the same
+> guidance. Always edit **`AGENTS.md`**, never `CLAUDE.md`; a CI check
+> (`scripts/check-claude-md.sh`, also run by `make check`) fails if `CLAUDE.md` gains content
+> of its own — e.g. a note from the `#` memory shortcut, which appends there. Move any such
+> content here.
 
 Native **macOS Tahoe (macOS 26)** contact manager built with **SwiftUI + SwiftData**.
 Zero third-party *runtime* dependencies. Code here is reviewed by humans, not just
