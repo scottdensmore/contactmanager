@@ -8,7 +8,10 @@
 --patternlet inline          # keep `case .group(let id)` rather than `case let .group(id)`
 # Keep opening braces on the same line as multiline conditions, matching
 # SwiftLint's opening_brace rule (and keeping formatting idempotent).
---disable wrapPropertyBodies,wrapMultilineStatementBraces
+# Don't force single-line statement bodies onto new lines: we opt out of the
+# whole wrap-*-bodies family. wrapIfStatementBodies (a default since SwiftFormat
+# 0.6x) also inflates line counts past SwiftLint's file/type/function length limits.
+--disable wrapPropertyBodies,wrapMultilineStatementBraces,wrapIfStatementBodies
 --commas always              # trailing commas in multiline collections (diff-friendly)
 --self remove                # drop redundant `self.`
 
