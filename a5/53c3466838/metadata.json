@@ -1,0 +1,24 @@
+{
+  "cli_version": "0.8.42",
+  "checkpoint_id": "a553c3466838",
+  "strategy": "manual-commit",
+  "branch": "docs/agents-md-canonical-note",
+  "checkpoints_count": 3,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/a5/53c3466838/0/metadata.json",
+      "transcript": "/a5/53c3466838/0/full.jsonl",
+      "compact_transcript": "/a5/53c3466838/0/transcript.jsonl",
+      "content_hash": "/a5/53c3466838/0/content_hash.txt",
+      "prompt": "/a5/53c3466838/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 131,
+    "cache_creation_tokens": 182684,
+    "cache_read_tokens": 8023858,
+    "output_tokens": 60296,
+    "api_call_count": 72
+  }
+}
