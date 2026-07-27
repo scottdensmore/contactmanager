@@ -8,7 +8,7 @@ XCODEBUILD := xcodebuild -project $(PROJECT) -scheme $(SCHEME) -destination '$(D
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap setup build test test-unit lint lint-fix format format-check check
+.PHONY: help bootstrap setup build test test-unit lint lint-fix format format-check check-docs check
 
 help: ## List available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -41,4 +41,7 @@ format: ## Format sources in place with SwiftFormat
 format-check: ## Verify formatting without modifying files
 	swiftformat --lint .
 
-check: format-check lint test-unit ## Run format check, lint, and unit tests (CI gate)
+check-docs: ## Verify CLAUDE.md is a clean pointer to AGENTS.md (drift guard)
+	./scripts/check-claude-md.sh
+
+check: check-docs format-check lint test-unit ## Run doc guard, format check, lint, and unit tests (CI gate)
