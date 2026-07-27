@@ -1,0 +1,78 @@
+{
+  "cli_version": "0.8.42",
+  "checkpoint_id": "02dfb0eaf2fd",
+  "session_id": "59209012-7fda-4081-b229-29d2bab800aa",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-27T03:44:24.166027Z",
+  "branch": "chore/swiftformat-wrap-if-bodies",
+  "checkpoints_count": 4,
+  "save_step_count": 2,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "91caeb84c025",
+  "checkpoint_transcript_start": 175,
+  "transcript_lines_at_start": 175,
+  "compact_transcript_start": 45,
+  "token_usage": {
+    "input_tokens": 40,
+    "cache_creation_tokens": 31292,
+    "cache_read_tokens": 2605183,
+    "output_tokens": 15694,
+    "api_call_count": 22
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-claude-md-management:claude-md-improver-2026-07-27T03:19:57.786145Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "claude-md-management:claude-md-improver"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "9cf72d336b96",
+      "timestamp": "2026-07-27T03:19:57.786145Z",
+      "native": {
+        "command": "/claude-md-management:claude-md-improver"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/claude-md-management:claude-md-improver",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 7
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 40,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".cursor/hooks.json": 40
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 511,
+      "agent_lines_removed": 147
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 511,
+      "agent_lines_removed": 147
+    }
+  ]
+}
