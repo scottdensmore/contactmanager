@@ -1,5 +1,8 @@
 # ContactManager — Contributor & Agent Guide
 
+> `CLAUDE.md` is a symlink to this file, so Claude Code and every other coding agent
+> read the same guidance. Edit **`AGENTS.md`**; don't replace the symlink with a separate file.
+
 Native **macOS Tahoe (macOS 26)** contact manager built with **SwiftUI + SwiftData**.
 Zero third-party *runtime* dependencies. Code here is reviewed by humans, not just
 agents — keep it readable and idiomatic.
@@ -42,6 +45,7 @@ ContactManager/Support/  Non-UI utilities (VCard, ImageProcessing, VCardDocument
 ContactManager/Intents/  App Intents / Shortcuts / Spotlight (ContactEntity, AppShortcutsProvider)
 ContactManager/Views/    SwiftUI views
 ContactManagerTests/     Swift Testing suites
+ContactManagerUITests/   XCUITest smoke suite (run from Xcode; not in CI)
 ```
 
 ## Code style
