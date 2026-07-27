@@ -12,7 +12,7 @@ agents — keep it readable and idiomatic.
 | Test | `make test` (unit + UI) / `make test-unit` (unit only) |
 | Lint | `make lint` (autofix: `make lint-fix`) |
 | Format | `make format` (check only: `make format-check`) |
-| Pre-PR gate | `ui-review` -> `verifier` -> `code-review` subagents |
+| Pre-PR gate | `make check` (format-check + lint + unit tests) |
 | Install tooling | `make bootstrap` (runs `brew bundle`) |
 
 Tests use **Swift Testing** (`import Testing`, `@Test`, `#expect`/`#require`) — not XCTest.
@@ -39,6 +39,7 @@ target in the `.pbxproj` — not in any xcconfig — and the Release workflow pa
 ContactManager/App/      @main entry, ModelContainer, menu commands
 ContactManager/Models/   SwiftData @Models, ContactStore (data layer), pure helpers (ContactQuery)
 ContactManager/Support/  Non-UI utilities (VCard, ImageProcessing, VCardDocument)
+ContactManager/Intents/  App Intents / Shortcuts / Spotlight (ContactEntity, AppShortcutsProvider)
 ContactManager/Views/    SwiftUI views
 ContactManagerTests/     Swift Testing suites
 ```
@@ -107,6 +108,11 @@ pattern), then build to confirm it compiles.
 - **Tests:** use an in-memory `ModelContainer`; the suite is `@MainActor @Suite(.serialized)`
   and holds the container as a stored property. The app skips creating its own container
   under tests (`XCTestConfigurationFilePath`) so the test owns the only one — keep that guard.
+- **App Intents / Spotlight** run outside the SwiftUI environment, so they can't read
+  `@Environment(\.modelContext)`. They read `EntityModelContainer.shared` — a lock-guarded
+  process-wide handle the app sets once after `loadContainer()` succeeds (`nil` if loading
+  failed or under tests). New intents/entity queries must read from it, not build their own
+  container.
 
 ## Platform / Liquid Glass
 
@@ -139,9 +145,10 @@ Follow this sequence for every change. The repo-local subagent definitions are i
    SwiftUI/AppKit structure (and UIKit where relevant), visual consistency, and user
    experience. Address every actionable finding before continuing.
 6. Run the repo-local `verifier` subagent to select and perform the appropriate builds,
-   tests, lint, and format checks. Resolve every actionable failure, flake, missing-coverage
-   report, or environment issue before code review. If resolving a verifier finding changes
-   code, rerun the verifier.
+   tests, lint, and format checks — for code changes it runs `make check` (the Commands
+   table's Pre-PR gate) unless a documented environment limitation prevents it. Resolve
+   every actionable failure, flake, missing-coverage report, or environment issue before
+   code review. If resolving a verifier finding changes code, rerun the verifier.
 7. Before every commit, run the repo-local `code-review` subagent against the current branch
    diff and all staged, unstaged, and untracked files. Address every actionable `P0`-`P3`
    finding before committing.
