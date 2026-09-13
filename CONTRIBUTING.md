@@ -19,7 +19,7 @@
    the tracked `DeveloperSettings.template.xcconfig`. `ORGANIZATION_IDENTIFIER`
    drives the bundle id (and iCloud container), so every developer builds with
    their own — no provisioning collisions. You only need this for **signed**
-   runs from Xcode; `make build` / CI build with signing off and skip it.
+   runs from Xcode; `make build` builds with signing off and skips it.
 3. **Build / test / run**:
    ```shell
    make build       # unsigned compile gate
@@ -34,19 +34,7 @@ Optional iCloud sync setup is documented in the [README](README.md#icloud-sync-o
 
 - Branch per focused change; keep each PR scoped to one logical feature/fix/chore.
 - Write tests first (TDD) whenever the change is testable.
-- After implementation, inspect the complete diff, then run the repo-local
-  `ui-review` and address every actionable UI or accessibility finding.
-- Run the repo-local `verifier` and resolve every build, test, lint, format,
-  coverage, flake, or environment finding. Rerun it after code fixes.
-- Before every commit, run the repo-local `code-review` against the branch diff
-  and all staged, unstaged, and untracked files. Fix every actionable finding.
-- Before opening a PR, confirm verification remains valid. Rerun `code-review`
-  only if the reviewed state changed; do not repeat it for an unchanged diff and
-  worktree.
-- Open a PR against `main` and **merge once all required checks pass** (Lint & Format +
-  Build & Test) and GitHub reports a clean merge state. Self-merges are allowed;
-  Copilot review isn't a gate.
-- **Squash merge** and delete the branch; a successful merge auto-tags and publishes a release.
+- Run `make check` (format check, lint, unit tests) before opening a PR.
+- Open a PR against `main`.
+- **Squash merge** and delete the branch.
 
-More detailed conventions (architecture, SwiftData rules, style) live in
-[`AGENTS.md`](AGENTS.md).
