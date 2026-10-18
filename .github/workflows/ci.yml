@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint and format
+    runs-on: macos-26
+    timeout-minutes: 10
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_INSTALL_CLEANUP: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install the existing Brewfile tooling on the disposable runner
+        run: brew bundle
+      - name: Check formatting without changing source
+        run: swiftformat --lint . --cache "$RUNNER_TEMP/swiftformat.cache"
+      - name: Run strict SwiftLint
+        run: swiftlint lint --quiet --strict --no-cache
+
+  build-test:
+    name: macOS build, unit and UI tests
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Build and run the full existing scheme
+        run: |
+          xcodebuild -version
+          xcodebuild \
+            -project ContactManager.xcodeproj \
+            -scheme ContactManager \
+            -destination "platform=macOS,arch=$(uname -m)" \
+            -derivedDataPath "$RUNNER_TEMP/contactmanager" \
+            -parallel-testing-enabled NO \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+            build test
