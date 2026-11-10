@@ -83,17 +83,26 @@ enum ContactQuery {
     /// Uses `localizedCaseInsensitiveContains` (no per-string `.lowercased()`
     /// allocation) and short-circuits on the cheap scalar attributes before
     /// walking the to-many `fields` relationship.
+    /// Returns true if the contact's name, company, job title, notes, or any email/
+    /// phone field value contains the query. An empty query returns true.
+    static func hasMatch(_ contact: Contact, matching query: String) -> Bool {
+        let needle = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !needle.isEmpty else { return true }
+
+        if contact.fullName.localizedCaseInsensitiveContains(needle) { return true }
+        if contact.company.localizedCaseInsensitiveContains(needle) { return true }
+        if contact.jobTitle.localizedCaseInsensitiveContains(needle) { return true }
+        if contact.notes.localizedCaseInsensitiveContains(needle) { return true }
+        return contact.fields.contains { $0.value.localizedCaseInsensitiveContains(needle) }
+    }
+
+    /// Filters contacts whose name, company, job title, notes, or any email/
+    /// phone field value contains the query. An empty query returns every
+    /// contact unchanged.
     static func filtered(_ contacts: [Contact], matching query: String) -> [Contact] {
         let needle = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !needle.isEmpty else { return contacts }
-
-        return contacts.filter { contact in
-            if contact.fullName.localizedCaseInsensitiveContains(needle) { return true }
-            if contact.company.localizedCaseInsensitiveContains(needle) { return true }
-            if contact.jobTitle.localizedCaseInsensitiveContains(needle) { return true }
-            if contact.notes.localizedCaseInsensitiveContains(needle) { return true }
-            return contact.fields.contains { $0.value.localizedCaseInsensitiveContains(needle) }
-        }
+        return contacts.filter { hasMatch($0, matching: needle) }
     }
 
     static func filtered(

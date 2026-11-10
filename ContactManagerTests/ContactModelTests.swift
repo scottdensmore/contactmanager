@@ -203,9 +203,11 @@ struct ContactModelTests {
         #expect(Contact.avatarPaletteIndex(seed: 5, count: 0) == 0)
         #expect(Contact.avatarPaletteIndex(seed: 5, count: -3) == 0)
     }
+}
 
-    // MARK: - Query helpers
+// MARK: - Query helpers
 
+struct ContactQueryTests {
     @Test func sortingOrdersByLastNameThenFirstName() {
         let contacts = [
             Contact(firstName: "Grace", lastName: "Hopper"),
@@ -247,16 +249,13 @@ struct ContactModelTests {
         #expect(sections.first?.contacts.map(\.firstName) == ["Ada", "Alan"])
     }
 
-    @Test func filteringMatchesName_Company_Notes_AndFieldValues() throws {
+    @Test func filteringMatchesName_Company_Notes_AndFieldValues() {
         let ada = Contact(firstName: "Ada", lastName: "Lovelace", company: "Analytical Engine")
         ada.fields = [ContactField(kind: .email, value: "ada@analytical.engine")]
         let alan = Contact(firstName: "Alan", lastName: "Turing", notes: "Enigma")
         alan.fields = [ContactField(kind: .phone, value: "+44 20 7555 0142")]
-        context.insert(ada)
-        context.insert(alan)
-        try context.save()
 
-        let all = try context.fetch(FetchDescriptor<Contact>())
+        let all = [ada, alan]
         #expect(ContactQuery.filtered(all, matching: "love").count == 1) // name
         #expect(ContactQuery.filtered(all, matching: "analytical").count == 1) // company + email
         #expect(ContactQuery.filtered(all, matching: "enigma").first?.firstName == "Alan") // notes
@@ -321,5 +320,15 @@ struct ContactModelTests {
         let birthdays = ContactQuery.filtered([leapDay], by: .birthdaysSoon, now: reference)
 
         #expect(birthdays.isEmpty)
+    }
+
+    @Test func contactQueryHasMatchEvaluatesIndividualContact() {
+        let contact = Contact(firstName: "Grace", lastName: "Hopper", company: "US Navy", notes: "COBOL compiler")
+
+        #expect(ContactQuery.hasMatch(contact, matching: "grace"))
+        #expect(ContactQuery.hasMatch(contact, matching: "navy"))
+        #expect(ContactQuery.hasMatch(contact, matching: "cobol"))
+        #expect(!ContactQuery.hasMatch(contact, matching: "pascal"))
+        #expect(ContactQuery.hasMatch(contact, matching: "   "))
     }
 }
